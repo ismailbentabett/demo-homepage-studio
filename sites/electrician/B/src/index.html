@@ -1,0 +1,343 @@
+<header class="site-header" data-header>
+  <div class="header__inner">
+    <a href="#top" class="header__logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav class="header__nav" data-menu>
+      <ul class="nav__list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#proof">Reviews</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#area">Service Area</a></li>
+      </ul>
+    </nav>
+    <div class="header__cta">
+      <a href="tel:{{biz.phoneE164}}" class="btn btn-ghost header__phone">[[i phone]]<span>{{biz.phone}}</span></a>
+      [[quote Panels btn-primary | Price it]]
+    </div>
+    <button class="header__burger" type="button" data-menu-toggle aria-expanded="false" aria-controls="nav-list">
+      <span class="sr-only">Menu</span>
+      [[i menu]]
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- 1. HERO -->
+  <section id="hero" class="section t-deep hero" data-sw-signature="panel-schedule">
+    <div class="hero__mosaic">
+      <div class="circuit is-on"><span class="circuit__num">01</span><span class="circuit__handle"></span></div>
+      <div class="circuit is-on"><span class="circuit__num">02</span><span class="circuit__handle"></span></div>
+      [[frame detail-lug hero__tile | | loading="lazy"]]
+      [[frame detail-wire hero__tile | | loading="lazy"]]
+      [[frame ranch-dusk hero__tile | | loading="lazy"]]
+      [[frame generator-stone hero__tile | | loading="lazy"]]
+    </div>
+    <div class="hero__spine">
+      <p class="kicker">{{biz.short}} · {{biz.city}}, {{biz.stateName}}</p>
+      <h1 data-split="lines">{{biz.city}} electrical work,<br>written into your panel schedule.</h1>
+      <p class="proof-line">Mon–Sat 7–6 · Sample rating {{proof.rating}} ({{proof.reviewCount}} reviews)</p>
+      <div class="hero__actions">
+        [[quote Panels btn-primary | Price it]]
+        [[call btn-ghost]]
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. TRUST -->
+  <section id="trust" class="section t-paper trust">
+    <div class="container split-aside">
+      <div class="split-aside__main">
+        <h2>Open now, ready to help</h2>
+        <p class="lead">We answer the phone during business hours and text when the van is on the way. Every job gets a written scope before we start.</p>
+      </div>
+      <aside class="split-aside__side">
+        <dl class="trust__stats">
+          <div>
+            <dt>Status</dt>
+            <dd><span data-open-now></span></dd>
+          </div>
+          <div>
+            <dt>Hours</dt>
+            <dd>Mon–Fri 7–6, Sat 8–12</dd>
+          </div>
+          <div>
+            <dt>Rating</dt>
+            <dd>{{proof.rating}} / 5 [[sample review]]</dd>
+          </div>
+          <div>
+            <dt>Area</dt>
+            <dd>{{biz.areas|list}}</dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 3. BREAKER SORTER -->
+  <section id="breaker-sorter" class="section t-mid tool-card">
+    <div class="container">
+      <h2>Breaker keeps tripping?</h2>
+      <p class="lead">Answer three questions and we will tell you whether it is an overload, a short or something else — and what to do next.</p>
+      <div class="tool" data-checklist data-service="Troubleshooting and repairs">
+        <fieldset>
+          <legend>When does it trip?</legend>
+          <label><input type="radio" name="trip-when" value="immediate"> Right away, every time</label>
+          <label><input type="radio" name="trip-when" value="minutes"> After a few minutes</label>
+          <label><input type="radio" name="trip-when" value="appliance"> Only when an appliance starts</label>
+        </fieldset>
+        <fieldset>
+          <legend>Which room?</legend>
+          <label><input type="radio" name="trip-room" value="kitchen"> Kitchen</label>
+          <label><input type="radio" name="trip-room" value="bedroom"> Bedroom</label>
+          <label><input type="radio" name="trip-room" value="garage"> Garage / outdoor</label>
+          <label><input type="radio" name="trip-room" value="other"> Other</label>
+        </fieldset>
+        <div class="tool__result" aria-live="polite" data-checklist-result></div>
+        <div class="tool__cta">
+          [[quote Repairs btn-primary | Price this repair]]
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SERVICES -->
+  <section id="services" class="section t-deep circuit-rail" data-sw-signature="panel-schedule">
+    <div class="container">
+      <h2>What we fix, install and label</h2>
+      <ul class="circuit-list">
+        <!-- each services -->
+        <li class="circuit" data-reveal>
+          <span class="circuit__num">{{#2}}</span>
+          <span class="circuit__handle" aria-hidden="true"></span>
+          <div class="circuit__body">
+            <h3 class="circuit__label">{{.name}}</h3>
+            <p>{{.blurb}}</p>
+          </div>
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. BREAK -->
+  <section class="section t-paper break" data-reveal="clip">
+    [[frame break break__img | | loading="lazy"]]
+  </section>
+
+  <!-- 6. GENERATOR SIZER -->
+  <section id="generator" class="section t-accent tool-wide">
+    <div class="container">
+      <h2>Plan for the next outage</h2>
+      <p class="lead">Check what must keep running and we will size a portable-plus-interlock or a standby system, with sample pricing from recent jobs.</p>
+      <div class="tool" data-estimator data-service="Generator interlocks">
+        <fieldset>
+          <legend>What must stay on?</legend>
+          <label><input type="checkbox" name="load" value="fridge" data-watts="700"> Refrigerator / freezer</label>
+          <label><input type="checkbox" name="load" value="furnace" data-watts="800"> Furnace blower</label>
+          <label><input type="checkbox" name="load" value="well" data-watts="1200"> Well pump</label>
+          <label><input type="checkbox" name="load" value="ac" data-watts="3500"> Central AC</label>
+          <label><input type="checkbox" name="load" value="medical" data-watts="500"> Medical device</label>
+          <label><input type="checkbox" name="load" value="lights" data-watts="300"> Lights + outlets</label>
+        </fieldset>
+        <div class="tool__output">
+          <p class="tool__total">Estimated load: <strong data-count="0">0</strong> W</p>
+          <p class="tool__rec" data-est-result></p>
+          <p class="tool__price">[[sample pricing]] Typical range: {{proof.prices.1.from}} – {{proof.prices.1.to}} (interlock) · {{proof.prices.2.from}} – {{proof.prices.2.to}} (standby)</p>
+        </div>
+        <div class="tool__cta">
+          [[quote Interlocks btn-primary | Price an interlock]]
+          [[quote Standby btn-secondary | Price a standby]]
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. EV LOAD CHECK -->
+  <section id="ev-load" class="section t-paper split-image">
+    <div class="container split-image__grid">
+      <div class="split-image__text">
+        <h2>Can my house handle an EV charger?</h2>
+        <p class="lead">Most Level 2 chargers need a dedicated 40–50 A circuit. We check your panel capacity before we wire anything.</p>
+        <div class="tool" data-checklist data-service="EV charger installation">
+          <fieldset>
+            <legend>Service size</legend>
+            <label><input type="radio" name="svc-size" value="100"> 100 A</label>
+            <label><input type="radio" name="svc-size" value="150"> 150 A</label>
+            <label><input type="radio" name="svc-size" value="200"> 200 A</label>
+          </fieldset>
+          <fieldset>
+            <legend>Big loads already present?</legend>
+            <label><input type="checkbox" name="big-load" value="ac"> Central AC</label>
+            <label><input type="checkbox" name="big-load" value="dryer"> Electric dryer</label>
+            <label><input type="checkbox" name="big-load" value="range"> Electric range</label>
+            <label><input type="checkbox" name="big-load" value="pool"> Pool / spa</label>
+          </fieldset>
+          <div class="tool__result" aria-live="polite" data-checklist-result></div>
+          <div class="tool__cta">
+            <a class="btn btn-primary" href="#contact" data-service="EV charger installation">Price an EV charger</a>
+          </div>
+        </div>
+      </div>
+      [[frame detail-ev-charger split-image__media | | loading="lazy"]]
+    </div>
+  </section>
+
+  <!-- 8. PROOF -->
+  <section id="proof" class="section t-deep circuit-rail" data-sw-signature="panel-schedule">
+    <div class="container">
+      <h2>Sample reviews, filed by circuit</h2>
+      <ul class="circuit-list">
+        <!-- each proof.reviews -->
+        <li class="circuit" data-reveal>
+          <span class="circuit__num">{{#2}}</span>
+          <span class="circuit__handle" aria-hidden="true"></span>
+          <div class="circuit__body">
+            <blockquote>
+              <p>{{.text}}</p>
+              <footer>— {{.name}}, {{.town}} · {{.service}} · {{.stars}}★ [[sample review]]</footer>
+            </blockquote>
+          </div>
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9. AREA -->
+  <section id="area" class="section t-paper stack-center">
+    <div class="container">
+      <h2>Do you serve my neighborhood?</h2>
+      <p class="lead">Enter your ZIP and we will confirm right away.</p>
+      <div class="zip-checker" data-zip>
+        <label class="sr-only" for="zip-input">ZIP code</label>
+        <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Your ZIP" autocomplete="postal-code" data-zip-input>
+        <button type="button" class="btn btn-primary" data-zip-btn>Check</button>
+        <div class="zip__result" aria-live="polite" data-zip-result></div>
+      </div>
+      <p class="area__list">We work in {{biz.areas|list}} and nearby ZIP codes: {{biz.zips|csv}}.</p>
+    </div>
+  </section>
+
+  <!-- 10. PRICING -->
+  <section id="pricing" class="section t-mid ledger-table">
+    <div class="container">
+      <h2>Sample pricing</h2>
+      <p class="lead">Ranges from recent jobs in {{biz.city}}. Your number comes after we see the site.</p>
+      <table class="price-table">
+        <thead>
+          <tr><th scope="col">Job</th><th scope="col">From</th><th scope="col">To</th><th scope="col">Note</th></tr>
+        </thead>
+        <tbody>
+          <!-- each proof.prices -->
+          <tr>
+            <td>{{.item}} [[sample pricing]]</td>
+            <td>{{.from}}</td>
+            <td>{{.to}}</td>
+            <td>{{.note}}</td>
+          </tr>
+          <!-- /each -->
+        </tbody>
+      </table>
+      <p class="sample-note">[[sample pricing]] All figures are illustrative.</p>
+    </div>
+  </section>
+
+  <!-- 11. CONTACT -->
+  <section id="contact" class="section t-deep form-center">
+    <div class="container">
+      <h2>Get a number for your job</h2>
+      <p class="lead">Tell us what is going on and when works. We will call back to set up a visit.</p>
+      <form data-lead class="lead-form" novalidate>
+        <div class="form__step" data-step="1">
+          <fieldset>
+            <legend>What do you need?</legend>
+            <label for="lead-service">Service</label>
+            <select id="lead-service" name="service" required data-prefill>
+              <option value="">Choose…</option>
+              <!-- each services -->
+              <option value="{{.name}}">{{.name}}</option>
+              <!-- /each -->
+            </select>
+          </fieldset>
+          <button type="button" class="btn btn-primary" data-next>Next</button>
+        </div>
+        <div class="form__step" data-step="2" hidden>
+          <fieldset>
+            <legend>Job details</legend>
+            <label for="lead-details">Describe the problem or project</label>
+            <textarea id="lead-details" name="details" rows="3" required></textarea>
+          </fieldset>
+          <div class="form__nav">
+            <button type="button" class="btn btn-ghost" data-prev>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form__step" data-step="3" hidden>
+          <fieldset>
+            <legend>When works?</legend>
+            <label for="lead-when">Preferred time</label>
+            <select id="lead-when" name="when" required>
+              <option value="">Choose…</option>
+              <option value="morning">Morning (7–12)</option>
+              <option value="afternoon">Afternoon (12–6)</option>
+              <option value="flexible">Flexible</option>
+            </select>
+          </fieldset>
+          <div class="form__nav">
+            <button type="button" class="btn btn-ghost" data-prev>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form__step" data-step="4" hidden>
+          <fieldset>
+            <legend>Your contact</legend>
+            <label for="lead-name">Name</label>
+            <input id="lead-name" name="name" type="text" required autocomplete="name">
+            <label for="lead-phone">Phone</label>
+            <input id="lead-phone" name="phone" type="tel" required autocomplete="tel">
+            <label for="lead-email">Email (optional)</label>
+            <input id="lead-email" name="email" type="email" autocomplete="email">
+            <label for="lead-zip">ZIP</label>
+            <input id="lead-zip" name="zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" data-zip-prefill>
+            <input type="hidden" name="website2" tabindex="-1" autocomplete="off">
+          </fieldset>
+          <div class="form__nav">
+            <button type="button" class="btn btn-ghost" data-prev>Back</button>
+            <button type="submit" class="btn btn-primary">Send request</button>
+          </div>
+        </div>
+        <div class="form__thanks" data-thanks hidden>
+          <p>Thanks, {name}. In your version this goes straight to your phone and inbox.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer t-mid" data-sw-signature="panel-schedule">
+  <div class="container footer__rail">
+    <div class="circuit is-off">
+      <span class="circuit__num">99</span>
+      <span class="circuit__handle" aria-hidden="true"></span>
+      <div class="circuit__body">
+        <p class="footer__disclaimer">{{demo.disclaimer}}</p>
+        <p class="footer__license">Licence # {{proof.license}} [[sample label]]</p>
+      </div>
+    </div>
+    <div class="footer__credits">
+      [[credits]]
+      <p>&copy; {{year}} {{biz.name}}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-bar" data-mobilebar>
+  [[call btn-primary mobile-bar__call]]
+  [[quote Panels btn-secondary mobile-bar__quote | Price it]]
+</div>
+
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+</svg>
