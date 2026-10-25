@@ -1,0 +1,8 @@
+# Strategy — general-A (Crosstie Building Co.)
+
+1. **The one job.** A Nashville homeowner planning an addition or remodel lands, sees the week-by-week track and Friday report promise, and calls or prices it within 10 seconds.
+2. **Homeowner's first 5 seconds.** h1: "Week 1 to week 20. A report every Friday." with trade + city in kicker ("General Contracting · Nashville, TN"); primary CTA "Price it"; secondary "Call (615) 555-0122"; proof line "Sample rating 4.9 · 57 reviews · Mon–Fri 7–5".
+3. **Contractor's first 5 seconds.** Nobody in Nashville shows the job as a weekly track with a Friday report card for each tie; that rhythm is the signature and the wow.
+4. **Objections → sections.** "They'll disappear" → Weekly report preview section. "Cost double / time double" → Timeline builder tool + price ranges. "Won't know what's happening" → Track story with today-line. "Permits hold it up" → Permits service card + inspection markers. "Living in dust" → Live-in-or-move-out guide. "No kitchen for months" → Temporary kitchen note in kitchens service.
+5. **Conversion paths.** Primary: `[[call]]` in header + hero + mobile bar; form at #contact reached via every "Price it" button. Secondary: timeline tool → prefill project type into form. Phone always visible on 390 via sticky mobile bar (hides over form).
+6. **What this direction is NOT.** Not B's open-ledger numbers-first layout (no budget split bars, no percentage column). Not C's topo-map contour climb (no elevation labels, no illustrated map). Not a luxury gallery of finished kitchens with no process; this site leads with the weekly rhythm, not the finish photo.
