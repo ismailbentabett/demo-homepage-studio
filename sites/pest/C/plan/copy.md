@@ -1,8 +1,8 @@
 # Copy Deck — pest-C (Lamppost Pest & Termite)
 
 ## hero
-- kicker: When the porch lights come on in May
-- h1: Formosan termites in {{biz.city}}
+- kicker: Swarm season · {{biz.city}}
+- h1: Formosan swarmers at the light? Know if they’re inside.
 - lead: Swarmers gather at dusk from late April through June. We check your lights, windows and eaves that same evening.
 - proof line: Sample Formosan plan renewal {{proof.prices.3.from}}–{{proof.prices.3.to}}/{{proof.prices.3.unit}} · {{hours|today}} · Serving {{biz.areas|list}}
 - cta primary: Book a swarm visit

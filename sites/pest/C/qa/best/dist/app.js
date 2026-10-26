@@ -992,67 +992,6 @@ SW.mod('opennow', function (SW) {
 });
 
 ;
-/* kit: tabs */
-/* tabs:
-   <div data-tabs>
-     <div data-tablist aria-label="Services"> <button data-tab>Repair</button> <button data-tab>Replace</button> </div>
-     <section data-tabpanel> <h3>Repair</h3> ... </section>
-     <section data-tabpanel> <h3>Replace</h3> ... </section>
-   </div>
-   Tabs and panels pair by order. Adds role=tablist/tab/tabpanel, ids, aria-controls/selected/labelledby, roving tabindex.
-   Arrow keys (Left/Right, Up/Down), Home and End move and select. data-tabs-start="1" picks the first open tab (0-based).
-   Without JS base.css hides [data-tablist] and every panel shows (each with its own heading). */
-SW.mod('tabs', function (SW) {
-  var n = 0;
-  SW.$$('[data-tabs]').forEach(function (root) {
-    var list = SW.$('[data-tablist]', root);
-    var tabs = list ? SW.$$('[data-tab]', list) : [];
-    var panels = SW.$$('[data-tabpanel]', root).filter(function (p) { return p.closest('[data-tabs]') === root; });
-    if (!tabs.length || tabs.length !== panels.length) { SW.warn('tabs: need as many [data-tab] as [data-tabpanel]', root); return; }
-    var id = root.id || 'sw-tabs-' + (++n);
-    list.setAttribute('role', 'tablist');
-    tabs.forEach(function (t, i) {
-      var p = panels[i];
-      if (t.tagName === 'BUTTON') t.type = 'button';
-      t.id = t.id || id + '-tab-' + i;
-      p.id = p.id || id + '-panel-' + i;
-      t.setAttribute('role', 'tab');
-      t.setAttribute('aria-controls', p.id);
-      p.setAttribute('role', 'tabpanel');
-      p.setAttribute('aria-labelledby', t.id);
-      p.setAttribute('tabindex', '0');
-      t.addEventListener('click', function () { select(i, false); });
-      t.addEventListener('keydown', function (e) {
-        var k = e.key, next = null;
-        if (k === 'ArrowRight' || k === 'ArrowDown') next = (i + 1) % tabs.length;
-        else if (k === 'ArrowLeft' || k === 'ArrowUp') next = (i - 1 + tabs.length) % tabs.length;
-        else if (k === 'Home') next = 0;
-        else if (k === 'End') next = tabs.length - 1;
-        if (next === null) return;
-        e.preventDefault();
-        select(next, true);
-      });
-    });
-    function select(i, focus) {
-      tabs.forEach(function (t, j) {
-        var on = j === i;
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-        t.setAttribute('tabindex', on ? '0' : '-1');
-        t.classList.toggle('is-active', on);
-        panels[j].hidden = !on;
-        panels[j].classList.toggle('is-active', on);
-      });
-      root.style.setProperty('--tab', i);
-      if (focus) tabs[i].focus();
-      root.dispatchEvent(new CustomEvent('sw:tab', { detail: { index: i } }));
-    }
-    var start = parseInt(root.getAttribute('data-tabs-start'), 10) || 0;
-    select(Math.min(Math.max(0, start), tabs.length - 1), false);
-    root.setAttribute('data-tabs-ready', '');
-  });
-});
-
-;
 /* kit: checklist */
 /* checklist: a self-check list ("Signs you need a new roof").
    <div data-checklist data-checklist-results="0:Tick what you see.|1:One sign: worth a free look.|3:{n} of {total}: time to call.">
@@ -1198,6 +1137,10 @@ SW.mod('media-fallback', function (SW) {
    Static (JS off / reduced motion): every section carries its printed time stamp.
    With motion: a margin clock interpolates between those stamps as you scroll, the story dial
    follows the house cards, and the street's windows go out across the break. */
+/* Every framed photo decodes in step with paint, so no frame ever shows its empty gradient
+   while its card is in view (motion on, reduced motion, and full-page captures alike). */
+Array.prototype.forEach.call(document.querySelectorAll('.frame img'), function (img) { img.decoding = 'sync'; });
+
 (function () {
   if (typeof SW === 'undefined' || typeof gsap === 'undefined') return;
   if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
@@ -1224,8 +1167,6 @@ SW.mod('media-fallback', function (SW) {
     v: START, duration: 1.1, ease: 'power2.out', delay: 0.1,
     onUpdate: function () { setDial(heroDial, clock.v); if (heroTime) heroTime.textContent = label(clock.v); }
   });
-  gsap.from('.skyline--hero .skyline__halo', { opacity: 0, duration: 0.9, ease: 'power2.out', delay: 0.3 });
-  gsap.from('.skyline--hero .win.is-lit', { opacity: 0, duration: 0.4, stagger: { each: 0.03, from: 'random' }, delay: 0.25 });
 
   /* --- 2. The spine: margin clock interpolated between the page's printed stamps --- */
   var spine = document.querySelector('.spine');
@@ -1268,6 +1209,7 @@ SW.mod('media-fallback', function (SW) {
   var storyDial = document.querySelector('[data-story-dial]');
   var storyTime = document.querySelector('[data-story-time]');
   var storyLamp = document.querySelector('[data-story-lamp]');
+  var house = document.querySelector('.story__house');
   ScrollTrigger.matchMedia({
     '(min-width: 900px)': function () {
       document.querySelectorAll('.story-card').forEach(function (card) {
@@ -1277,10 +1219,14 @@ SW.mod('media-fallback', function (SW) {
           setDial(storyDial, min);
           if (storyTime) storyTime.textContent = label(min);
           if (storyLamp) storyLamp.style.setProperty('--lampv', String(lamp));
-          document.querySelectorAll('.story-card').forEach(function (c) { c.classList.toggle('is-current', c === card); });
+          document.querySelectorAll('.story-card').forEach(function (c) { c.classList.toggle('is-current', c === card); c.classList.toggle('is-dim', c !== card); });
+          if (house) house.setAttribute('data-house', card.getAttribute('data-story-step'));
         }
         ScrollTrigger.create({ trigger: card, start: 'top 55%', end: 'bottom 55%', onEnter: go, onEnterBack: go });
       });
+      return function () {
+        document.querySelectorAll('.story-card').forEach(function (c) { c.classList.remove('is-dim', 'is-current'); });
+      };
     }
   });
 
