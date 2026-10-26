@@ -1,0 +1,8 @@
+# Strategy — mason-B (Flemish Bond Masonry, Baltimore)
+
+1. **One job.** A Baltimore rowhouse owner lands, sees their brick type named and a sample price per sq ft, and calls or sends a photo within 10 seconds.
+2. **Homeowner first 5s.** H1: "Rowhouse brick repointing in {{biz.city}}" + kicker "Flemish Bond Masonry". Proof line: "{{proof.rating}} stars · {{proof.reviewCount}} reviews (Sample)" + open-now tag. Two CTAs: [[call]] and [[quote front-repointing]]. Hero is a photo mosaic laid as Flemish bond.
+3. **Contractor first 5s.** The page IS the mortar analysis report: every section is a test panel, numbers are in header-sized tiles, and the signature is the Flemish-bond grid that organizes proof before the call.
+4. **Objections → sections.** Wrong mortar → Mortar Match tool + analysis section. Patch color mismatch → test-panel story with three swatches. Rebuild vs repair → Repoint-or-Rebuild tool. Money pit → sample prices in estimator + facade-width tool. Power-wash damage → gentle cleaning service card + detail-spalling photo. Formstone uncertainty → Formstone keep/fix/remove tool. Marble steps rocking → marble step reset card + detail-marble-step.
+5. **Conversion paths.** Primary: [[call]] in hero, sticky mobile bar, and after every tool output. Secondary: [[quote]] buttons per service prefill the form. Tool → form hand-off: each tool ends with a CTA that scrolls to #contact with data-service set. Phone always visible in mobile bar under 900px.
+6. **Not this direction.** NOT the process walkthrough of mason-A (no raking/packing/striking sequence). NOT the neighborhood-story map of mason-C. NOT a light-led lime-cream palette; this is dark-led soot + Baltimore red + brass.
