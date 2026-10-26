@@ -76,3 +76,6 @@ The render errors cover sideways overflow at 390/320 and text hidden under reduc
 - New `tools/reopen.mjs <id> [--rounds N]`: takes the lock, sets `site.json.roundCap = round + N` (default 2) and moves the site from needs-human back to `fix` on its best round.
 - `tools/lib/scoring.mjs` `verdictFor` now uses `site.json.roundCap` when present instead of the mode's `maxRounds`. Pass bars are unchanged; sites without `roundCap` behave exactly as before, so no recheck of delivered sites is needed.
 - Why: most needs-human sites stalled on placeholder photos; once a niche gets real photos, the site needs extra rounds to be re-scored.
+
+## 2026-10-26: capture-screens waits for lazy images
+`tools/capture-screens.mjs` walked the page at 120 ms a step and shot the full page straight away, so `loading="lazy"` photos far down the page were still empty frames in `*-full.jpg` (the critic flagged them as missing photos on cleaning-B and pest-C). After the walk it now waits until every image has loaded or failed, up to 8 s. Real visitors scroll slower than that walk, so the shot now matches what they see.

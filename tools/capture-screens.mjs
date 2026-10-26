@@ -52,6 +52,9 @@ async function walk(page) {
   await page.evaluate(async () => {
     const step = innerHeight * 0.8;
     for (let y = 0; y < document.documentElement.scrollHeight; y += step) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); }
+    // Lazy images the walk started must finish loading, or the full-page shot shows empty frames.
+    const pending = [...document.images].filter((img) => !img.complete).map((img) => new Promise((r) => { img.addEventListener('load', r, { once: true }); img.addEventListener('error', r, { once: true }); }));
+    await Promise.race([Promise.all(pending), new Promise((r) => setTimeout(r, 8000))]);
     scrollTo(0, 0); await new Promise((r) => setTimeout(r, 300));
   });
 }
