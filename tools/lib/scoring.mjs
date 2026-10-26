@@ -81,8 +81,21 @@ export function checkState(id) {
       report = JSON.parse(fs.readFileSync(f, "utf8"));
     } catch {}
     const mtime = fs.statSync(f).mtimeMs;
+    // render.json is the capture output: its errors (overflow, page errors, text hidden under
+    // reduced motion) are blockers. check-render's own verdict lives in render-check.json.
+    let extraB = 0, extraW = 0;
+    if (name === "render" && report) {
+      extraB = Array.isArray(report.errors) ? report.errors.length : 0;
+      const rc = path.join(base, "qa", "render-check.json");
+      if (fs.existsSync(rc)) {
+        try {
+          const r = JSON.parse(fs.readFileSync(rc, "utf8"));
+          if (fs.statSync(rc).mtimeMs >= mtime) { extraB = Math.max(extraB, countOf(r, "blockers")); extraW = countOf(r, "warnings"); }
+        } catch {}
+      }
+    }
     out[name] = report
-      ? { exists: true, blockers: countOf(report, "blockers"), warnings: countOf(report, "warnings"), fresh: mtime > srcTime, mtime }
+      ? { exists: true, blockers: countOf(report, "blockers") + extraB, warnings: countOf(report, "warnings") + extraW, fresh: mtime > srcTime, mtime }
       : { exists: true, broken: true, blockers: 1, warnings: 0, fresh: false, mtime };
   }
   out.fresh = out.static.fresh && out.render.fresh;

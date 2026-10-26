@@ -85,3 +85,6 @@ roofer-B was a test fixture (11-byte stub, worker t2) force-delivered at 8.88. I
 
 ## 2026-10-26: reopen.mjs accepts delivered sites
 `tools/reopen.mjs` now reopens a site at stage `done` as well as `needs-human`, so delivered sites that scored under 8.8 or still use placeholder photos can get more rounds. It records `reopenedFrom` in site.json.
+
+## 2026-10-26: scoring counts render errors
+`tools/lib/scoring.mjs` `checkState` read `qa/render.json` (the capture output, which lists problems under `errors`) as if it were a check report, so horizontal overflow, page errors and text hidden under reduced motion never counted as blockers. It now counts `render.json.errors` as blockers and adds the blockers and warnings from `render-check.json` when that report is at least as new.
