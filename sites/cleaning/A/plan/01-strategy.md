@@ -1,0 +1,8 @@
+# Strategy — cleaning-A (Ticklist House Cleaning)
+
+1. **The one job.** A Greenville homeowner lands, sees the visit checklist with times and sample prices, and calls or books a first deep clean within 10 seconds.
+2. **Homeowner's first 5 seconds.** H1 "House cleaning in Greenville, SC" + kicker "Visit checklist: 3 bed / 2 bath", call button, quote button, one proof line ("Same two people every other Tuesday"). Above fold on 390.
+3. **Contractor's first 5 seconds.** The page is the actual clipboard checklist a team uses, minute by minute. Nobody in Greenville shows the work as a timed process. This becomes the signature.
+4. **Objections mapped.** "Different stranger every time" → dedicated team section. "Skip baseboards" → checklist explorer + timeline. "Don't know what's included" → room-by-room list. "Price surprise" → estimator + sample ranges. "Dog/pet worry" → pet note in form + review. "Key/entry safety" → entry method step in form. "Missed spot" → re-clean guarantee block.
+5. **Conversion paths.** Primary: [[call]] sticky mobile bar + hero. Secondary: [[quote]] buttons per service → #contact with data-service prefill. Tool → form: estimator output hands off visit type + size; ZIP checker hands off ZIP. Phone always one thumb-reach away on mobile via sticky bar.
+6. **What this direction is NOT.** Not B's receipt/price-first marquee (no centered statement + photo strip). Not C's seasonal almanac editorial (no dark-led serif cover). Not a generic smiling-cleaner stock template (no yellow gloves, no sparkles).

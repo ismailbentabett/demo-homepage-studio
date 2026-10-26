@@ -1,0 +1,72 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 9.0,
+      "notes": "dist/index.html line 580: h1 'House Cleaning in Greenville, SC' (5 words, trade+city). Line 583-584: primary Call CTA and secondary Price my visit CTA both above fold per CSS min-height calc(100svh - 64px). Line 586: proof line with Sample licence tag. Line 572-576: clipboard-ticks signature visible in hero media. Next band (t-accent proof-line) peeks below hero."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "Signature 'Visit Timeline Tick' appears in hero (clipboard-ticks line 572), process-story (timeline-rail line 604 with room-card__time timestamps), reviews (review-tick SVG line 832), and footer (final-tick line 966). Four sections per concept.json. Palette Pollen Sage + Ink Blue and type trio Outfit/Karla/DM Mono consistent. Deduction: estimator sketch bar (line 702) is visually disconnected from the pencil-tick language; signature does not fully unify the tool output."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "Outfit display with -0.03em tracking (line 296), Karla text at clamp(1rem-1.125rem) (line 269), DM Mono for timestamps/kickers/prices (line 302). Fluid scale with 6 sizes. Body >=16px. Measure capped at 65ch (line 300). Tabular numerals via font-variant-numeric on [data-count] (line 130). Kickers use uppercase + 0.08em tracking (line 303). No confirmed orphans or straight-quote violations in visible copy."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "10 distinct sections each with one job. Tone alternation: paper > accent > light > deep > paper > mid > light > paper > deep > accent. Layout families: split (hero, area), timeline-rail (process), tool-layout (estimator, chooser), grid (services), stack (reviews, footer). Full-bleed break section (line 653). Deduction: estimator (line 659) and chooser (line 714) are adjacent tool-layout sections with identical structure, reading as two of the same shape in a row (-0.5)."
+    },
+    "photo": {
+      "score": 7.0,
+      "notes": "All images have descriptive alt text matching data-fallback values (e.g., line 571 hero, line 615 process-high-dust). Consistent frame filter saturate(0.85) contrast(1.05) sepia(0.08) applied uniformly (line 353). Width/height attributes present. Lazy loading with decoding=async. Srcset with 1170w and 2340w variants. Deduction: no screenshots exist to verify grade consistency, object-position, or that frames render correctly in placeholder mode (-1.0 for missing visual verification)."
+    },
+    "copy": {
+      "score": 9.0,
+      "notes": "Voice is specific and contractor-plain: 'Top-down, dry-to-wet. Dust falls before the mop.' (line 603). Service blurbs name concrete tasks ('Stovetop grates scrubbed' line 786, 'Shower glass squeegeed' line 621). Reviews read like homeowner speech with specific details ('shower drain was slow' line 834). Sample tags on every review, price, and licence. Buttons named for action. Minor variation in primary action names ('Price my visit' vs 'Price it' vs 'Book this visit') serves distinct contexts."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "CSS breakpoints at 640px and 900px. Container padding adjusts (line 320). Nav collapses to menu-btn below 900px (line 371). Mobile bar fixed at bottom with flex:1 buttons, min-height 44px (line 488). Form steps stack vertically. Timeline rail padding-left reduces from 120px to s-7 below 900px (line 422). Split grids collapse to single column. No horizontal scroll triggers in CSS. Tap targets meet 48px min-height on .btn (line 325)."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "Skip link present (line 523). Focus-visible outline 3px solid var(--focus) with 3px offset (line 312). All form inputs have explicit labels. Honeypot field has aria-hidden=true and tabindex=-1 (line 944). aria-live=polite on zip-result, est-output, cho-output. Reduced motion rules force opacity:1, transform:none on all reveals (lines 504-508). Forced colors media query adds borders (lines 313-316). Heading order correct with no skips. Deduction: ZIP input uses placeholder as only visible label despite sr-only span (-0.5)."
+    },
+    "motion": {
+      "score": 8.0,
+      "notes": "Intro tick-draw keyframes 0.4s each staggered 0.3/0.6/0.9s totaling 1.3s (lines 397-401), exceeding 1.2s budget (-1.0). Reveal system with fade, clip, stagger variants. Estimator sketch bar transitions width 600ms (line 441). Hover scaleX underline on nav (line 363). Reduced motion fully respected. Fewer than 3 distinct active hooks beyond reveal/stagger/tick-draw; marquee/compare/carousel defined in CSS but unused in HTML (-0.5). Same reveal pattern on every room-card and svc-card (-0.5)."
+    },
+    "wow": {
+      "score": 8.0,
+      "notes": "Visit timeline with minute-by-minute timestamps and drawing ticks tied to thesis and trade (process-story lines 600-648). Estimator sketch bar filling to represent visit duration is a connected moment (line 702). Both are tools a homeowner would use. Deduction: estimator output is primarily a price range and time figure, partially mitigated by sketch bar visualization (-0.5). Cannot confirm visual execution without screenshots (-0.5)."
+    },
+    "polish": {
+      "score": 8.0,
+      "notes": "SVG favicon and apple-touch-icon linked (lines 20-21). OG image with dimensions (lines 13-15). JSON-LD HomeAndConstructionBusiness with openingHoursSpecification and areaServed (line 22). Theme-color set (line 9). Print stylesheet handles reveals and estimator isolation (lines 242-251). Forced colors handled. Consistent 3px border-radius. Deduction: credits list shows 'Photo by unknown on <a>Pexels</a>' seven times with empty href (line 969, static.json warning) (-0.5). Form has 6 data-step elements vs contract's 4 (static.json warning) (-0.5)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html line 969, footer ul.credits",
+      "problem": "Seven <a> tags with text 'Pexels' have no href attribute, flagged in qa/static.json as link warnings. Empty links are an a11y failure and a polish defect.",
+      "fix": "Add valid Pexels URLs from niches/cleaning/media/manifest.json to each credit link, or replace <a>Pexels</a> with plain text 'Pexels' if attribution URLs are unavailable."
+    },
+    {
+      "where": "dist/index.html line 899, form.lead-form",
+      "problem": "Form has 6 data-step elements but BUILD-CONTRACT specifies 4 steps. Flagged in qa/static.json as form warning.",
+      "fix": "Consolidate steps 5 (Preferred day, line 934) and 6 (Contact, line 939) into step 4 (Pets & entry), or remove the day/window selects if not required for the demo contract."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "motion",
+      "move": "Thread the tick-draw signature into the estimator output: when the sketch bar fills, animate a small tick SVG drawing at the end of the bar to mark 'visit complete,' connecting the tool output to the page's signature language and adding a fourth active hook."
+    },
+    {
+      "category": "photo",
+      "move": "Apply the clipboard-frame treatment (border, slight rotation, paper texture overlay) to the process room-thumb images so they read as photos clipped to the visit checklist rather than standalone stock, making the photo treatment part of the signature system."
+    }
+  ],
+  "verdictHint": "FIX"
+}

@@ -1,0 +1,61 @@
+{
+  "round": 2,
+  "categories": {
+    "firstScreen": {
+      "score": 9.0,
+      "notes": "dist/index.html lines 588-597: h1 'House Cleaning in Greenville, SC' is 5 words (trade+city). Lead adds outcome. Two CTAs: Call (primary) and Price my visit (secondary). Phone visible in header (line 549) and hero CTA. Proof line with Sample licence under CTAs. Clipboard-frame with tick SVGs signals signature. CSS min-height calc(100svh - 64px) keeps both CTAs above fold at 390. Intro tick animation runs 0.75s total (lines 397-400), under 1.2s budget."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "Signature appears in hero (clipboard-ticks line 582), process-story (timeline-rail line 614), reviews (review-tick line 843), estimator (est-tick line 715), and footer (final-tick line 963). Five sections per concept.json. Palette Pollen Sage + Ink Blue and type trio Outfit/Karla/DM Mono consistent. Layout families: split hero, statement band, timeline rail, full-bleed break, tool-layout, svc-grid, review-stack, area split, form-wrap, stacked footer. -0.5 because chooser (line 725) shares identical tool-layout structure with estimator (line 669), reading as two same shapes in a row."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "Outfit display with -0.03em tracking (line 296). Karla text clamp(1rem-1.125rem) (line 269). DM Mono for timestamps/kickers/prices (line 302). Fluid scale with 6 sizes. Body >=16px. Measure capped at 65ch (line 300). Tabular numerals via font-variant-numeric (line 130). Kickers uppercase + 0.08em tracking (line 303). -0.5 for straight hyphens in 'Every-other-week' throughout service cards and radio labels; price ranges in noscript correctly use en-dash."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "10 distinct sections each with one job. Tone alternation: paper->accent->light->deep(break)->paper->mid->light->paper->deep->accent. Three layout families: split (hero, area), timeline-rail (process), tool-layout (estimator, chooser), grid (services), stack (reviews, footer). Full-bleed break section (line 663). Asymmetric timeline with left rail. -0.5 because estimator and chooser are adjacent tool-layout sections with identical structure. -0.5 because services grid at 3 columns creates card-inside-card feel with border+background on .svc-card against t-light."
+    },
+    "photo": {
+      "score": 7.0,
+      "notes": "All images have descriptive alt text matching data-fallback values. Consistent frame treatment saturate(0.85) contrast(1.05) sepia(0.08) (line 353). Width/height attributes present. Lazy loading decoding=async. Srcset with 1170w and 2340w variants. Clipboard-frame treatment applied to hero and process room-thumbs. -1.0 because no screenshots exist to verify grade consistency, object-position, or that frames render. Cannot confirm photos are on-topic for Greenville residential cleaning. Score reflects DOM correctness minus visual verification penalty."
+    },
+    "copy": {
+      "score": 9.0,
+      "notes": "Voice specific and contractor-plain ('Top-down, dry-to-wet'). Service blurbs name concrete tasks. Reviews read like homeowner speech with details. Sample tags on every review, price, licence. Buttons named for action. Primary action 'Price my visit' consistent across hero, services, estimator, mobile bar, menu. -0.5 for chooser CTA 'Start with this plan' (line 758) differing from 'Price my visit'; contextual variation acceptable but rubric says one consistent name."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "CSS breakpoints at 640px and 900px. Container padding adjusts. Nav collapses to menu-btn below 900px. Mobile bar fixed bottom with flex:1 buttons min-height 44px (line 498). Form steps stack vertically. Timeline rail padding-left reduces below 900px. No horizontal scroll triggers. Tap targets meet 48px. -0.5 because mobile bar relies on JS .is-visible class; cannot confirm it hides on scroll down or over form without screenshots."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "Skip link present (line 533). Focus-visible 3px solid var(--focus) with 3px offset (line 312). All form inputs have labels. Honeypot aria-hidden tabindex=-1. aria-live polite on zip-result, est-output, cho-output. Reduced motion forces opacity:1 transform:none clip-path:none (lines 514-518). Forced colors adds borders (lines 313-316). Heading order h1->h2->h2->h2->h2->h2->h2->h2->h3->h2->h3 no skips. ZIP input now has visible label (line 895). -0.5 because process timeline ticks are decorative only with no sr-only equivalent of drawn state."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "Intro animation 0.75s total (lines 397-400), under 1.2s budget (fixed from R1 1.3s). Reveal system with fade, clip, stagger variants. Estimator sketch bar transitions width 600ms with est-tick drawing on completion (lines 447-449), connecting tool to signature. Hover scaleX underline on nav links. Reduced motion respected. Hooks: reveal, reveal-stagger, clip, tick-draw, est-sketch fill, est-tick draw. -0.5 because fewer than 3 distinct hooks beyond plain reveals. -0.5 because same reveal pattern on every room-card and svc-card."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "Visit timeline with minute-by-minute timestamps and drawing ticks tied to thesis and trade. Estimator sketch bar filling with est-tick drawing at completion is second connected moment in same language (R1 elevate move implemented). Both tools homeowner would use. -0.5 because estimator output is primarily price range and time figure, partially mitigated by sketch bar visualization and tick draw."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "SVG favicon and apple-touch-icon linked. OG image 1200x630. JSON-LD HomeAndConstructionBusiness with openingHoursSpecification areaServed. Theme-color set. Print stylesheet handles reveals and estimator isolation. Forced colors handled. Consistent 3px radius. Footer credits use plain span Pexels instead of empty a tags (R1 mustFix fixed). Form consolidated to 4 data-step elements (R1 mustFix fixed). -0.5 because credits show 'Photo by unknown on Pexels' seven times with no attribution detail."
+    }
+  },
+  "mustFix": [],
+  "elevate": [
+    {
+      "category": "photo",
+      "move": "Apply clipboard-frame treatment more aggressively to break photo and area thumb so they read as part of the visit-document system rather than standalone stock. Add subtle paper-texture overlay to all frames to unify grade. Reference quality: art-directed crops that tell a sequence per rubric 3.5 anchor 10."
+    },
+    {
+      "category": "distinctiveness",
+      "move": "Thread tick-draw signature into services grid by adding small tick SVG that draws beside each svc-card title on hover, making signature interactive rather than static. Adds sixth signature instance and differentiates services from template grids. Reference quality: signature does real work per rubric 3.2 anchor 10."
+    }
+  ],
+  "verdictHint": "FIX"
+}
