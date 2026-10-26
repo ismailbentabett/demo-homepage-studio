@@ -31,6 +31,16 @@
       return li;
     }
     function flash(el) { el.classList.remove('is-new'); void el.offsetWidth; el.classList.add('is-new'); }
+    function echo(key, text) {
+      document.querySelectorAll('[data-echo="' + key + '"]').forEach(function (el) { el.textContent = text; });
+    }
+    var keep = rc.querySelector('[data-print-ticket]');
+    if (keep) keep.addEventListener('click', function () {
+      var root = document.documentElement;
+      root.classList.add('print-ticket');
+      window.addEventListener('afterprint', function done() { root.classList.remove('print-ticket'); window.removeEventListener('afterprint', done); });
+      window.print();
+    });
 
     var last = '';
     function update(changed) {
@@ -58,6 +68,12 @@
       lines.appendChild(frag);
       total.textContent = cur + lo + ' to ' + cur + hi;
       if (send && p.item) send.setAttribute('data-service', p.item);
+      /* the reader's own picks print onto the hero ticket and the footer receipt */
+      if (changed) {
+        var range = total.textContent + ' (sample)';
+        echo('size', sizeText); echo('visit', p.item || ''); echo('total', range);
+        echo('subtotal', (p.item || '') + ', ' + sizeText); echo('total-note', range + ', confirmed at the walk-through');
+      }
       if (changed && key !== last && !SW.reduced) {
         var kids = lines.children;
         flash(kids[changed === 'visit' ? 0 : changed === 'size' ? 1 : kids.length - 1]);
@@ -85,6 +101,31 @@
     if (photo) gsap.fromTo(photo, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.8, ease: 'power3.inOut', clearProps: 'clipPath' });
   });
 
+  /* Story: the scroll prints the receipt. As each strip enters, its lines feed out left to right,
+     one after another, like a till printing (clip only, plays once, ends fully visible). */
+  SW.mod('scroll-print', function () {
+    if (!window.ScrollTrigger) return;
+    document.querySelectorAll('[data-print]:not(.spine--hero), .footer__receipt').forEach(function (strip) {
+      var rows = strip.querySelectorAll('.tk__mast, .tk__meta, .tk__line, .tk__tab, .tk__total, .tk__answer, .tk__note, .tk__foot, .footer__mast, .footer__thanks');
+      if (!rows.length) return;
+      gsap.fromTo(rows, { clipPath: 'inset(0 100% 0 0)' }, {
+        clipPath: 'inset(0 0% 0 0)', duration: 0.42, stagger: 0.09, ease: 'power2.out', clearProps: 'clipPath',
+        scrollTrigger: { trigger: strip, start: 'top 88%', once: true }
+      });
+      var photo = strip.querySelector('.frame');
+      if (photo) gsap.fromTo(photo, { clipPath: 'inset(0 0 100% 0)' }, {
+        clipPath: 'inset(0 0 0% 0)', duration: 0.9, ease: 'power3.inOut', clearProps: 'clipPath',
+        scrollTrigger: { trigger: photo, start: 'top 90%', once: true }
+      });
+    });
+    /* the services receipt prints its lines too */
+    var svc = document.querySelectorAll('.svc__item');
+    if (svc.length) gsap.fromTo(svc, { clipPath: 'inset(0 100% 0 0)' }, {
+      clipPath: 'inset(0 0% 0 0)', duration: 0.45, stagger: 0.06, ease: 'power2.out', clearProps: 'clipPath',
+      scrollTrigger: { trigger: '.svc', start: 'top 85%', once: true }
+    });
+  });
+
   /* Each strip's red rule draws when it enters view (decorative; the strip itself is always visible). */
   SW.mod('strip-rules', function () {
     var spines = document.querySelectorAll('[data-print]');
@@ -102,7 +143,7 @@
       '(min-width: 900px)': function () {
         var steps = document.querySelectorAll('[data-crew] .step');
         steps.forEach(function (s, i) {
-          gsap.fromTo(s, { y: 40 * (i + 1) }, { y: 0, ease: 'none', scrollTrigger: { trigger: '[data-crew]', start: 'top bottom', end: 'center center', scrub: 0.6 } });
+          gsap.fromTo(s, { y: 20 * i }, { y: 0, ease: 'none', scrollTrigger: { trigger: '[data-crew]', start: 'top bottom', end: 'center center', scrub: 0.6 } });
         });
       }
     });

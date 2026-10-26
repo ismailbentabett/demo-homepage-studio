@@ -276,7 +276,7 @@ html.lenis, html.lenis body { height: auto; }
   --header-h: 60px;
   --gutter: 20px;
   --pad: var(--s-8);
-  --radius: 4px;
+  --radius: 2px;
   --grade: saturate(.85) contrast(1.05) sepia(.08);
 
   --ease-out: cubic-bezier(.23, 1, .32, 1);
@@ -297,6 +297,7 @@ html.lenis, html.lenis body { height: auto; }
 .t-paper, .t-mid, .t-deep, .t-accent { background: var(--bg); color: var(--fg); }
 
 /* ---------- base ---------- */
+html, body { overflow-x: clip; }
 html { background: var(--paper); }
 body {
   font-family: var(--font-text); font-size: var(--fs-0); line-height: 1.55; color: var(--ink); background: var(--paper);
@@ -317,7 +318,7 @@ a { text-underline-offset: 3px; }
 .skip-link { background: var(--ink); color: var(--paper); padding: 12px 16px; border-radius: var(--radius); }
 .sample-tag {
   display: inline-block; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.02em; line-height: 1.3;
-  padding: 1px 8px; border: 1px solid currentColor; border-radius: 999px; vertical-align: 0.1em; white-space: nowrap;
+  padding: 1px 8px; border: 1px solid currentColor; border-radius: var(--radius); vertical-align: 0.1em; white-space: nowrap;
 }
 .wrap { width: min(100% - 2 * var(--gutter), 1280px); margin-inline: auto; }
 
@@ -378,7 +379,7 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .tk__mast { font-family: var(--font-display); font-weight: 700; font-size: 1.375rem; letter-spacing: -0.02em; line-height: 1.1; position: relative; padding-bottom: var(--s-3); border-bottom: 2px solid var(--slip-ink); }
 .tk__mast span { color: #9C4A18; }
 .tk__mast::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; border-top: 2px solid #9C4A18; transform-origin: left; transition: transform var(--dur-story) var(--ease-io); }
-.tk__meta { display: flex; justify-content: space-between; gap: var(--s-3); color: var(--slip-muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.8125rem; }
+.tk__meta { display: flex; justify-content: space-between; gap: var(--s-3); color: var(--slip-muted); letter-spacing: 0.02em; font-size: 0.875rem; }
 .tk__meta .sample-tag { text-transform: none; color: #9C4A18; }
 .tk__lines { display: grid; gap: 2px; }
 .tk__line { display: flex; align-items: baseline; gap: 8px; padding-block: 7px; border-bottom: 1px dashed var(--slip-rule); }
@@ -424,7 +425,7 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .hero__lines { display: grid; gap: var(--s-2); margin-bottom: var(--s-6); font-size: var(--fs-0); }
 .hero__lines li { display: flex; align-items: center; gap: 10px; }
 .hero__lines .i { color: var(--signal); width: 20px; height: 20px; }
-.hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-bottom: var(--s-5); }
+.hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-5); margin-bottom: var(--s-5); }
 .hero__call { font-size: var(--fs-0); }
 .hero__proof { font-size: var(--fs--1); color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .hero__proof .sample-tag { color: var(--accent); }
@@ -433,7 +434,7 @@ html:not(.sw-js) .mobile-menu { display: none; }
 /* ---------- 2 quote builder ---------- */
 .qb { display: grid; gap: var(--s-6); }
 .qb__group { border: 0; padding: 0; margin: 0; min-width: 0; }
-.qb__group legend, .ticks legend { font-family: var(--font-mono); font-size: var(--fs--1); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: var(--s-3); padding: 0; }
+.qb__group legend, .ticks legend { font-family: var(--font-text); font-size: 1rem; font-weight: 650; margin-bottom: var(--s-3); padding: 0; }
 .chips { display: grid; gap: var(--s-2); }
 .chip { position: relative; display: block; cursor: pointer; }
 .chip input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
@@ -443,12 +444,17 @@ html:not(.sw-js) .mobile-menu { display: none; }
   transition: border-color var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
 }
 .chip span::before { content: ""; width: 16px; height: 16px; flex: none; border: 1.5px solid currentColor; border-radius: 50%; box-shadow: inset 0 0 0 3px var(--chip-bg); }
-.chip--box span::before { border-radius: 2px; }
+.chip--box span::before { border-radius: var(--radius); }
 .chip input:checked + span { border-color: var(--accent); background: var(--fg); color: var(--bg); }
 .chip input:checked + span::before { background: var(--accent); border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--fg); }
 .chip input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
 @media (hover: hover) { .chip:hover span { border-color: var(--accent); } }
 .qb__send { margin-top: var(--s-6); }
+.tk__keep {
+  align-self: flex-start; position: relative; min-height: 48px; padding: 12px 0; margin-block: -8px; background: none; border: 0; cursor: pointer;
+  font: inherit; color: #9C4A18; text-decoration: underline 1.5px; text-underline-offset: 4px;
+}
+html:not(.sw-js) .tk__keep { display: none; }
 .tk--live .tk__line.is-new { animation: tk-print var(--dur-page) var(--ease-out) both; }
 .tk--live [data-rc-total].is-new { animation: tk-print var(--dur-page) var(--ease-out) both; }
 
@@ -486,11 +492,12 @@ html:not(.sw-js) .mobile-menu { display: none; }
 /* ---------- 5 crew ---------- */
 .crew__head { max-width: 760px; margin-bottom: var(--s-7); }
 .crew__steps { display: grid; gap: var(--s-7); }
+@media (min-width: 900px) { #crew { padding-bottom: calc(var(--pad) + 40px); } }
 .step { display: grid; gap: var(--s-3); align-content: start; }
 .step__photo { aspect-ratio: 4 / 3; margin-bottom: var(--s-3); }
 .step__no { font-size: var(--fs--1); color: var(--accent); letter-spacing: 0.04em; padding-bottom: var(--s-2); border-bottom: 2px solid var(--fg); }
 .step h3 { font-size: var(--fs-2); }
-.step p:last-child { color: var(--muted); max-width: 36ch; }
+.step p:last-child { max-width: 36ch; }
 
 /* ---------- 6 frequency ---------- */
 .ticks { border: 0; padding: 0; margin: 0; display: grid; gap: var(--s-2); }
@@ -498,7 +505,7 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .tick input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
 .tick span { display: flex; align-items: center; gap: var(--s-4); min-height: 56px; padding: 12px 16px; background: var(--chip-bg); border: 1.5px solid var(--rule); border-radius: var(--radius); font-weight: 550;
   transition: border-color var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out); }
-.tick span::before { content: ""; width: 22px; height: 22px; flex: none; border: 1.5px solid var(--fg); border-radius: 3px; background: var(--slip) center / 16px no-repeat; }
+.tick span::before { content: ""; width: 22px; height: 22px; flex: none; border: 1.5px solid var(--fg); border-radius: var(--radius); background: var(--slip) center / 16px no-repeat; }
 .tick input:checked + span { border-color: var(--accent); background: var(--slip); }
 .tick input:checked + span::before { background-color: var(--accent); border-color: var(--accent);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFDF8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"); }
@@ -509,12 +516,18 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .tk__meter span { display: block; height: 100%; width: var(--checked-pct, 0%); background: repeating-linear-gradient(90deg, #9C4A18 0 6px, transparent 6px 9px); transition: width var(--dur-page) var(--ease-out); }
 
 /* ---------- 7 services ---------- */
-.svc { display: grid; gap: 0; border-top: 1.5px solid var(--rule); }
-.svc__item { display: grid; gap: var(--s-3); align-content: start; padding: var(--s-6) 0; border-bottom: 1.5px solid var(--rule); }
-.svc__no { font-size: var(--fs--1); color: var(--accent); }
+.svc { display: grid; border-top: 2px solid var(--fg); }
+.svc__item { display: grid; gap: 2px var(--s-5); padding: var(--s-4) 0 var(--s-2); border-bottom: 1px dashed var(--rule); }
 .svc__item h3 { font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); }
-.svc__item p:not(.svc__no) { color: var(--muted); }
-.svc__item .btn { justify-self: start; margin-top: var(--s-2); }
+.svc__item p { color: var(--muted); max-width: 46ch; }
+.btn.svc__go {
+  justify-self: start; position: relative; min-height: 48px; padding: 12px 0; background: none; border: 0; border-radius: 0;
+  color: var(--accent); font-family: var(--font-mono); font-weight: 500; font-size: var(--fs--1); letter-spacing: 0.02em;
+}
+.btn.svc__go::before { content: "→"; order: 2; }
+.btn.svc__go::after { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; border-top: 1.5px solid currentColor; transform: scaleX(0); transform-origin: left; transition: transform var(--dur-ui) var(--ease-out); }
+@media (hover: hover) { .btn.svc__go:hover::after, .btn.svc__go:focus-visible::after { transform: scaleX(1); } .btn.svc__go:hover { background: none; color: var(--accent); } }
+.svc__end { margin-top: var(--s-5); text-align: center; color: var(--muted); font-size: var(--fs--1); letter-spacing: 0.08em; }
 .tk__lines--prices .tk__line { flex-wrap: wrap; row-gap: 0; }
 .tk__lines--prices .tk__line > span:first-child { text-transform: none; letter-spacing: 0; }
 
@@ -532,7 +545,7 @@ html:not(.sw-js) .mobile-menu { display: none; }
   -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
   mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
 }
-.slip__top { display: flex; justify-content: space-between; gap: var(--s-3); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--slip-muted); padding-bottom: var(--s-2); border-bottom: 2px solid var(--slip-ink); }
+.slip__top { display: flex; justify-content: space-between; gap: var(--s-3); font-size: 0.875rem; color: var(--slip-muted); padding-bottom: var(--s-2); border-bottom: 2px solid var(--slip-ink); }
 .slip__top span:last-child { color: #9C4A18; white-space: nowrap; }
 .slip blockquote { margin: 0; font-size: 1.0625rem; line-height: 1.5; }
 .slip__who { font-size: var(--fs--1); }
@@ -541,13 +554,14 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .rv__promise .mono { font-size: var(--fs--1); color: var(--accent); }
 
 /* ---------- 9 area ---------- */
-.area { display: grid; gap: var(--s-7); }
+.area { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+.area > * { min-width: 0; }
 .area__towns { display: flex; flex-wrap: wrap; gap: 6px 0; margin-bottom: var(--s-7); font-family: var(--font-display); font-weight: 600; font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.25rem); letter-spacing: -0.02em; line-height: 1.15; }
 .area__towns li:not(:last-child)::after { content: "·"; color: var(--accent); margin-inline: 0.35em; }
-.zip { margin-top: var(--s-6); display: grid; gap: var(--s-3); max-width: 520px; padding: var(--s-5); background: var(--slip); border: 2px dashed var(--slip-rule); --fg: var(--slip-ink); --muted: var(--slip-muted); --accent: #9C4A18; --btn-bg: #9C4A18; --btn-ink: #FFFDF8; color: var(--slip-ink); }
-.zip label { font-family: var(--font-mono); font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.04em; }
+.zip { margin-top: var(--s-6); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); max-width: 520px; padding: var(--s-5); background: var(--slip); border: 2px dashed var(--slip-rule); --fg: var(--slip-ink); --muted: var(--slip-muted); --accent: #9C4A18; --btn-bg: #9C4A18; --btn-ink: #FFFDF8; color: var(--slip-ink); }
+.zip label { font-weight: 650; }
 .zip__row { display: flex; gap: var(--s-2); }
-.zip input { flex: 1; min-width: 0; min-height: 52px; padding: 12px 16px; border: 1.5px solid var(--slip-ink); border-radius: var(--radius); background: #fff; font-family: var(--font-mono); font-size: 1.125rem; letter-spacing: 0.1em; }
+.zip input { flex: 1 1 0; width: 100%; min-width: 0; min-height: 52px; padding: 12px 16px; border: 1.5px solid var(--slip-ink); border-radius: var(--radius); background: #fff; font-family: var(--font-mono); font-size: 1.125rem; letter-spacing: 0.1em; }
 .zip__out { min-height: 1.5em; font-size: var(--fs-0); }
 .zip__out:empty { display: none; }
 .sw-zip-go, .sw-zip-call { display: inline-flex; align-items: center; min-height: 48px; margin-top: var(--s-2); padding: 10px 16px; background: #9C4A18; color: #FFFDF8; border: 0; border-radius: var(--radius); font-weight: 650; text-decoration: none; }
@@ -560,13 +574,13 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .hours { display: grid; margin: 0; }
 .hours > div { display: flex; justify-content: space-between; gap: var(--s-3); padding-block: 6px; border-bottom: 1px dashed var(--slip-rule); }
 .hours dt, .hours dd { margin: 0; }
-.hours dt { text-transform: uppercase; letter-spacing: 0.04em; }
+.hours dt { font-weight: 500; }
 .hours .is-today { font-weight: 500; color: #9C4A18; }
 
 /* ---------- 10 contact ---------- */
 .lead-form { display: grid; gap: var(--s-5); }
 .fstep { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: var(--s-4); }
-.fstep legend { font-family: var(--font-mono); font-size: var(--fs--1); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); padding: 0; margin-bottom: var(--s-4); }
+.fstep legend { font-family: var(--font-mono); font-size: var(--fs--1); letter-spacing: 0.02em; color: var(--accent); padding: 0; margin-bottom: var(--s-4); }
 .chips--form { grid-template-columns: 1fr; }
 .fgrid { display: grid; gap: var(--s-4); }
 .field { display: grid; gap: 6px; }
@@ -602,22 +616,23 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 .footer__thanks { text-align: center; text-transform: uppercase; letter-spacing: 0.08em; padding-top: var(--s-3); border-top: 2px solid var(--ink); }
 .footer__thanks a { position: relative; display: inline-block; padding-block: 12px; margin-block: -12px; color: #9C4A18; font-weight: 500; }
 .footer__cols { display: grid; gap: var(--s-6); }
-.footer__h { font-family: var(--font-mono); font-weight: 500; font-size: var(--fs--1); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--s-3); padding-bottom: var(--s-2); border-bottom: 1.5px dashed var(--rule); }
+.footer__h { font-family: var(--font-mono); font-weight: 500; font-size: var(--fs--1); letter-spacing: 0.02em; color: var(--accent); margin-bottom: var(--s-3); padding-bottom: var(--s-2); border-bottom: 1.5px dashed var(--rule); }
 .footer__col { display: grid; gap: var(--s-2); align-content: start; font-size: 0.9375rem; color: var(--ink); }
 .footer__col a { position: relative; display: inline-block; padding-block: 12px; margin-block: -12px; text-decoration: none; }
-.footer__credits summary { cursor: pointer; min-height: 48px; display: flex; align-items: center; font-family: var(--font-mono); font-size: var(--fs--1); }
-.footer__credits .credits { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 0.875rem; }
+.footer__col .credits:empty { display: none; }
+.footer__col .credits { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 0.875rem; }
 
 /* ---------- mobile bar ---------- */
 .mobile-bar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2);
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--s-2);
   padding: var(--s-2) var(--s-3) calc(var(--s-2) + env(safe-area-inset-bottom)); border-top: 1px solid var(--rule); box-shadow: 0 -2px 12px rgba(0, 0, 0, .08);
 }
 .mobile-bar__call {
   display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 8px 10px; border: 1.5px solid var(--ink); border-radius: var(--radius);
-  font-family: var(--font-mono); font-size: 0.875rem; font-weight: 500; text-decoration: none; white-space: nowrap; color: var(--ink);
+  font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 500; text-decoration: none; white-space: nowrap; color: var(--ink);
 }
-.mobile-bar__go { min-height: 52px; padding: 8px 10px; font-size: 0.9375rem; white-space: nowrap; }
+.mobile-bar__word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.mobile-bar__go { min-height: 52px; padding: 8px 8px; font-size: 0.875rem; white-space: nowrap; }
 
 /* ---------- motion (enhancement only; nothing is hidden) ---------- */
 @keyframes tk-print { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
@@ -636,7 +651,10 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 /* ---------- 390 ---------- */
 @media (min-width: 390px) {
   :root { --gutter: 22px; }
+  .mobile-bar { grid-template-columns: 1fr 1fr; }
   .mobile-bar__call { font-size: 0.9375rem; }
+  .mobile-bar__word { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
+  .mobile-bar__go { font-size: 0.9375rem; padding-inline: 10px; }
 }
 
 /* ---------- 640 ---------- */
@@ -649,7 +667,6 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
   .chips--form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .field--wide { grid-column: 1 / -1; }
-  .svc { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-6); }
   .rv { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
   .rv__head { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: end; }
   .footer__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -667,22 +684,20 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
   .header__tel { display: inline-block; }
   .header__cta { min-height: 48px; padding: 12px 22px; }
   .row { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 0 var(--s-8); align-items: start; }
+  /* the strip hangs from the top edge of its band, ends at its content with a torn edge, and rides along (sticky) */
   .row > .spine {
-    grid-column: 1; grid-row: 1; align-self: stretch; margin-block: calc(-1 * var(--pad)); padding: var(--pad) var(--s-5);
-    -webkit-mask: none; mask: none;
-  }
-  .row > .spine.spine--tear {
-    padding-bottom: calc(var(--pad) + 12px);
-    -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
-    mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
+    grid-column: 1; grid-row: 1; align-self: start; position: sticky; top: calc(var(--header-h) + var(--s-5));
+    margin-top: calc(-1 * var(--pad)); padding: calc(var(--s-6) + 8px) var(--s-5) calc(var(--s-6) + 14px);
   }
   .row > .band__body, .row > .hero__copy { grid-column: 2; grid-row: 1; }
-  .spine > .tk { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+  .row--flip { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); }
+  .row--flip > .spine { grid-column: 2; }
+  .row--flip > .band__body { grid-column: 1; }
 
   .hero { min-height: calc(100svh - var(--header-h) - 76px); padding-block: var(--s-7); display: flex; }
   .hero > .wrap { flex: 1 1 auto; max-width: min(100% - 2 * var(--gutter), 1280px); }
   .hero .row { min-height: 100%; }
-  .hero .row > .spine { margin-block: calc(-1 * var(--s-7)); padding-block: var(--s-6); }
+  .hero .row > .spine { align-self: stretch; position: relative; top: auto; margin-block: calc(-1 * var(--s-7)); padding-block: var(--s-6); -webkit-mask: none; mask: none; }
   .hero__copy { justify-content: center; }
   .spine--hero > .tk { position: static; height: 100%; }
   .spine--hero .tk__photo { aspect-ratio: auto; flex: 1 1 180px; min-height: 180px; }
@@ -691,7 +706,12 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
   .break__photo { order: 2; aspect-ratio: auto; height: 100%; }
   .break__slip { order: 1; padding: var(--s-9) var(--s-8); }
 
-  .area { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: start; }
+  .area { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: stretch; }
+  .area__side { display: contents; }
+  .area__main { grid-column: 1; grid-row: 1; }
+  .area__photo { grid-column: 2; grid-row: 1 / span 2; aspect-ratio: auto; min-height: 100%; }
+  .tk--hours { grid-column: 1; grid-row: 2; max-width: 520px; width: 100%; }
+  .area { row-gap: var(--s-6); }
   .panel { grid-template-columns: 1fr; }
   .footer .wrap { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: var(--s-8); align-items: start; }
 }
@@ -703,7 +723,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
   .header__menu-btn { display: none; }
   .mobile-menu { display: none; }
   .header__inner { gap: var(--s-6); }
-  .svc { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .svc__item { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) auto; align-items: baseline; padding-block: var(--s-3); }
   .rv { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .rv .slip:nth-child(3n + 2) { margin-top: var(--s-7); }
   .rv .slip:nth-child(3n + 3) { margin-top: var(--s-5); }
@@ -724,7 +744,11 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 }
 @media print {
   .spine, .slip, .footer__receipt { mask: none; -webkit-mask: none; }
-  .row > .spine { margin: 0; }
+  .row > .spine { margin: 0; position: static; }
+  .header, .mobile-bar, .mobile-menu, .tk__keep { display: none !important; }
+  html.print-ticket body * { visibility: hidden; }
+  html.print-ticket [data-rc], html.print-ticket [data-rc] * { visibility: visible; }
+  html.print-ticket [data-rc] { position: absolute; left: 0; top: 0; width: 80mm; }
 }
 
 </style>
@@ -787,11 +811,11 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
   <section id="hero" class="hero t-paper" data-layout="hero-strip" data-hook="intro" data-sw-signature="receipt">
     <div class="wrap row">
       <div class="hero__copy">
-        <p class="kicker">Every Other Friday · Huntsville, AL</p>
+        <p class="kicker">Line 01 · Your house</p>
         <h1 class="hero__title" data-split="lines">Huntsville house cleaning, priced line by line.</h1>
         <ul role="list" class="hero__lines">
           <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>The room checklist is on this page</span></li>
-          <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Same crew every visit</span></li>
+          <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>A walk-through confirms the price</span></li>
           <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Sample prices before anyone comes</span></li>
         </ul>
         <div class="hero__cta">
@@ -806,9 +830,9 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
           <p class="tk__meta"><span>Ticket 0001</span><span>Friday</span></p>
           <figure class="frame tk__photo" data-fallback="Bright, tidy family kitchen in daylight"><img src="media/hero-B1-1170.webp" srcset="media/hero-B1-1170.webp 1170w, media/hero-B1.webp 2340w" sizes="100vw" alt="Bright, tidy family kitchen in daylight" width="1170" height="1463" fetchpriority="high" decoding="async" data-photo="hero-B1" data-slot="hero"></figure>
           <ul role="list" class="tk__lines">
-            <li class="tk__line"><span>Rooms</span><i></i><span>you pick</span></li>
-            <li class="tk__line"><span>How often</span><i></i><span>you pick</span></li>
-            <li class="tk__line"><span>Price</span><i></i><span>before we come</span></li>
+            <li class="tk__line"><span>Rooms</span><i></i><span data-echo="size">you pick</span></li>
+            <li class="tk__line"><span>How often</span><i></i><span data-echo="visit">you pick</span></li>
+            <li class="tk__line"><span>Price</span><i></i><span data-echo="total">before we come</span></li>
           </ul>
           <p class="tk__foot">* * * line by line * * *</p>
         </div>
@@ -818,11 +842,10 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 
   <!-- 2 · quote builder (signature tool) -->
   <section id="quote-builder" class="band t-mid" data-layout="spine-tool" data-hook="estimate" data-sw-signature="receipt">
-    <div class="wrap row">
+    <div class="wrap row row--flip">
       <div class="spine spine--receipt" data-print>
         <div class="tk tk--live" aria-live="polite" data-rc>
           <p class="tk__mast"><span>EOF</span> · Your price</p>
-          <p class="tk__meta"><span>Line 02</span><span>Sample</span></p>
           <ul role="list" class="tk__lines" data-rc-lines>
             <li class="tk__line"><span>Visit</span><i></i><span>Every-other-week visit</span></li>
             <li class="tk__line"><span>House</span><i></i><span>3 bed / 2 bath</span></li>
@@ -830,6 +853,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
           </ul>
           <p class="tk__total"><span>Range</span><strong data-rc-total>$135 to $185</strong></p>
           <p class="tk__note"><span class="sample-tag">Sample pricing</span> · final price after walk-through</p>
+          <button class="tk__keep" type="button" data-print-ticket>Print this ticket</button>
           <p class="tk__foot">* * * no surprise at the door * * *</p>
         </div>
       </div>
@@ -952,7 +976,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
     <figure class="frame break__photo" data-fallback="Modest residential kitchen in daylight"><img src="media/room-kitchen-1170.webp" srcset="media/room-kitchen-1170.webp 1170w, media/room-kitchen.webp 2340w" sizes="100vw" alt="Modest residential kitchen in daylight" width="1170" height="780" loading="lazy" decoding="async" data-photo="room-kitchen" data-slot="break"></figure>
     <div class="break__slip">
       <p class="break__kicker mono">Line 04 · The rhythm</p>
-      <p class="break__quote">Same crew. Same list. <em>Every Other Friday.</em></p>
+      <p class="break__quote">Same crew. <em>Every Other Friday.</em></p>
     </div>
   </section>
 
@@ -961,8 +985,8 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
     <div class="wrap">
       <div class="crew__head">
         <p class="kicker">Line 05 · The crew</p>
-        <h2>Same crew, same Friday, same list.</h2>
-        <p class="lead">The team that cleans your house the first time is the team that comes back. By the third visit they know it.</p>
+        <h2>By the third visit, they know your house.</h2>
+        <p class="lead">The people who clean your house the first time are the people who come back, on the weekday you picked.</p>
       </div>
       <ol role="list" class="crew__steps" data-crew>
         <li class="step">
@@ -989,14 +1013,14 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 
   <!-- 6 · frequency quiz -->
   <section id="frequency" class="band t-mid" data-layout="spine-quiz" data-hook="quiz">
-    <div class="wrap row" data-checklist data-checklist-results="0:Tick what's true. Your answer prints here.|1:Monthly keeps a calm house reset.|2:Every other week fits most houses like yours.|4:Weekly. That's the one that keeps up.">
+    <div class="wrap row row--flip" data-checklist data-checklist-results="0:Nothing ticked yet. Your answer prints here.|1:Monthly keeps a calm house reset.|2:Every other week fits most houses like yours.|4:Weekly. That's the one that keeps up.">
       <div class="spine spine--quiz" data-print>
         <div class="tk">
           <p class="tk__mast"><span>EOF</span> · How often</p>
           <p class="tk__meta"><span>Line 06</span><span>Your answer</span></p>
-          <p class="tk__answer" data-checklist-result>Tick what's true. Your answer prints here.</p>
+          <p class="tk__answer" data-checklist-result aria-live="polite">Nothing ticked yet. Your answer prints here.</p>
           <div class="tk__meter" aria-hidden="true"><span></span></div>
-          <a class="btn btn-primary btn-block" href="#contact" data-service="Every-other-week cleaning">Price this frequency</a>
+          <a class="btn btn-primary btn-block" href="#contact" data-service="Every-other-week cleaning">Price this visit</a>
           <p class="tk__foot">You can change it any visit</p>
         </div>
       </div>
@@ -1026,17 +1050,17 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
           <p class="tk__meta"><span>Line 07</span><span><span class="sample-tag">Sample pricing</span></span></p>
           <ul role="list" class="tk__lines tk__lines--prices">
             
-            <li class="tk__line"><span>Every-other-week visit</span><i></i><span>$135–$185</span></li>
+            <li class="tk__line"><span>Every-other-week visit</span><i></i><span>$135 to $185</span></li>
             
-            <li class="tk__line"><span>Weekly visit</span><i></i><span>$115–$160</span></li>
+            <li class="tk__line"><span>Weekly visit</span><i></i><span>$115 to $160</span></li>
             
-            <li class="tk__line"><span>Monthly visit</span><i></i><span>$160–$220</span></li>
+            <li class="tk__line"><span>Monthly visit</span><i></i><span>$160 to $220</span></li>
             
-            <li class="tk__line"><span>Deep clean</span><i></i><span>$250–$420</span></li>
+            <li class="tk__line"><span>Deep clean</span><i></i><span>$250 to $420</span></li>
             
-            <li class="tk__line"><span>Move-out cleaning</span><i></i><span>$290–$500</span></li>
+            <li class="tk__line"><span>Move-out cleaning</span><i></i><span>$290 to $500</span></li>
             
-            <li class="tk__line"><span>Oven or fridge add-on</span><i></i><span>$35–$50</span></li>
+            <li class="tk__line"><span>Oven or fridge add-on</span><i></i><span>$35 to $50</span></li>
             
           </ul>
           <p class="tk__note">Sample pricing for a 3 bed, 2 bath house. Walk-through confirms it.</p>
@@ -1048,69 +1072,61 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
         <ul role="list" class="svc">
           
           <li class="svc__item">
-            <p class="svc__no mono">01</p>
             <h3>Every-other-week cleaning</h3>
             <p>The same crew every visit, so they learn your house, your pets and your preferences.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Every other week">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Every other week">Price this visit</a>
           </li>
           
           <li class="svc__item">
-            <p class="svc__no mono">02</p>
             <h3>Weekly cleaning</h3>
             <p>For busy houses with kids and dogs: floors, kitchen and baths kept ahead of the week.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Weekly">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Weekly">Price this visit</a>
           </li>
           
           <li class="svc__item">
-            <p class="svc__no mono">03</p>
             <h3>Monthly cleaning</h3>
             <p>A fuller once-a-month visit for tidy households that want the bathrooms and floors reset.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Monthly">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Monthly">Price this visit</a>
           </li>
           
           <li class="svc__item">
-            <p class="svc__no mono">04</p>
             <h3>Deep clean</h3>
             <p>Baseboards, door frames, grout and inside the microwave: the list regular visits do not touch.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Deep clean">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Deep clean">Price this visit</a>
           </li>
           
           <li class="svc__item">
-            <p class="svc__no mono">05</p>
             <h3>Move-out cleaning for PCS moves</h3>
             <p>Military move-out cleans timed around the packers, with photos for your landlord or housing office.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Move-out (PCS)">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Move-out (PCS)">Price this visit</a>
           </li>
           
           <li class="svc__item">
-            <p class="svc__no mono">06</p>
             <h3>Move-in cleaning</h3>
             <p>Cabinets, closets and appliances wiped out before the moving truck arrives.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Move-in">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Move-in">Price this visit</a>
           </li>
           
           <li class="svc__item">
-            <p class="svc__no mono">07</p>
             <h3>Oven &amp; fridge add-on</h3>
             <p>Inside the oven and the fridge cleaned and shelves wiped, added to any visit.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Oven &amp; fridge">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Oven &amp; fridge">Price this visit</a>
           </li>
           
           <li class="svc__item">
-            <p class="svc__no mono">08</p>
             <h3>Inside windows</h3>
             <p>Inside glass, sills and tracks cleaned room by room, add it to any visit.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Windows">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Windows">Price this visit</a>
           </li>
           
           <li class="svc__item">
-            <p class="svc__no mono">09</p>
             <h3>Pet hair visit</h3>
             <p>Extra time on stairs, sofas and corners where dog and cat hair piles up.</p>
-            <a class="btn btn-ghost" href="#contact" data-service="Pet hair">Price it</a>
+            <a class="btn svc__go" href="#contact" data-service="Pet hair">Price this visit</a>
           </li>
           
         </ul>
+        <p class="svc__end mono">* * * nine lines, one crew * * *</p>
       </div>
     </div>
   </section>
@@ -1213,7 +1229,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
         <figure class="frame area__photo" data-fallback="Suburban two-story with lawn in Huntsville"><img src="media/home-huntsville-1170.webp" srcset="media/home-huntsville-1170.webp 1170w, media/home-huntsville.webp 2340w" sizes="100vw" alt="Suburban two-story with lawn in Huntsville" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-huntsville" data-slot="proof-1"></figure>
         <div class="tk tk--hours">
           <p class="tk__mast"><span>EOF</span> · Hours</p>
-          <p class="tk__open mono" data-open-now>Mon to Fri, 8 am to 5:30 pm</p>
+          <p class="tk__open mono" data-open-now>Mon to Thu 8 am to 5:30 pm · Fri to 5 pm</p>
           <dl class="hours"><div><dt>Mon</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Tue</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Wed</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Thu</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Fri</dt><dd>8 am – 5 pm</dd></div><div><dt>Sat</dt><dd>9 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
           <p class="tk__foot">Times are Huntsville time</p>
         </div>
@@ -1223,7 +1239,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 
   <!-- 10 · contact -->
   <section id="contact" class="band t-deep" data-layout="spine-form" data-hook="form">
-    <div class="wrap row">
+    <div class="wrap row row--flip">
       <div class="spine spine--contact" data-print>
         <div class="tk">
           <p class="tk__mast"><span>EOF</span> · Your ticket</p>
@@ -1320,10 +1336,10 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 <footer class="footer t-paper" data-sw-signature="receipt">
   <div class="wrap">
     <div class="footer__receipt">
-      <p class="footer__mast"><span>EOF</span> Every Other Friday Cleaning</p>
+      <p class="footer__mast"><span>EOF</span> · Every Other Friday Cleaning</p>
       <ul role="list" class="footer__lines">
-        <li class="tk__line"><span>Subtotal</span><i></i><span>your house, line by line</span></li>
-        <li class="tk__line"><span>Total</span><i></i><span>confirmed before the first visit</span></li>
+        <li class="tk__line"><span>Subtotal</span><i></i><span data-echo="subtotal">your house, line by line</span></li>
+        <li class="tk__line"><span>Total</span><i></i><span data-echo="total-note">confirmed before the first visit</span></li>
         <li class="tk__line"><span>Today</span><i></i><span><span data-open-now>Mon–Thu 8 am – 5:30 pm · Fri 8 am – 5 pm · Sat 9 am – 1 pm</span></span></li>
       </ul>
       <p class="footer__thanks">Thank you · see you Friday · <a href="tel:+12565550153">(256) 555-0153</a></p>
@@ -1347,15 +1363,15 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
       </div>
       <div class="footer__col">
         <h2 class="footer__h">Photos</h2>
-        <p>Demo images. Photographer credits print here with the licensed photos.</p>
-        <details class="footer__credits"><summary>Image list</summary><ul class="credits"></ul></details>
+        <p>Sample photos, shown for this demo only.</p>
+        <ul class="credits"></ul>
       </div>
     </div>
   </div>
 </footer>
 
 <div class="mobile-bar t-paper" data-mobilebar>
-  <a class="mobile-bar__call" href="tel:+12565550153"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (256) 555-0153</span></a>
+  <a class="mobile-bar__call" href="tel:+12565550153"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span><span class="mobile-bar__word">Call </span>(256) 555-0153</span></a>
   <a class="btn btn-primary mobile-bar__go" href="#quote-builder">Price my house</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Every Other Friday Cleaning","short":"Every Other Friday","phone":"(256) 555-0153","phoneE164":"+12565550153","sms":true,"email":"hello@every-other-friday.example","city":"Huntsville","state":"AL","timezone":"America/Chicago","areas":["Madison","Harvest","Meridianville","Owens Cross Roads","Athens","Decatur"],"zips":["35801","35802","35803","35805","35806","35810","35811","35816","35757","35758","35749","35759","35763","35611","35601"],"hours":{"mon":["08:00","17:30"],"tue":["08:00","17:30"],"wed":["08:00","17:30"],"thu":["08:00","17:30"],"fri":["08:00","17:00"],"sat":["09:00","13:00"],"sun":null},"emergency":false},"services":[{"name":"Every-other-week cleaning","short":"Every other week"},{"name":"Weekly cleaning","short":"Weekly"},{"name":"Monthly cleaning","short":"Monthly"},{"name":"Deep clean","short":"Deep clean"},{"name":"Move-out cleaning for PCS moves","short":"Move-out (PCS)"},{"name":"Move-in cleaning","short":"Move-in"},{"name":"Oven & fridge add-on","short":"Oven & fridge"},{"name":"Inside windows","short":"Windows"},{"name":"Pet hair visit","short":"Pet hair"}],"proof":{"label":"Sample","prices":[{"item":"Every-other-week visit","from":"$135","to":"$185","unit":"per visit","note":"3 bed / 2 bath"},{"item":"Weekly visit","from":"$115","to":"$160","unit":"per visit","note":"3 bed / 2 bath"},{"item":"Monthly visit","from":"$160","to":"$220","unit":"per visit","note":"3 bed / 2 bath"},{"item":"Deep clean","from":"$250","to":"$420"},{"item":"Move-out cleaning","from":"$290","to":"$500","note":"empty house, photos included"},{"item":"Oven or fridge add-on","from":"$35","to":"$50","unit":"each"}]},"hours":{"mon":["08:00","17:30"],"tue":["08:00","17:30"],"wed":["08:00","17:30"],"thu":["08:00","17:30"],"fri":["08:00","17:00"],"sat":["09:00","13:00"],"sun":null},"timezone":"America/Chicago","zips":["35801","35802","35803","35805","35806","35810","35811","35816","35757","35758","35749","35759","35763","35611","35601"],"areas":["Madison","Harvest","Meridianville","Owens Cross Roads","Athens","Decatur"],"phone":"(256) 555-0153","phoneE164":"+12565550153"}</script>

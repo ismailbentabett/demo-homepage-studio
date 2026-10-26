@@ -1,5 +1,8 @@
 # Blueprint — cleaning-B (Every Other Friday Cleaning)
 
+## Round 3
+Elevate (motion): the scroll now prints the receipt. Each strip's lines feed out left to right one after another (GSAP clip, plays once). The services receipt prints row by row. The estimator picks echo into the hero ticket and the footer TOTAL. Layout: the strips hang from the band top, end at their content with a torn edge and stay sticky beside long columns. Strips alternate left/right (price, frequency and contact flipped). #services is now ledger rows, not a 3×3 card grid. Fixes: the 390/320 overflow (.area/.zip auto grid tracks + the mobile bar at 320; overflow-x: clip backstop), one 2px radius, sentence-case labels, an aria-live empty slip, the credits disclosure removed, a print-ticket action and every copy-3 replacement. Photo stays placeholder (the niche has no real photos).
+
 ## Round 2
 Rebuilt src in full: every section is now a receipt spine (left third, paper strip running through the bands) plus content, with no reveal/pin/GSAP from-state hiding content (the cause of the blank bands in fullPage captures). Photos are printed inside the strips as tinted, captioned frames that read without real images. Live receipt quote builder in app.js, real tabs markup, copy-2 applied, footer Pages column removed, 390 header and mobile bar fixed.
 

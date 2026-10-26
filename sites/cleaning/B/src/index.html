@@ -55,11 +55,11 @@
   <section id="hero" class="hero t-paper" data-layout="hero-strip" data-hook="intro" data-sw-signature="receipt">
     <div class="wrap row">
       <div class="hero__copy">
-        <p class="kicker">{{biz.short}} · {{biz.city}}, {{biz.state}}</p>
+        <p class="kicker">Line 01 · Your house</p>
         <h1 class="hero__title" data-split="lines">{{biz.city}} house cleaning, priced line by line.</h1>
         <ul role="list" class="hero__lines">
           <li>[[i check]]<span>The room checklist is on this page</span></li>
-          <li>[[i check]]<span>Same crew every visit</span></li>
+          <li>[[i check]]<span>A walk-through confirms the price</span></li>
           <li>[[i check]]<span>Sample prices before anyone comes</span></li>
         </ul>
         <div class="hero__cta">
@@ -74,9 +74,9 @@
           <p class="tk__meta"><span>Ticket 0001</span><span>Friday</span></p>
           [[frame hero tk__photo | | eager]]
           <ul role="list" class="tk__lines">
-            <li class="tk__line"><span>Rooms</span><i></i><span>you pick</span></li>
-            <li class="tk__line"><span>How often</span><i></i><span>you pick</span></li>
-            <li class="tk__line"><span>Price</span><i></i><span>before we come</span></li>
+            <li class="tk__line"><span>Rooms</span><i></i><span data-echo="size">you pick</span></li>
+            <li class="tk__line"><span>How often</span><i></i><span data-echo="visit">you pick</span></li>
+            <li class="tk__line"><span>Price</span><i></i><span data-echo="total">before we come</span></li>
           </ul>
           <p class="tk__foot">* * * line by line * * *</p>
         </div>
@@ -86,11 +86,10 @@
 
   <!-- 2 · quote builder (signature tool) -->
   <section id="quote-builder" class="band t-mid" data-layout="spine-tool" data-hook="estimate" data-sw-signature="receipt">
-    <div class="wrap row">
+    <div class="wrap row row--flip">
       <div class="spine spine--receipt" data-print>
         <div class="tk tk--live" aria-live="polite" data-rc>
           <p class="tk__mast"><span>{{biz.initials}}</span> · Your price</p>
-          <p class="tk__meta"><span>Line 02</span><span>Sample</span></p>
           <ul role="list" class="tk__lines" data-rc-lines>
             <li class="tk__line"><span>Visit</span><i></i><span>{{proof.prices.0.item}}</span></li>
             <li class="tk__line"><span>House</span><i></i><span>{{proof.prices.0.note}}</span></li>
@@ -98,6 +97,7 @@
           </ul>
           <p class="tk__total"><span>Range</span><strong data-rc-total>{{proof.prices.0.from}} to {{proof.prices.0.to}}</strong></p>
           <p class="tk__note">[[sample pricing]] · final price after walk-through</p>
+          <button class="tk__keep" type="button" data-print-ticket>Print this ticket</button>
           <p class="tk__foot">* * * no surprise at the door * * *</p>
         </div>
       </div>
@@ -212,7 +212,7 @@
     [[frame break break__photo]]
     <div class="break__slip">
       <p class="break__kicker mono">Line 04 · The rhythm</p>
-      <p class="break__quote">Same crew. Same list. <em>{{biz.short}}.</em></p>
+      <p class="break__quote">Same crew. <em>{{biz.short}}.</em></p>
     </div>
   </section>
 
@@ -221,8 +221,8 @@
     <div class="wrap">
       <div class="crew__head">
         <p class="kicker">Line 05 · The crew</p>
-        <h2>Same crew, same Friday, same list.</h2>
-        <p class="lead">The team that cleans your house the first time is the team that comes back. By the third visit they know it.</p>
+        <h2>By the third visit, they know your house.</h2>
+        <p class="lead">The people who clean your house the first time are the people who come back, on the weekday you picked.</p>
       </div>
       <ol role="list" class="crew__steps" data-crew>
         <li class="step">
@@ -249,14 +249,14 @@
 
   <!-- 6 · frequency quiz -->
   <section id="frequency" class="band t-mid" data-layout="spine-quiz" data-hook="quiz">
-    <div class="wrap row" data-checklist data-checklist-results="0:Tick what's true. Your answer prints here.|1:Monthly keeps a calm house reset.|2:Every other week fits most houses like yours.|4:Weekly. That's the one that keeps up.">
+    <div class="wrap row row--flip" data-checklist data-checklist-results="0:Nothing ticked yet. Your answer prints here.|1:Monthly keeps a calm house reset.|2:Every other week fits most houses like yours.|4:Weekly. That's the one that keeps up.">
       <div class="spine spine--quiz" data-print>
         <div class="tk">
           <p class="tk__mast"><span>{{biz.initials}}</span> · How often</p>
           <p class="tk__meta"><span>Line 06</span><span>Your answer</span></p>
-          <p class="tk__answer" data-checklist-result>Tick what's true. Your answer prints here.</p>
+          <p class="tk__answer" data-checklist-result aria-live="polite">Nothing ticked yet. Your answer prints here.</p>
           <div class="tk__meter" aria-hidden="true"><span></span></div>
-          <a class="btn btn-primary btn-block" href="#contact" data-service="{{services.0.name}}">Price this frequency</a>
+          <a class="btn btn-primary btn-block" href="#contact" data-service="{{services.0.name}}">Price this visit</a>
           <p class="tk__foot">You can change it any visit</p>
         </div>
       </div>
@@ -286,7 +286,7 @@
           <p class="tk__meta"><span>Line 07</span><span>[[sample pricing]]</span></p>
           <ul role="list" class="tk__lines tk__lines--prices">
             <!-- each proof.prices -->
-            <li class="tk__line"><span>{{.item}}</span><i></i><span>{{.from}}–{{.to}}</span></li>
+            <li class="tk__line"><span>{{.item}}</span><i></i><span>{{.from}} to {{.to}}</span></li>
             <!-- /each -->
           </ul>
           <p class="tk__note">Sample pricing for a 3 bed, 2 bath house. Walk-through confirms it.</p>
@@ -298,13 +298,13 @@
         <ul role="list" class="svc">
           <!-- each services -->
           <li class="svc__item">
-            <p class="svc__no mono">{{#2}}</p>
             <h3>{{.name}}</h3>
             <p>{{.blurb}}</p>
-            [[quote {{.short}} btn-ghost]]
+            [[quote {{.short}} svc__go | Price this visit]]
           </li>
           <!-- /each -->
         </ul>
+        <p class="svc__end mono">* * * nine lines, one crew * * *</p>
       </div>
     </div>
   </section>
@@ -362,7 +362,7 @@
         [[frame proof-1 area__photo]]
         <div class="tk tk--hours">
           <p class="tk__mast"><span>{{biz.initials}}</span> · Hours</p>
-          <p class="tk__open mono" data-open-now>Mon to Fri, 8 am to 5:30 pm</p>
+          <p class="tk__open mono" data-open-now>Mon to Thu 8 am to 5:30 pm · Fri to 5 pm</p>
           {{hours|table}}
           <p class="tk__foot">Times are {{biz.city}} time</p>
         </div>
@@ -372,7 +372,7 @@
 
   <!-- 10 · contact -->
   <section id="contact" class="band t-deep" data-layout="spine-form" data-hook="form">
-    <div class="wrap row">
+    <div class="wrap row row--flip">
       <div class="spine spine--contact" data-print>
         <div class="tk">
           <p class="tk__mast"><span>{{biz.initials}}</span> · Your ticket</p>
@@ -453,10 +453,10 @@
 <footer class="footer t-paper" data-sw-signature="receipt">
   <div class="wrap">
     <div class="footer__receipt">
-      <p class="footer__mast"><span>{{biz.initials}}</span> {{biz.name}}</p>
+      <p class="footer__mast"><span>{{biz.initials}}</span> · {{biz.name}}</p>
       <ul role="list" class="footer__lines">
-        <li class="tk__line"><span>Subtotal</span><i></i><span>your house, line by line</span></li>
-        <li class="tk__line"><span>Total</span><i></i><span>confirmed before the first visit</span></li>
+        <li class="tk__line"><span>Subtotal</span><i></i><span data-echo="subtotal">your house, line by line</span></li>
+        <li class="tk__line"><span>Total</span><i></i><span data-echo="total-note">confirmed before the first visit</span></li>
         <li class="tk__line"><span>Today</span><i></i><span>{{hours|today}}</span></li>
       </ul>
       <p class="footer__thanks">Thank you · see you Friday · <a href="tel:{{biz.phoneE164}}">{{biz.phone}}</a></p>
@@ -480,14 +480,14 @@
       </div>
       <div class="footer__col">
         <h2 class="footer__h">Photos</h2>
-        <p>Demo images. Photographer credits print here with the licensed photos.</p>
-        <details class="footer__credits"><summary>Image list</summary>[[credits]]</details>
+        <p>Sample photos, shown for this demo only.</p>
+        [[credits]]
       </div>
     </div>
   </div>
 </footer>
 
 <div class="mobile-bar t-paper" data-mobilebar>
-  <a class="mobile-bar__call" href="tel:{{biz.phoneE164}}">[[i phone]]<span>Call {{biz.phone}}</span></a>
+  <a class="mobile-bar__call" href="tel:{{biz.phoneE164}}">[[i phone]]<span><span class="mobile-bar__word">Call </span>{{biz.phone}}</span></a>
   <a class="btn btn-primary mobile-bar__go" href="#quote-builder">Price my house</a>
 </div>
