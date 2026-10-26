@@ -82,3 +82,6 @@ The render errors cover sideways overflow at 390/320 and text hidden under reduc
 
 ## 2026-10-26: roofer-B fixture removed
 roofer-B was a test fixture (11-byte stub, worker t2) force-delivered at 8.88. Its fixture files moved to sites/roofer/B/qa/fixture-old/, its design-registry entry was removed, and the site is being built for real.
+
+## 2026-10-26: reopen.mjs accepts delivered sites
+`tools/reopen.mjs` now reopens a site at stage `done` as well as `needs-human`, so delivered sites that scored under 8.8 or still use placeholder photos can get more rounds. It records `reopenedFrom` in site.json.
