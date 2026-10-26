@@ -64,3 +64,7 @@ The render errors cover sideways overflow at 390/320 and text hidden under reduc
 - `tools/fetch-media.mjs`: when Openverse answers 5xx or cannot be reached, the run switches to the Wikimedia Commons API (no key) for the rest of the run; `--source commons` uses it directly. Same filters (landscape, ≥1600 wide), licences CC0 / public domain / CC BY / CC BY-SA, credit keeps creator, source and licence. Commons answers are cached in `pool/.openverse-cache.json` under `commons:<query>`.
 
 - 2026-10-26: fetch-media spaces Wikimedia downloads 2.5 s apart, backs off 20 s+ on HTTP 429, and sends a descriptive User-Agent (Commons rate-limits anonymous bulk downloads).
+
+## 2026-10-26: check-static accepts Commons / CC credit links
+- `tools/check-static.mjs`: links inside `ul.credits` (matched by prefix, since the URL scanner stops at `)` in Commons file names) may point to pexels.com, wikimedia.org, creativecommons.org, openverse.org or flickr.com (was Pexels only). Why: build.mjs now writes the real source and licence links for Openverse / Commons photos (CC BY requires them), so every site with a real photo failed `external-url`. Found on cleaning-C. Run `node tools/recheck-all.mjs`.
+
