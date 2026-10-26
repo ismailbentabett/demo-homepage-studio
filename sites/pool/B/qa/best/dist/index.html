@@ -22,7 +22,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Clear Reading Pool Co.","description":"Orlando pool service that shows every reading against its ideal range. Weekly service, salt systems, pumps and rental pools. Read your test strip online.","telephone":"+14075550138","email":"hello@clear-reading-pool.example","areaServed":[{"@type":"City","name":"Orlando"},{"@type":"City","name":"Winter Park"},{"@type":"City","name":"Windermere"},{"@type":"City","name":"Winter Garden"},{"@type":"City","name":"Oviedo"},{"@type":"City","name":"Maitland"},{"@type":"City","name":"Ocoee"},{"@type":"City","name":"Apopka"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:30","closes":"17:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"08:00","closes":"13:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/outfit/outfit-100-900-normal.woff2" crossorigin>
-<link rel="preload" as="image" href="media/hero-B1.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="media/hero-B2-1170.webp" imagesrcset="media/hero-B2-1170.webp 1170w, media/hero-B2.webp 2340w" imagesizes="100vw" fetchpriority="high">
 <style>
 @font-face{font-family:"Outfit";src:url("fonts/outfit/outfit-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:"IBM Plex Mono";src:url("fonts/ibm-plex-mono/ibm-plex-mono-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
@@ -840,6 +840,197 @@ html.lenis, html.lenis body { height: auto; }
 .step .shot__read { color: #1a2b3c; }
 .shot__read .shot__val { color: #1a2b3c; }
 
+/* round 2 · hero proof: two plain lines, no dot string */
+.hero__proof { display: grid; gap: 4px; }
+.hero__proof p { margin: 0; }
+.hero__open [data-open-now], .hero__open { color: var(--teal); font-weight: 500; }
+.hero__trust { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.hero__rate { display: inline-flex; align-items: center; gap: 8px; }
+
+/* round 2 · real photos: frames are evidence, not tint */
+.frame img { filter: none; }
+.frame--hero img { object-position: 80% 45%; }
+.frame--reader img { object-position: 50% 78%; }
+.frame--area img { position: absolute; inset: 0; object-position: 50% 85%; }
+
+/* round 2 · tick tool resting state: an empty test strip, one pad per sign */
+.reader__box { counter-reset: ticked; }
+.tick input:checked { counter-increment: ticked; }
+.strip { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--s-5); }
+.strip__pads { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; flex: 1 1 auto; max-width: 18rem; padding: 6px; background: rgba(255,255,255,.92); border-radius: var(--r-pad); }
+.strip__pads i { display: block; height: 22px; border-radius: 2px; background: #e9e6df; transition: background-color var(--dur-ui) var(--ease-out); }
+.strip__count { font-family: var(--ff-display); font-size: .875rem; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.strip__count::after { content: counter(ticked) " of 6 checked"; }
+.reader__box:has([name="s-cloudy"]:checked) .strip__pads i:nth-child(1) { background: #e8c84a; }
+.reader__box:has([name="s-green"]:checked) .strip__pads i:nth-child(2) { background: #6fae5c; }
+.reader__box:has([name="s-eyes"]:checked) .strip__pads i:nth-child(3) { background: #d4735e; }
+.reader__box:has([name="s-scale"]:checked) .strip__pads i:nth-child(4) { background: #8b6aae; }
+.reader__box:has([name="s-psi"]:checked) .strip__pads i:nth-child(5) { background: #d4a03c; }
+.reader__box:has([name="s-pump"]:checked) .strip__pads i:nth-child(6) { background: #0e7c7b; }
+.strip + .reader__result { margin-top: var(--s-4); }
+
+/* round 2 · phone re-cut: the report's verdict sits under the buttons, rows run two lines, story frames go 4/3 */
+@media (max-width: 639px) {
+  .hero { padding-block: var(--s-5) var(--s-6); }
+  .hero__lead { font-size: 1.0625rem; margin-top: var(--s-3); }
+  .hero__cta { margin-top: var(--s-4); }
+  .hero__proof { margin-top: var(--s-4); }
+  .hero__grid { gap: var(--s-5); }
+  .frame--hero { height: 112px; margin-left: 34%; }
+  .report { margin-top: 36px; display: flex; flex-direction: column; }
+  .report__foot { order: 0; padding: var(--s-2) 0; border-bottom: 1px solid #e3dfd7; }
+  .report__head { order: -1; }
+  .readings { order: 1; }
+  .reading { grid-template-columns: 12px minmax(0,1fr) auto; padding-block: 7px; }
+  .reading .gauge { grid-column: 2 / 3; }
+  .reading__ideal { grid-column: 3 / 4; grid-row: 2; text-align: right; }
+  .frame--step { aspect-ratio: 4 / 3; }
+  .step .shot__read { left: 10px; bottom: 10px; padding: 10px 12px 8px; }
+}
+
+/* ===== round 3 · fewer, truer photos under one grade; drawn plates where no honest photo exists ===== */
+.frame--photo { isolation: isolate; }
+.report { z-index: 2; }
+.frame--photo img { filter: saturate(.84) contrast(1.05) brightness(1.01); }
+.frame--photo::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(14,124,123,0) 40%, rgba(14,70,90,.16) 100%); mix-blend-mode: multiply; }
+
+/* hero: photo is a landscape band above the card, so the jet and coping read as a pool */
+.frame--hero img { object-position: 62% 52%; }
+@media (min-width: 900px) {
+  .hero__visual { align-self: center; }
+  .frame--hero { align-self: start; height: auto; min-height: 0; aspect-ratio: 16 / 10; margin: 0 0 0 20%; }
+  .report { align-self: start; margin: 31% 14% 0 0; }
+}
+
+/* phone hero: the report leads under the buttons, the full card sits lower */
+.mini { display: none; }
+@media (max-width: 639px) {
+  .mini {
+    display: block; margin-top: var(--s-4); padding: 10px 14px 8px;
+    background: #fff; color: var(--navy); border: 1px solid #dcd8d0; border-left: 6px solid var(--teal); border-radius: 4px;
+    box-shadow: var(--shadow-card); --bg: #fff; --rule: #e3dfd7; --accent: #0e7c7b;
+  }
+  .mini__head, .mini__foot { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); font-family: var(--ff-display); font-size: .8125rem; font-weight: 500; }
+  .mini__head { padding-bottom: 6px; border-bottom: 1px solid #e3dfd7; }
+  .mini__head .sample-tag { font-size: .6875rem; }
+  .mini__row { display: grid; grid-template-columns: 10px 4.6rem minmax(0,1fr) 3.6rem; align-items: center; gap: 10px; padding-block: 8px; border-bottom: 1px dashed #e3dfd7; }
+  .mini__row .reading__pad { width: 10px; height: 10px; }
+  .mini__name { font-size: .9375rem; font-weight: 500; }
+  .mini__row .gauge { grid-column: auto; height: 6px; }
+  .mini__row .gauge__mark { width: 12px; height: 12px; }
+  .mini__val { font-family: var(--ff-display); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; font-size: .9375rem; }
+  .mini__foot { padding-top: 6px; color: #0b6e6d; }
+  .mini__foot span:last-child { color: #56656f; font-weight: 400; }
+  .hero__lead { font-size: 1rem; }
+  .hero__proof { margin-top: var(--s-4); }
+  .frame--hero { height: 190px; margin-left: 0; }
+  .report { margin: 150px 12px 0; }
+}
+.sw-motion .mini.is-intro .gauge__mark { left: var(--off); background: #d4735e; }
+.sw-motion .mini.is-intro .reading__pad { transform: scaleX(0); }
+
+/* tick tool: the strip is the first thing you read, the boxes fill it */
+.strip { margin-top: var(--s-5); }
+.strip + fieldset { margin-top: var(--s-4); }
+.strip__count::after { content: none; }
+@media (max-width: 639px) {
+  .frame--reader { min-height: 0; aspect-ratio: 21 / 9; }
+  .frame--reader img { position: absolute; inset: 0; }
+}
+
+/* story: drawn instrument plates, the reading card points at the instrument */
+.plate {
+  position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 0 var(--r-btn) var(--r-btn) 0;
+  background: radial-gradient(70% 80% at 72% 45%, #1f3a4f 0%, #12212e 70%); color: #f5f3ee;
+}
+.plate svg { display: block; width: 100%; height: 100%; }
+.pl-grid path { stroke: rgba(245,243,238,.06); stroke-width: 1; fill: none; }
+.pl-cap { font-family: var(--ff-display); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; fill: #8fdbdc; }
+.pl-line { fill: none; stroke: #e9e4d8; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.pl-soft { fill: none; stroke: rgba(233,228,216,.45); stroke-width: 1.4; stroke-dasharray: 3 4; stroke-linecap: round; }
+.pl-plates { stroke: #7fb8d6; stroke-width: 2.2; stroke-linecap: round; }
+.pl-band { fill: none; stroke: #4abfbf; stroke-width: 9; }
+.pl-match { fill: none; stroke: #f5f3ee; stroke-width: 2; }
+.pl-txt text { font-family: var(--ff-display); font-size: 9px; fill: rgba(233,228,216,.72); text-anchor: middle; }
+.pl-txt .pl-hot { fill: #f5f3ee; font-weight: 600; }
+.pl-screen { fill: #0b1822; stroke: #4abfbf; stroke-width: 1; }
+.pl-lcd { font-family: var(--ff-display); font-size: 13px; font-weight: 600; fill: #8fdbdc; text-anchor: middle; }
+.pl-lcd--big { font-size: 22px; fill: #f5f3ee; }
+.pl-off { fill: none; stroke: rgba(233,228,216,.45); }
+.pl-sheet { fill: #f5f3ee; }
+.pl-sheet-t { font-family: var(--ff-display); font-size: 10px; font-weight: 600; fill: #1a2b3c; }
+.pl-sheet-ok { font-family: var(--ff-display); font-size: 10px; font-weight: 600; fill: #0b6e6d; }
+.pl-needle { transform-box: view-box; transform-origin: 225px 100px; transition: transform 1100ms var(--ease-out) 200ms; }
+.sw-motion [data-settle].is-armed:not(.is-in) .pl-needle { transform: rotate(118deg); }
+.pl-rows circle { transform-box: fill-box; transition: transform 900ms var(--ease-out) 260ms; }
+.sw-motion [data-settle].is-armed:not(.is-in) .pl-rows circle { transform: translateX(46px); }
+.shot__read { z-index: 2; }
+.step__num { display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+.step__num span { display: inline-grid; place-items: center; min-width: 2.2em; height: 1.6em; padding-inline: 4px; border: 1px solid currentColor; border-radius: var(--r-pad); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 639px) {
+  /* reading first, instrument as a short strip */
+  .shot { display: flex; flex-direction: column; background: #fff; }
+  .shot .shot__read, .step .shot__read { position: static; order: -1; width: auto; box-shadow: none; border-radius: 0 var(--r-btn) 0 0; padding: 12px 14px 10px; }
+  .shot__val { font-size: 2rem; }
+  .plate { aspect-ratio: 16 / 10; border-radius: 0 0 var(--r-btn) 0; }
+}
+
+/* break: one photo, clipped open by scroll */
+.frame--break img { object-position: 30% 58%; }
+@media (min-width: 900px) {
+  .break { justify-items: end; }
+  .break__card { margin-left: var(--gut); margin-right: max(var(--gut), calc((100vw - var(--wrap)) / 2 + var(--gut))); }
+}
+.sw-motion .break.is-armed .frame--break { clip-path: inset(var(--clip, 0%) var(--clip, 0%) round 6px); }
+
+/* area: drawn route plate, the towns live on it */
+.routes {
+  position: relative; margin: 0; padding: var(--s-5); border: 1px solid var(--rule); border-radius: 4px;
+  background: radial-gradient(60% 60% at 50% 50%, #213649 0%, #172736 75%);
+}
+.routes__rings { display: block; width: 100%; max-width: 280px; margin-inline: auto; }
+.routes__rings circle { fill: none; stroke: rgba(143,219,220,.32); stroke-width: 1.2; stroke-dasharray: 4 6; }
+.routes__rings circle:first-child { stroke: rgba(143,219,220,.55); stroke-dasharray: none; }
+.routes__spokes { stroke: rgba(212,160,60,.35); stroke-width: 1.2; fill: none; }
+.routes__hub {
+  position: absolute; left: 50%; top: calc(var(--s-5) + 140px); transform: translate(-50%, -50%);
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: #f5f3ee; color: #1a2b3c;
+  border-radius: var(--r-btn); font-family: var(--ff-display); font-weight: 600; font-size: .9375rem; white-space: nowrap; box-shadow: var(--shadow-card);
+}
+.routes__towns { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-5); }
+.routes__towns li {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; background: #1a2b3c; color: #f5f3ee;
+  border: 1px solid #34485b; border-radius: var(--r-btn); font-size: .9375rem; white-space: nowrap;
+}
+.routes__towns li::before { content: ""; width: 10px; height: 10px; border-radius: 2px; background: var(--pad, #4abfbf); flex: none; }
+.routes__towns li:nth-child(7n+1) { --pad: #e8c84a; } .routes__towns li:nth-child(7n+2) { --pad: #d4735e; }
+.routes__towns li:nth-child(7n+3) { --pad: #4abfbf; } .routes__towns li:nth-child(7n+4) { --pad: #8b6aae; }
+.routes__towns li:nth-child(7n+5) { --pad: #d4a03c; } .routes__towns li:nth-child(7n+6) { --pad: #7fb8d6; }
+.routes__towns li:nth-child(7n+7) { --pad: #0e7c7b; }
+.routes figcaption { margin-top: var(--s-4); font-family: var(--ff-display); font-size: .8125rem; color: var(--muted); }
+@media (min-width: 640px) {
+  .routes { aspect-ratio: 1 / 1; max-height: 640px; padding: 0; }
+  .routes__rings { position: absolute; inset: 0; max-width: none; height: 100%; }
+  .routes__hub { top: 50%; }
+  .routes__towns { position: absolute; inset: 0; margin: 0; display: block; }
+  .routes__towns li { position: absolute; transform: translate(-50%, -50%); }
+  .routes__towns li:nth-child(1) { left: 50%; top: 8%; }
+  .routes__towns li:nth-child(2) { left: 78%; top: 24%; }
+  .routes__towns li:nth-child(3) { left: 76%; top: 60%; }
+  .routes__towns li:nth-child(4) { left: 58%; top: 88%; }
+  .routes__towns li:nth-child(5) { left: 24%; top: 80%; }
+  .routes__towns li:nth-child(6) { left: 18%; top: 46%; }
+  .routes__towns li:nth-child(7) { left: 26%; top: 18%; }
+  .routes figcaption { position: absolute; left: var(--s-4); bottom: var(--s-3); margin: 0; }
+}
+@media (min-width: 900px) { .area__grid { align-items: center; } }
+@media (max-width: 639px) {
+  .break { display: block; min-height: 0; padding-bottom: var(--s-6); }
+  .frame--break { position: relative; inset: auto; aspect-ratio: 4 / 3; }
+  .break__card { margin: -56px var(--gut) 0; }
+}
+
 </style>
 </head>
 <body>
@@ -896,11 +1087,23 @@ html.lenis, html.lenis body { height: auto; }
      <a class="btn btn--primary" href="#contact" data-service="Weekly service">Get a written price</a>
      <a class="btn btn-call btn--secondary" href="tel:+14075550138"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (407) 555-0138</span></a>
     </div>
-    <p class="hero__proof"><span data-open-now>Mon–Fri 7:30 am – 5:30 pm · Sat 8 am – 1 pm</span><span aria-hidden="true">·</span><span>9 years in Orlando</span><span aria-hidden="true">·</span><span>4.8 rating <span class="sample-tag">Sample rating</span></span></p>
+    <div class="mini" data-report aria-hidden="true">
+     <p class="mini__head"><span>Last visit</span><span class="sample-tag">Sample report</span></p>
+     <ol class="mini__rows" role="list">
+      <li class="reading mini__row" style="--lo:28.6%;--hi:71.4%;--v:50%;--pad:#e8c84a;--off:95%"><span class="reading__pad"></span><span class="mini__name">pH</span><span class="gauge"><i class="gauge__band"></i><i class="gauge__mark"></i></span><span class="mini__val">7.5</span></li>
+      <li class="reading mini__row" style="--lo:33.3%;--hi:66.7%;--v:56.7%;--pad:#d4735e;--off:5%"><span class="reading__pad"></span><span class="mini__name">Chlorine</span><span class="gauge"><i class="gauge__band"></i><i class="gauge__mark"></i></span><span class="mini__val">3.4</span></li>
+      <li class="reading mini__row" style="--lo:25%;--hi:50%;--v:45%;--pad:#0e7c7b;--off:92%"><span class="reading__pad"></span><span class="mini__name">Filter</span><span class="gauge"><i class="gauge__band"></i><i class="gauge__mark"></i></span><span class="mini__val">18 psi</span></li>
+     </ol>
+     <p class="mini__foot"><span>7 of 7 in range</span><span>full report below</span></p>
+    </div>
+    <div class="hero__proof">
+     <p class="hero__open"><span data-open-now>Mon–Fri 7:30 am – 5:30 pm · Sat 8 am – 1 pm</span></p>
+     <p class="hero__trust"><span>9 years in Orlando</span><span class="hero__rate">4.8 rating <span class="sample-tag">Sample rating</span></span></p>
+    </div>
    </div>
 
    <div class="hero__visual">
-    <figure class="frame frame--hero" data-fallback="Placeholder for hero-B1"><img src="media/hero-B1.jpg" alt="Placeholder for hero-B1" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-B1" data-slot="hero-B1"></figure>
+    <figure class="frame frame--hero frame--photo" data-fallback="Return jet stream rippling bright blue pool water beside a white coping edge"><img src="media/hero-B2-1170.webp" srcset="media/hero-B2-1170.webp 1170w, media/hero-B2.webp 2340w" sizes="100vw" alt="Return jet stream rippling bright blue pool water beside a white coping edge" width="1170" height="781" fetchpriority="high" decoding="async" data-photo="hero-B2" data-slot="hero-B2"></figure>
     <div class="report" data-report>
      <div class="report__head">
       <p class="report__title">Visit report</p>
@@ -928,6 +1131,7 @@ html.lenis, html.lenis body { height: auto; }
     <p class="kicker">Before you buy another jug of chlorine</p>
     <h2 id="reader-h">Tick what your water is doing.</h2>
     <div class="reader__box" data-checklist data-checklist-results="0:Tick what you see. We will tell you what it usually means.|1:One sign. A full water test usually finds the cause in one visit.|2:{n} signs. The water is drifting out of range. Book a test this week.|4:{n} of {total} signs. Something is well out of balance. Call us today.">
+     <div class="strip" aria-hidden="true"><span class="strip__pads"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="strip__count" data-strip-count>0 of 6 checked</span></div>
      <fieldset>
       <legend class="sr-only">What you see in the pool</legend>
       <label class="tick"><input type="checkbox" name="s-cloudy"><span class="tick__pad" aria-hidden="true"></span>Water looks cloudy or dull</label>
@@ -946,7 +1150,7 @@ html.lenis, html.lenis body { height: auto; }
      <a class="link-light" href="tel:+14075550138">or call (407) 555-0138</a>
     </div>
    </div>
-   <figure class="frame frame--reader" data-fallback="Placeholder for cloudy-water"><img src="media/cloudy-water.jpg" alt="Placeholder for cloudy-water" width="1170" height="780" loading="lazy" decoding="async" data-photo="cloudy-water" data-slot="cloudy-water"></figure>
+   <figure class="frame frame--reader frame--photo" data-fallback="Wide view of a pool with hazy green-tinted water under palm trees and sky"><img src="media/cloudy-water-1170.webp" srcset="media/cloudy-water-1170.webp 1170w, media/cloudy-water.webp 2340w" sizes="100vw" alt="Wide view of a pool with hazy green-tinted water under palm trees and sky" width="1170" height="585" loading="lazy" decoding="async" data-photo="cloudy-water" data-slot="cloudy-water"></figure>
   </div>
  </section>
 
@@ -1045,44 +1249,44 @@ html.lenis, html.lenis body { height: auto; }
    <ol class="steps" role="list">
     <li class="step" data-step-i="1" data-settle style="--pad:#e8c84a;--lo:28.6%;--hi:71.4%;--v:50%;--off:94%">
      <div class="shot">
-      <figure class="frame frame--step" data-fallback="Placeholder for test-vials"><img src="media/test-vials.jpg" alt="Placeholder for test-vials" width="1170" height="780" loading="lazy" decoding="async" data-photo="test-vials" data-slot="test-vials"></figure>
+      <div class="plate" aria-hidden="true"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><g class="pl-grid"><path d="M0 40H320M0 80H320M0 120H320M0 160H320M40 0V200M80 0V200M120 0V200M160 0V200M200 0V200M240 0V200M280 0V200"/></g><text class="pl-cap" x="16" y="24">pH comparator</text><g class="pl-sw"><rect x="140" y="38" width="26" height="26" rx="2" fill="#f0e08a"/><rect x="172" y="38" width="26" height="26" rx="2" fill="#e8c84a"/><rect x="204" y="38" width="26" height="26" rx="2" fill="#e2ad46"/><rect x="236" y="38" width="26" height="26" rx="2" fill="#da8f4c"/><rect x="268" y="38" width="26" height="26" rx="2" fill="#cc6e55"/></g><rect class="pl-match" x="200" y="34" width="34" height="34" rx="3"/><g class="pl-txt"><text x="153" y="80">6.8</text><text x="185" y="80">7.2</text><text x="217" y="80" class="pl-hot">7.5</text><text x="249" y="80">7.8</text><text x="281" y="80">8.2</text></g><path class="pl-soft" d="M217 88V104"/><path class="pl-line" d="M207 108h20M209 108v58a8 8 0 0 0 16 0v-58"/><path d="M210 132h14v34a7 7 0 0 1-14 0z" fill="#e2ad46"/><path class="pl-line" d="M247 108h20M249 108v58a8 8 0 0 0 16 0v-58"/><path d="M250 140h14v26a7 7 0 0 1-14 0z" fill="#e88a9c"/><g class="pl-txt"><text x="217" y="190">pH</text><text x="257" y="190">Cl</text></g></svg></div>
       <p class="shot__read"><span class="shot__name">pH</span><span class="shot__val">7.5</span><span class="gauge" aria-hidden="true"><i class="gauge__band"></i><i class="gauge__mark"></i></span><span class="shot__ideal">ideal 7.2–7.8</span></p>
      </div>
      <div class="step__text">
-      <p class="step__num">01 · Test</p>
+      <p class="step__num"><span>01</span>Test</p>
       <h3>Test before anything goes in</h3>
       <p>We skim, brush and empty the baskets, then pull a sample from elbow depth and run all seven readings. Nothing is added until the numbers are on the sheet.</p>
      </div>
     </li>
     <li class="step" data-step-i="2" data-settle style="--pad:#7fb8d6;--lo:35%;--hi:70%;--v:60%;--off:8%">
      <div class="shot">
-      <figure class="frame frame--step" data-fallback="Placeholder for salt-cell"><img src="media/salt-cell.jpg" alt="Placeholder for salt-cell" width="1170" height="780" loading="lazy" decoding="async" data-photo="salt-cell" data-slot="salt-cell"></figure>
+      <div class="plate" aria-hidden="true"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><g class="pl-grid"><path d="M0 40H320M0 80H320M0 120H320M0 160H320M40 0V200M80 0V200M120 0V200M160 0V200M200 0V200M240 0V200M280 0V200"/></g><text class="pl-cap" x="16" y="24">salt cell + control box</text><path class="pl-soft" d="M96 77h34M96 93h34M300 77h18M300 93h18"/><rect class="pl-line" x="130" y="66" width="12" height="38" rx="2"/><rect class="pl-line" x="288" y="66" width="12" height="38" rx="2"/><rect class="pl-line" x="142" y="60" width="146" height="50" rx="22"/><path class="pl-plates" d="M168 70v30M178 70v30M188 70v30M198 70v30M208 70v30M218 70v30M228 70v30M238 70v30M248 70v30M258 70v30"/><path class="pl-soft" d="M215 110c0 22 10 30 25 30"/><rect class="pl-line" x="236" y="126" width="70" height="56" rx="3"/><rect class="pl-screen" x="244" y="134" width="54" height="22" rx="2"/><text class="pl-lcd" x="271" y="149">3200</text><circle cx="252" cy="169" r="3" fill="#4abfbf"/><circle cx="264" cy="169" r="3" fill="#4abfbf"/><circle cx="276" cy="169" r="3" class="pl-off"/><g class="pl-txt"><text x="215" y="54">plates clean</text><text x="271" y="194">ppm</text></g></svg></div>
       <p class="shot__read"><span class="shot__name">Salt</span><span class="shot__val">3200 <small>ppm</small></span><span class="gauge" aria-hidden="true"><i class="gauge__band"></i><i class="gauge__mark"></i></span><span class="shot__ideal">ideal 2700–3400</span></p>
      </div>
      <div class="step__text">
-      <p class="step__num">02 · Salt cell</p>
+      <p class="step__num"><span>02</span>Salt cell</p>
       <h3>Read the cell, don't guess at it</h3>
       <p>The cell's output is measured. Scale gets cleaned off. A new cell is only on the table when a clean cell still reads low.</p>
      </div>
     </li>
     <li class="step" data-step-i="3" data-settle style="--pad:#0e7c7b;--lo:25%;--hi:50%;--v:45%;--off:92%">
      <div class="shot">
-      <figure class="frame frame--step" data-fallback="Placeholder for filter-cartridge"><img src="media/filter-cartridge.jpg" alt="Placeholder for filter-cartridge" width="1170" height="780" loading="lazy" decoding="async" data-photo="filter-cartridge" data-slot="filter-cartridge"></figure>
+      <div class="plate" aria-hidden="true"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><g class="pl-grid"><path d="M0 40H320M0 80H320M0 120H320M0 160H320M40 0V200M80 0V200M120 0V200M160 0V200M200 0V200M240 0V200M280 0V200"/></g><text class="pl-cap" x="16" y="24">filter gauge, psi</text><path class="pl-line" d="M174.1 150.9A72 72 0 1 1 275.9 150.9"/><path class="pl-band" d="M169 100A56 56 0 0 1 185.4 60.4"/><path class="pl-line" d="M179.75 145.25L174.1 150.9M161 100H153M179.75 54.75L174.1 49.1M225 36V28M270.25 54.75L275.9 49.1M289 100H297M270.25 145.25L275.9 150.9"/><g class="pl-txt"><text x="166" y="164">0</text><text x="141" y="102">10</text><text x="164" y="40">20</text><text x="225" y="18">30</text><text x="286" y="40">40</text><text x="309" y="102">50</text><text x="284" y="164">60</text></g><g class="pl-needle"><path d="M234.7 107.05L176.5 64.7" stroke="#e8c84a" stroke-width="3" stroke-linecap="round"/><circle cx="225" cy="100" r="6" fill="#e8c84a"/></g><text class="pl-lcd pl-lcd--big" x="225" y="138">18</text></svg></div>
       <p class="shot__read"><span class="shot__name">Filter</span><span class="shot__val">18 <small>psi</small></span><span class="gauge" aria-hidden="true"><i class="gauge__band"></i><i class="gauge__mark"></i></span><span class="shot__ideal">ideal 10–20</span></p>
      </div>
      <div class="step__text">
-      <p class="step__num">03 · Filter</p>
+      <p class="step__num"><span>03</span>Filter</p>
       <h3>Clean the filter when the gauge says so</h3>
       <p>Pressure goes in the log every week. Your cleaning schedule follows that number, not the calendar.</p>
      </div>
     </li>
     <li class="step" data-step-i="4" data-settle style="--pad:#d4735e;--lo:0%;--hi:100%;--v:100%;--off:0%">
      <div class="shot">
-      <figure class="frame frame--step" data-fallback="Placeholder for equipment-pad"><img src="media/equipment-pad.jpg" alt="Placeholder for equipment-pad" width="1170" height="780" loading="lazy" decoding="async" data-photo="equipment-pad" data-slot="equipment-pad"></figure>
+      <div class="plate" aria-hidden="true"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><g class="pl-grid"><path d="M0 40H320M0 80H320M0 120H320M0 160H320M40 0V200M80 0V200M120 0V200M160 0V200M200 0V200M240 0V200M280 0V200"/></g><text class="pl-cap" x="16" y="24">sent report</text><g transform="translate(16 0) rotate(-3 220 100)"><rect class="pl-sheet" x="150" y="14" width="142" height="174" rx="4"/><text class="pl-sheet-t" x="162" y="34">Visit report</text><path d="M162 42H280" stroke="#d4d0c8"/><g class="pl-rows"><rect x="162" y="52" width="8" height="8" rx="1" fill="#e8c84a"/><path d="M178 56H280" stroke="#d4d0c8" stroke-width="4"/><path d="M207 56H251" stroke="#8fcfc9" stroke-width="4"/><circle cx="229" cy="56" r="3.5" fill="#0e7c7b"/><rect x="162" y="68" width="8" height="8" rx="1" fill="#d4735e"/><path d="M178 72H280" stroke="#d4d0c8" stroke-width="4"/><path d="M212 72H246" stroke="#8fcfc9" stroke-width="4"/><circle cx="234" cy="72" r="3.5" fill="#0e7c7b"/><rect x="162" y="84" width="8" height="8" rx="1" fill="#4abfbf"/><path d="M178 88H280" stroke="#d4d0c8" stroke-width="4"/><path d="M212 88H246" stroke="#8fcfc9" stroke-width="4"/><circle cx="225" cy="88" r="3.5" fill="#0e7c7b"/><rect x="162" y="100" width="8" height="8" rx="1" fill="#8b6aae"/><path d="M178 104H280" stroke="#d4d0c8" stroke-width="4"/><path d="M203 104H255" stroke="#8fcfc9" stroke-width="4"/><circle cx="226" cy="104" r="3.5" fill="#0e7c7b"/><rect x="162" y="116" width="8" height="8" rx="1" fill="#d4a03c"/><path d="M178 120H280" stroke="#d4d0c8" stroke-width="4"/><path d="M209 120H229" stroke="#8fcfc9" stroke-width="4"/><circle cx="224" cy="120" r="3.5" fill="#0e7c7b"/><rect x="162" y="132" width="8" height="8" rx="1" fill="#7fb8d6"/><path d="M178 136H280" stroke="#d4d0c8" stroke-width="4"/><path d="M214 136H249" stroke="#8fcfc9" stroke-width="4"/><circle cx="239" cy="136" r="3.5" fill="#0e7c7b"/><rect x="162" y="148" width="8" height="8" rx="1" fill="#0e7c7b"/><path d="M178 152H280" stroke="#d4d0c8" stroke-width="4"/><path d="M203 152H229" stroke="#8fcfc9" stroke-width="4"/><circle cx="224" cy="152" r="3.5" fill="#0e7c7b"/></g><text class="pl-sheet-ok" x="162" y="176">7 of 7 in range</text></g></svg></div>
       <p class="shot__read"><span class="shot__name">Report</span><span class="shot__val">7 <small>of 7</small></span><span class="gauge" aria-hidden="true"><i class="gauge__band"></i><i class="gauge__mark"></i></span><span class="shot__ideal">in range, photo attached</span></p>
      </div>
      <div class="step__text">
-      <p class="step__num">04 · Report</p>
+      <p class="step__num"><span>04</span>Report</p>
       <h3>A dated report with all seven numbers</h3>
       <p>Pump, heater and timer get a look, then you get the report: each reading on its scale, what we added, and a photo of the pool.</p>
      </div>
@@ -1093,9 +1297,9 @@ html.lenis, html.lenis body { height: auto; }
 
  <!-- 5 · break: the "after" of the hero reading -->
  <section class="break t-mid" aria-label="Clear water">
-  <figure class="frame frame--break" data-fallback="Placeholder for clear-after"><img src="media/clear-after.jpg" alt="Placeholder for clear-after" width="1170" height="780" loading="lazy" decoding="async" data-photo="clear-after" data-slot="clear-after"></figure>
+  <figure class="frame frame--break frame--photo" data-fallback="Mesh leaf net lifted over a blue above-ground backyard pool on a sunny day" data-clip><img src="media/skimming-1170.webp" srcset="media/skimming-1170.webp 1170w, media/skimming.webp 2340w" sizes="100vw" alt="Mesh leaf net lifted over a blue above-ground backyard pool on a sunny day" width="1170" height="780" loading="lazy" decoding="async" data-photo="skimming" data-slot="skimming"></figure>
   <div class="break__card" data-settle>
-   <p class="break__head"><span>Visit report · after</span><span class="sample-tag">Sample report</span></p>
+   <p class="break__head"><span>Visit report · signed off</span><span class="sample-tag">Sample report</span></p>
    <span class="break__pads" aria-hidden="true"><span class="pad pad--yellow"></span><span class="pad pad--coral"></span><span class="pad pad--aqua"></span><span class="pad pad--violet"></span><span class="pad pad--amber"></span><span class="pad pad--sky"></span><span class="pad pad--teal"></span></span>
    <p class="break__say">Clear water is a reading, not a guess.</p>
    <p class="break__foot">7 of 7 in range</p>
@@ -1119,7 +1323,7 @@ html.lenis, html.lenis body { height: auto; }
 
    <figure class="quote">
     <blockquote><p>The report shows each reading against the ideal band, like a little gauge. After a month I actually understand my own pool. pH used to drift high and now it sits at 7.5.</p></blockquote>
-    <figcaption>Allison K. · Winter Garden · Weekly pool service</figcaption>
+    <figcaption><span class="review__name">Allison K.</span><br>Winter Garden, Weekly pool service</figcaption>
    </figure>
 
    <ul class="reviews" role="list">
@@ -1127,37 +1331,37 @@ html.lenis, html.lenis body { height: auto; }
     <li class="review">
      <p class="review__stars" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
      <p class="review__text">Another company sold me a new salt cell twice in three years. Priya tested the output, cleaned the old one and it reads fine. Saved me a bill I did not need.</p>
-     <p class="review__meta"><span class="review__name">Derrick F.</span> · Windermere<br><span class="review__svc">Salt system service</span></p>
+     <p class="review__meta"><span class="review__name">Derrick F.</span><br>Windermere<br><span class="review__svc">Salt system service</span></p>
     </li>
     
     <li class="review">
      <p class="review__stars" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
      <p class="review__text">I manage four rental homes in Ocoee and Winter Garden. They time the visits around check-ins and send a dated photo of each pool. Guest complaints about the water stopped.</p>
-     <p class="review__meta"><span class="review__name">Laura B.</span> · Ocoee<br><span class="review__svc">Vacation rental pool care</span></p>
+     <p class="review__meta"><span class="review__name">Laura B.</span><br>Ocoee<br><span class="review__svc">Vacation rental pool care</span></p>
     </li>
     
     <li class="review">
      <p class="review__stars" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
      <p class="review__text">Used the gallons calculator on the site, then the tech checked it against his own math. We were off by a few hundred gallons. Nice to see the same numbers both ways.</p>
-     <p class="review__meta"><span class="review__name">Ben H.</span> · Oviedo<br><span class="review__svc">Water testing and balance</span></p>
+     <p class="review__meta"><span class="review__name">Ben H.</span><br>Oviedo<br><span class="review__svc">Water testing and balance</span></p>
     </li>
     
     <li class="review">
      <p class="review__stars" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
      <p class="review__text">Pump made a scream at startup. They wrote down bearings, the part cost and labor, and said replacing the whole pump was not needed yet. Quiet since.</p>
-     <p class="review__meta"><span class="review__name">Teresa V.</span> · Maitland<br><span class="review__svc">Pump and motor repair</span></p>
+     <p class="review__meta"><span class="review__name">Teresa V.</span><br>Maitland<br><span class="review__svc">Pump and motor repair</span></p>
     </li>
     
     <li class="review">
      <p class="review__stars" aria-label="4 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
      <p class="review__text">Heat pump was blowing cold. They found a clogged coil and a bad sensor, fixed both in one visit and the water hit 84 that weekend.</p>
-     <p class="review__meta"><span class="review__name">Mark D.</span> · Winter Park<br><span class="review__svc">Heat pump service</span></p>
+     <p class="review__meta"><span class="review__name">Mark D.</span><br>Winter Park<br><span class="review__svc">Heat pump service</span></p>
     </li>
     
     <li class="review">
      <p class="review__stars" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
      <p class="review__text">Pressure gauge was at 30 every week. They switched our filter cleaning to a schedule based on the reading and it stays near 18 now.</p>
-     <p class="review__meta"><span class="review__name">Yolanda P.</span> · Apopka<br><span class="review__svc">Filter service</span></p>
+     <p class="review__meta"><span class="review__name">Yolanda P.</span><br>Apopka<br><span class="review__svc">Filter service</span></p>
     </li>
     
    </ul>
@@ -1237,8 +1441,15 @@ html.lenis, html.lenis body { height: auto; }
      </div>
      <p class="zip__result" data-zip-result></p>
     </form>
-    <p class="area__towns-label">Orlando plus</p>
-    <ul class="towns" role="list">
+    <div class="area__hours">
+     <p class="area__towns-label">Office hours · <span data-open-now>Mon–Fri 7:30 am – 5:30 pm · Sat 8 am – 1 pm</span></p>
+     <dl class="hours"><div><dt>Mon</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Tue</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Wed</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Thu</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Fri</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Sat</dt><dd>8 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
+    </div>
+   </div>
+   <figure class="routes">
+    <svg class="routes__rings" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><circle cx="200" cy="200" r="70"/><circle cx="200" cy="200" r="130"/><circle cx="200" cy="200" r="186"/><path class="routes__spokes" d="M200 200L200 32M200 200L320 96M200 200L312 240M200 200L232 352M200 200L96 320M200 200L72 184M200 200L104 72"/></svg>
+    <p class="routes__hub"><span class="pad pad--teal" aria-hidden="true"></span>Orlando</p>
+    <ul class="routes__towns" role="list" aria-label="Towns we also cover">
      
      <li>Winter Park</li>
      
@@ -1255,12 +1466,8 @@ html.lenis, html.lenis body { height: auto; }
      <li>Apopka</li>
      
     </ul>
-    <div class="area__hours">
-     <p class="area__towns-label">Office hours · <span data-open-now>Mon–Fri 7:30 am – 5:30 pm · Sat 8 am – 1 pm</span></p>
-     <dl class="hours"><div><dt>Mon</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Tue</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Wed</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Thu</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Fri</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Sat</dt><dd>8 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
-    </div>
-   </div>
-   <figure class="frame frame--area" data-fallback="Placeholder for orlando-neighborhood"><img src="media/orlando-neighborhood.jpg" alt="Placeholder for orlando-neighborhood" width="1170" height="780" loading="lazy" decoding="async" data-photo="orlando-neighborhood" data-slot="orlando-neighborhood"></figure>
+    <figcaption>Weekly routes: Orlando and the towns around it</figcaption>
+   </figure>
   </div>
  </section>
 
@@ -1386,7 +1593,7 @@ html.lenis, html.lenis body { height: auto; }
    </nav>
   </div>
   <p class="footer__small">Sample website by Site Sledge. Business details are illustrative.</p>
-  <div class="footer__small"><ul class="credits"></ul></div>
+  <div class="footer__small"><ul class="credits"><li>Photo by Shixart1985 on <a href="https://commons.wikimedia.org/wiki/File:Water_flowing_steadily_into_a_vibrant_blue_swimming_pool_during_a_sunny_day.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Greg Zaal on <a href="https://commons.wikimedia.org/wiki/File:Pool_%E2%80%93_Panorama_(Greg_Zaal_via_Poly_Haven).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="noopener license" target="_blank">CC0</a></li><li>Photo by Shixart1985 on <a href="https://commons.wikimedia.org/wiki/File:Kids_playing_in_a_backyard_pool_with_a_net,_trying_to_catch_floating_toys_on_a_sunny_afternoon.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li></ul></div>
   <p class="footer__small">© 2026 Clear Reading Pool Co.</p>
  </div>
 </footer>

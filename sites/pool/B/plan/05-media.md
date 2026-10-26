@@ -1,78 +1,22 @@
-# Media Plan — pool-B (Clear Reading Pool Co.)
+# Media Plan: pool-B (Clear Reading Pool Co.), round 3 fix
 
-## Hero
-- **Key:** `hero-B1`
-- **Section:** hero (tool-first, no photo behind tool; photo used as subtle background texture at 10% opacity or omitted)
-- **Crop:** `object-position: 50% 40%`
-- **Treatment:** Photo grade only; no duotone. Bright daylight test strip over clear water.
-- **Caption:** Test strip held above clear pool water in Orlando suburban backyard.
+Rule this round: fewer, truer photos under one grade. Where the library has no honest residential frame,
+the slot is a drawn instrument plate in the "clear reading" language, not a stock stand-in.
 
-## Slots
+## Photos (3, each once, one shared grade: saturate .84, contrast 1.05, a faint teal shadow wash)
+| Slot | Key | Where | Crop | Reading it supports |
+|---|---|---|---|---|
+| hero | `hero-B2` | hero, eager | 16/10 above the report card at ≥900, full-width strip on phones; `object-position 62% 52%` so the return jet and white coping sit in the visible top band | the water the report describes |
+| detail-1 | `cloudy-water` | tick tool (teal band) | `50% 78%` | "Tick what your water is doing": hazy, green-tinted water |
+| break | `skimming` | full-bleed break, clip reveal tied to scroll | `30% 55%`, the net on the left third, card bottom right | step one of every visit (skim, then test); clear water with a floating chlorinator |
 
-### break
-- **Key:** `clear-after`
-- **Section:** Full-bleed break between services and proof
-- **Crop:** `object-position: 50% 60%`
-- **Treatment:** Photo grade. Wide shot of sparkling-clean residential pool with screened enclosure, bright Florida daylight.
-- **Caption:** Residential pool after weekly service, screened lanai, Orlando suburb.
+## Drawn plates (no photo exists that shows the subject)
+- Story 01 Test: a pH colour comparator with the sample vial matched at 7.5.
+- Story 02 Salt cell: a cell housing with clean plates wired to its control box (3200 ppm).
+- Story 03 Filter: a pressure dial, 0–60 psi, ideal band 10–20, needle at 18.
+- Story 04 Report: the sent report sheet, seven pads, 7 of 7 in range.
+- Area: a route plate, the city as hub and each town as a pad-coloured chip on the ring.
 
-### story-1
-- **Key:** `test-vials`
-- **Section:** Water Balance story
-- **Crop:** `object-position: 30% 50%`
-- **Treatment:** Photo grade. Close-up of vials on white surface.
-- **Caption:** Water testing vials arranged for seven-point chemical analysis.
-
-### story-2
-- **Key:** `salt-cell`
-- **Section:** Salt Systems card
-- **Crop:** `object-position: 50% 50%`
-- **Treatment:** Photo grade. Macro of salt cell plates.
-- **Caption:** Salt chlorine generator cell showing clean titanium plates.
-
-### story-3
-- **Key:** `filter-cartridge`
-- **Section:** Filter Service card
-- **Crop:** `object-position: 40% 40%`
-- **Treatment:** Photo grade. Cartridge being rinsed.
-- **Caption:** Pleated filter cartridge during routine cleaning rinse.
-
-### story-4
-- **Key:** `equipment-pad`
-- **Section:** Pump & Heat Pump section
-- **Crop:** `object-position: 50% 70%`
-- **Treatment:** Photo grade. Clean equipment pad with labeled components.
-- **Caption:** Organized pool equipment pad with variable-speed pump and heat pump.
-
-### detail-1
-- **Key:** `cloudy-water`
-- **Section:** Cloudy Water Troubleshooter tool context
-- **Crop:** `object-position: 50% 50%`
-- **Treatment:** Photo grade. Murky green-tinted water surface.
-- **Caption:** Pool water with visible cloudiness before treatment.
-
-### detail-2
-- **Key:** `orlando-neighborhood`
-- **Section:** Service Area / ZIP checker
-- **Crop:** `object-position: 50% 30%`
-- **Treatment:** Photo grade. Aerial of Orlando subdivision with pools.
-- **Caption:** Aerial view of Orlando residential neighborhood with backyard pools.
-
-### gallery
-- **Keys:** `test-strip-color`, `pump`, `heat-pump`, `tech-behind`
-- **Section:** Proof / Trust gallery strip
-- **Crop:** `object-position: 50% 50%` each
-- **Treatment:** Photo grade consistent across all four.
-- **Captions:**
-  - Color-matched test strip pads showing pH, chlorine, alkalinity readings.
-  - Variable-speed pool pump motor with digital display.
-  - Pool heat pump unit installed beside equipment pad.
-  - Pool technician from behind, holding test kit at pool edge.
-
-## Rejections
-- No faces presented as owner (tech-behind is from behind, acceptable).
-- No readable signs, logos, plates, or house numbers.
-- No resort infinity pools.
-- No commercial sites.
-- All frames are Orlando/Florida-appropriate residential context.
-- Hero key `hero-B1` not used by any sibling (pool-A uses hero-A keys).
+## Removed and why
+salt-cell (pool-A hero; no cell in frame), filter-cartridge (reads as an oil filter), heat-pump (commercial plant room),
+clear-after (resort lagoon), orlando-neighborhood (open sea), test-vials (lab bottles, not a pool kit).

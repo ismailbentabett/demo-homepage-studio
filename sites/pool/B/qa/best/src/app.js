@@ -23,16 +23,24 @@
     update();
   });
 
+  /* After load, warm the remaining photos in idle time so a fast scroll never lands on an empty frame */
+  window.addEventListener('load', function () {
+    var warm = function () { document.querySelectorAll('img[loading="lazy"]').forEach(function (img) { img.loading = 'eager'; img.decoding = 'sync'; }); };
+    if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 1500 }); else setTimeout(warm, 600);
+  });
+
   /* Tick tool: the result is drawn as a reading. More signs push the marker out of the band */
   SW.mod('reader-gauge', function () {
     var box = document.querySelector('[data-checklist]');
     var g = document.querySelector('[data-reader-gauge]');
     if (!box || !g) return;
     var boxes = box.querySelectorAll('input[type="checkbox"]');
+    var count = box.querySelector('[data-strip-count]');
     function update() {
       var n = 0;
       boxes.forEach(function (b) { if (b.checked) n++; });
       g.style.setProperty('--v', (12 + (n / Math.max(1, boxes.length)) * 82).toFixed(1) + '%');
+      if (count) count.textContent = n + ' of ' + boxes.length + ' checked';
     }
     boxes.forEach(function (b) { b.addEventListener('change', update); });
     update();
@@ -42,8 +50,7 @@
     if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
 
     /* Intro: the hero report's markers slide from the left edge into their bands (≤ 1.2 s, h1 untouched) */
-    var report = document.querySelector('[data-report]');
-    if (report) {
+    document.querySelectorAll('[data-report]').forEach(function (report) {
       var rows = report.querySelectorAll('.reading');
       rows.forEach(function (row, i) {
         var mark = row.querySelector('.gauge__mark');
@@ -55,7 +62,7 @@
       report.classList.add('is-intro');
       void report.offsetWidth;
       requestAnimationFrame(function () { requestAnimationFrame(function () { report.classList.remove('is-intro'); }); });
-    }
+    });
 
     /* The settle: every [data-settle] block starts out of range and settles into its band on entry */
     var settle = Array.prototype.slice.call(document.querySelectorAll('[data-settle]'));
@@ -105,6 +112,13 @@
           };
         }
       });
+    }
+
+    /* Break: the one wide photo opens from a clipped plate to full bleed as it scrolls in (all widths, no pin) */
+    var brk = document.querySelector('.break');
+    if (brk && brk.querySelector('[data-clip]')) {
+      brk.classList.add('is-armed');
+      gsap.fromTo(brk, { '--clip': '9%' }, { '--clip': '0%', ease: 'none', scrollTrigger: { trigger: brk, start: 'top 95%', end: 'top 25%', scrub: true } });
     }
 
     document.fonts && document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
