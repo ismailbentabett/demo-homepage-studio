@@ -22,7 +22,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Trap Count Pest Co.","description":"Baton Rouge termite and pest control with the log shown: numbered stations, readings, dates and sample prices. Compare liquid and bait, then call us.","telephone":"+12255550156","email":"hello@trap-count-pest.example","areaServed":[{"@type":"City","name":"Baton Rouge"},{"@type":"City","name":"Zachary"},{"@type":"City","name":"Denham Springs"},{"@type":"City","name":"Prairieville"},{"@type":"City","name":"Gonzales"},{"@type":"City","name":"Central"},{"@type":"City","name":"Baker"},{"@type":"City","name":"Port Allen"},{"@type":"City","name":"Walker"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"07:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday"],"opens":"07:00","closes":"17:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"08:00","closes":"12:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/chivo/chivo-100-900-normal.woff2" crossorigin>
-<link rel="preload" as="image" href="media/process-probe.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="media/hero-B1-1170.webp" imagesrcset="media/hero-B1-1170.webp 1170w, media/hero-B1.webp 2340w" imagesizes="100vw" fetchpriority="high">
 <style>
 @font-face{font-family:"Chivo";src:url("fonts/chivo/chivo-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Outfit";src:url("fonts/outfit/outfit-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
@@ -298,6 +298,9 @@ html.lenis, html.lenis body { height: auto; }
   --header-h: 64px;
   --container: 1280px;
   --sw-anchor-offset: 80px;
+
+  /* One grade for every photo: one inspection, one shoot (lifted blacks, cooler greens, warm wood) */
+  --grade: sepia(.14) saturate(.74) hue-rotate(8deg) contrast(.94) brightness(1.03);
 }
 
 /* ── Tones ── */
@@ -339,8 +342,6 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* ── Base ── */
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   font-family: 'Outfit', system-ui, sans-serif;
   font-size: var(--fs-0);
@@ -435,10 +436,11 @@ h3 { font-family: 'Chivo', system-ui, sans-serif; font-weight: 700; font-size: v
 /* ── Sample tag ── */
 .sample-tag {
   display: inline-block;
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   line-height: 1.3;
   padding: 1px 6px;
   border: 1px solid currentColor;
@@ -639,19 +641,25 @@ html:not(.sw-js) .mobile-menu { display: none; }
 
 /* Evidence ticket: a photo filed with its log line */
 .ticket { background: var(--paper); padding: 6px 6px 0; border-radius: 2px; color: var(--deep); }
-.ticket img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.85) contrast(1.05) sepia(.06) hue-rotate(-4deg); }
-.frame { background: #C9C3B7; overflow: hidden; }
+.ticket img { width: 100%; height: 100%; object-fit: cover; display: block; }
+img[data-photo] { filter: var(--grade); }
+.frame { position: relative; background: #C9C3B7; overflow: hidden; }
+/* Clip reveals never start fully closed: a zero-area image is never lazy-loaded by Chrome */
+.sw-motion [data-reveal="clip"]:not(.is-in) { clip-path: inset(0 0 82% 0); }
 .ticket__cap {
   display: flex;
   gap: var(--s-3);
   align-items: baseline;
   padding: 10px 6px 10px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
-  line-height: 1.4;
+  border-top: 1.5px solid var(--deep);
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.35;
   color: var(--deep);
 }
-.ticket__no { font-weight: 700; color: var(--teal-ink); white-space: nowrap; }
+.ticket__no { font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; color: var(--teal-ink); white-space: nowrap; }
+.ticket__what { flex: 1 1 auto; min-width: 0; }
+.ticket__read { font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; white-space: nowrap; margin-left: auto; }
 
 /* Chips (radio / checkbox as tappable tags) */
 .field { margin-bottom: var(--s-5); }
@@ -695,26 +703,62 @@ html:not(.sw-js) .mobile-menu { display: none; }
 @keyframes sw-rise { from { transform: translateY(100%); } to { transform: none; } }
 .hero__lead { color: var(--ink); }
 .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
-.hero__call { margin-top: var(--s-5); color: var(--muted); font-size: var(--fs-0); max-width: 46ch; }
+.hero__call { margin-top: var(--s-5); color: var(--muted); font-size: var(--fs-0); max-width: 52ch; }
 .hero__call .tel-plain { color: var(--ink); }
-.hero__visual { position: relative; max-width: 620px; margin-left: auto; box-shadow: 0 32px 60px -36px rgba(0, 0, 0, .7); }
-.hero__sheet { box-shadow: none !important; }
-.hero__evidence {
-  display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  align-items: center;
-  gap: var(--s-2);
-  padding: 6px;
-  border-top: 1px dashed var(--rule-paper);
+.hero__call-line { display: block; }
+.hero { position: relative; overflow: clip; }
+.hero__content { position: relative; z-index: 1; }
+/* The real house, with its station map pinned over the yard */
+.hero__visual { position: relative; }
+.hero__photo { position: relative; margin-inline: -20px; aspect-ratio: 4 / 3; background: var(--rule-deep); }
+.hero__zoom { position: absolute; inset: 0; transform: scale(1.45); transform-origin: 100% 72%; }
+.hero__zoom img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block; }
+.hero__ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ring__back, .ring__front { fill: none; stroke: var(--accent); stroke-width: 2.5px; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.ring__back { stroke-dasharray: 5 6; stroke-opacity: .8; }
+.ring__front { filter: drop-shadow(0 1px 1px rgba(26, 51, 42, .8)); }
+.rst circle { fill: var(--paper); stroke: var(--deep); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+.rst.is-read circle { fill: var(--accent); stroke: var(--paper); stroke-width: 2px; }
+.ring__tag line { stroke: var(--paper); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+.ring__tag rect { fill: var(--deep); }
+.ring__tag text { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 5.5px; fill: var(--paper); text-anchor: middle; dominant-baseline: middle; }
+.rst { transform-box: fill-box; transform-origin: center; }
+.sw-motion .ring__front, .sw-motion .ring__back { stroke-dasharray: 1; animation: sw-draw 1100ms var(--ease-io) 300ms both; }
+.sw-motion .ring__back { animation-delay: 500ms; }
+.sw-motion .rst { animation: sw-pop 380ms var(--ease-out) both; animation-delay: calc(700ms + var(--i, 0) * 45ms); }
+.sw-motion .ring__tag { animation: sw-fade 400ms var(--ease-out) 1300ms both; }
+@keyframes sw-fade { from { opacity: 0; } to { opacity: 1; } }
+.hero__photo::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg, rgba(26, 51, 42, .4), rgba(26, 51, 42, 0) 26%); }
+.hero__photo-cap {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  left: 12px;
+  max-width: calc(100% - 24px);
+  padding: 6px 10px;
+  background: var(--paper);
+  border-top: 3px solid var(--teal-ink);
+  border-radius: 2px;
 }
-.hero__evidence img { aspect-ratio: 4 / 3; height: auto; object-position: 50% 45%; }
-.hero__evidence .ticket__cap { padding: 4px 8px; }
+.hero__sheet { position: relative; z-index: 2; margin: -64px 4px 0; box-shadow: 0 32px 60px -36px rgba(0, 0, 0, .8); }
+@media (min-width: 640px) {
+  .hero__photo { margin-inline: -32px; aspect-ratio: 16 / 10; }
+  .hero__sheet { max-width: 440px; margin: -120px 0 0 0; }
+}
 @media (min-width: 900px) {
-  .hero__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); align-items: center; gap: var(--s-7); }
+  .hero { --bleed: calc((100vw - min(100vw, var(--container))) / 2 + 32px); }
+  .hero__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: center; gap: var(--s-7); }
   .hero__h1 { max-width: none; }
-  .hero__evidence { grid-template-columns: 132px minmax(0, 1fr); }
+  .hero__visual { min-height: min(600px, calc(100svh - var(--header-h) - 140px)); align-self: stretch; }
+  .hero__photo { position: absolute; top: 0; left: 0; right: calc(-1 * var(--bleed)); height: 74%; margin: 0; aspect-ratio: auto; }
+  .hero__photo::after { background: linear-gradient(90deg, rgba(26, 51, 42, .35), rgba(26, 51, 42, 0) 30%), linear-gradient(0deg, rgba(26, 51, 42, .45), rgba(26, 51, 42, 0) 30%); }
+  .hero__photo-cap { top: 14px; left: auto; right: var(--bleed); max-width: none; white-space: nowrap; gap: var(--s-4); }
+  .hero__sheet { position: absolute; bottom: 0; left: calc(-1 * var(--s-8)); width: clamp(260px, 24vw, 340px); max-width: none; margin: 0; padding: var(--s-4); }
 }
-@media (min-width: 1200px) { .hero__grid { gap: var(--s-8); } }
+@media (min-width: 1200px) {
+  .hero { --bleed: calc((100vw - min(100vw, var(--container))) / 2 + 40px); }
+  .hero__grid { gap: var(--s-8); }
+}
 
 /* ── 2. ZIP ── */
 .zip { padding-block: var(--s-7); }
@@ -771,45 +815,109 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .ccard { padding: var(--s-5); border: 1px solid var(--rule); border-radius: 2px; transition: border-color var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out); }
 .ccard__title { font-size: var(--fs-2); margin-bottom: var(--s-3); }
 .ccard p { color: var(--muted); }
-.ccard__price { margin-top: var(--s-4); font-family: 'Space Mono', monospace; font-size: 0.8125rem; color: var(--ink) !important; }
+.ccard__price { margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--rule); display: grid; gap: 2px; color: var(--ink) !important; }
+.ccard__range { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.0625rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ccard__note { font-size: 0.875rem; color: var(--muted); }
 .ccard__tag { display: none; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; color: var(--accent) !important; margin-bottom: var(--s-2); }
 [data-lean="liquid"] [data-card="liquid"], [data-lean="bait"] [data-card="bait"] { border-color: var(--accent); background: rgba(77, 184, 164, .08); }
 [data-lean="liquid"] [data-card="liquid"] .ccard__tag, [data-lean="bait"] [data-card="bait"] .ccard__tag { display: block; }
 .compare__sheet .sheet__log .log-row:first-child { border-top: 1.5px solid var(--deep); }
 .compare__sheet .log-row { transition: opacity var(--dur-ui) var(--ease-out); }
 .compare__sheet[data-lean="bait"] [data-row="liquid"], .compare__sheet[data-lean="liquid"] [data-row="bait"] { opacity: .45; }
+.compare__cards { margin-bottom: 0; }
 @media (min-width: 640px) { .compare__cards { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 900px) {
-  .compare__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); align-items: start; }
-  .compare__visual { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+/* House type: three steps, each one a radio. The scroll story walks them on desktop. */
+.hsteps { display: grid; gap: var(--s-2); }
+.hstep { position: relative; display: block; cursor: pointer; }
+.hstep input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.hstep__box {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 2px var(--s-3);
+  padding: 12px 16px;
+  border: 1.5px solid var(--chip-line);
+  border-left-width: 4px;
+  border-radius: 2px;
+  transition: background-color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
 }
+.hstep__no { grid-row: span 2; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.8125rem; color: var(--accent); padding-top: 3px; }
+.hstep__name { font-weight: 600; font-size: 1.0625rem; line-height: 1.3; }
+.hstep__text { font-size: 0.9375rem; line-height: 1.4; color: var(--muted); }
+.hstep input:checked + .hstep__box { background: var(--ink); color: var(--deep); border-color: var(--ink); border-left-color: var(--accent); }
+.hstep input:checked + .hstep__box .hstep__text { color: var(--muted-paper); }
+.hstep input:checked + .hstep__box .hstep__no { color: var(--teal-ink); }
+.hstep input:checked + .hstep__box .hstep__name::after { content: " ✓"; }
+.hstep input:focus-visible + .hstep__box { outline: 3px solid var(--focus); outline-offset: 3px; }
+.hstep.is-story .hstep__box { border-color: var(--accent); }
+@media (hover: hover) { .hstep:hover .hstep__box { border-color: var(--ink); } }
+.compare__cta { margin-top: 0; }
+/* Phones and tablets: the drawing sits right under the inputs, so a tap shows its answer */
+@media (max-width: 899px) {
+  .compare__grid { gap: 0; }
+  .compare__text, .compare__visual { display: contents; }
+  .compare__text > * { order: 1; }
+  .compare__text > .section__title, .compare__text > .lead, .compare__tool { order: 0; }
+  .compare__tool .field:last-child { margin-bottom: var(--s-4); }
+  .compare__pin { order: 0; margin-bottom: var(--s-6); }
+  .compare__cards { order: 2; margin-bottom: var(--s-6); }
+  .compare__cta { order: 3; justify-self: start; }
+}
+/* Desktop: the drawing pins while the house steps scroll past; the price cards close the column */
+@media (min-width: 900px) {
+  .compare__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); align-items: stretch; }
+  .compare__visual { display: flex; flex-direction: column; gap: var(--s-5); }
+  .compare__pin { flex: 1 1 auto; }
+  .compare__sheet { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+  .compare__cta { margin-top: var(--s-2); }
+  .compare__verdict { margin-bottom: var(--s-5); }
+}
+/* Scroll story (desktop, motion only): trench draws, then stations light in three groups */
+.stmap__beat { display: none; }
+.sw-motion .stmap__beat:not(:empty) {
+  display: block;
+  margin-top: var(--s-3);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--teal-ink);
+}
+.sw-motion .stmap[data-story] .stmap__trench { stroke-dashoffset: var(--trench, 0); transition: stroke-dashoffset 120ms linear; }
+.sw-motion .stmap[data-story] .st { opacity: 1; }
+.sw-motion .stmap[data-story] .st circle { fill: var(--paper); stroke: var(--deep); stroke-width: 1.6; }
+.sw-motion .stmap[data-story] .st text { fill: var(--deep); }
+.sw-motion .stmap[data-story="2"] .st:is([data-st="01"], [data-st="02"], [data-st="03"], [data-st="04"]) circle,
+.sw-motion .stmap[data-story="3"] .st:is([data-st="01"], [data-st="02"], [data-st="03"], [data-st="04"], [data-st="05"], [data-st="06"], [data-st="07"], [data-st="08"]) circle,
+.sw-motion .stmap[data-story="4"] .st circle { fill: var(--teal-ink); stroke: var(--teal-ink); }
+.sw-motion .stmap[data-story="2"] .st:is([data-st="01"], [data-st="02"], [data-st="03"], [data-st="04"]) text,
+.sw-motion .stmap[data-story="3"] .st:is([data-st="01"], [data-st="02"], [data-st="03"], [data-st="04"], [data-st="05"], [data-st="06"], [data-st="07"], [data-st="08"]) text,
+.sw-motion .stmap[data-story="4"] .st text { fill: var(--paper); }
+.sw-motion .stmap[data-story] .st circle, .sw-motion .stmap[data-story] .st text { transition-delay: calc(mod(var(--i, 0), 4) * 70ms); }
 
 /* ── 4. Break ── */
 .break { padding-bottom: var(--s-7); }
 .break__frame { width: 100%; aspect-ratio: 4 / 3; }
-.break__frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; filter: saturate(.85) contrast(1.05) sepia(.06) hue-rotate(-4deg); }
+.break__frame img { width: 100%; height: 100%; object-fit: cover; object-position: 28% 72%; }
 .break__cap-wrap { position: relative; z-index: 2; margin-top: -40px; }
-.break__cap { background: var(--paper); max-width: 560px; padding: 14px 16px; border-top: 3px solid var(--teal-ink); box-shadow: 0 20px 40px -28px rgba(26, 51, 42, .6); font-size: 0.8125rem; }
-@media (min-width: 640px) { .break__frame { aspect-ratio: 16 / 7; max-height: 72svh; } }
+.break__cap { background: var(--paper); max-width: 620px; padding: 14px 16px; border-top: 3px solid var(--teal-ink); box-shadow: 0 20px 40px -28px rgba(26, 51, 42, .6); }
+@media (min-width: 640px) { .break__frame { aspect-ratio: auto; height: 60svh; min-height: 380px; } .break__frame img { object-position: 30% 74%; } }
 
 /* ── 5. Services (log table) ── */
 .services__head { display: grid; gap: var(--s-6); margin-bottom: var(--s-7); }
 .services__cta { margin-top: var(--s-5); }
-.services__evidence img { aspect-ratio: 3 / 2; height: auto; }
+.services__evidence img { aspect-ratio: 3 / 2; height: auto; object-position: 62% 56%; }
 .svc-log { border-bottom: 1px solid var(--rule); counter-reset: none; }
 .svc-row {
   position: relative;
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-1) var(--s-3);
   padding-block: var(--s-4);
   border-top: 1px solid var(--rule);
 }
-.svc-row__no { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.8125rem; color: var(--teal-ink); padding-top: 6px; }
 .svc-row__title { font-size: var(--fs-1); }
 .svc-row__title a { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; }
 .svc-row__arrow { width: 18px; height: 18px; color: var(--teal-ink); transition: transform var(--dur-ui) var(--ease-out); }
-.svc-row__blurb { grid-column: 2; color: var(--muted); max-width: 60ch; }
+.svc-row__blurb { color: var(--muted); max-width: 60ch; }
 @media (hover: hover) {
   .svc-row::after { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--teal-ink); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-ui) var(--ease-out); }
   .svc-row:hover::after { transform: scaleX(1); }
@@ -817,8 +925,7 @@ html:not(.sw-js) .mobile-menu { display: none; }
 }
 @media (min-width: 900px) {
   .services__head { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: end; gap: var(--s-8); }
-  .svc-row { grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1.25fr); align-items: baseline; padding-block: var(--s-5); }
-  .svc-row__blurb { grid-column: 3; }
+  .svc-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); align-items: baseline; padding-block: var(--s-5); }
 }
 
 /* ── 6. Year plan (t-accent) ── */
@@ -845,6 +952,25 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .yrow--empty { grid-template-columns: 1fr; color: var(--muted-paper); }
 .sw-motion .yrow.is-new { animation: sw-row 420ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 40ms); }
 @keyframes sw-row { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+.yearlog__ring { padding-top: var(--s-4); }
+.yearlog__ring-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.yr-trench { fill: none; stroke: var(--teal-ink); stroke-width: 6; stroke-opacity: .85; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.yearlog[data-plan="liquid"] .yr-trench { stroke-dashoffset: 0; }
+.yearlog[data-plan="bait"] .st circle { fill: var(--teal-ink); stroke: var(--teal-ink); }
+.yearlog[data-plan="bait"] .st text { fill: var(--paper); }
+.yearlog[data-plan="liquid"] .st { opacity: .3; }
+.yearlog__ringlabel { padding-top: var(--s-2); font-size: 0.875rem; color: var(--muted-paper); }
+.sw-motion .yr-trench { transition: stroke-dashoffset var(--dur-story) var(--ease-io); }
+/* The year log's chips light in the drawing's groups of four, in sequence, when the bait row lands */
+[data-st="05"], [data-st="06"], [data-st="07"], [data-st="08"] { --g: 1; }
+[data-st="09"], [data-st="10"], [data-st="11"], [data-st="12"] { --g: 2; }
+.sw-motion .yearlog .st circle, .sw-motion .yearlog .st text { transition: fill 240ms var(--ease-out), stroke 240ms var(--ease-out); transition-delay: calc(var(--i, 0) * 55ms + var(--g, 0) * 180ms); }
+.sw-motion .yearlog .st { transition: opacity var(--dur-ui) var(--ease-out); }
+.sw-motion .yearlog:not(.is-in) .st circle { fill: var(--paper); stroke: var(--deep); }
+.sw-motion .yearlog:not(.is-in) .st text { fill: var(--deep); }
+.sw-motion .yearlog:not(.is-in) .yr-trench { stroke-dashoffset: 1; }
+.yrow--st { background: rgba(35, 107, 93, .09); box-shadow: -8px 0 0 rgba(35, 107, 93, .09), 8px 0 0 rgba(35, 107, 93, .09); }
+.yrow--st .yrow__what { font-weight: 600; }
 .yearlog__foot { display: grid; gap: var(--s-2); padding-top: var(--s-4); }
 .yearlog__count { font-family: 'Chivo', sans-serif; font-weight: 800; font-size: var(--fs-2); line-height: 1.1; }
 .yearlog__num { font-variant-numeric: tabular-nums; color: var(--teal-ink); }
@@ -881,7 +1007,7 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .sw-js .tab-panel { min-height: 9.5em; }
 .tab-panel__title { font-size: var(--fs-2); margin-bottom: var(--s-2); }
 .tab-panel p { font-size: var(--fs-1); line-height: 1.45; }
-.mosquito__evidence img { aspect-ratio: 4 / 3; height: auto; }
+.mosquito__evidence img { aspect-ratio: 4 / 3; height: auto; object-position: 78% 70%; }
 @media (min-width: 900px) {
   .mosquito__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: center; gap: var(--s-8); }
 }
@@ -892,36 +1018,53 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .proof__term { font-size: var(--fs-0); padding: var(--s-4); border: 1px solid var(--rule); border-left: 3px solid var(--accent); }
 .proof__term-label { display: block; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
 .proof__license { font-size: var(--fs--1); color: var(--muted); }
-.reviews { columns: 1; column-gap: var(--s-5); }
+.reviews { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); align-items: start; }
 .review {
-  break-inside: avoid;
-  margin-bottom: var(--s-5);
   padding: var(--s-5);
   border: 1px solid var(--rule);
   border-radius: 2px;
 }
-.review__top { display: flex; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-3); font-family: 'Space Mono', monospace; font-size: 0.75rem; }
-.review__entry { color: var(--accent); font-weight: 700; padding: 2px 10px; border: 1px solid var(--accent); border-radius: 999px; white-space: nowrap; }
+.review__top { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); margin-bottom: var(--s-3); font-size: 0.875rem; }
+.review__entry { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--accent); font-weight: 700; padding: 2px 10px; border: 1px solid var(--accent); border-radius: 999px; white-space: nowrap; }
 .review__stars { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
 .review__stars .i { color: var(--accent); }
 .review__text { font-size: 1.0625rem; line-height: 1.5; margin-bottom: var(--s-3); }
-.review__meta { font-size: var(--fs--1); color: var(--muted); }
-@media (min-width: 640px) { .reviews { columns: 2; } }
+.review__meta { font-size: 0.9375rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+@media (min-width: 640px) { .reviews { grid-template-columns: repeat(2, minmax(0, 1fr)); } .review:last-child:nth-child(odd) { grid-column: 1 / -1; } }
 @media (min-width: 900px) { .proof__head { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: var(--s-8); } }
-@media (min-width: 1100px) { .reviews { columns: 3; } }
+@media (min-width: 1100px) {
+  .reviews { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .review:last-child:nth-child(odd) { grid-column: auto; }
+  .review:last-child:nth-child(3n + 1) { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 2.2fr) minmax(0, .9fr); gap: var(--s-3) var(--s-6); align-items: baseline; }
+  .review:last-child:nth-child(3n + 1) .review__top { flex-direction: column; align-items: flex-start; margin: 0; }
+  .review:last-child:nth-child(3n + 1) .review__text { margin: 0; }
+}
 
-/* ── 9. How a visit reads ── */
-.visit__head { display: grid; gap: var(--s-3); margin-bottom: var(--s-7); }
-.visit__list { display: grid; gap: var(--s-6); counter-reset: none; }
-.visit__step { border-top: 1.5px solid var(--deep); padding-top: var(--s-4); display: grid; gap: var(--s-2); align-content: start; }
-.visit__frame { margin-bottom: var(--s-3); padding-bottom: 6px; }
-.visit__frame img { aspect-ratio: 4 / 3; height: auto; }
-.visit__no { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--teal-ink); font-size: 0.8125rem; }
-.visit__title { font-size: var(--fs-2); }
-.visit__step > p:last-child { color: var(--muted); }
-@media (min-width: 640px) { .visit__list { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 900px) { .visit__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: var(--s-8); } .visit__head .section__title { margin-bottom: 0; } }
-@media (min-width: 1100px) { .visit__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-5); } }
+/* ── 9. How a visit reads: one ticket, four lines, two frames ── */
+.visit__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+.visit__head { margin-bottom: var(--s-6); }
+.visit__ticket { border: 1px solid var(--rule-paper); box-shadow: 0 30px 60px -42px rgba(26, 51, 42, .55); }
+.tline { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 2px var(--s-3); padding-block: var(--s-4); border-top: 1px solid var(--rule-paper); }
+.tline:first-child { border-top: 0; }
+.tline__no { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.8125rem; color: var(--teal-ink); padding-top: 5px; }
+.tline__title { font-size: var(--fs-1); }
+.tline__text { grid-column: 2; color: var(--muted-paper); max-width: 48ch; }
+.visit__photos { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+.visit__frame--inset { width: 62%; margin-left: auto; }
+@media (min-width: 640px) and (max-width: 899px) { .visit__frame--main img { aspect-ratio: 3 / 2; } .visit__frame--inset { width: 48%; } }
+.visit__frame { padding-bottom: 0; }
+.visit__frame--main img { aspect-ratio: 4 / 5; height: auto; object-position: 50% 40%; }
+.visit__frame--inset img { aspect-ratio: 1 / 1; height: auto; }
+@media (min-width: 640px) {
+  .tline { grid-template-columns: 3rem 7.5rem minmax(0, 1fr); align-items: baseline; }
+  .tline__no { padding-top: 0; }
+  .tline__text { grid-column: 3; }
+}
+@media (min-width: 900px) {
+  .visit__grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: var(--s-8); align-items: center; }
+  .visit__photos { order: -1; display: block; position: relative; padding: 0 var(--s-8) 0 0; }
+  .visit__frame--inset { position: absolute; right: 0; bottom: var(--s-8); width: 44%; margin: 0; box-shadow: 0 30px 50px -30px rgba(26, 51, 42, .6); }
+}
 
 /* ── 10. Contact + close ── */
 .close__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
@@ -955,11 +1098,18 @@ html:not(.sw-js) .form-progress { display: none; }
 .open-now { font-weight: 700; color: var(--accent); }
 .close__phone { font-size: var(--fs-2); font-family: 'Chivo', sans-serif; font-weight: 800; }
 .close__email a { display: inline-block; padding-block: 12px; margin-block: -12px; text-decoration: underline; text-underline-offset: 4px; word-break: break-all; }
-.close__hours .hours, .close__hours dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px var(--s-5); font-family: 'Space Mono', monospace; font-size: 0.8125rem; margin-top: var(--s-2); }
+.close__hours { margin-top: var(--s-7); padding-top: var(--s-4); border-top: 1px solid var(--rule); max-width: 560px; }
+.close__hours-title { font-family: 'Chivo', sans-serif; font-weight: 800; font-size: var(--fs-1); }
+.close__hours .hours, .close__hours dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px var(--s-5); font-size: 0.9375rem; font-variant-numeric: tabular-nums; margin-top: var(--s-2); }
 .close__hours dt { font-weight: 700; }
 .close__hours dd { margin: 0; }
 .close__sheet { margin-top: var(--s-5); max-width: 460px; }
 .close__sheet .log-row { border-top: 1.5px solid var(--deep); }
+@media (min-width: 480px) {
+  .close__sheet .log-row { grid-template-columns: auto auto minmax(0, 1fr) auto; gap: var(--s-2) var(--s-4); }
+  .close__sheet .log-row > * { white-space: nowrap; }
+}
+@media (min-width: 900px) { .hero__sheet .log-row { grid-template-columns: auto auto; } .hero__sheet .log-row > :nth-child(2n) { text-align: right; } }
 @media (min-width: 900px) { .close__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); } }
 
 /* ── Footer ── */
@@ -994,7 +1144,7 @@ html:not(.sw-js) .form-progress { display: none; }
 
 /* ── Print: the year log prints on its own ── */
 @media print {
-  .header, .mobilebar, .mobile-menu, .hero__evidence, .yearlog__print, .form-nav { display: none !important; }
+  .header, .mobilebar, .mobile-menu, .hero__photo, .yearlog__print, .form-nav { display: none !important; }
   body { background: #FFFFFF; padding: 0; }
   .t-deep, .t-accent { background: #FFFFFF; color: #000000; }
   .sheet { box-shadow: none; }
@@ -1067,10 +1217,33 @@ html:not(.sw-js) .form-progress { display: none; }
           <a class="btn btn-primary" href="#contact">Book an inspection</a>
           <a class="btn btn-secondary" href="#compare">Compare liquid and bait</a>
         </div>
-        <p class="hero__call">4.8 stars from 309 Sample reviews. Or call <a class="tel-plain" href="tel:+12255550156">(225) 555-0156</a>, Mon–Fri from 7 am.</p>
+        <p class="hero__call">4.8 stars from 309 Sample reviews. <span class="hero__call-line">Or call <a class="tel-plain" href="tel:+12255550156">(225) 555-0156</a>, Monday to Saturday.</span></p>
       </div>
 
       <div class="hero__visual">
+        <figure class="frame hero__photo" data-fallback="Raised house on brick piers beside a live oak">
+          <div class="hero__zoom">
+            <img src="media/hero-B1-1170.webp" srcset="media/hero-B1-1170.webp 1170w, media/hero-B1.webp 2340w" width="1170" height="878" fetchpriority="high" decoding="async" data-photo="hero-B1" data-slot="hero" alt="Two-story raised house on brick piers beside a live oak, green yard in front" sizes="(min-width: 900px) 50vw, 100vw">
+            <svg class="hero__ring" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <path class="ring__back" d="M254 216A68 13 0 0 1 390 216" pathLength="1"/>
+              <path class="ring__front" d="M390 216A68 13 0 0 1 254 216" pathLength="1"/>
+              <g class="rst" data-st="01"><circle cx="356.0" cy="204.7" r="3"/></g>
+              <g class="rst" data-st="02"><circle cx="380.9" cy="209.5" r="3"/></g>
+              <g class="rst" data-st="03"><circle cx="390.0" cy="216.0" r="3"/></g>
+              <g class="rst is-read" data-st="04"><circle cx="380.9" cy="222.5" r="3"/></g>
+              <g class="rst" data-st="05"><circle cx="356.0" cy="227.3" r="3"/></g>
+              <g class="rst" data-st="06"><circle cx="322.0" cy="229.0" r="3"/></g>
+              <g class="rst" data-st="07"><circle cx="288.0" cy="227.3" r="3"/></g>
+              <g class="rst" data-st="08"><circle cx="263.1" cy="222.5" r="3"/></g>
+              <g class="rst" data-st="09"><circle cx="254.0" cy="216.0" r="3"/></g>
+              <g class="rst" data-st="10"><circle cx="263.1" cy="209.5" r="3"/></g>
+              <g class="rst" data-st="11"><circle cx="288.0" cy="204.7" r="3"/></g>
+              <g class="rst" data-st="12"><circle cx="322.0" cy="203.0" r="3"/></g>
+              <g class="ring__tag"><line x1="381" y1="226" x2="376" y2="233"/><rect x="358" y="233" width="30" height="10" rx="1"/><text x="373" y="238.3">BR-04</text></g>
+            </svg>
+          </div>
+          <figcaption class="ticket__cap hero__photo-cap"><span class="ticket__no">BR-01–12</span><span class="ticket__what">Ring around the piers, raised house</span><span class="ticket__read">12 stations</span></figcaption>
+        </figure>
         <div class="sheet hero__sheet">
           <div class="sheet__head">
             <span class="sheet__title">Station map</span>
@@ -1107,10 +1280,6 @@ html:not(.sw-js) .form-progress { display: none; }
             <span class="log-row__act">No hits</span>
           </div>
         </div>
-        <figure class="frame ticket hero__evidence" data-fallback="Probe checking a sill plate">
-          <img src="media/process-probe.jpg" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="process-probe" data-slot="hero" alt="Probe checking the wood of a sill plate">
-          <figcaption class="ticket__cap"><span class="ticket__no">BR-04</span> Sill plate, probed for soft wood</figcaption>
-        </figure>
       </div>
     </div>
   </section>
@@ -1122,7 +1291,7 @@ html:not(.sw-js) .form-progress { display: none; }
         <h2 class="section__title display" id="zip-title">Check your ZIP before you book</h2>
         <p class="zip__areas">We cover Baton Rouge and Zachary, Denham Springs, Prairieville, Gonzales, Central, Baker, Port Allen and Walker.</p>
       </div>
-      <div class="zip__box" data-zip data-zip-yes="Yes, {zip} is on our route. Book an inspection and we’ll set the first visit." data-zip-no="{zip} is outside our usual route. Call (225) 555-0156 and we’ll tell you straight.">
+      <div class="zip__box" data-zip data-zip-yes="Yes, {zip} is on our route. Book an inspection and we’ll walk the foundation on the first visit." data-zip-no="{zip} is outside our usual route. Call (225) 555-0156 and we’ll tell you straight.">
         <label class="zip__label" for="zip-input">Your ZIP code</label>
         <div class="zip__row">
           <input class="zip__input" id="zip-input" name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="70806" autocomplete="postal-code">
@@ -1138,15 +1307,15 @@ html:not(.sw-js) .form-progress { display: none; }
     <div class="container compare__grid">
       <div class="compare__text">
         <h2 class="section__title display" id="compare-title">Liquid or bait, drawn around your house</h2>
-        <p class="lead">Liquid is a barrier trenched and rodded into the soil in a day. Bait is numbered stations, read every visit. Either one can sit under a contract with a retreat.</p>
+        <p class="lead">Liquid is a barrier trenched and rodded into the soil in a day. Bait is numbered stations, read every visit. Either one can go under a yearly contract with retreat terms.</p>
 
         <form class="compare__tool" data-maptool aria-label="Describe your house">
           <fieldset class="field">
             <legend class="field__legend">House type</legend>
-            <div class="chips">
-              <label class="chip"><input type="radio" name="house" value="slab" checked><span>Slab on grade</span></label>
-              <label class="chip"><input type="radio" name="house" value="crawl"><span>Crawlspace</span></label>
-              <label class="chip"><input type="radio" name="house" value="raised"><span>Raised on piers</span></label>
+            <div class="hsteps">
+              <label class="hstep" data-hstep="slab"><input type="radio" name="house" value="slab" checked><span class="hstep__box"><span class="hstep__no">01</span><span class="hstep__name">Slab on grade</span><span class="hstep__text">The trench runs along the slab edge. Stations sit in the soil a step out.</span></span></label>
+              <label class="hstep" data-hstep="crawl"><input type="radio" name="house" value="crawl"><span class="hstep__box"><span class="hstep__no">02</span><span class="hstep__name">Crawlspace</span><span class="hstep__text">Vents and the inner wall get checked too. Stations ring the outer wall.</span></span></label>
+              <label class="hstep" data-hstep="raised"><input type="radio" name="house" value="raised"><span class="hstep__box"><span class="hstep__no">03</span><span class="hstep__name">Raised on piers</span><span class="hstep__text">Every pier gets a probe. Stations ring the footprint under the floor line.</span></span></label>
             </div>
           </fieldset>
           <fieldset class="field">
@@ -1166,30 +1335,17 @@ html:not(.sw-js) .form-progress { display: none; }
         </form>
 
         <p class="compare__verdict" data-verdict aria-live="polite">Leans bait. Twelve numbered stations around the slab, each one read and written down on every visit.</p>
-
-        <div class="compare__cards" data-lean="bait">
-          <article class="ccard" data-card="liquid">
-            <p class="ccard__tag">Leans this way</p>
-            <h3 class="ccard__title">Liquid treatment</h3>
-            <p>Trenched and rodded around the foundation in one day. The barrier sits in the soil.</p>
-            <p class="ccard__price">$1,200 to $2,800 · by foundation length <span class="sample-tag">Sample pricing</span></p>
-          </article>
-          <article class="ccard" data-card="bait">
-            <p class="ccard__tag">Leans this way</p>
-            <h3 class="ccard__title">Bait stations</h3>
-            <p>Numbered stations around the house. Termites carry the bait back to the colony.</p>
-            <p class="ccard__price">$1,300 to $2,600 · first year, installed <span class="sample-tag">Sample pricing</span></p>
-          </article>
-        </div>
-        <a class="btn btn-primary" href="#contact" data-service="Termite contract">Price liquid and bait for my house</a>
+        <a class="btn btn-primary compare__cta" href="#contact" data-service="Termite contract">Price liquid and bait for my house</a>
       </div>
 
       <div class="compare__visual">
+        <div class="compare__pin">
         <div class="sheet compare__sheet">
           <div class="sheet__head">
             <span class="sheet__title">Your house, top down</span>
             <span class="sheet__legend"><span class="key key--trench"></span>Liquid trench <span class="key key--st"></span>Bait station</span>
           </div>
+          <p class="stmap__beat" data-story-beat aria-hidden="true"></p>
           <div class="stmap" data-house="slab" data-method="bait" data-tool-map role="img" aria-label="Station map of a slab house: 12 bait stations lit, liquid trench dimmed">
             <svg class="stmap__svg" viewBox="0 0 330 260" aria-hidden="true" focusable="false">
               <path class="stmap__trench" d="M66 56H244V101H269V209H66Z" pathLength="1"/>
@@ -1229,17 +1385,32 @@ html:not(.sw-js) .form-progress { display: none; }
             </div>
           </div>
         </div>
+        </div>
+        <div class="compare__cards" data-lean="bait">
+          <article class="ccard" data-card="liquid">
+            <p class="ccard__tag">Leans this way</p>
+            <h3 class="ccard__title">Liquid</h3>
+            <p>Trenched and rodded around the foundation in one day. The barrier sits in the soil.</p>
+            <p class="ccard__price"><span class="ccard__range">$1,200–$2,800</span><span class="ccard__note">by foundation length <span class="sample-tag">Sample pricing</span></span></p>
+          </article>
+          <article class="ccard" data-card="bait">
+            <p class="ccard__tag">Leans this way</p>
+            <h3 class="ccard__title">Bait</h3>
+            <p>Numbered stations around the house. Termites carry the bait back to the colony.</p>
+            <p class="ccard__price"><span class="ccard__range">$1,300–$2,600</span><span class="ccard__note">first year, installed <span class="sample-tag">Sample pricing</span></span></p>
+          </article>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- 4. BREAK -->
-  <section class="break t-paper" aria-label="A house on a leafy street">
-    <figure class="frame break__frame" data-fallback="Crawlspace house on a leafy street" data-reveal="clip">
-      <img src="media/home-wilmington.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="home-wilmington" data-slot="break" alt="Crawlspace house on a leafy street">
+  <section class="break t-paper" aria-label="A raised cottage behind an iron fence">
+    <figure class="frame break__frame" data-fallback="Raised white cottage with a columned porch" data-reveal="clip">
+      <img src="media/home-baton-rouge-1170.webp" srcset="media/home-baton-rouge-1170.webp 1170w, media/home-baton-rouge.webp 2340w" sizes="100vw" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-baton-rouge" data-slot="break" alt="Raised white cottage with a columned porch and front steps behind an iron fence">
     </figure>
     <div class="container break__cap-wrap">
-      <p class="ticket__cap break__cap"><span class="ticket__no">Every visit</span> A crawlspace house on a leafy street. The crawlspace gets a flashlight and a probe on every visit.</p>
+      <p class="ticket__cap break__cap"><span class="ticket__no">Porch</span><span class="ticket__what">Front steps and the space under a raised floor get a flashlight and a probe on every visit.</span><span class="ticket__read">Probed</span></p>
     </div>
   </section>
 
@@ -1249,66 +1420,57 @@ html:not(.sw-js) .form-progress { display: none; }
       <div class="services__head">
         <div>
           <h2 class="section__title display" id="services-title">What we check and treat</h2>
-          <p class="lead">Nine lines on the log. Each one says what gets checked, so the ticket shows what you paid for.</p>
+          <p class="lead">Each line is something we check. The ticket says which ones got done, so you can see what you paid for.</p>
           <a class="btn btn-primary services__cta" href="#plan-cost">Price a service for my house</a>
         </div>
-        <figure class="frame ticket services__evidence" data-fallback="Foundation vent on a brick crawlspace wall" data-reveal="clip">
-          <img src="media/detail-crawlspace-vent.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-crawlspace-vent" data-slot="detail-1" alt="Foundation vent on a brick crawlspace wall">
-          <figcaption class="ticket__cap"><span class="ticket__no">Checked</span> Foundation vent, brick crawlspace wall</figcaption>
+        <figure class="frame ticket services__evidence" data-fallback="Mud tube on a block foundation" data-reveal="clip">
+          <img src="media/detail-mud-tube-1170.webp" srcset="media/detail-mud-tube-1170.webp 1170w, media/detail-mud-tube.webp 2340w" width="1170" height="878" loading="lazy" decoding="async" data-photo="detail-mud-tube" data-slot="detail-1" alt="Dirt mud tube running up a concrete block foundation between the siding and the mulch" sizes="(min-width: 900px) 34vw, 100vw">
+          <figcaption class="ticket__cap"><span class="ticket__no">BR-07</span><span class="ticket__what">Mud tube at grade, block wall by the mulch</span><span class="ticket__read">Marked</span></figcaption>
         </figure>
       </div>
       <ol class="svc-log" data-reveal-stagger>
         
         <li class="svc-row">
-          <span class="svc-row__no">01</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Termite contract">Termite contract &amp; renewal<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">A yearly termite contract with a dated inspection log, so renewals show what was checked.</p>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__no">02</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Formosan termites">Formosan termite treatment<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">Treatment aimed at Formosan colonies, which can nest in walls and do not need soil contact.</p>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__no">03</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Bait monitoring">Bait station monitoring<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">Numbered stations around the house checked on a schedule, with readings logged every visit.</p>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__no">04</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Mosquitoes">Mosquito treatment<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">Monthly yard treatment from spring to first frost, aimed at shade and standing water.</p>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__no">05</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Fire ants">Fire ants<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">Yard mounds treated and rechecked, with a note of where new ones keep popping up.</p>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__no">06</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Roaches">Roaches &amp; palmetto bugs<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">Big outdoor roaches kept outside: entry points found, sealed and treated around the edge.</p>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__no">07</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Rats">Rats in the attic<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">Roof rats trapped and their way in sealed, from soffit gaps to tree limbs on the roof.</p>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__no">08</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Quarterly visits">Quarterly pest visits<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">Four logged visits a year, and a ticket that says what was used and where.</p>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__no">09</span>
           <h3 class="svc-row__title"><a href="#contact" data-service="Flood check">After-flood termite check<svg class="i svc-row__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></h3>
           <p class="svc-row__blurb">Wet framing and disturbed bait stations checked after high water, before termites move in.</p>
         </li>
@@ -1322,7 +1484,7 @@ html:not(.sw-js) .form-progress { display: none; }
     <div class="container plan__grid">
       <div class="plan__text">
         <h2 class="section__title display" id="plan-title">Build your year, one visit per line</h2>
-        <p class="lead">Tick what your house needs. The sample year log writes itself on the right, one dated row per visit, with the sample range on each line.</p>
+        <p class="lead">Tick what your house needs. The sample year log fills in as you go, one dated row per visit, with the sample range on each line.</p>
         <form class="plan__form" data-yearplan aria-label="Plan your year">
           <fieldset class="field">
             <legend class="field__legend">Termite plan</legend>
@@ -1356,7 +1518,7 @@ html:not(.sw-js) .form-progress { display: none; }
       </div>
 
       <div class="plan__visual">
-        <div class="sheet yearlog" data-yearlog>
+        <div class="sheet yearlog" data-yearlog data-plan="bait">
           <div class="yearlog__head">
             <span class="logo-mark logo-mark--sheet" aria-hidden="true">TC</span>
             <div>
@@ -1366,13 +1528,31 @@ html:not(.sw-js) .form-progress { display: none; }
           </div>
           <ol class="yearlog__rows" data-yearlog-rows aria-live="polite">
             <li class="yrow"><span class="yrow__date">January</span><span class="yrow__what">Quarterly visit, stations read</span><span class="yrow__price">$110–$170 per visit</span></li>
-            <li class="yrow"><span class="yrow__date">March</span><span class="yrow__what">BR-01 to BR-12, stations installed</span><span class="yrow__price">$1,300–$2,600 first year</span></li>
+            <li class="yrow yrow--st"><span class="yrow__date">March</span><span class="yrow__what">BR-01 to BR-12, stations installed</span><span class="yrow__price">$1,300–$2,600 first year</span></li>
             <li class="yrow"><span class="yrow__date">April</span><span class="yrow__what">Quarterly visit, stations read</span><span class="yrow__price">$110–$170 per visit</span></li>
             <li class="yrow"><span class="yrow__date">June</span><span class="yrow__what">Yard, mosquito treatment</span><span class="yrow__price">$65–$95 per visit</span></li>
             <li class="yrow"><span class="yrow__date">July</span><span class="yrow__what">Quarterly visit, stations read</span><span class="yrow__price">$110–$170 per visit</span></li>
             <li class="yrow"><span class="yrow__date">July</span><span class="yrow__what">Yard, mosquito treatment</span><span class="yrow__price">$65–$95 per visit</span></li>
             <li class="yrow"><span class="yrow__date">October</span><span class="yrow__what">Quarterly visit, stations read</span><span class="yrow__price">$110–$170 per visit</span></li>
           </ol>
+          <div class="yearlog__ring" aria-hidden="true">
+            <svg class="yearlog__ring-svg" viewBox="0 0 330 40" focusable="false">
+              <path class="yr-trench" d="M12 20H318" pathLength="1"/>
+              <g class="st" data-st="01"><circle cx="24" cy="20" r="11"/><text x="24" y="20">01</text></g>
+              <g class="st" data-st="02"><circle cx="50" cy="20" r="11"/><text x="50" y="20">02</text></g>
+              <g class="st" data-st="03"><circle cx="76" cy="20" r="11"/><text x="76" y="20">03</text></g>
+              <g class="st" data-st="04"><circle cx="102" cy="20" r="11"/><text x="102" y="20">04</text></g>
+              <g class="st" data-st="05"><circle cx="128" cy="20" r="11"/><text x="128" y="20">05</text></g>
+              <g class="st" data-st="06"><circle cx="154" cy="20" r="11"/><text x="154" y="20">06</text></g>
+              <g class="st" data-st="07"><circle cx="180" cy="20" r="11"/><text x="180" y="20">07</text></g>
+              <g class="st" data-st="08"><circle cx="206" cy="20" r="11"/><text x="206" y="20">08</text></g>
+              <g class="st" data-st="09"><circle cx="232" cy="20" r="11"/><text x="232" y="20">09</text></g>
+              <g class="st" data-st="10"><circle cx="258" cy="20" r="11"/><text x="258" y="20">10</text></g>
+              <g class="st" data-st="11"><circle cx="284" cy="20" r="11"/><text x="284" y="20">11</text></g>
+              <g class="st" data-st="12"><circle cx="310" cy="20" r="11"/><text x="310" y="20">12</text></g>
+            </svg>
+          </div>
+          <p class="yearlog__ringlabel" data-plan-label>Bait plan: stations BR-01 to BR-12, read on every visit.</p>
           <div class="yearlog__foot">
             <p class="yearlog__count"><span class="yearlog__num" data-yearlog-count>7</span> logged visits this year</p>
             <p class="yearlog__note"><span class="sample-tag">Sample pricing</span> Your number comes after the inspection.</p>
@@ -1407,9 +1587,9 @@ html:not(.sw-js) .form-progress { display: none; }
         <div class="tab-panel" data-tabpanel><h3 class="tab-panel__title">October</h3><p>Last visit before first frost. The ticket closes out the season.</p></div>
         <a class="btn btn-primary mosquito__cta" href="#contact" data-service="Mosquitoes">Book mosquito visits</a>
       </div>
-      <figure class="frame ticket mosquito__evidence" data-fallback="Downspout directing water away from a foundation" data-reveal="clip">
-        <img src="media/detail-gutter.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-gutter" data-slot="detail-2" alt="Downspout directing water away from a foundation">
-        <figcaption class="ticket__cap"><span class="ticket__no">May</span> Gutter and downspout, checked for standing water</figcaption>
+      <figure class="frame ticket mosquito__evidence" data-fallback="Sun through humid haze over a lawn and shade trees" data-reveal="clip">
+        <img src="media/weather-humid-1170.webp" srcset="media/weather-humid-1170.webp 1170w, media/weather-humid.webp 2340w" width="1170" height="780" loading="lazy" decoding="async" data-photo="weather-humid" data-slot="detail-2" alt="Morning sun through humid haze over a lawn, with shade trees on both sides" sizes="(min-width: 900px) 40vw, 100vw">
+        <figcaption class="ticket__cap"><span class="ticket__no">June</span><span class="ticket__what">Shade line under the trees, where they rest</span><span class="ticket__read">Treated</span></figcaption>
       </figure>
     </div>
   </section>
@@ -1498,45 +1678,51 @@ html:not(.sw-js) .form-progress { display: none; }
 
   <!-- 9. HOW A VISIT READS -->
   <section id="process" class="section visit t-paper" aria-labelledby="visit-title">
-    <div class="container">
-      <div class="visit__head">
-        <h2 class="section__title display" id="visit-title">How a visit reads</h2>
-        <p class="lead">Four lines on every ticket, in the order the work gets done.</p>
+    <div class="container visit__grid">
+      <div class="visit__body">
+        <div class="visit__head">
+          <h2 class="section__title display" id="visit-title">How a visit reads</h2>
+          <p class="lead">Every ticket has the same four lines, in the order the tech does the work.</p>
+        </div>
+        <div class="sheet visit__ticket">
+          <div class="sheet__head">
+            <span class="sheet__title">Visit ticket</span>
+            <span class="sheet__meta">Sample · May 14</span>
+          </div>
+          <ol class="visit__list">
+            <li class="tline">
+              <span class="tline__no">01</span>
+              <h3 class="tline__title">Arrive</h3>
+              <p class="tline__text">Walk the foundation with a flashlight and a probe. Mud tubes get marked where they are.</p>
+            </li>
+            <li class="tline">
+              <span class="tline__no">02</span>
+              <h3 class="tline__title">Read</h3>
+              <p class="tline__text">Each station cap comes off and the reading goes down next to its number, hits or no hits.</p>
+            </li>
+            <li class="tline">
+              <span class="tline__no">03</span>
+              <h3 class="tline__title">Treat</h3>
+              <p class="tline__text">Only where a reading says so, with the product named on the ticket.</p>
+            </li>
+            <li class="tline">
+              <span class="tline__no">04</span>
+              <h3 class="tline__title">Leave</h3>
+              <p class="tline__text">A dated ticket with what was used, where, and the re-entry time from the label.</p>
+            </li>
+          </ol>
+        </div>
       </div>
-      <ol class="visit__list">
-        <li class="visit__step">
-          <figure class="frame ticket visit__frame" data-fallback="Hand probing a foundation with a flashlight" data-reveal="clip">
-            <img src="media/process-inspect-exterior.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-inspect-exterior" data-slot="gallery.0" alt="Hand probing a foundation with a flashlight">
-          </figure>
-          <p class="visit__no">01</p>
-          <h3 class="visit__title">Arrive</h3>
-          <p>Walk the foundation with a flashlight and a probe. Mud tubes get marked where they are.</p>
-        </li>
-        <li class="visit__step">
-          <figure class="frame ticket visit__frame" data-fallback="Mud tube on a concrete block foundation" data-reveal="clip">
-            <img src="media/detail-mud-tube.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-mud-tube" data-slot="gallery.1" alt="Mud tube on a concrete block foundation">
-          </figure>
-          <p class="visit__no">02</p>
-          <h3 class="visit__title">Read</h3>
-          <p>Every station opened, every reading written down by number.</p>
-        </li>
-        <li class="visit__step">
-          <figure class="frame ticket visit__frame" data-fallback="Moisture meter on a crawlspace joist" data-reveal="clip">
-            <img src="media/process-moisture.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-moisture" data-slot="gallery.2" alt="Moisture meter reading on a crawlspace joist">
-          </figure>
-          <p class="visit__no">03</p>
-          <h3 class="visit__title">Treat</h3>
-          <p>Only where a reading says so, with the product named on the ticket.</p>
-        </li>
-        <li class="visit__step">
-          <figure class="frame ticket visit__frame" data-fallback="Hand holding a product label sheet" data-reveal="clip">
-            <img src="media/hands-label.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="hands-label" data-slot="gallery.3" alt="Hand holding a product label sheet">
-          </figure>
-          <p class="visit__no">04</p>
-          <h3 class="visit__title">Leave</h3>
-          <p>A dated ticket with what was used, where, and the re-entry time from the label.</p>
-        </li>
-      </ol>
+      <div class="visit__photos">
+        <figure class="frame ticket visit__frame visit__frame--main" data-fallback="Two clipboards with inspection checklists" data-reveal="clip">
+          <img src="media/process-report-1170.webp" srcset="media/process-report-1170.webp 1170w, media/process-report.webp 2340w" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-report" data-slot="gallery.0" alt="Two clipboards with filled-in inspection checklists and red pens on dark pavement" sizes="(min-width: 900px) 40vw, 100vw">
+          <figcaption class="ticket__cap"><span class="ticket__no">Line 04</span><span class="ticket__what">The ticket, before the truck leaves</span><span class="ticket__read">Left</span></figcaption>
+        </figure>
+        <figure class="frame ticket visit__frame visit__frame--inset" data-fallback="Termite galleries in a piece of wood" data-reveal="clip">
+          <img src="media/detail-wood-damage-1170.webp" srcset="media/detail-wood-damage-1170.webp 1170w, media/detail-wood-damage.webp 2340w" width="1170" height="878" loading="lazy" decoding="async" data-photo="detail-wood-damage" data-slot="gallery.1" alt="Close-up of layered termite galleries eaten through a piece of wood" sizes="(min-width: 900px) 20vw, 60vw">
+          <figcaption class="ticket__cap"><span class="ticket__no">Line 01</span><span class="ticket__what">What the probe finds</span></figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 
@@ -1610,11 +1796,15 @@ html:not(.sw-js) .form-progress { display: none; }
             <button class="btn btn-primary" type="button" data-next data-js-only>Next: house type</button>
             <button class="btn btn-primary" type="submit" data-submit>Send my request</button>
           </div>
-          <p class="form-microcopy">Trap Count calls you back to set a visit time.</p>
+          <p class="form-microcopy">Trap Count calls you back to set the inspection. If you need a termite letter, add your closing date in step 3.</p>
         </form>
         <div class="form-thanks" data-thanks-box hidden>
           <p class="form-thanks__title display">This is a demo, nothing was sent.</p>
           <p>On the real site this goes to Trap Count. To book today, call <a class="tel-plain" href="tel:+12255550156">(225) 555-0156</a>.</p>
+        </div>
+        <div class="close__hours">
+          <p class="close__hours-title">Office hours</p>
+          <dl class="hours"><div><dt>Mon</dt><dd>7 am – 6 pm</dd></div><div><dt>Tue</dt><dd>7 am – 6 pm</dd></div><div><dt>Wed</dt><dd>7 am – 6 pm</dd></div><div><dt>Thu</dt><dd>7 am – 6 pm</dd></div><div><dt>Fri</dt><dd>7 am – 5 pm</dd></div><div><dt>Sat</dt><dd>8 am – noon</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
         </div>
       </div>
 
@@ -1622,7 +1812,6 @@ html:not(.sw-js) .form-progress { display: none; }
         <p class="open-now"><span data-open-now>Mon–Thu 7 am – 6 pm · Fri 7 am – 5 pm · Sat 8 am – noon</span></p>
         <p class="close__phone">Call <a class="tel-plain" href="tel:+12255550156">(225) 555-0156</a></p>
         <p class="close__email">Email <a href="mailto:hello@trap-count-pest.example">hello@trap-count-pest.example</a></p>
-        <div class="close__hours"><dl class="hours"><div><dt>Mon</dt><dd>7 am – 6 pm</dd></div><div><dt>Tue</dt><dd>7 am – 6 pm</dd></div><div><dt>Wed</dt><dd>7 am – 6 pm</dd></div><div><dt>Thu</dt><dd>7 am – 6 pm</dd></div><div><dt>Fri</dt><dd>7 am – 5 pm</dd></div><div><dt>Sat</dt><dd>8 am – noon</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl></div>
         <div class="sheet close__sheet">
           <div class="stmap" data-house="slab" data-method="bait" data-footer-map>
             <svg class="stmap__svg" viewBox="0 0 330 260" aria-hidden="true" focusable="false">
@@ -1646,8 +1835,8 @@ html:not(.sw-js) .form-progress { display: none; }
           </div>
           <div class="log-row log-row--sheet">
             <span>Next visit</span>
-            <span class="log-row__st">BR-01 to BR-12</span>
-            <span>All stations read</span>
+            <span class="log-row__st">All 12</span>
+            <span>Read and logged</span>
             <span class="log-row__act">Scheduled</span>
           </div>
         </div>
@@ -1659,16 +1848,16 @@ html:not(.sw-js) .form-progress { display: none; }
 
 <footer class="footer t-deep">
   <div class="container footer__inner">
-    <p class="footer__brand"><span class="logo-mark" aria-hidden="true">TC</span> Trap Count Pest Co.. Termite and pest control in Baton Rouge, LA.</p>
+    <p class="footer__brand"><span class="logo-mark" aria-hidden="true">TC</span> Trap Count Pest Co., termite and pest control in Baton Rouge, LA.</p>
     <p class="footer__disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
-    <ul class="credits"></ul>
+    <ul class="credits"><li>Photo by Infrogmation of New Orleans on <a href="https://commons.wikimedia.org/wiki/File:JesuitBendPierHouse1.JPG" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="noopener license" target="_blank">CC BY-SA 3.0</a></li><li>Photo by Infrogmation of New Orleans on <a href="https://commons.wikimedia.org/wiki/File:Old_Jefferson_Jefferson_Parish_Louisiana_Jan_2018_Claiborne_Court_Old_Looking_House.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Green Pest Expert on <a href="https://commons.wikimedia.org/wiki/File:Big_Headed_Ant_mud_tube_in_Florida..jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Dietmar Rabich on <a href="https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_M%C3%BChlenwegfriedhof_--_2012_--_8083.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Unknown creator on <a href="https://commons.wikimedia.org/wiki/File:USMC-100914-M-0646Q-45.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:USMC-100914-M-0646Q-45.jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by Pratishkhedekar on <a href="https://commons.wikimedia.org/wiki/File:Termite_damage_on_a_block_of_wood_02.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul>
     <p class="footer__copy">&copy; 2026 Trap Count Pest Co.</p>
   </div>
 </footer>
 
 <div class="mobilebar t-deep" data-mobilebar>
   <a class="btn btn-secondary mobilebar__call" href="tel:+12255550156"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call</span></a>
-  <a class="btn btn-primary mobilebar__book" href="#contact">Book a visit</a>
+  <a class="btn btn-primary mobilebar__book" href="#contact">Book an inspection</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Trap Count Pest Co.","short":"Trap Count","phone":"(225) 555-0156","phoneE164":"+12255550156","sms":true,"email":"hello@trap-count-pest.example","city":"Baton Rouge","state":"LA","timezone":"America/Chicago","areas":["Zachary","Denham Springs","Prairieville","Gonzales","Central","Baker","Port Allen","Walker"],"zips":["70806","70808","70809","70810","70815","70816","70817","70791","70726","70769","70737","70818","70714","70767"],"hours":{"mon":["07:00","18:00"],"tue":["07:00","18:00"],"wed":["07:00","18:00"],"thu":["07:00","18:00"],"fri":["07:00","17:00"],"sat":["08:00","12:00"],"sun":null},"emergency":false},"services":[{"name":"Termite contract & renewal","short":"Termite contract"},{"name":"Formosan termite treatment","short":"Formosan termites"},{"name":"Bait station monitoring","short":"Bait monitoring"},{"name":"Mosquito treatment","short":"Mosquitoes"},{"name":"Fire ants","short":"Fire ants"},{"name":"Roaches & palmetto bugs","short":"Roaches"},{"name":"Rats in the attic","short":"Rats"},{"name":"Quarterly pest visits","short":"Quarterly visits"},{"name":"After-flood termite check","short":"Flood check"}],"proof":{"label":"Sample","prices":[{"item":"Termite contract renewal","from":"$250","to":"$450","unit":"per year"},{"item":"Liquid termite treatment","from":"$1,200","to":"$2,800","note":"by foundation length"},{"item":"Bait station system","from":"$1,300","to":"$2,600","note":"first year, installed"},{"item":"Mosquito treatment","from":"$65","to":"$95","unit":"per visit","note":"monthly, April to frost"},{"item":"Quarterly pest visits","from":"$110","to":"$170","unit":"per visit"},{"item":"Rats in the attic","from":"$350","to":"$1,200","note":"trapping plus sealing"}]},"hours":{"mon":["07:00","18:00"],"tue":["07:00","18:00"],"wed":["07:00","18:00"],"thu":["07:00","18:00"],"fri":["07:00","17:00"],"sat":["08:00","12:00"],"sun":null},"timezone":"America/Chicago","zips":["70806","70808","70809","70810","70815","70816","70817","70791","70726","70769","70737","70818","70714","70767"],"areas":["Zachary","Denham Springs","Prairieville","Gonzales","Central","Baker","Port Allen","Walker"],"phone":"(225) 555-0156","phoneE164":"+12255550156"}</script>
 <script defer src="vendor/gsap.min.js"></script>

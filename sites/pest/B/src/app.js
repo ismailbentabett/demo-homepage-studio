@@ -82,7 +82,7 @@
     var rows = [];
     if (termite === 'liquid') rows.push({ m: 2, what: 'Perimeter trenched and rodded, one barrier', price: range(1), visit: true });
     if (termite === 'bait') {
-      rows.push({ m: 2, what: 'BR-01 to BR-12, stations installed', price: range(2), visit: true });
+      rows.push({ m: 2, what: 'BR-01 to BR-12, stations installed', price: range(2), visit: true, st: true });
       if (!quarterly) [5, 8, 11].forEach(function (m) { rows.push({ m: m, what: 'Stations read, BR-01 to BR-12', price: 'In plan', visit: true }); });
     }
     if (quarterly) [0, 3, 6, 9].forEach(function (m) {
@@ -106,7 +106,7 @@
     }
     rows.forEach(function (r, i) {
       var li = document.createElement('li');
-      li.className = 'yrow' + (motion ? ' is-new' : '');
+      li.className = 'yrow' + (r.st ? ' yrow--st' : '') + (motion ? ' is-new' : '');
       li.style.setProperty('--i', i);
       var d = document.createElement('span'); d.className = 'yrow__date'; d.textContent = r.m === 12 ? 'Year end' : MON[r.m];
       var w = document.createElement('span'); w.className = 'yrow__what'; w.textContent = r.what;
@@ -114,6 +114,18 @@
       li.appendChild(d); li.appendChild(w); li.appendChild(p);
       rowsEl.appendChild(li);
     });
+    var yl = q('[data-yearlog]');
+    var label = q('[data-plan-label]');
+    if (yl) {
+      /* Switching to bait relights the chip strip from 01, in the drawing's groups of four */
+      var was = yl.getAttribute('data-plan');
+      if (motion && termite === 'bait' && was !== 'bait') { yl.classList.remove('is-in'); void yl.offsetWidth; }
+      yl.setAttribute('data-plan', termite || 'none');
+      if (motion) requestAnimationFrame(function () { yl.classList.add('is-in'); });
+    }
+    if (label) label.textContent = termite === 'bait' ? 'Bait plan: stations BR-01 to BR-12, read on every visit.'
+      : termite === 'liquid' ? 'Liquid plan: one trenched barrier around the footprint, no stations to read.'
+      : 'No termite plan picked: no stations on this year.';
     if (countEl) {
       var n = rows.filter(function (r) { return r.visit; }).length;
       countEl.textContent = n;
@@ -163,10 +175,27 @@
     requestAnimationFrame(function () { ticking = false; sweepReveals(); });
   }, { passive: true });
   window.addEventListener('load', sweepReveals);
+
+  /* Anchor jumps: the target band and everything in it is shown at once */
+  function revealTarget(hash) {
+    if (!hash || hash.length < 2) return;
+    var t = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (!t) return;
+    var sec = t.closest('section') || t;
+    var list = qa('[data-reveal], [data-reveal-stagger]', sec);
+    if (sec.matches('[data-reveal], [data-reveal-stagger]')) list.push(sec);
+    list.forEach(function (el) { el.classList.add('is-in'); });
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (a) revealTarget(a.getAttribute('href'));
+  });
+  window.addEventListener('hashchange', function () { revealTarget(location.hash); });
+  revealTarget(location.hash);
   sweepReveals();
 
   /* ── 2. Motion: the maps relight when they come into view ── */
-  var watched = qa('[data-tool-map], [data-footer-map]');
+  var watched = qa('[data-tool-map], [data-footer-map], [data-yearlog]');
   if (!motion) {
     watched.forEach(function (m) { m.classList.add('is-in'); });
     return;
@@ -198,6 +227,51 @@
         /* The break photo drifts slower than the page: a quiet depth cue, no pin. */
         var img = q('.break__frame img');
         if (img) gsap.fromTo(img, { yPercent: -6, scale: 1.12 }, { yPercent: 6, scale: 1.12, ease: 'none', scrollTrigger: { trigger: '.break__frame', start: 'top bottom', end: 'bottom top', scrub: true } });
+      },
+      '(min-width: 900px)': function () {
+        /* Liquid or bait as a scroll story. The drawing pins (sticky) while the house steps pass:
+           the trench draws itself around the slab, then the bait stations light in groups of four
+           as the house turns slab -> crawlspace -> raised. Scrolling back runs it in reverse.
+           Touching the tool ends the story and hands the drawing to the inputs. */
+        if (!toolMap || !tool) return;
+        var beat = q('[data-story-beat]');
+        var steps = qa('[data-hstep]');
+        var BEATS = ['', 'Liquid · the trench, drawn around the slab', 'Bait · BR-01 to BR-04, slab', 'Bait · BR-05 to BR-08, crawlspace', 'Bait · BR-09 to BR-12, raised, every one read'];
+        var HOUSES = ['slab', 'slab', 'slab', 'crawl', 'raised'];
+        var done = false;
+        function clear() {
+          toolMap.removeAttribute('data-story');
+          toolMap.style.removeProperty('--trench');
+          if (beat) beat.textContent = '';
+          steps.forEach(function (l) { l.classList.remove('is-story'); });
+          updateTool();
+        }
+        function render(p) {
+          if (done) return;
+          if (p === null) { clear(); return; }
+          var draw = Math.max(0, Math.min(1, (p - 0.04) / 0.26));
+          var s = p < 0.03 ? 0 : p < 0.32 ? 1 : p < 0.52 ? 2 : p < 0.72 ? 3 : 4;
+          toolMap.style.setProperty('--trench', (1 - draw).toFixed(3));
+          if (toolMap.getAttribute('data-story') !== String(s)) {
+            toolMap.setAttribute('data-story', s);
+            toolMap.setAttribute('data-house', HOUSES[s]);
+            if (beat) beat.textContent = BEATS[s];
+            steps.forEach(function (l) { l.classList.toggle('is-story', s > 0 && l.getAttribute('data-hstep') === HOUSES[s]); });
+          }
+        }
+        var st = ScrollTrigger.create({
+          trigger: '.compare__grid',
+          start: 'top 70%',
+          end: 'bottom 80%',
+          onUpdate: function (self) { render(self.progress >= 1 ? null : self.progress); },
+          onLeave: function () { render(null); },
+          onLeaveBack: function () { render(0); },
+          onEnterBack: function (self) { render(self.progress); }
+        });
+        if (st.progress > 0 && st.progress < 1) render(st.progress); else if (st.progress <= 0) render(0);
+        function stop() { clear(); done = true; st.kill(); }
+        tool.addEventListener('change', stop, { once: true });
+        return function () { if (!done) clear(); st.kill(); };
       }
     });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
