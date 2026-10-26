@@ -1,5 +1,8 @@
 # Blueprint — cleaning-B (Every Other Friday Cleaning)
 
+## Round 3 (photo pass)
+Real photos placed (mustFix 1): hero-B2 (towels on a made bed, ticket hero), checklist process-oven / shower-glass / blinds / mop, break room-bath, crew detail-sink / process-vacuum / detail-towels, area home-greenville (no caption names a place), contact detail-microfiber. hero-A3 / hero-C1 / hero-C2 left to the siblings. Footer credits now render real Commons credits; the quiz meter shows a faint empty track instead of a blank box.
+
 ## Round 3
 Elevate (motion): the scroll now prints the receipt. Each strip's lines feed out left to right one after another (GSAP clip, plays once). The services receipt prints row by row. The estimator picks echo into the hero ticket and the footer TOTAL. Layout: the strips hang from the band top, end at their content with a torn edge and stay sticky beside long columns. Strips alternate left/right (price, frequency and contact flipped). #services is now ledger rows, not a 3×3 card grid. Fixes: the 390/320 overflow (.area/.zip auto grid tracks + the mobile bar at 320; overflow-x: clip backstop), one 2px radius, sentence-case labels, an aria-live empty slip, the credits disclosure removed, a print-ticket action and every copy-3 replacement. Photo stays placeholder (the niche has no real photos).
 
