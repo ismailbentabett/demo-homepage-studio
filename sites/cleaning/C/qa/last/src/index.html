@@ -1,34 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
   <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
-  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
-  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header data-header class="header" aria-label="Site">
   <div class="header__inner container">
-    <a href="#hero" class="header__logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">
+      <span class="logo__mark" aria-hidden="true">{{biz.initials}}</span>
+      <span class="logo__word">{{biz.name}}</span>
+    </a>
     <nav class="header__nav" aria-label="Primary">
       <a href="#services">Services</a>
       <a href="#proof">Reviews</a>
       <a href="#area">Area</a>
-      <a href="#contact">Book</a>
+      <a href="#contact" class="header__book">Book a visit</a>
     </nav>
     <button class="header__menu-btn" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Menu">[[i menu]]</button>
-    <div class="season-dial header__dial" data-sw-signature="season-dial" aria-hidden="true">
-      <svg viewBox="0 0 100 100" class="season-dial__svg">
-        <circle cx="50" cy="50" r="46" fill="none" stroke="var(--rule)" stroke-width="2"/>
-        <path class="season-dial__seg season-dial__seg--spring" d="M50 4 A46 46 0 0 1 96 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-        <path class="season-dial__seg season-dial__seg--summer" d="M96 50 A46 46 0 0 1 50 96" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-        <path class="season-dial__seg season-dial__seg--fall" d="M50 96 A46 46 0 0 1 4 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-        <path class="season-dial__seg season-dial__seg--winter" d="M4 50 A46 46 0 0 1 50 4" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-      </svg>
-    </div>
   </div>
   <div class="header__progress" data-progress></div>
 </header>
@@ -40,226 +32,301 @@
     <a href="#proof">Reviews</a>
     <a href="#area">Area</a>
     <a href="#contact">Book a visit</a>
-    <a href="tel:{{biz.phoneE164}}" class="btn btn--primary">Call [[tel]]</a>
+    <a href="tel:{{biz.phoneE164}}" class="btn btn--primary">Call {{biz.phone}}</a>
   </div>
 </nav>
 
+<!-- Season Dial clock: pinned top-right on wide screens while the four spreads scroll past (motion only) -->
+<div class="dial-clock" data-dial-clock aria-hidden="true">
+  <svg class="dial" viewBox="0 0 100 100" focusable="false">
+    <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+    <circle class="dial__track" cx="50" cy="50" r="40"/>
+    <circle class="dial__sweep" cx="50" cy="50" r="40" pathLength="100"/>
+    <path class="dial__q" data-q="spring" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+    <path class="dial__q" data-q="summer" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+    <path class="dial__q" data-q="fall" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+    <path class="dial__q" data-q="winter" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+    <line class="dial__hand" x1="50" y1="50" x2="50" y2="17"/>
+    <circle class="dial__hub" cx="50" cy="50" r="3"/>
+  </svg>
+  <p class="dial-clock__label mono" data-dial-label>Spring</p>
+</div>
+
 <main id="main">
 
-  <!-- 1. HERO -->
-  <section id="hero" class="section t-deep hero" data-reveal>
-    <div class="hero__media">
-      [[img hero-C1 | eager class="hero__img"]]
+  <!-- 1. HERO: almanac cover -->
+  <section id="hero" class="section t-deep hero" data-sw-signature="season-dial">
+    <div class="hero__media" aria-hidden="true">
+      [[frame hero-C1 hero__frame | | eager class="hero__img"]]
+      <div class="hero__fog"></div>
       <div class="hero__scrim"></div>
     </div>
-    <div class="container hero__content">
-      <p class="kicker mono">The House Almanac · Spring Edition</p>
-      <h1 class="hero__title" data-split="lines">House Cleaning in {{biz.city}}, {{biz.state}}</h1>
-      <p class="hero__proof mono">[[i star]] {{proof.rating}} · {{proof.reviewCount}} reviews · [[sample rating]] · {{proof.years}} years</p>
-      <div class="hero__actions">
-        <a href="#contact" class="btn btn--primary">Price it</a>
-        <a href="tel:{{biz.phoneE164}}" class="btn btn--ghost">[[i phone]] <span>{{biz.phone}}</span></a>
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <p class="kicker mono">{{biz.short}} · The House Almanac</p>
+        <h1 class="hero__title" data-split="lines">House cleaning in {{biz.city}},<br class="hero__br"> planned by the season</h1>
+        <p class="hero__lead">Each visit's list follows the season, from April pollen on the porch screens to August mildew in the grout. You see a sample price before anyone walks in.</p>
+        <p class="hero__proof mono">[[i star]] {{proof.rating}} · {{proof.reviewCount}} reviews [[sample rating]] · {{proof.years}} years in {{biz.city}}</p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">Price my cleaning</a>
+          <a href="tel:{{biz.phoneE164}}" class="btn btn--line">[[i phone]] <span>Call {{biz.phone}}</span></a>
+        </div>
+      </div>
+      <div class="hero__dial" aria-hidden="true">
+        <svg class="dial dial--cover" viewBox="0 0 100 100" focusable="false" data-dial-today>
+          <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+          <circle class="dial__track" cx="50" cy="50" r="40"/>
+          <path class="dial__q" data-q="spring" pathLength="1" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+          <path class="dial__q" data-q="summer" pathLength="1" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+          <path class="dial__q is-on" data-q="fall" pathLength="1" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+          <path class="dial__q" data-q="winter" pathLength="1" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+          <line class="dial__hand" x1="50" y1="25" x2="50" y2="13"/>
+        </svg>
+        <span class="hero__dial-lbl hero__dial-lbl--spring mono">Spring · pollen</span>
+        <span class="hero__dial-lbl hero__dial-lbl--summer mono">Summer · mildew</span>
+        <span class="hero__dial-lbl hero__dial-lbl--fall mono">Fall · guests</span>
+        <span class="hero__dial-lbl hero__dial-lbl--winter mono">Winter · cabins</span>
+        <span class="hero__dial-year"><span class="mono">Edition</span>{{year}}</span>
       </div>
     </div>
   </section>
 
-  <!-- 2. INTRO -->
-  <section id="intro" class="section t-accent statement" data-reveal>
-    <div class="container statement__inner">
-      <h2>A year of care for {{biz.city}} houses</h2>
-      <p class="lead">{{biz.short}} follows the seasons: pollen in spring, mildew in summer, guest prep in fall, and a steady every-two-weeks visit that keeps the house at its baseline. Sample pricing below; your number comes after a walk-through or photos.</p>
-      <div class="price-card">
-        <p class="price-card__label mono">Sample pricing</p>
-        <p class="price-card__item">{{proof.prices.0.item}}</p>
-        <p class="price-card__range mono">{{proof.prices.0.from}} – {{proof.prices.0.to}} <span class="price-card__unit">{{proof.prices.0.unit}}</span></p>
-        <p class="price-card__note mono">{{proof.prices.0.note}}</p>
+  <!-- 2. CONTENTS: what the year holds + sample price anchor -->
+  <section id="intro" class="section t-accent contents">
+    <div class="container contents__grid">
+      <div class="contents__text">
+        <p class="kicker mono">In this almanac</p>
+        <h2>A year of care for {{biz.city}} houses</h2>
+        <p class="lead">{{biz.short}} follows the seasons: pollen in spring, mildew in summer, guest prep in fall, and a steady every-two-weeks visit that keeps the house at its baseline. Your number comes after a walk-through or photos.</p>
+        <div class="price-card">
+          <p class="price-card__label mono">{{proof.prices.0.item}} [[sample pricing]]</p>
+          <p class="price-card__range">{{proof.prices.0.from}}–{{proof.prices.0.to}}</p>
+          <p class="price-card__note mono">{{proof.prices.0.unit}} · {{proof.prices.0.note}}</p>
+        </div>
       </div>
+      <ol class="contents__list">
+        <li><a href="#almanac-spring"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/></svg><span class="contents__when mono">March–May</span><span class="contents__what">Spring · Pollen week</span></a></li>
+        <li><a href="#almanac-summer"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/></svg><span class="contents__when mono">June–August</span><span class="contents__what">Summer · Mildew</span></a></li>
+        <li><a href="#almanac-fall"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/></svg><span class="contents__when mono">September–November</span><span class="contents__what">Fall · Guest-ready</span></a></li>
+        <li><a href="#almanac-winter"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/></svg><span class="contents__when mono">December–February</span><span class="contents__what">Winter · Weekend houses</span></a></li>
+      </ol>
     </div>
   </section>
 
-  <!-- 3. SPRING -->
-  <section id="almanac-spring" class="section t-paper split" data-hook="season-planner" data-reveal>
-    <div class="container split__inner">
-      <div class="split__text">
-        <p class="dateline mono">Late March · {{biz.areas.0}}</p>
+  <!-- 3. SPRING: portrait spread -->
+  <section id="almanac-spring" class="section t-paper spread spread--spring" data-hook="season-planner" data-sw-signature="season-dial" data-season="spring">
+    <div class="container spread__grid">
+      <div class="spread__text" data-reveal>
+        <div class="dateline">
+          <svg class="dial dial--date" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="--a:45deg"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" pathLength="1" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/><line class="dial__hand" x1="50" y1="50" x2="50" y2="20"/></svg>
+          <p class="mono">Late March · {{biz.areas.0}}</p>
+        </div>
         <h2>Pollen week: what we add</h2>
         <p>{{services.1.blurb}}</p>
-        <p class="addon mono">Add-on: {{proof.prices.3.item}} — {{proof.prices.3.from}}–{{proof.prices.3.to}} <span class="mono">({{proof.prices.3.note}})</span> [[sample pricing]]</p>
+        <p class="addon mono"><span>Add to any visit: {{proof.prices.3.from}}–{{proof.prices.3.to}} ({{proof.prices.3.note}})</span> [[sample pricing]]</p>
         <a href="#contact" class="btn btn--secondary" data-service="{{services.1.short}}">Add pollen clean</a>
       </div>
-      <div class="split__media">
-        [[frame detail-pollen | data-reveal="clip"]]
+      <div class="spread__media">
+        [[frame detail-microfiber frame--tall | data-reveal="clip"]]
       </div>
     </div>
   </section>
 
-  <!-- 4. SUMMER -->
-  <section id="almanac-summer" class="section t-mid split split--rev" data-reveal>
-    <div class="container split__inner">
-      <div class="split__media">
-        [[frame process-grout | data-reveal="clip"]]
+  <!-- 4. SUMMER: reversed spread with a pull-quote -->
+  <section id="almanac-summer" class="section t-mid spread spread--rev" data-sw-signature="season-dial" data-season="summer">
+    <div class="container spread__grid">
+      <div class="spread__media">
+        [[frame process-shower-glass | data-reveal="clip"]]
       </div>
-      <div class="split__text">
-        <p class="dateline mono">August · {{biz.areas.3}}</p>
+      <div class="spread__text" data-reveal>
+        <div class="dateline">
+          <svg class="dial dial--date" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="--a:135deg"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" pathLength="1" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/><line class="dial__hand" x1="50" y1="50" x2="50" y2="20"/></svg>
+          <p class="mono">August · {{biz.areas.3}}</p>
+        </div>
         <h2>Mildew on grout and caulk</h2>
         <p>{{services.4.blurb}}</p>
         <blockquote class="review-mini">
-          <p>"{{proof.reviews.2.text}}"</p>
-          <footer class="mono">— {{proof.reviews.2.name}}, {{proof.reviews.2.town}} · [[sample review]]</footer>
+          <p>“{{proof.reviews.2.text}}”</p>
+          <footer class="mono">{{proof.reviews.2.name}}, {{proof.reviews.2.town}} · [[sample review]]</footer>
         </blockquote>
-        <a href="#contact" class="btn btn--primary" data-service="{{services.4.short}}">Price it</a>
+        <a href="#contact" class="btn btn--primary" data-service="{{services.4.short}}">Price a mildew clean</a>
       </div>
     </div>
   </section>
 
-  <!-- 5. BREAK -->
-  <section class="section t-deep break" data-reveal>
-    [[frame home-chattanooga | break__frame data-reveal="clip" | alt="Older house on a hill street with trees"]]
-    <div class="break__caption container">
-      <p class="mono">{{biz.city}}, {{biz.stateName}} · river valley fog and ridge lines</p>
+  <!-- 5. BREAK: the turn of the page -->
+  <section class="section t-deep break" aria-label="The year, by the house">
+    [[frame home-greenville break__frame]]
+    <div class="break__scrim" aria-hidden="true"></div>
+    <div class="container break__inner" data-reveal>
+      <p class="break__line">Same house. Four different messes a year.</p>
+      <p class="break__caption mono">Four seasons · one house · one list that changes</p>
     </div>
   </section>
 
-  <!-- 6. FALL — editorial statement with embedded tool -->
-  <section id="almanac-fall" class="section t-paper editorial" data-hook="countdown" data-reveal="scale">
-    <div class="container editorial__inner">
-      <p class="dateline mono">November · {{biz.areas.4}}</p>
-      <h2>Guest-ready before the holidays</h2>
-      <p class="lead">{{services.5.blurb}}</p>
-      <div class="editorial__tool-row">
-        <div class="countdown-tool" data-countdown>
-          <p class="mono">Guest arrival date?</p>
-          <label class="sr-only" for="guest-date">Arrival date</label>
-          <input type="date" id="guest-date" class="countdown-tool__input" />
-          <div class="countdown-tool__result" aria-live="polite">
-            <div class="countdown-tool__dial-wrap">
-              <svg viewBox="0 0 100 100" class="countdown-dial" aria-hidden="true">
-                <circle cx="50" cy="50" r="46" fill="none" stroke="var(--rule)" stroke-width="2"/>
-                <path class="countdown-dial__seg countdown-dial__seg--spring" d="M50 4 A46 46 0 0 1 96 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-                <path class="countdown-dial__seg countdown-dial__seg--summer" d="M96 50 A46 46 0 0 1 50 96" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-                <path class="countdown-dial__seg countdown-dial__seg--fall" d="M50 96 A46 46 0 0 1 4 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-                <path class="countdown-dial__seg countdown-dial__seg--winter" d="M4 50 A46 46 0 0 1 50 4" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <p class="countdown-tool__text mono"></p>
-          </div>
-          <a href="#contact" class="btn btn--secondary" data-service="{{services.5.short}}">Hold these dates</a>
-        </div>
-        <div class="editorial__media">
-          [[frame season-holiday | data-reveal="clip"]]
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. WINTER -->
-  <section id="almanac-winter" class="section t-deep split split--rev" data-reveal>
-    <div class="container split__inner">
-      <div class="split__media">
-        [[frame room-living | data-reveal="clip"]]
-      </div>
-      <div class="split__text">
-        <p class="dateline mono">January · {{biz.areas.1}}</p>
-        <h2>Weekend houses and move-outs</h2>
-        <p>{{services.7.blurb}}</p>
-        <p class="addon mono">Every-two-weeks base: {{proof.prices.0.from}}–{{proof.prices.0.to}} {{proof.prices.0.unit}} [[sample pricing]]</p>
-        <a href="#contact" class="btn btn--primary" data-service="{{services.7.short}}">Price it</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 8. SERVICES -->
-  <section id="services" class="section t-paper grid-section" data-reveal>
+  <!-- 6. FALL: the countdown planner -->
+  <section id="almanac-fall" class="section t-paper planner" data-hook="countdown" data-sw-signature="season-dial" data-season="fall">
     <div class="container">
-      <h2>What we clean</h2>
-      <ul class="svc-grid" data-reveal-stagger>
+      <div class="planner__head" data-reveal>
+        <div class="dateline">
+          <svg class="dial dial--date" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="--a:225deg"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" pathLength="1" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/><line class="dial__hand" x1="50" y1="50" x2="50" y2="20"/></svg>
+          <p class="mono">November · {{biz.areas.4}}</p>
+        </div>
+        <h2>Guest-ready before the holidays</h2>
+        <p class="lead">{{services.5.blurb}}</p>
+      </div>
+      <div class="planner__grid">
+        <div class="countdown" data-countdown>
+          <div class="countdown__dial" aria-hidden="true">
+            <svg class="dial dial--count" viewBox="0 0 100 100" focusable="false">
+              <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+              <circle class="dial__track" cx="50" cy="50" r="40"/>
+              <circle class="dial__sweep" cx="50" cy="50" r="40" pathLength="100" data-cd-sweep/>
+              <circle class="countdown__mark countdown__mark--book" r="3.6" cx="50" cy="10" data-cd-mark="book"/>
+              <circle class="countdown__mark countdown__mark--deep" r="3.6" cx="50" cy="10" data-cd-mark="deep"/>
+              <circle class="countdown__mark countdown__mark--touch" r="3.6" cx="50" cy="10" data-cd-mark="touch"/>
+              <circle class="countdown__mark countdown__mark--now" r="2.4" cx="50" cy="10"/>
+            </svg>
+            <p class="countdown__center"><span class="countdown__days" data-cd-days>—</span><span class="mono">days out</span></p>
+          </div>
+          <div class="countdown__body">
+            <label class="countdown__label mono" for="guest-date">When do your guests arrive?</label>
+            <input type="date" id="guest-date" class="countdown__input" />
+            <ol class="countdown__plan" aria-live="polite" data-cd-plan>
+              <li class="countdown__step countdown__step--book"><span class="mono">Book by</span><strong data-cd-out="book">a week ahead</strong></li>
+              <li class="countdown__step countdown__step--deep"><span class="mono">Deep clean</span><strong data-cd-out="deep">about 7 days before</strong></li>
+              <li class="countdown__step countdown__step--touch"><span class="mono">Touch-up</span><strong data-cd-out="touch">the day before</strong></li>
+            </ol>
+            <p class="countdown__note mono" data-cd-note>Two visits: a deep clean first, then a touch-up the day before they ring the bell.</p>
+            <a href="#contact" class="btn btn--primary" data-service="{{services.5.short}}">Hold these dates</a>
+          </div>
+        </div>
+        <div class="planner__media">
+          [[frame detail-towels frame--tall | data-reveal="clip"]]
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. WINTER: wide ledger spread -->
+  <section id="almanac-winter" class="section t-deep ledger" data-sw-signature="season-dial" data-season="winter">
+    <div class="container">
+      [[frame hero-C2 frame--wide | data-reveal="clip"]]
+      <div class="ledger__grid">
+        <div class="ledger__head" data-reveal>
+          <div class="dateline">
+            <svg class="dial dial--date" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="--a:315deg"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" pathLength="1" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/><line class="dial__hand" x1="50" y1="50" x2="50" y2="20"/></svg>
+            <p class="mono">January · {{biz.areas.1}}</p>
+          </div>
+          <h2>Weekend houses and move-outs</h2>
+        </div>
+        <div class="ledger__body" data-reveal>
+          <p>{{services.7.blurb}}</p>
+          <p class="addon mono"><span>Regular visit: {{proof.prices.0.from}}–{{proof.prices.0.to}}</span> [[sample pricing]]</p>
+          <a href="#contact" class="btn btn--primary" data-service="{{services.7.short}}">Price a cabin clean</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. SERVICES: the full list -->
+  <section id="services" class="section t-paper services">
+    <div class="container">
+      <div class="services__head">
+        <p class="kicker mono">The whole list</p>
+        <h2>What we clean</h2>
+      </div>
+      <ol class="svc-grid" data-reveal-stagger>
         <!-- each services -->
         <li class="svc-card">
+          <span class="svc-card__n mono">{{#2}}</span>
           <h3>{{.name}}</h3>
           <p>{{.blurb}}</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="{{.short}}">Price it</a>
+          <a href="#contact" class="svc-card__cta" data-service="{{.short}}">Get a price [[i arrow-right]]</a>
         </li>
         <!-- /each -->
-      </ul>
+      </ol>
     </div>
   </section>
 
   <!-- 9. PROOF -->
-  <section id="proof" class="section t-light stack" data-reveal>
-    <div class="container stack__inner">
-      <h2>What neighbors say</h2>
-      <p class="stack__sub mono">[[sample reviews]] · {{proof.reviewCount}} total · {{proof.rating}} average</p>
+  <section id="proof" class="section t-light proof" data-sw-signature="season-dial">
+    <div class="container">
+      <div class="proof__head">
+        <svg class="dial dial--year" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <circle class="dial__track" cx="50" cy="50" r="40"/>
+          <path class="dial__q is-on" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+          <path class="dial__q is-on" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+          <path class="dial__q is-on" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+          <path class="dial__q is-on" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+        </svg>
+        <div>
+          <h2>What neighbors say, season by season</h2>
+          <p class="proof__sub mono">{{proof.rating}} average · {{proof.reviewCount}} reviews [[sample reviews]]</p>
+        </div>
+      </div>
       <ul class="review-list" data-reveal-stagger>
         <!-- each proof.reviews -->
         <li class="review-card">
-          <p class="review-card__stars" aria-label="{{.stars}} out of 5 stars"><!-- repeated via CSS or inline -->[[i star]][[i star]][[i star]][[i star]][[i star]]</p>
-          <p class="review-card__text">"{{.text}}"</p>
-          <footer class="review-card__meta mono">— {{.name}}, {{.town}} · {{.service}} · [[sample review]]</footer>
+          <p class="review-card__stars" data-stars="{{.stars}}" aria-label="{{.stars}} out of 5 stars">[[i star]][[i star]][[i star]][[i star]][[i star]]</p>
+          <p class="review-card__text">“{{.text}}”</p>
+          <footer class="review-card__meta mono"><span>{{.name}}, {{.town}}</span> <span>{{.service}}</span> [[sample review]]</footer>
         </li>
         <!-- /each -->
       </ul>
       <div class="trust-row">
-        <p class="trust-row__item mono">Re-clean promise: {{proof.guarantee}}</p>
-        <p class="trust-row__item mono">License # {{proof.license}} [[sample license]]</p>
-        <!-- if proof.insured --><p class="trust-row__item mono">Insured</p><!-- /if -->
+        <p class="trust-row__item"><span class="mono">Re-clean promise</span>{{proof.guarantee}}</p>
+        <p class="trust-row__item"><span class="mono">License</span>{{proof.license}} [[sample license]]</p>
+        <!-- if proof.insured --><p class="trust-row__item"><span class="mono">Coverage</span>Insured for work in your house</p><!-- /if -->
       </div>
     </div>
   </section>
 
   <!-- 10. AREA -->
-  <section id="area" class="section t-deep rail" data-hook="zip" data-reveal>
-    <div class="container rail__inner">
-      <div class="rail__text">
+  <section id="area" class="section t-deep area" data-hook="zip">
+    <div class="container area__grid">
+      <div class="area__text">
         <h2>Serving {{biz.city}} and the ridges</h2>
-        <p class="mono">{{biz.areas|list}}</p>
-        <div class="zip-checker" data-zip>
-          <label for="zip-input" class="sr-only">Check your ZIP</label>
+        <p class="area__towns">{{biz.areas|list}}</p>
+        <div class="zip-checker" data-zip data-zip-yes="Yes, {zip} is on our route. Pick a visit type below." data-zip-no="{zip} is outside our usual route. Call {phone} and we’ll tell you straight.">
+          <label for="zip-input" class="zip-checker__label mono">Is my street on your route?</label>
           <div class="zip-checker__row">
-            <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Your ZIP" autocomplete="postal-code" class="zip-checker__input" />
-            <button type="button" class="btn btn--primary zip-checker__btn">Check</button>
+            <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="5-digit ZIP" autocomplete="postal-code" class="zip-checker__input" />
+            <button type="button" class="btn btn--primary zip-checker__btn">Check my ZIP</button>
           </div>
-          <p class="zip-checker__result mono" aria-live="polite"></p>
+          <p class="zip-checker__result mono" data-zip-result aria-live="polite"></p>
         </div>
       </div>
-      <div class="rail__aside">
-        <p class="mono">Hours</p>
+      <div class="area__hours">
+        <p class="area__hours-title mono">Office hours</p>
         {{hours|table}}
-        <p class="mono" data-open-now></p>
+        <p class="area__open mono" data-open-now></p>
       </div>
     </div>
   </section>
 
   <!-- 11. CONTACT -->
-  <section id="contact" class="section t-paper stack" data-hook="form" data-reveal>
-    <div class="container stack__inner">
-      <h2>Book a visit</h2>
-      <p class="lead">Tell us the basics and we will call you back to set up a walk-through or send a sample price from photos.</p>
+  <section id="contact" class="section t-paper contact" data-hook="form">
+    <div class="container contact__grid">
+      <div class="contact__intro">
+        <h2>Book a visit</h2>
+        <p class="lead">Tell us the basics and we will call you back to set up a walk-through or send a sample price from photos.</p>
+        <p class="contact__call mono">Rather talk? [[tel]] · {{hours|today}}</p>
+      </div>
       <form class="lead-form" data-lead novalidate>
         <div class="lead-form__step" data-step="1">
           <fieldset>
-            <legend class="mono">Step 1 · Visit type</legend>
-            <label class="radio-card">
-              <input type="radio" name="service" value="Every two weeks" required />
-              <span>Every two weeks</span>
-            </label>
-            <label class="radio-card">
-              <input type="radio" name="service" value="Deep clean" />
-              <span>First deep clean</span>
-            </label>
-            <label class="radio-card">
-              <input type="radio" name="service" value="Move in/out" />
-              <span>Move-in or move-out</span>
-            </label>
-            <label class="radio-card">
-              <input type="radio" name="service" value="Other" />
-              <span>Something else</span>
-            </label>
+            <legend class="mono">Step 1 of 4 · Visit type</legend>
+            <label class="radio-card"><input type="radio" name="service" value="Every two weeks" required /><span>Every two weeks</span></label>
+            <label class="radio-card"><input type="radio" name="service" value="Deep clean" /><span>First deep clean</span></label>
+            <label class="radio-card"><input type="radio" name="service" value="Move in/out" /><span>Move-in or move-out</span></label>
+            <label class="radio-card"><input type="radio" name="service" value="Other" /><span>Something else</span></label>
           </fieldset>
           <button type="button" class="btn btn--primary lead-form__next">Next</button>
         </div>
         <div class="lead-form__step" data-step="2" hidden>
           <fieldset>
-            <legend class="mono">Step 2 · House size</legend>
+            <legend class="mono">Step 2 of 4 · House size</legend>
             <label for="beds">Bedrooms</label>
             <select id="beds" name="beds" required>
               <option value="">Select</option>
@@ -280,14 +347,14 @@
             </select>
           </fieldset>
           <div class="lead-form__nav">
-            <button type="button" class="btn btn--ghost lead-form__back">Back</button>
+            <button type="button" class="btn btn--line lead-form__back">Back</button>
             <button type="button" class="btn btn--primary lead-form__next">Next</button>
           </div>
         </div>
         <div class="lead-form__step" data-step="3" hidden>
           <fieldset>
-            <legend class="mono">Step 3 · When</legend>
-            <label for="frequency">Preferred frequency</label>
+            <legend class="mono">Step 3 of 4 · When</legend>
+            <label for="frequency">How often</label>
             <select id="frequency" name="frequency">
               <option value="every-two-weeks">Every two weeks</option>
               <option value="weekly">Weekly</option>
@@ -305,13 +372,13 @@
             </select>
           </fieldset>
           <div class="lead-form__nav">
-            <button type="button" class="btn btn--ghost lead-form__back">Back</button>
+            <button type="button" class="btn btn--line lead-form__back">Back</button>
             <button type="button" class="btn btn--primary lead-form__next">Next</button>
           </div>
         </div>
         <div class="lead-form__step" data-step="4" hidden>
           <fieldset>
-            <legend class="mono">Step 4 · Contact</legend>
+            <legend class="mono">Step 4 of 4 · Contact</legend>
             <label for="name">Name</label>
             <input id="name" name="name" type="text" autocomplete="name" required />
             <label for="phone">Phone</label>
@@ -319,18 +386,18 @@
             <label for="email">Email</label>
             <input id="email" name="email" type="email" autocomplete="email" />
             <label class="sr-only" for="website2">Leave this blank</label>
-            <input id="website2" name="website2" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <input id="website2" name="website2" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" class="lead-form__hp" />
             <input type="hidden" name="t" value="" />
           </fieldset>
           <div class="lead-form__nav">
-            <button type="button" class="btn btn--ghost lead-form__back">Back</button>
+            <button type="button" class="btn btn--line lead-form__back">Back</button>
             <button type="submit" class="btn btn--primary">Send request</button>
           </div>
-          <p class="lead-form__micro mono">We will call you back to set up a visit. Hours: {{hours|today}}</p>
+          <p class="lead-form__micro mono">We will call you back to set up a visit.</p>
         </div>
         <div class="lead-form__thanks" hidden>
           <p class="lead-form__thanks-title">Thanks, <span data-thanks-name></span>.</p>
-          <p>In your version this goes straight to your phone and inbox. For now, call [[tel]] or email <a href="mailto:{{biz.email}}">{{biz.email}}</a>.</p>
+          <p>This is a demo, nothing was sent. On the real site this goes to {{biz.short}}. For now, call [[tel]] or email <a href="mailto:{{biz.email}}">{{biz.email}}</a>.</p>
         </div>
       </form>
     </div>
@@ -338,30 +405,32 @@
 
 </main>
 
-<footer class="section t-deep rail footer" data-sw-signature="season-dial">
-  <div class="container rail__inner">
-    <div class="rail__text">
+<footer class="section t-deep footer" data-sw-signature="season-dial">
+  <div class="container footer__grid">
+    <div class="footer__dial" aria-hidden="true">
+      <svg class="dial dial--reset" viewBox="0 0 100 100" focusable="false">
+        <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+        <circle class="dial__track" cx="50" cy="50" r="40"/>
+        <path class="dial__q is-on" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+        <path class="dial__q is-on" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+        <path class="dial__q is-on" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+        <path class="dial__q is-on" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+        <line class="dial__hand" x1="50" y1="50" x2="50" y2="17"/>
+        <circle class="dial__hub" cx="50" cy="50" r="3"/>
+      </svg>
+      <p class="mono">Back to spring</p>
+    </div>
+    <div class="footer__text">
       <p class="footer__brand">{{biz.name}}</p>
       <p class="mono">{{biz.city}}, {{biz.state}} · [[tel]] · <a href="mailto:{{biz.email}}">{{biz.email}}</a></p>
       <p class="mono footer__disclaimer">{{demo.disclaimer}}</p>
       <p class="mono">© {{year}} {{biz.name}}</p>
-    </div>
-    <div class="rail__aside">
       [[credits]]
-      <div class="season-dial footer__dial" aria-hidden="true">
-        <svg viewBox="0 0 100 100" class="season-dial__svg">
-          <circle cx="50" cy="50" r="46" fill="none" stroke="var(--rule)" stroke-width="2"/>
-          <path class="season-dial__seg season-dial__seg--spring" d="M50 4 A46 46 0 0 1 96 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-          <path class="season-dial__seg season-dial__seg--summer" d="M96 50 A46 46 0 0 1 50 96" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-          <path class="season-dial__seg season-dial__seg--fall" d="M50 96 A46 46 0 0 1 4 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-          <path class="season-dial__seg season-dial__seg--winter" d="M4 50 A46 46 0 0 1 50 4" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-        </svg>
-      </div>
     </div>
   </div>
 </footer>
 
 <div class="mobilebar" data-mobilebar>
-  <a href="tel:{{biz.phoneE164}}" class="btn btn--ghost mobilebar__call">[[i phone]] Call</a>
-  <a href="#contact" class="btn btn--primary mobilebar__book">Price it</a>
+  <a href="tel:{{biz.phoneE164}}" class="btn btn--line mobilebar__call">[[i phone]] Call</a>
+  <a href="#contact" class="btn btn--primary mobilebar__book">Get a price</a>
 </div>

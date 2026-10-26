@@ -1,5 +1,10 @@
 # Blueprint — cleaning-C (Riverfog Housekeeping)
 
+**Round 2:** The header is legible on the hero and the dial no longer clashes with the nav at 1024. Every image slot now falls back to a designed contour "Plate" panel. The hero h1 is down to 2 lines and the copy-2 replacements are in. Services now sit in a 3×3 grid and the hours in a table-like grid. Elevate moves: (1) the Season Dial became a scroll-driven pinned clock across the four almanac spreads, which raises distinctiveness and motion; (2) the guest countdown now renders as a dial diagram.
+
+**Round 2 (media swap):** Real library photos now fill every slot. The hero is hero-C1, an unplaced river-fog photo with a neutral alt. Spring uses detail-microfiber, summer process-shower-glass, the break home-greenville, fall detail-towels, and winter hero-C2 (a pine-panelled cabin bath). The break caption no longer names the city, so no photo claims a local place. tools/check-static.mjs now accepts Commons/CC credit links (see CHANGELOG).
+Open issues: the niche photo library still holds 1×1 stubs, so every photo shows the Plate fallback until real photos are curated. The display font is Fraunces, as in 03-system.md; concept.json says Crimson Pro, and I kept the system doc.
+
 ## Section list
 
 | # | ID | Tone | Layout | Purpose | Content tokens | Media slot | Hooks | Entrance |

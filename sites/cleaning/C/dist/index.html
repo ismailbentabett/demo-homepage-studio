@@ -340,8 +340,7 @@ button, input, select { font: inherit; color: inherit; }
 .menu a { font-size: var(--fs-2); text-decoration: none; }
 
 /* Hero */
-.hero { min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; position: relative; overflow: visible; padding-top: var(--header-h); padding-bottom: var(--s-7); }
-@media (min-width: 900px) { .hero { padding-bottom: var(--s-8); } }
+.hero { min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; position: relative; overflow: hidden; padding-top: var(--header-h); }
 .hero__media { position: absolute; inset: 0; z-index: 0; }
 .hero__img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) contrast(1.05) sepia(.12) brightness(.95); }
 .hero__scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,25,22,.92) 0%, rgba(20,25,22,.78) 34%, rgba(20,25,22,.18) 62%, rgba(20,25,22,0) 100%), linear-gradient(0deg, rgba(20,25,22,.55) 0%, rgba(20,25,22,0) 30%); }
@@ -366,21 +365,6 @@ button, input, select { font: inherit; color: inherit; }
 .addon { margin-top: var(--s-4); padding: var(--s-3); border-left: 2px solid var(--accent); background: rgba(184,148,95,.06); }
 .review-mini { margin-top: var(--s-5); padding-left: var(--s-4); border-left: 2px solid var(--rule); font-style: italic; }
 .review-mini footer { font-style: normal; margin-top: var(--s-2); color: var(--muted); }
-
-/* Editorial (full-width statement with embedded tool) */
-.editorial__inner { max-width: 960px; margin-inline: auto; }
-.editorial__tool-row { display: grid; gap: var(--s-6); margin-top: var(--s-6); align-items: start; }
-@media (min-width: 900px) { .editorial__tool-row { grid-template-columns: 1fr 1fr; gap: var(--s-8); } }
-.editorial__media { margin-top: var(--s-6); }
-.countdown-tool__dial-wrap { width: 64px; height: 64px; margin-bottom: var(--s-3); }
-.countdown-dial { width: 100%; height: 100%; transform: rotate(-90deg); }
-.countdown-dial__seg { opacity: 0.25; transition: opacity var(--dur-ui) var(--ease-out), stroke var(--dur-ui) var(--ease-out); }
-.countdown-dial__seg.is-active { opacity: 1; stroke: var(--signal); }
-.countdown-tool__text { margin-top: var(--s-2); color: var(--signal); font-weight: 600; }
-
-/* Scale reveal verb */
-.sw-motion [data-reveal="scale"] { opacity: 0; transform: scale(0.92); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-.sw-motion [data-reveal="scale"].is-in { opacity: 1; transform: none; }
 
 /* Break */
 .break { padding: 0; position: relative; min-height: 60vh; display: flex; align-items: flex-end; }
@@ -542,7 +526,7 @@ button, input, select { font: inherit; color: inherit; }
   <!-- 1. HERO -->
   <section id="hero" class="section t-deep hero" data-reveal>
     <div class="hero__media">
-      <img src="media/hero-C1-1170.webp" srcset="media/hero-C1-1170.webp 1170w, media/hero-C1.webp 2340w" sizes="100vw" alt="Morning fog lifting over the Tennessee River with riverside houses on the Chattanooga bluff" width="1170" height="1463" fetchpriority="high" decoding="async" data-photo="hero-C1" data-slot="hero-C1" class="hero__img">
+      <img src="media/hero-C1-1170.webp" srcset="media/hero-C1-1170.webp 1170w, media/hero-C1.webp 2340w" sizes="100vw" alt="Placeholder hero C1" width="1170" height="1463" fetchpriority="high" decoding="async" data-photo="hero-C1" data-slot="hero-C1" class="hero__img">
       <div class="hero__scrim"></div>
     </div>
     <div class="container hero__content">
@@ -613,34 +597,23 @@ button, input, select { font: inherit; color: inherit; }
     </div>
   </section>
 
-  <!-- 6. FALL — editorial statement with embedded tool -->
-  <section id="almanac-fall" class="section t-paper editorial" data-hook="countdown" data-reveal="scale">
-    <div class="container editorial__inner">
-      <p class="dateline mono">November · East Ridge</p>
-      <h2>Guest-ready before the holidays</h2>
-      <p class="lead">Guest room made up, baths shined and the kitchen cleared before family arrives.</p>
-      <div class="editorial__tool-row">
+  <!-- 6. FALL -->
+  <section id="almanac-fall" class="section t-paper split" data-hook="countdown" data-reveal>
+    <div class="container split__inner">
+      <div class="split__text">
+        <p class="dateline mono">November · East Ridge</p>
+        <h2>Guest-ready before the holidays</h2>
+        <p>Guest room made up, baths shined and the kitchen cleared before family arrives.</p>
         <div class="countdown-tool" data-countdown>
           <p class="mono">Guest arrival date?</p>
           <label class="sr-only" for="guest-date">Arrival date</label>
           <input type="date" id="guest-date" class="countdown-tool__input" />
-          <div class="countdown-tool__result" aria-live="polite">
-            <div class="countdown-tool__dial-wrap">
-              <svg viewBox="0 0 100 100" class="countdown-dial" aria-hidden="true">
-                <circle cx="50" cy="50" r="46" fill="none" stroke="var(--rule)" stroke-width="2"/>
-                <path class="countdown-dial__seg countdown-dial__seg--spring" d="M50 4 A46 46 0 0 1 96 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-                <path class="countdown-dial__seg countdown-dial__seg--summer" d="M96 50 A46 46 0 0 1 50 96" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-                <path class="countdown-dial__seg countdown-dial__seg--fall" d="M50 96 A46 46 0 0 1 4 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-                <path class="countdown-dial__seg countdown-dial__seg--winter" d="M4 50 A46 46 0 0 1 50 4" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <p class="countdown-tool__text mono"></p>
-          </div>
+          <p class="countdown-tool__result mono" aria-live="polite"></p>
           <a href="#contact" class="btn btn--secondary" data-service="Guest prep">Hold these dates</a>
         </div>
-        <div class="editorial__media">
-          <figure class="frame" data-fallback="Set dining table ready for guests" data-reveal="clip"><img src="media/season-holiday-1170.webp" srcset="media/season-holiday-1170.webp 1170w, media/season-holiday.webp 2340w" sizes="100vw" alt="Set dining table ready for guests" width="1170" height="780" loading="lazy" decoding="async" data-photo="season-holiday" data-slot="season-holiday"></figure>
-        </div>
+      </div>
+      <div class="split__media">
+        <figure class="frame" data-fallback="Set dining table ready for guests" data-reveal="clip"><img src="media/season-holiday-1170.webp" srcset="media/season-holiday-1170.webp 1170w, media/season-holiday.webp 2340w" sizes="100vw" alt="Set dining table ready for guests" width="1170" height="780" loading="lazy" decoding="async" data-photo="season-holiday" data-slot="season-holiday"></figure>
       </div>
     </div>
   </section>
@@ -918,7 +891,7 @@ button, input, select { font: inherit; color: inherit; }
       <p class="mono">© 2026 Riverfog Housekeeping</p>
     </div>
     <div class="rail__aside">
-      <ul class="credits"></ul>
+      <ul class="credits"><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li></ul>
       <div class="season-dial footer__dial" aria-hidden="true">
         <svg viewBox="0 0 100 100" class="season-dial__svg">
           <circle cx="50" cy="50" r="46" fill="none" stroke="var(--rule)" stroke-width="2"/>
