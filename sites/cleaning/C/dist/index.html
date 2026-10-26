@@ -23,11 +23,9 @@
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/fraunces/fraunces-100-900-normal.woff2" crossorigin>
 <link rel="preload" as="image" href="media/hero-C1-1170.webp" imagesrcset="media/hero-C1-1170.webp 1170w, media/hero-C1.webp 2340w" imagesizes="100vw" fetchpriority="high">
-<link rel="stylesheet" href="vendor/lenis.css">
 <style>
 @font-face{font-family:"Fraunces";src:url("fonts/fraunces/fraunces-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Source Sans 3";src:url("fonts/source-sans-3/source-sans-3-200-900-normal.woff2") format("woff2");font-weight:200 900;font-style:normal;font-display:swap}
-@font-face{font-family:"DM Mono";src:url("fonts/dm-mono/dm-mono-300-normal.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap}
 @font-face{font-family:"DM Mono";src:url("fonts/dm-mono/dm-mono-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"DM Mono";src:url("fonts/dm-mono/dm-mono-500-normal.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
 /* Site Sledge kit: base.css
@@ -261,7 +259,7 @@ html.lenis, html.lenis body { height: auto; }
   --signal: #9E4428;
   --focus: #B8945F;
   --header-h: 64px;
-  --fs--1: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);
+  --fs--1: clamp(0.8125rem, 0.78rem + 0.15vw, 0.875rem);
   --fs-0: clamp(0.9375rem, 0.875rem + 0.3vw, 1.0625rem);
   --fs-1: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
   --fs-2: clamp(1.375rem, 1.125rem + 1vw, 1.875rem);
@@ -276,236 +274,514 @@ html.lenis, html.lenis body { height: auto; }
   --dur-page: 520ms;
   --dur-story: 900ms;
   --dur-stagger: 60ms;
+  /* fixed palette refs */
+  --paper: #F3EFE6;
+  --deep: #141916;
+  --mid: #3A4440;
+  --brass: #B8945F;
+  --brass-ink: #7A5C2E;
+  --sw-anchor-offset: 80px;
 }
 
-.t-light { --bg: #FFFFFF; --ink: #1E2420; --muted: #3A4440; --rule: #B8945F; --accent: #9E4428; --focus: #B8945F; }
-.t-paper { --bg: #F3EFE6; --ink: #1E2420; --muted: #3A4440; --rule: #B8945F; --accent: #9E4428; --focus: #B8945F; }
-.t-mid { --bg: #3A4440; --ink: #F3EFE6; --muted: #B8945F; --rule: #F3EFE6; --accent: #F3EFE6; --focus: #B8945F; }
-.t-deep { --bg: #141916; --ink: #F3EFE6; --muted: #B8945F; --rule: #3A4440; --accent: #B8945F; --focus: #B8945F; }
+/* ---------- tones ---------- */
+.t-light  { --bg: #FFFFFF; --ink: #1E2420; --muted: #3A4440; --rule: #B8945F; --accent: #9E4428; --focus: #9E4428; --dial: #7A5C2E; --card: #F3EFE6; }
+.t-paper  { --bg: #F3EFE6; --ink: #1E2420; --muted: #3A4440; --rule: #B8945F; --accent: #9E4428; --focus: #9E4428; --dial: #7A5C2E; --card: #FFFFFF; }
+.t-mid    { --bg: #3A4440; --ink: #F3EFE6; --muted: #D4B98C; --rule: #D4B98C; --accent: #D4B98C; --focus: #F3EFE6; --dial: #D4B98C; --card: #333c38; }
+.t-deep   { --bg: #141916; --ink: #F3EFE6; --muted: #B8945F; --rule: #3A4440; --accent: #B8945F; --focus: #B8945F; --dial: #B8945F; --card: #1c2320; }
+.t-accent { --bg: #B8945F; --ink: #1E2420; --muted: #1E2420; --rule: #1E2420; --accent: #1E2420; --focus: #1E2420; --dial: #1E2420; --card: rgba(20,25,22,.07); }
 
+/* ---------- base ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-body { font-family: 'Source Sans 3', sans-serif; font-size: var(--fs-0); line-height: 1.5; color: var(--ink); background: var(--bg); text-wrap: pretty; max-width: 100vw; overflow-x: hidden; }
-h1, h2, h3, h4 { font-family: 'Fraunces', serif; font-weight: 600; line-height: 0.95; letter-spacing: -0.03em; text-wrap: balance; color: var(--ink); }
-h1 { font-size: var(--fs-h1); }
-h2 { font-size: var(--fs-3); margin-bottom: var(--s-5); }
-h3 { font-size: var(--fs-2); margin-bottom: var(--s-3); }
-p { margin-bottom: var(--s-4); max-width: 65ch; }
-a { color: inherit; text-decoration: underline; text-underline-offset: 4px; transition: opacity var(--dur-ui) var(--ease-out); }
-a:hover { opacity: 0.8; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: 'Source Sans 3', system-ui, sans-serif; font-size: var(--fs-0); line-height: 1.55; color: var(--ink); background: var(--bg); text-wrap: pretty; overflow-x: clip; }
+h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; line-height: 1; letter-spacing: -0.025em; text-wrap: balance; color: var(--ink); font-variation-settings: "opsz" 96; }
+h2 { font-size: var(--fs-3); margin-bottom: var(--s-5); line-height: 1.02; }
+h3 { font-size: var(--fs-1); line-height: 1.15; letter-spacing: -0.01em; font-variation-settings: "opsz" 24; }
+p { max-width: 65ch; }
+p + p { margin-top: var(--s-4); }
+a { color: inherit; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 img, svg { display: block; max-width: 100%; height: auto; }
-ul, ol { list-style: none; padding: 0; }
+ol, ul { list-style: none; padding: 0; }
 button, input, select { font: inherit; color: inherit; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-@media (forced-colors: active) { .btn, input, select { border: 2px solid ButtonText; } }
 
 .container { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: var(--s-4); }
 @media (min-width: 640px) { .container { padding-inline: var(--s-6); } }
-.mono { font-family: 'DM Mono', monospace; font-size: var(--fs--1); letter-spacing: 0.02em; }
+.mono { font-family: 'DM Mono', ui-monospace, monospace; font-size: var(--fs--1); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-.kicker { text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--s-4); }
-.lead { font-size: var(--fs-1); font-weight: 400; max-width: 60ch; }
-
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 48px; padding: var(--s-3) var(--s-5); font-weight: 600; text-decoration: none; border-radius: 3px; transition: transform var(--dur-press) var(--ease-out), background var(--dur-ui) var(--ease-out); cursor: pointer; border: none; }
-.btn:active { transform: scale(0.97); }
-.btn--primary { background: var(--signal); color: #F3EFE6; }
-.btn--secondary { border: 1px solid var(--accent); color: var(--ink); background: transparent; }
-.btn--ghost { background: transparent; color: var(--ink); text-decoration: underline; padding-inline: 0; min-height: auto; }
-.t-deep .btn--ghost, .t-mid .btn--ghost { color: var(--ink); }
-.btn .i { width: 20px; height: 20px; }
-
-.section { padding-block: var(--s-8); background: var(--bg); color: var(--ink); position: relative; }
+.kicker { text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: var(--s-4); }
+.lead { font-size: var(--fs-1); line-height: 1.45; max-width: 58ch; }
+.section { position: relative; padding-block: var(--s-8); background: var(--bg); color: var(--ink); }
 @media (min-width: 900px) { .section { padding-block: var(--s-9); } }
 
-/* Header */
-.header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); z-index: 100; background: transparent; transition: background var(--dur-ui) var(--ease-out); }
-.header.is-scrolled { background: var(--bg); border-bottom: 1px solid var(--rule); }
-.header__inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
-.header__logo { font-family: 'Fraunces', serif; font-size: var(--fs-2); font-weight: 700; text-decoration: none; color: var(--ink); }
-.t-deep .header__logo { color: #F3EFE6; }
-.header.is-scrolled .header__logo { color: var(--ink); }
-.header__nav { display: none; gap: var(--s-5); }
-.header__nav a { text-decoration: none; font-weight: 500; }
+/* ---------- buttons ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 48px; padding: var(--s-3) var(--s-5); font-weight: 600; line-height: 1.2; text-decoration: none; border-radius: 3px; border: 1px solid transparent; cursor: pointer; transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out); }
+.btn:active { transform: scale(0.97); }
+.btn .i { width: 20px; height: 20px; flex: none; }
+.btn--primary { background: var(--signal); color: #F3EFE6; }
+.btn--primary:hover { background: #87381f; }
+.btn--secondary { border-color: var(--ink); color: var(--ink); background: transparent; }
+.btn--secondary:hover { background: rgba(30,36,32,.06); }
+.btn--line { border-color: currentColor; color: var(--ink); background: transparent; }
+.btn--line:hover { background: rgba(243,239,230,.08); }
+@media (forced-colors: active) { .btn, input, select { border: 2px solid ButtonText; } }
+
+/* ---------- Season Dial (signature) ---------- */
+.dial { color: var(--dial, var(--brass)); overflow: visible; }
+.dial circle, .dial path, .dial line { fill: none; }
+.dial__track { stroke: currentColor; stroke-width: 1; opacity: .45; }
+.dial__ticks { stroke: currentColor; stroke-width: 3; stroke-dasharray: .35 9.65; opacity: .7; }
+.dial__q { stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; opacity: .55; }
+.dial__q.is-on { stroke-width: 7; opacity: 1; }
+.dial__hand { stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; transform-origin: 50px 50px; transform: rotate(var(--a, 0deg)); }
+.dial .dial__hub { fill: currentColor; }
+.dial__sweep { stroke: currentColor; stroke-width: 7; stroke-dasharray: 100 100; stroke-dashoffset: calc(100 - var(--p, 0) * 100); transform-origin: 50px 50px; transform: rotate(-90deg); }
+.dial--pip { width: 28px; height: 28px; flex: none; }
+.dial--pip .dial__track { stroke-width: 7; opacity: .35; }
+.dial--pip .dial__q.is-on { stroke-width: 16; stroke-linecap: butt; }
+.dial--date { width: 40px; height: 40px; flex: none; }
+.dial--date .dial__track { stroke-width: 3.5; }
+.dial--date .dial__q.is-on { stroke-width: 12; stroke-linecap: butt; }
+.dial--date .dial__hand { stroke-width: 5; }
+.dial--year { width: 72px; height: 72px; flex: none; }
+.dial--year .dial__q.is-on { stroke-width: 8; stroke-linecap: butt; }
+.dial--year .dial__q:nth-of-type(2) { opacity: .8; }
+.dial--year .dial__q:nth-of-type(3) { opacity: .6; }
+.dial--year .dial__q:nth-of-type(4) { opacity: .4; }
+
+/* ---------- header ---------- */
+.header { position: fixed; inset: 0 0 auto; height: var(--header-h); z-index: 100; color: #F3EFE6; background: transparent; transition: background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out); }
+.header.is-scrolled { background: #F3EFE6; color: #1E2420; box-shadow: 0 1px 0 rgba(122,92,46,.45); }
+.header__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); height: 100%; }
+.logo { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; text-decoration: none; color: inherit; }
+.logo__mark { display: grid; place-items: center; width: 38px; height: 38px; border: 1.5px solid #B8945F; border-radius: 50%; font-family: 'Fraunces', serif; font-weight: 600; font-size: 14px; letter-spacing: .04em; }
+.logo__word { font-family: 'Fraunces', serif; font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+.header__nav { display: none; align-items: center; gap: var(--s-6); }
+.header__nav a { position: relative; color: inherit; text-decoration: none; font-weight: 500; padding-block: 12px; }
+.header__nav a:not(.header__book)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 8px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform var(--dur-ui) var(--ease-out); }
+@media (hover: hover) { .header__nav a:hover::after { transform: scaleX(1); } }
+.header__book { padding: 10px 18px !important; border: 1px solid currentColor; border-radius: 3px; }
+.header__menu-btn { display: grid; place-items: center; width: 48px; height: 48px; margin-right: -8px; padding: 0; background: none; border: 0; color: inherit; cursor: pointer; }
+.header__menu-btn .i { width: 26px; height: 26px; }
 @media (min-width: 900px) { .header__nav { display: flex; } .header__menu-btn { display: none; } }
-.header__menu-btn { background: none; border: none; color: var(--ink); padding: var(--s-2); }
-.t-deep .header__menu-btn { color: #F3EFE6; }
-.header.is-scrolled .header__menu-btn { color: var(--ink); }
-.header__progress { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--accent); width: calc(var(--p, 0) * 100%); }
+.header__progress { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: #9E4428; transform-origin: left; transform: scaleX(var(--p, 0)); }
 
-/* Menu */
-.menu { position: fixed; inset: 0; background: var(--bg); z-index: 200; display: flex; align-items: center; justify-content: center; }
+/* ---------- mobile menu ---------- */
+.menu { position: fixed; inset: 0; z-index: 200; background: #141916; color: #F3EFE6; display: flex; align-items: center; justify-content: center; }
 .menu[hidden] { display: none; }
-.menu__inner { display: flex; flex-direction: column; gap: var(--s-5); text-align: center; }
-.menu__close { position: absolute; top: var(--s-4); right: var(--s-4); background: none; border: none; color: var(--ink); }
-.menu a { font-size: var(--fs-2); text-decoration: none; }
+.menu__inner { display: flex; flex-direction: column; align-items: center; gap: var(--s-4); text-align: center; }
+.menu__inner > a:not(.btn) { font-family: 'Fraunces', serif; font-size: var(--fs-3); text-decoration: none; padding-block: 6px; }
+.menu__inner .btn { margin-top: var(--s-4); }
+.menu__close { position: absolute; top: 8px; right: 8px; width: 48px; height: 48px; display: grid; place-items: center; background: none; border: 0; color: inherit; cursor: pointer; }
+.menu__close .i { width: 26px; height: 26px; }
 
-/* Hero */
-.hero { min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; position: relative; overflow: hidden; padding-top: var(--header-h); }
-.hero__media { position: absolute; inset: 0; z-index: 0; }
-.hero__img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) contrast(1.05) sepia(.12) brightness(.95); }
-.hero__scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,25,22,.92) 0%, rgba(20,25,22,.78) 34%, rgba(20,25,22,.18) 62%, rgba(20,25,22,0) 100%), linear-gradient(0deg, rgba(20,25,22,.55) 0%, rgba(20,25,22,0) 30%); }
-.hero__content { position: relative; z-index: 1; max-width: 680px; }
-.hero__title { margin-bottom: var(--s-4); color: #F3EFE6; }
-.hero__proof { color: #B8945F; margin-bottom: var(--s-6); display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
-.hero__proof .i { width: 16px; height: 16px; }
-.hero__actions { display: flex; gap: var(--s-4); flex-wrap: wrap; }
+/* ---------- Season Dial clock (pinned, wide screens, motion only) ---------- */
+.dial-clock { display: none; }
+@media (min-width: 1400px) {
+  .sw-motion .dial-clock { display: flex; flex-direction: column; align-items: center; gap: 6px; position: fixed; z-index: 90; right: 16px; top: calc(var(--header-h) + 20px); width: 80px; pointer-events: none; opacity: 0; transform: translateY(-8px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
+  .sw-motion .dial-clock.is-on { opacity: 1; transform: none; }
+  /* the hero dial hands off to the clock: JS writes the transform every frame, so no transition here */
+  .sw-motion .dial-clock.is-handoff { opacity: 1; transition: none; transform-origin: 0 0; }
+  .dial-clock .dial { --dial: #7A5C2E; width: 80px; height: 80px; padding: 6px; background: rgba(243,239,230,var(--bgA, 1)); border-radius: 50%; box-shadow: 0 0 0 1px rgba(30,36,32,calc(.18 * var(--bgA, 1))), 0 6px 18px rgba(20,25,22,calc(.18 * var(--bgA, 1))); }
+  .dial-clock.is-handoff .dial { color: #B8945F; }
+  .dial-clock.is-handoff .dial-clock__label { opacity: var(--bgA, 1); }
+  .dial-clock .dial__sweep { stroke: #9E4428; }
+  .dial-clock .dial__q.is-on { stroke-width: 3; }
+  .dial-clock__label { padding: 2px 8px; background: #F3EFE6; color: #1E2420; border-radius: 999px; text-transform: uppercase; letter-spacing: .1em; font-size: 11px; box-shadow: 0 0 0 1px rgba(30,36,32,.18); }
+}
 
-/* Statement */
-.statement__inner { max-width: 800px; }
-.price-card { margin-top: var(--s-6); padding: var(--s-5); border-top: 1px solid var(--rule); background: rgba(184,148,95,.08); }
-.price-card__label { text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-2); }
-.price-card__item { font-size: var(--fs-2); font-family: 'Fraunces', serif; margin-bottom: var(--s-1); }
-.price-card__range { font-size: var(--fs-1); color: var(--signal); }
-.price-card__note { color: var(--muted); margin-top: var(--s-2); }
+/* ---------- photo frames: designed fallback under every image ---------- */
+.frame {
+  position: relative; overflow: hidden; margin: 0; aspect-ratio: 4 / 3; isolation: isolate;
+  background:
+    repeating-radial-gradient(circle at 72% 120%, rgba(184,148,95,.2) 0 1px, transparent 1.5px 18px),
+    radial-gradient(80% 60% at 25% 20%, rgba(243,239,230,.12), transparent 70%),
+    linear-gradient(165deg, #4b5751 0%, #2b3430 55%, #1a201d 100%);
+}
+.frame img { width: 100%; height: 100%; object-fit: cover; color: transparent; font-size: 0; filter: saturate(.62) sepia(.22) contrast(1.06) brightness(.94); }
+/* one almanac shoot: lifted blacks (lighten) + brass highlights (multiply) over every frame */
+.frame::before, .frame::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.frame::before { background: #2a2721; mix-blend-mode: lighten; opacity: .55; }
+.frame::after { background: linear-gradient(160deg, #F1E2C4 0%, #E2CDA4 60%, #CDB58A 100%); mix-blend-mode: multiply; opacity: .55; }
+.frame.is-broken::before, .frame.is-broken::after { display: none; }
+/* the dial's quarter as a crop corner: each spread rounds the corner of its own season */
+.frame--q-spring { border-top-right-radius: min(42%, 260px); }
+.frame--q-summer { border-bottom-right-radius: min(42%, 260px); }
+.frame--q-fall { border-bottom-left-radius: min(42%, 260px); }
+.frame--q-winter { border-top-left-radius: min(30%, 300px); }
+.frame--shower img { object-position: 0% 50%; transform: scale(1.1); transform-origin: 20% 50%; }
+/* spring: cropped in to the duster's pollen-yellow pile so it reads as texture, not a product shot */
+.frame--blinds img { object-position: 80% 55%; transform: scale(1.9); transform-origin: 82% 58%; }
+.frame.is-broken .frame-fallback { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 4px; text-align: left; padding: var(--s-4) var(--s-5); font-family: 'DM Mono', monospace; font-size: var(--fs--1); line-height: 1.4; letter-spacing: .02em; color: #F3EFE6; background: linear-gradient(0deg, rgba(20,25,22,.55), transparent 45%); }
+.frame.is-broken .frame-fallback::before { content: "Plate"; color: #D4B98C; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
+.frame--tall { aspect-ratio: 4 / 5; }
+.frame--wide { aspect-ratio: 4 / 3; }
+@media (min-width: 640px) { .frame--wide { aspect-ratio: 21 / 9; } }
 
-/* Split */
-.split__inner { display: grid; gap: var(--s-6); align-items: center; }
-@media (min-width: 900px) { .split__inner { grid-template-columns: 1fr 1fr; gap: var(--s-8); } .split--rev .split__inner { direction: rtl; } .split--rev .split__inner > * { direction: ltr; } }
-.dateline { text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: var(--s-3); border-bottom: 1px solid var(--rule); display: inline-block; padding-bottom: var(--s-1); }
-.addon { margin-top: var(--s-4); padding: var(--s-3); border-left: 2px solid var(--accent); background: rgba(184,148,95,.06); }
-.review-mini { margin-top: var(--s-5); padding-left: var(--s-4); border-left: 2px solid var(--rule); font-style: italic; }
-.review-mini footer { font-style: normal; margin-top: var(--s-2); color: var(--muted); }
+/* ---------- hero: almanac cover ---------- */
+.hero { min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; padding-top: calc(var(--header-h) + var(--s-6)); padding-bottom: var(--s-7); overflow: hidden; isolation: isolate;
+  background:
+    radial-gradient(70% 55% at 82% 22%, rgba(184,148,95,.20), transparent 65%),
+    radial-gradient(60% 50% at 10% 0%, rgba(58,68,64,.55), transparent 70%),
+    linear-gradient(180deg, #1c2420 0%, #141916 60%, #0f1311 100%); }
+.hero__media { position: absolute; inset: 0; z-index: -1; }
+.hero__frame { position: absolute; inset: 0; aspect-ratio: auto; background: transparent; }
+.hero__frame .frame-fallback { display: none !important; }
+.hero__img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; }
+.hero__fog { position: absolute; left: -5%; right: -5%; bottom: 0; height: 44%; pointer-events: none; transition: opacity var(--dur-story) var(--ease-out);
+  background: radial-gradient(60% 40% at 30% 55%, rgba(243,239,230,.10), transparent 70%), radial-gradient(50% 35% at 75% 45%, rgba(243,239,230,.08), transparent 70%); background-size: 140% 100%; }
+.hero__fog::before { content: ""; position: absolute; inset: 0; background: #1f2824; clip-path: polygon(0 58%, 9% 46%, 18% 53%, 29% 30%, 40% 44%, 52% 22%, 63% 39%, 74% 27%, 86% 45%, 100% 31%, 100% 100%, 0 100%); }
+.hero__fog::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(184,148,95,.10), transparent 35%), #111613; clip-path: polygon(0 80%, 12% 69%, 24% 77%, 37% 60%, 50% 73%, 61% 63%, 73% 77%, 86% 65%, 100% 75%, 100% 100%, 0 100%); }
+.hero.has-photo .hero__fog { opacity: 0; }
+.hero__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,25,22,.55) 0%, rgba(20,25,22,.72) 45%, rgba(20,25,22,.88) 100%); }
+@media (min-width: 900px) { .hero__scrim { background: linear-gradient(90deg, rgba(20,25,22,.9) 0%, rgba(20,25,22,.74) 42%, rgba(20,25,22,.3) 72%, rgba(20,25,22,.2) 100%), linear-gradient(0deg, rgba(20,25,22,.6) 0%, rgba(20,25,22,0) 35%); } }
+.hero__grid { position: relative; display: grid; gap: var(--s-6); align-items: end; }
+.hero__content { max-width: 1060px; }
+.hero .kicker { color: #F3EFE6; text-shadow: 0 1px 12px rgba(20,25,22,.6); }
+.hero__title { font-size: clamp(2.5rem, 1rem + 5.4vw, 5.25rem); line-height: .98; letter-spacing: -0.03em; color: #F3EFE6; margin-bottom: var(--s-5); max-width: 15ch; }
+.hero__lead { font-size: var(--fs-1); line-height: 1.45; color: #E6E0D3; max-width: 40ch; margin-bottom: var(--s-4); }
+.hero__proof { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; color: #E3CFA6; margin: 0 0 var(--s-6); }
+.hero__proof .i { width: 15px; height: 15px; }
+.hero .sample-tag { color: #D4B98C; border-color: rgba(184,148,95,.6); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.hero .btn--line { color: #F3EFE6; border-color: rgba(243,239,230,.55); }
+.hero__dial { display: none; color: #B8945F; }
+.hero__dial .dial { --dial: #B8945F; width: 100%; height: 100%; }
+.hero__dial-lbl, .hero__dial-now, .hero__dial-scrim { display: none; }
+.hero__br { display: none; }
+@media (min-width: 900px) {
+  .hero__grid { grid-template-columns: minmax(0, 1fr) clamp(240px, 22vw, 300px); }
+  .hero__content { grid-column: 1 / -1; grid-row: 1; position: relative; z-index: 1; }
+  .hero__lead, .hero__proof, .hero__actions { max-width: 560px; }
+  .hero__title { max-width: none; font-size: clamp(3rem, 1rem + 4.4vw, 4.75rem); }
+  .hero__br { display: inline; }
+  .hero { min-height: calc(100svh - 120px); align-items: flex-end; padding-bottom: var(--s-8); }
+  .hero__dial { display: block; grid-column: 2; grid-row: 1; align-self: end; position: relative; z-index: 0; width: 100%; aspect-ratio: 1; }
+  .hero__dial .dial { position: absolute; inset: 13%; width: 74%; height: 74%; }
+  .hero__dial-scrim { display: block; position: absolute; inset: -18%; border-radius: 50%; background: radial-gradient(closest-side, rgba(20,25,22,.72) 0%, rgba(20,25,22,.55) 62%, rgba(20,25,22,0) 100%); }
+  .hero__dial .dial__track { opacity: .35; }
+  .hero__dial .dial__q { stroke-width: 5; stroke-linecap: butt; opacity: .38; }
+  .hero__dial .dial__q.is-on { stroke-width: 9; opacity: 1; }
+  .hero__dial-lbl { display: block; position: absolute; font-family: 'Fraunces', Georgia, serif; font-size: 1.0625rem; font-weight: 500; line-height: 1.2; color: #F3EFE6; opacity: .8; text-shadow: 0 1px 10px rgba(20,25,22,.8); }
+  .hero__dial-lbl.is-on { opacity: 1; color: #E3CFA6; }
+  .hero__dial-now { display: grid; place-items: center; align-content: center; gap: 4px; position: absolute; inset: 0; font-family: 'Fraunces', Georgia, serif; font-size: var(--fs-3); font-weight: 500; line-height: 1; color: #F3EFE6; text-shadow: 0 1px 14px rgba(20,25,22,.8); }
+  .hero__dial-now-k { font-size: 0.9375rem; font-style: italic; font-weight: 400; color: #E3CFA6; }
+  .hero__dial-lbl--spring { top: 0; right: 0; }
+  .hero__dial-lbl--summer { bottom: 0; right: 0; }
+  .hero__dial-lbl--fall { bottom: 0; left: 0; }
+  .hero__dial-lbl--winter { top: 0; left: 0; }
+}
+@media (max-width: 899px) { .hero__dial .dial__hand { display: none; } }
 
-/* Break */
-.break { padding: 0; position: relative; min-height: 60vh; display: flex; align-items: flex-end; }
-.break__frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) contrast(1.05) sepia(.12) brightness(.95); }
-.break__caption { position: relative; z-index: 1; padding-block: var(--s-6); color: #F3EFE6; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+/* ---------- contents (t-accent band) ---------- */
+.contents__grid { display: grid; gap: var(--s-7); }
+@media (min-width: 900px) { .contents__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s-9); align-items: end; } }
+.contents .kicker { color: #1E2420; }
+.price-card { margin-top: var(--s-6); padding: var(--s-5); border-top: 2px solid var(--ink); background: var(--card); max-width: 460px; }
+.price-card__label { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: .08em; }
+.price-card__range { font-family: 'Fraunces', serif; font-size: var(--fs-3); font-weight: 600; line-height: 1.1; margin-top: var(--s-2); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.price-card__note { margin-top: var(--s-1); }
+.contents__list { border-bottom: 1px solid var(--ink); }
+.contents__list a { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: var(--s-4); align-items: center; padding-block: var(--s-4); border-top: 1px solid var(--ink); text-decoration: none; }
+.contents__list .dial { grid-row: 1 / span 2; }
+.contents__when { text-transform: uppercase; letter-spacing: .08em; }
+.contents__what { font-family: 'Fraunces', serif; font-size: var(--fs-2); line-height: 1.15; font-weight: 500; }
+@media (hover: hover) { .contents__list a:hover .contents__what { text-decoration: underline; text-decoration-thickness: 1px; } }
 
-/* Countdown tool */
-.countdown-tool { margin-top: var(--s-5); padding: var(--s-4); border: 1px solid var(--rule); }
-.countdown-tool__input { width: 100%; padding: var(--s-3); border: 1px solid var(--muted); background: var(--bg); color: var(--ink); margin-block: var(--s-2); }
-.countdown-tool__result { min-height: 1.5em; margin-top: var(--s-2); color: var(--signal); }
+/* ---------- datelines ---------- */
+.dateline { display: flex; align-items: center; gap: var(--s-3); padding-bottom: var(--s-3); margin-bottom: var(--s-5); border-bottom: 1px solid var(--rule); max-width: 420px; }
+.dateline .mono { text-transform: uppercase; letter-spacing: .1em; color: var(--ink); }
+.addon { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; width: fit-content; max-width: 100%; margin-top: var(--s-5); padding: var(--s-3) var(--s-4); border-left: 2px solid var(--rule); background: var(--card); }
+@media (min-width: 640px) { .addon > span:first-child { white-space: nowrap; } }
+.addon .sample-tag { margin-left: 0; }
 
-/* Grid */
-.svc-grid { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-.svc-card { padding: var(--s-5); border-top: 1px solid var(--rule); background: rgba(184,148,95,.04); display: flex; flex-direction: column; }
-.svc-card p { flex: 1; color: var(--muted); }
-.svc-card__cta { margin-top: var(--s-4); align-self: start; }
+/* ---------- spreads (spring, summer) ---------- */
+.spread__grid { display: grid; gap: var(--s-6); align-items: center; }
+.spread__text > .btn { margin-top: var(--s-6); }
+@media (min-width: 900px) {
+  .spread__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--s-9); }
+  .spread--spring .spread__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+  .spread--spring .frame--tall { aspect-ratio: 1 / 1; }
+  .spread--rev .spread__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+}
+.review-mini { margin-top: var(--s-6); padding: var(--s-4) 0 0; border-top: 1px solid var(--rule); }
+.review-mini p { font-family: 'Fraunces', serif; font-size: var(--fs-1); line-height: 1.4; font-style: italic; font-weight: 400; }
+.review-mini footer { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: var(--s-3); color: var(--muted); }
+.t-mid .sample-tag { color: #F3EFE6; border-color: rgba(212,185,140,.7); }
 
-/* Stack / Proof */
-.stack__inner { max-width: 960px; }
-.stack__sub { margin-bottom: var(--s-6); color: var(--muted); }
-.review-list { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-bottom: var(--s-7); }
-.review-card { padding: var(--s-5); border: 1px solid var(--rule); background: #fff; }
-.review-card__stars { color: var(--accent); display: flex; gap: 2px; margin-bottom: var(--s-3); }
-.review-card__stars .i { width: 16px; height: 16px; }
-.review-card__text { font-style: italic; margin-bottom: var(--s-3); }
-.review-card__meta { color: var(--muted); font-size: var(--fs--1); }
-.trust-row { display: flex; flex-wrap: wrap; gap: var(--s-4); padding-top: var(--s-5); border-top: 1px solid var(--rule); }
+/* ---------- break: the turn of the page ---------- */
+.break { min-height: 72svh; display: flex; align-items: flex-end; padding-block: var(--s-9) var(--s-8); overflow: hidden; isolation: isolate; }
+.break__frame { position: absolute; inset: 0; z-index: -2; aspect-ratio: auto; }
+.break__frame .frame-fallback { display: none !important; }
+.break__scrim { position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(20,25,22,.85) 0%, rgba(20,25,22,.35) 60%, rgba(20,25,22,.2) 100%); }
+.break__line { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(2.25rem, 1rem + 5.2vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; color: #F3EFE6; max-width: 14ch; text-wrap: balance; font-variation-settings: "opsz" 144; }
+.break__caption { margin-top: var(--s-5) !important; color: #D4B98C; text-transform: uppercase; letter-spacing: .1em; }
 
-/* Rail / Area */
-.rail__inner { display: grid; gap: var(--s-6); }
-@media (min-width: 900px) { .rail__inner { grid-template-columns: 1.4fr 1fr; } }
-.zip-checker { margin-top: var(--s-5); }
+/* ---------- planner (fall + countdown) ---------- */
+.planner__head { max-width: 760px; }
+.planner__grid { display: grid; gap: var(--s-7); margin-top: var(--s-7); align-items: start; }
+@media (min-width: 1000px) { .planner__grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: var(--s-8); } }
+.countdown { display: grid; gap: var(--s-6); padding: var(--s-5); background: var(--card); border-top: 2px solid var(--ink); }
+@media (min-width: 640px) { .countdown { grid-template-columns: 200px minmax(0, 1fr); padding: var(--s-6); align-items: start; } }
+.countdown__dial { position: relative; width: 200px; max-width: 100%; aspect-ratio: 1; margin-inline: auto; }
+.countdown__dial .dial { width: 100%; height: 100%; --dial: #7A5C2E; }
+.countdown__dial .dial__sweep { stroke: #9E4428; stroke-width: 5; }
+.sw-motion .countdown__dial .dial__sweep { transition: stroke-dashoffset var(--dur-story) var(--ease-io); }
+.countdown__mark { stroke: #F3EFE6; stroke-width: 1.5; opacity: 0; transition: opacity var(--dur-ui) var(--ease-out); }
+.countdown.is-set .countdown__mark { opacity: 1; }
+.dial .countdown__mark--book { fill: #9E4428; }
+.dial .countdown__mark--deep { fill: #1E2420; }
+.dial .countdown__mark--touch { fill: #B8945F; }
+.dial .countdown__mark--now { fill: #1E2420; opacity: 1; stroke: none; }
+.countdown__center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 2px; margin: 0; }
+.countdown__days { font-family: 'Fraunces', serif; font-size: 2.75rem; line-height: 1; font-weight: 600; font-variant-numeric: lining-nums tabular-nums; }
+.countdown__center .mono { text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.countdown__label { display: block; text-transform: uppercase; letter-spacing: .08em; margin-bottom: var(--s-2); color: var(--muted); }
+.countdown__input { width: 100%; min-height: 48px; padding: var(--s-3); border: 1px solid var(--muted); border-radius: 3px; background: #FFFFFF; color: var(--ink); }
+.countdown__plan { margin-top: var(--s-5); border-top: 1px solid rgba(30,36,32,.2); }
+.countdown__step { display: grid; grid-template-columns: 14px 96px minmax(0, 1fr); gap: var(--s-3); align-items: baseline; padding-block: 10px; border-bottom: 1px solid rgba(30,36,32,.2); }
+.countdown__step::before { content: ""; width: 10px; height: 10px; border-radius: 50%; transform: translateY(1px); }
+.countdown__step--book::before { background: #9E4428; }
+.countdown__step--deep::before { background: #1E2420; }
+.countdown__step--touch::before { background: #B8945F; }
+.countdown__step .mono { text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.countdown__step strong { font-weight: 600; font-variant-numeric: tabular-nums; }
+.countdown__note { margin-top: var(--s-4); color: var(--muted); }
+.countdown__body > .btn { margin-top: var(--s-5); }
+
+/* ---------- ledger (winter) ---------- */
+.ledger__grid { display: grid; gap: var(--s-5); margin-top: var(--s-7); }
+@media (min-width: 900px) { .ledger__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); column-gap: var(--s-9); row-gap: var(--s-5); align-items: end; } .ledger__head { grid-column: 1 / -1; } .ledger__head h2 { font-size: clamp(2.5rem, 1rem + 3.4vw, 4rem); } }
+.ledger__head h2 { margin-bottom: 0; }
+.ledger__act .addon { margin-top: 0; }
+.ledger__act > .btn { margin-top: var(--s-5); }
+.t-deep .sample-tag { color: #D4B98C; border-color: rgba(184,148,95,.6); }
+
+/* ---------- services: the year ledger ---------- */
+.services__head { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s-5); align-items: center; margin-bottom: var(--s-7); }
+.services__head h2 { margin-bottom: 0; }
+.services .kicker { color: var(--muted); margin-bottom: var(--s-3); }
+.dial--big { width: 96px; height: 96px; --dial: #7A5C2E; }
+.dial--big .dial__q.is-on, .dial--ring .dial__q.is-on { stroke-width: 7; stroke-linecap: butt; }
+.dial--big .dial__q[data-q="spring"], .dial--ring .dial__q[data-q="spring"] { color: #B8945F; stroke: #B8945F; }
+.dial--big .dial__q[data-q="summer"], .dial--ring .dial__q[data-q="summer"] { stroke: #3A4440; }
+.dial--big .dial__q[data-q="fall"], .dial--ring .dial__q[data-q="fall"] { stroke: #9E4428; }
+.dial--big .dial__q[data-q="winter"], .dial--ring .dial__q[data-q="winter"] { stroke: #141916; }
+.dial--big .dial__inner { stroke: currentColor; stroke-width: .6; opacity: .4; }
+.dial--big .dial__hand { stroke-width: 1.8; }
+h4 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 1.1875rem; line-height: 1.2; letter-spacing: -0.01em; text-wrap: balance; font-variation-settings: "opsz" 24; }
+.yr { display: grid; gap: var(--s-6); }
+.yr-col { --q: #B8945F; border-top: 3px solid var(--q); }
+.yr-col--summer { --q: #3A4440; }
+.yr-col--fall { --q: #9E4428; }
+.yr-col--winter { --q: #141916; }
+.yr-col--year { --q: #1E2420; border-top-width: 2px; padding: 0 var(--s-5) var(--s-2); background: #FFFFFF; }
+.yr-col__head { display: flex; align-items: center; gap: 10px; padding-block: var(--s-3); font-size: var(--fs-2); border-bottom: 1px solid rgba(30,36,32,.2); }
+.yr-col__head .dial { --dial: var(--q); width: 26px; height: 26px; }
+.yr-col--year .dial__track { stroke-width: 14; opacity: .9; }
+.yr-col__when { margin-left: auto; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-family: 'DM Mono', monospace; font-size: var(--fs--1); font-weight: 400; }
+.yr-job { padding-block: var(--s-4); border-bottom: 1px solid rgba(30,36,32,.14); }
+.yr-job:last-child { border-bottom: 0; padding-bottom: var(--s-2); }
+.yr-job__top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
+.yr-job p { margin-top: 2px; color: var(--muted); font-size: 0.9375rem; line-height: 1.5; }
+.yr-job__cta { flex: none; display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; font-size: 0.9375rem; color: var(--signal); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; white-space: nowrap; }
+@media (hover: hover) { .yr-job__cta:hover { text-decoration-thickness: 2px; } }
+@media (min-width: 640px) {
+  .yr { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-6); row-gap: var(--s-7); }
+  .yr-col--year { grid-column: 1 / -1; }
+  .yr-col--year .yr-jobs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-6); }
+  .yr-col--year .yr-job { border-bottom: 0; }
+}
+@media (min-width: 900px) {
+  .services__head { grid-template-columns: 184px minmax(0, 1fr); gap: var(--s-7); }
+  .dial--big { width: 184px; height: 184px; }
+  .services__head h2 { font-size: clamp(2.25rem, 1rem + 2.6vw, 3.5rem); max-width: 16ch; }
+}
+@media (min-width: 1000px) {
+  .yr { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--s-6); }
+  .yr-col--year { grid-column: 1 / -1; padding-inline: var(--s-6); }
+  .yr-col--year .yr-jobs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .yr-job { display: flex; flex-direction: column; }
+  .yr-job p { order: 1; }
+  .yr-job__top { display: contents; }
+  .yr-job h4 { order: 0; }
+  .yr-job .yr-job__cta { order: 2; align-self: flex-start; }
+}
+
+/* ---------- proof: six notes around the year's ring ---------- */
+.proof__head { display: flex; align-items: center; gap: var(--s-5); margin-bottom: var(--s-7); }
+.proof__head h2 { margin-bottom: var(--s-2); }
+.proof__sub { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--muted); }
+.ring__hub { display: none; }
+.review-list { display: grid; gap: var(--s-4); }
+@media (min-width: 640px) { .review-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.review-card { --q: #7A5C2E; position: relative; display: flex; flex-direction: column; padding: var(--s-5); background: var(--card); border-top: 2px solid var(--q); }
+.review-card--summer { --q: #3A4440; }
+.review-card--fall { --q: #9E4428; }
+.review-card--winter { --q: #141916; }
+.review-card--year { --q: #B8945F; }
+.review-card__when { margin-bottom: var(--s-3); color: var(--q); text-transform: uppercase; letter-spacing: .1em; font-weight: 500; }
+.review-card--year .review-card__when { color: #7A5C2E; }
+.review-card__stars { display: flex; gap: 2px; color: #9E4428; margin-bottom: var(--s-3); }
+.review-card__stars .i { width: 15px; height: 15px; }
+.review-card__stars[data-stars="4"] .i:nth-child(5) { opacity: .25; }
+.review-card__text { font-family: 'Fraunces', serif; font-size: 1.0625rem; line-height: 1.5; font-weight: 400; flex: 1; }
+.review-card--pointer .review-card__text { font-style: italic; color: var(--muted); }
+.review-card__jump { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; margin-top: var(--s-2); font-weight: 600; color: var(--signal); text-underline-offset: 4px; }
+.review-card__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid rgba(30,36,32,.15); font-size: 0.875rem; color: var(--muted); }
+.review-card__meta > span:first-child { flex-basis: 100%; color: var(--ink); font-weight: 600; font-size: 0.9375rem; }
+.review-card__meta .sample-tag { margin: 0; }
+@media (min-width: 1100px) {
+  .proof__head { justify-content: center; text-align: center; }
+  .proof__head .dial--year { display: none; }
+  .proof__sub { justify-content: center; max-width: none; }
+  .review-card--spring { --d: 1; } .review-card--summer { --d: 3; } .review-card--fall { --d: 2; } .review-card--y2 { --d: 5; } .review-card--y1 { --d: 4; }
+  .sw-motion .review-card[data-reveal] { transition-delay: calc(var(--d, 0) * 90ms); }
+  .ring { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px) minmax(0, 1fr); grid-template-areas: "winter hub spring" "fall hub summer" "y1 hub y2"; column-gap: var(--s-8); row-gap: var(--s-5); align-items: start; }
+  .review-list { display: contents; }
+  .ring__hub { grid-area: hub; align-self: start; display: block; position: relative; width: 100%; aspect-ratio: 1; margin-top: var(--s-6); }
+  .ring__hub { position: sticky; top: max(calc(var(--header-h) + 24px), calc(50svh - 150px)); }
+  .ring__hub .dial { position: absolute; inset: 11%; width: 78%; height: 78%; --dial: #7A5C2E; }
+  .ring__lbl { position: absolute; font-family: 'Fraunces', Georgia, serif; font-size: 1.0625rem; font-weight: 500; color: #1E2420; }
+  .ring__lbl--spring { top: 0; right: 0; }
+  .ring__lbl--summer { bottom: 0; right: 0; }
+  .ring__lbl--fall { bottom: 0; left: 0; }
+  .ring__lbl--winter { top: 0; left: 0; }
+  .ring__centre { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: var(--fs-2); line-height: 1.15; color: #3A4440; }
+  .review-card--spring { grid-area: spring; }
+  .review-card--summer { grid-area: summer; }
+  .review-card--fall { grid-area: fall; }
+  .review-card--winter { grid-area: winter; }
+  .review-card--y1 { grid-area: y1; }
+  .review-card--y2 { grid-area: y2; }
+  /* spokes: each note points at its quarter of the ring */
+  .review-card--winter, .review-card--fall, .review-card--y1 { border-top: 0; border-right: 2px solid var(--q); }
+  .review-card--spring, .review-card--summer, .review-card--y2 { border-top: 0; border-left: 2px solid var(--q); }
+  .review-card::after { content: ""; position: absolute; top: 50%; width: var(--s-8); height: 1px; background: var(--q); opacity: .6; }
+  .review-card--winter::after, .review-card--fall::after, .review-card--y1::after { left: 100%; }
+  .review-card--spring::after, .review-card--summer::after, .review-card--y2::after { right: 100%; }
+}
+.trust-row { display: grid; gap: var(--s-5); margin-top: var(--s-7); padding-top: var(--s-5); border-top: 1px solid var(--rule); }
+@media (min-width: 900px) { .trust-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-7); } }
+.trust-row__item { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.trust-row__item > .mono:first-child { flex-basis: 100%; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+
+/* ---------- area ---------- */
+.area__grid { display: grid; gap: var(--s-7); }
+@media (min-width: 900px) { .area__grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: var(--s-9); align-items: start; } }
+.area__towns { font-size: var(--fs-1); color: #E6E0D3; max-width: 44ch; }
+.zip-checker { margin-top: var(--s-6); max-width: 520px; }
+.zip-checker__label { display: block; text-transform: uppercase; letter-spacing: .08em; color: #B8945F; margin-bottom: var(--s-2); }
 .zip-checker__row { display: flex; gap: var(--s-2); }
-.zip-checker__input { flex: 1; padding: var(--s-3); border: 1px solid var(--muted); background: var(--bg); color: var(--ink); }
-.zip-checker__result { min-height: 1.5em; margin-top: var(--s-3); }
-.hours { display: grid; grid-template-columns: auto 1fr; gap: var(--s-1) var(--s-4); margin-top: var(--s-3); }
-.hours dt { font-weight: 600; }
+.zip-checker__input { flex: 1; min-width: 0; min-height: 48px; padding: var(--s-3); border: 1px solid #B8945F; border-radius: 3px; background: #1c2320; color: #F3EFE6; font-variant-numeric: tabular-nums; }
+.zip-checker__input::placeholder { color: #A9A397; }
+.zip-checker__result { min-height: 1.5em; margin-top: var(--s-3); color: #F3EFE6; }
+.sw-zip-go, .sw-zip-call { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2); margin-left: -8px; background: none; border: 0; color: #D4B98C; font: inherit; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.area__hours-title { text-transform: uppercase; letter-spacing: .1em; color: #B8945F; margin-bottom: var(--s-3); }
+.hours { border-top: 1px solid rgba(243,239,230,.2); }
+.hours > div { display: grid; grid-template-columns: 6ch minmax(0, 1fr); gap: var(--s-4); padding-block: 10px; border-bottom: 1px solid rgba(243,239,230,.2); }
+.hours dt { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: #B8945F; padding-top: 2px; }
+.hours dd { margin: 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.area__open { margin-top: var(--s-4); color: #F3EFE6; }
 
-/* Form */
-.lead-form { margin-top: var(--s-6); max-width: 600px; }
-.lead-form fieldset { border: none; padding: 0; margin-bottom: var(--s-5); }
-.lead-form legend { font-size: var(--fs-1); margin-bottom: var(--s-4); color: var(--accent); }
+/* ---------- contact ---------- */
+.contact__grid { display: grid; gap: var(--s-6); }
+@media (min-width: 900px) { .contact__grid { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: var(--s-9); } }
+.contact__call { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: var(--s-5); color: var(--muted); }
+.tel-plain { display: inline-block; padding-block: 12px; margin-block: -12px; font-weight: 500; color: inherit; }
+.lead-form { max-width: 600px; padding: var(--s-5); background: #FFFFFF; border-top: 2px solid var(--ink); }
+@media (min-width: 640px) { .lead-form { padding: var(--s-6); } }
+.lead-form fieldset { border: 0; padding: 0; margin: 0 0 var(--s-5); }
+.lead-form legend { padding: 0; margin-bottom: var(--s-4); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 .lead-form label { display: block; margin-bottom: var(--s-2); font-weight: 500; }
-.lead-form input, .lead-form select { width: 100%; padding: var(--s-3); border: 1px solid var(--muted); background: var(--bg); color: var(--ink); margin-bottom: var(--s-4); }
-.radio-card { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); border: 1px solid var(--rule); margin-bottom: var(--s-2); cursor: pointer; }
-.radio-card:has(input:checked) { background: rgba(184,148,95,.12); border-color: var(--accent); }
-.radio-card input { width: auto; margin: 0; }
-.lead-form__nav { display: flex; gap: var(--s-3); margin-top: var(--s-4); }
+.lead-form input, .lead-form select { width: 100%; min-height: 48px; padding: var(--s-3); margin-bottom: var(--s-4); border: 1px solid var(--muted); border-radius: 3px; background: #FFFFFF; color: var(--ink); }
+.lead-form .lead-form__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.radio-card { display: flex !important; align-items: center; gap: var(--s-3); min-height: 52px; padding: var(--s-3) var(--s-4); margin-bottom: var(--s-2) !important; border: 1px solid rgba(30,36,32,.3); border-radius: 3px; cursor: pointer; }
+.radio-card:has(input:checked) { border-color: var(--signal); background: rgba(158,68,40,.06); }
+.radio-card input { width: 18px !important; min-height: 0 !important; height: 18px; margin: 0 !important; accent-color: #9E4428; }
+.lead-form__nav { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.lead-form__nav .btn--line { color: var(--ink); }
 .lead-form__micro { margin-top: var(--s-4); color: var(--muted); }
-.lead-form__thanks { padding: var(--s-6); border: 1px solid var(--accent); text-align: center; }
-.lead-form__thanks-title { font-size: var(--fs-2); font-family: 'Fraunces', serif; margin-bottom: var(--s-3); }
+.lead-form__thanks { padding: var(--s-5); border-left: 2px solid var(--signal); }
+.lead-form__thanks-title { font-family: 'Fraunces', serif; font-size: var(--fs-2); margin-bottom: var(--s-3); }
 
-/* Footer */
-.footer { padding-block: var(--s-7); }
+/* ---------- footer ---------- */
+.footer { padding-block: var(--s-8) calc(var(--s-8) + 72px); }
+@media (min-width: 900px) { .footer { padding-bottom: var(--s-8); } }
+.footer__grid { display: grid; gap: var(--s-6); }
+@media (min-width: 900px) { .footer__grid { grid-template-columns: 160px minmax(0, 1fr); gap: var(--s-8); align-items: start; } }
+.footer__dial .dial { width: 112px; height: 112px; --a: 0deg; }
+.footer__dial .dial__q.is-on { stroke-width: 4; }
+.footer__dial .mono { margin-top: var(--s-3); text-transform: uppercase; letter-spacing: .1em; color: #B8945F; }
 .footer__brand { font-family: 'Fraunces', serif; font-size: var(--fs-2); margin-bottom: var(--s-3); }
-.footer__disclaimer { margin-top: var(--s-4); opacity: 0.7; }
-.credits { margin-top: var(--s-4); font-size: var(--fs--1); opacity: 0.6; }
-.credits li { margin-bottom: var(--s-1); }
+.footer__text > .mono { color: #D8D2C5; }
+.footer__text > .mono + .mono { margin-top: var(--s-2); }
+.footer__disclaimer { margin-top: var(--s-4) !important; max-width: 70ch; }
+.credits { margin-top: var(--s-4); font-size: var(--fs--1); color: #D8D2C5; }
+.credits:empty { display: none; }
 
-/* Season Dial Signature */
-.season-dial { width: 48px; height: 48px; }
-.season-dial__svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-.season-dial__seg { stroke-dasharray: 72 218; stroke-dashoffset: 0; opacity: 0.3; transition: opacity var(--dur-ui) var(--ease-out); }
-.season-dial__seg.is-active { opacity: 1; stroke: var(--accent); }
-.header__dial { position: absolute; right: var(--s-6); top: 50%; transform: translateY(-50%); }
-@media (max-width: 899px) { .header__dial { display: none; } }
-.footer__dial { margin-top: var(--s-5); opacity: 0.5; }
-
-/* Mobile Bar */
-.mobilebar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); border-top: 1px solid var(--rule); padding: var(--s-3); display: flex; gap: var(--s-3); z-index: 90; box-shadow: 0 -2px 12px rgba(0,0,0,.15); }
+/* ---------- mobile bar ---------- */
+.mobilebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; gap: var(--s-3); padding: var(--s-3); padding-bottom: max(var(--s-3), env(safe-area-inset-bottom)); background: #F3EFE6; color: #1E2420; border-top: 1px solid rgba(122,92,46,.5); box-shadow: 0 -2px 12px rgba(0,0,0,.15); }
+.mobilebar .btn { flex: 1; padding-inline: var(--s-3); white-space: nowrap; }
+.mobilebar .mobilebar__book { flex: 1.7; }
+.mobilebar__call { color: #1E2420; }
 @media (min-width: 900px) { .mobilebar { display: none; } }
-.mobilebar__call, .mobilebar__book { flex: 1; justify-content: center; }
 
-/* Frame */
-.frame { position: relative; overflow: hidden; aspect-ratio: 4/3; background: var(--rule); }
-.frame img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) contrast(1.05) sepia(.12) brightness(.95); }
+/* ---------- sample tag ---------- */
+.sample-tag { display: inline-block; margin-left: 2px; padding: 1px 7px; border: 1px solid currentColor; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; vertical-align: middle; }
 
-/* Sample Tag */
-.sample-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: var(--fs--1); border: 1px solid var(--rule); padding: 0 var(--s-2); margin-left: var(--s-2); vertical-align: middle; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
-
-/* Motion & Reveal */
-.sw-motion [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-.sw-motion [data-reveal].is-in { opacity: 1; transform: none; }
-.sw-motion [data-reveal="clip"] { clip-path: inset(0 0 100% 0); opacity: 1; transform: none; transition: clip-path var(--dur-story) var(--ease-io); }
-.sw-motion [data-reveal="clip"].is-in { clip-path: inset(0); }
-.sw-motion [data-reveal-stagger] > * { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-.sw-motion [data-reveal-stagger].is-in > * { opacity: 1; transform: none; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(1) { transition-delay: 0ms; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: calc(var(--dur-stagger)); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: calc(var(--dur-stagger) * 2); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(4) { transition-delay: calc(var(--dur-stagger) * 3); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(5) { transition-delay: calc(var(--dur-stagger) * 4); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(6) { transition-delay: calc(var(--dur-stagger) * 5); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(7) { transition-delay: calc(var(--dur-stagger) * 6); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(8) { transition-delay: calc(var(--dur-stagger) * 7); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(9) { transition-delay: calc(var(--dur-stagger) * 8); }
-
-/* Skip Link */
-.skip-link { position: absolute; top: -100px; left: var(--s-4); background: var(--accent); color: #1E2420; padding: var(--s-3) var(--s-4); z-index: 300; font-weight: 600; text-decoration: none; }
+/* ---------- skip link ---------- */
+.skip-link { position: absolute; top: -100px; left: var(--s-4); z-index: 300; padding: var(--s-3) var(--s-4); background: #F3EFE6; color: #1E2420; font-weight: 600; text-decoration: none; }
 .skip-link:focus { top: var(--s-4); }
 
-/* Print */
-@media print {
-  .header, .mobilebar, .menu, .season-dial, .hero__scrim { display: none; }
-  .section { padding-block: var(--s-5); break-inside: avoid; }
-  body { color: #000; background: #fff; }
+/* ---------- motion (start states only under .sw-motion) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .sw-motion .hero__fog { animation: fog-drift 28s ease-in-out infinite alternate; }
 }
+@keyframes fog-drift { from { background-position: 0% 0; } to { background-position: 100% 0; } }
+.sw-motion .hero__dial .dial__q { stroke-dasharray: 1 1; }
+.sw-motion .hero__dial .dial__hand { transition: transform 1s var(--ease-io); }
+.sw-motion .dial--date .dial__q.is-on,
+.sw-motion .dial--big .dial__q,
+.sw-motion .dial--ring .dial__q { stroke-dasharray: 1 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero__fog { animation: none; }
+}
+
+/* ---------- print ---------- */
+@media print {
+  .header, .mobilebar, .menu, .dial-clock, .hero__media, .hero__dial, .break__scrim { display: none !important; }
+  .section { padding-block: var(--s-5); break-inside: avoid; background: #fff !important; color: #000 !important; }
+  .section * { color: #000 !important; }
+  .break { min-height: 0; }
+}
+
 </style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
   <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
-  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
-  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header data-header class="header" aria-label="Site">
   <div class="header__inner container">
-    <a href="#hero" class="header__logo" aria-label="Riverfog Housekeeping home">RH</a>
+    <a href="#hero" class="logo" aria-label="Riverfog Housekeeping home">
+      <span class="logo__mark" aria-hidden="true">RH</span>
+      <span class="logo__word">Riverfog Housekeeping</span>
+    </a>
     <nav class="header__nav" aria-label="Primary">
       <a href="#services">Services</a>
       <a href="#proof">Reviews</a>
       <a href="#area">Area</a>
-      <a href="#contact">Book</a>
+      <a href="#contact" class="header__book">Price my cleaning</a>
     </nav>
     <button class="header__menu-btn" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg></button>
-    <div class="season-dial header__dial" data-sw-signature="season-dial" aria-hidden="true">
-      <svg viewBox="0 0 100 100" class="season-dial__svg">
-        <circle cx="50" cy="50" r="46" fill="none" stroke="var(--rule)" stroke-width="2"/>
-        <path class="season-dial__seg season-dial__seg--spring" d="M50 4 A46 46 0 0 1 96 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-        <path class="season-dial__seg season-dial__seg--summer" d="M96 50 A46 46 0 0 1 50 96" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-        <path class="season-dial__seg season-dial__seg--fall" d="M50 96 A46 46 0 0 1 4 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-        <path class="season-dial__seg season-dial__seg--winter" d="M4 50 A46 46 0 0 1 50 4" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-      </svg>
-    </div>
   </div>
   <div class="header__progress" data-progress></div>
 </header>
@@ -516,294 +792,407 @@ button, input, select { font: inherit; color: inherit; }
     <a href="#services">Services</a>
     <a href="#proof">Reviews</a>
     <a href="#area">Area</a>
-    <a href="#contact">Book a visit</a>
-    <a href="tel:+14235550154" class="btn btn--primary">Call <a class="tel-plain" href="tel:+14235550154">(423) 555-0154</a></a>
+    <a href="#contact">Price my cleaning</a>
+    <a href="tel:+14235550154" class="btn btn--primary">Call (423) 555-0154</a>
   </div>
 </nav>
 
+<!-- Season Dial clock: pinned top-right on wide screens while the four spreads scroll past (motion only) -->
+<div class="dial-clock" data-dial-clock aria-hidden="true">
+  <svg class="dial" viewBox="0 0 100 100" focusable="false">
+    <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+    <circle class="dial__track" cx="50" cy="50" r="40"/>
+    <circle class="dial__sweep" cx="50" cy="50" r="40" pathLength="100"/>
+    <path class="dial__q" data-q="spring" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+    <path class="dial__q" data-q="summer" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+    <path class="dial__q" data-q="fall" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+    <path class="dial__q" data-q="winter" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+    <line class="dial__hand" x1="50" y1="50" x2="50" y2="17"/>
+    <circle class="dial__hub" cx="50" cy="50" r="3"/>
+  </svg>
+  <p class="dial-clock__label mono" data-dial-label>Spring</p>
+</div>
+
 <main id="main">
 
-  <!-- 1. HERO -->
-  <section id="hero" class="section t-deep hero" data-reveal>
-    <div class="hero__media">
-      <img src="media/hero-C1-1170.webp" srcset="media/hero-C1-1170.webp 1170w, media/hero-C1.webp 2340w" sizes="100vw" alt="Morning fog rising off a river valley, autumn trees breaking through under a low sun" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-C1" data-slot="hero-C1" class="hero__img">
+  <!-- 1. HERO: almanac cover -->
+  <section id="hero" class="section t-deep hero" data-sw-signature="season-dial">
+    <div class="hero__media" aria-hidden="true">
+      <figure class="frame hero__frame" data-fallback="Morning fog rising off a river valley, autumn trees breaking through under a low sun"><img src="media/hero-C1-1170.webp" srcset="media/hero-C1-1170.webp 1170w, media/hero-C1.webp 2340w" sizes="100vw" alt="Morning fog rising off a river valley, autumn trees breaking through under a low sun" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-C1" data-slot="hero-C1" class="hero__img"></figure>
+      <div class="hero__fog"></div>
       <div class="hero__scrim"></div>
     </div>
-    <div class="container hero__content">
-      <p class="kicker mono">The House Almanac · Spring Edition</p>
-      <h1 class="hero__title" data-split="lines">House Cleaning in Chattanooga, TN</h1>
-      <p class="hero__proof mono"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg> 4.9 · 122 reviews · <span class="sample-tag">Sample rating</span> · 13 years</p>
-      <div class="hero__actions">
-        <a href="#contact" class="btn btn--primary">Price it</a>
-        <a href="tel:+14235550154" class="btn btn--ghost"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> <span>(423) 555-0154</span></a>
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <p class="kicker mono">Riverfog · The House Almanac</p>
+        <h1 class="hero__title" data-split="lines">House cleaning in Chattanooga,<br class="hero__br"> planned by the season</h1>
+        <p class="hero__lead">Each visit’s list follows the season, from April pollen on the porch screens to August mildew in the grout. You see a sample price before anyone walks in.</p>
+        <p class="hero__proof mono"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg> 4.9 · 122 reviews <span class="sample-tag">Sample rating</span> · 13 years in Chattanooga</p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">Price my cleaning</a>
+          <a href="tel:+14235550154" class="btn btn--line"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> <span>Call (423) 555-0154</span></a>
+        </div>
+      </div>
+      <div class="hero__dial" aria-hidden="true">
+        <div class="hero__dial-scrim"></div>
+        <svg class="dial dial--cover" viewBox="0 0 100 100" focusable="false" data-dial-today>
+          <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+          <circle class="dial__track" cx="50" cy="50" r="40"/>
+          <path class="dial__q" data-q="spring" pathLength="1" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+          <path class="dial__q" data-q="summer" pathLength="1" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+          <path class="dial__q is-on" data-q="fall" pathLength="1" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+          <path class="dial__q" data-q="winter" pathLength="1" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+          <line class="dial__hand" x1="50" y1="25" x2="50" y2="13"/>
+        </svg>
+        <span class="hero__dial-lbl hero__dial-lbl--spring" data-lbl="spring">Spring</span>
+        <span class="hero__dial-lbl hero__dial-lbl--summer" data-lbl="summer">Summer</span>
+        <span class="hero__dial-lbl hero__dial-lbl--fall is-on" data-lbl="fall">Fall</span>
+        <span class="hero__dial-lbl hero__dial-lbl--winter" data-lbl="winter">Winter</span>
+        <span class="hero__dial-now"><span class="hero__dial-now-k">Now</span><span data-dial-now>Fall</span></span>
       </div>
     </div>
   </section>
 
-  <!-- 2. INTRO -->
-  <section id="intro" class="section t-accent statement" data-reveal>
-    <div class="container statement__inner">
-      <h2>A year of care for Chattanooga houses</h2>
-      <p class="lead">Riverfog follows the seasons: pollen in spring, mildew in summer, guest prep in fall, and a steady every-two-weeks visit that keeps the house at its baseline. Sample pricing below; your number comes after a walk-through or photos.</p>
-      <div class="price-card">
-        <p class="price-card__label mono">Sample pricing</p>
-        <p class="price-card__item">Every-two-weeks visit</p>
-        <p class="price-card__range mono">$140 – $195 <span class="price-card__unit">per visit</span></p>
-        <p class="price-card__note mono">3 bed / 2 bath</p>
+  <!-- 2. CONTENTS: what the year holds + sample price anchor -->
+  <section id="intro" class="section t-accent contents">
+    <div class="container contents__grid">
+      <div class="contents__text">
+        <p class="kicker mono">In this almanac</p>
+        <h2>A year of care for Chattanooga houses</h2>
+        <p class="lead">Riverfog works the season’s job into every visit, so your April list and your August list are not the same. Your real number comes after a walk-through or a few photos.</p>
+        <div class="price-card">
+          <p class="price-card__label mono">Every-two-weeks visit <span class="sample-tag">Sample pricing</span></p>
+          <p class="price-card__range">$140–$195</p>
+          <p class="price-card__note mono">per visit · 3 bed / 2 bath</p>
+        </div>
       </div>
+      <ol class="contents__list">
+        <li><a href="#almanac-spring"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/></svg><span class="contents__when mono">March–May</span><span class="contents__what">Spring · Pollen week</span></a></li>
+        <li><a href="#almanac-summer"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/></svg><span class="contents__when mono">June–August</span><span class="contents__what">Summer · Mildew</span></a></li>
+        <li><a href="#almanac-fall"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/></svg><span class="contents__when mono">September–November</span><span class="contents__what">Fall · Guest-ready</span></a></li>
+        <li><a href="#almanac-winter"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/></svg><span class="contents__when mono">December–February</span><span class="contents__what">Winter · Weekend houses</span></a></li>
+      </ol>
     </div>
   </section>
 
-  <!-- 3. SPRING -->
-  <section id="almanac-spring" class="section t-paper split" data-hook="season-planner" data-reveal>
-    <div class="container split__inner">
-      <div class="split__text">
-        <p class="dateline mono">Late March · Signal Mountain</p>
+  <!-- 3. SPRING: portrait spread -->
+  <section id="almanac-spring" class="section t-paper spread spread--spring" data-hook="season-planner" data-sw-signature="season-dial" data-season="spring">
+    <div class="container spread__grid">
+      <div class="spread__text" data-reveal>
+        <div class="dateline">
+          <svg class="dial dial--date" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="--a:45deg"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" pathLength="1" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/><line class="dial__hand" x1="50" y1="50" x2="50" y2="20"/></svg>
+          <p class="mono">Late March · Signal Mountain</p>
+        </div>
         <h2>Pollen week: what we add</h2>
         <p>The yellow film off sills, screens, porch rails and ceiling fans once the pines let go.</p>
-        <p class="addon mono">Add-on: Pollen clean add-on — $60–$120 <span class="mono">(porches, screens, fans)</span> <span class="sample-tag">Sample pricing</span></p>
+        <p class="addon mono"><span>Add to any visit: $60–$120</span> <span>porches, screens, fans</span> <span class="sample-tag">Sample pricing</span></p>
         <a href="#contact" class="btn btn--secondary" data-service="Pollen clean">Add pollen clean</a>
       </div>
-      <div class="split__media">
-        <figure class="frame" data-fallback="Yellow pollen dust on a porch rail after an April coat" data-reveal="clip"><img src="media/detail-pollen-1170.webp" srcset="media/detail-pollen-1170.webp 1170w, media/detail-pollen.webp 2340w" sizes="100vw" alt="Yellow pollen dust on a porch rail after an April coat" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-pollen" data-slot="detail-pollen"></figure>
+      <div class="spread__media">
+        <figure class="frame frame--tall frame--q-spring frame--blinds" data-fallback="Three-pronged microfiber blind duster on a plain white background, close-up" data-reveal="clip"><img src="media/process-blinds-1170.webp" srcset="media/process-blinds-1170.webp 1170w, media/process-blinds.webp 2340w" sizes="100vw" alt="Three-pronged microfiber blind duster on a plain white background, close-up" width="1170" height="659" loading="lazy" decoding="async" data-photo="process-blinds" data-slot="process-blinds"></figure>
       </div>
     </div>
   </section>
 
-  <!-- 4. SUMMER -->
-  <section id="almanac-summer" class="section t-mid split split--rev" data-reveal>
-    <div class="container split__inner">
-      <div class="split__media">
-        <figure class="frame" data-fallback="Brush on bathroom grout lines" data-reveal="clip"><img src="media/process-grout-1170.webp" srcset="media/process-grout-1170.webp 1170w, media/process-grout.webp 2340w" sizes="100vw" alt="Brush on bathroom grout lines" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-grout" data-slot="process-grout"></figure>
+  <!-- 4. SUMMER: reversed spread with a pull-quote -->
+  <section id="almanac-summer" class="section t-mid spread spread--rev" data-sw-signature="season-dial" data-season="summer">
+    <div class="container spread__grid">
+      <div class="spread__media">
+        <figure class="frame frame--q-summer frame--shower" data-fallback="Walk-in white tiled shower with a clear glass panel and a handheld shower head" data-reveal="clip"><img src="media/process-shower-glass-1170.webp" srcset="media/process-shower-glass-1170.webp 1170w, media/process-shower-glass.webp 2340w" sizes="100vw" alt="Walk-in white tiled shower with a clear glass panel and a handheld shower head" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-shower-glass" data-slot="process-shower-glass"></figure>
       </div>
-      <div class="split__text">
-        <p class="dateline mono">August · Hixson</p>
+      <div class="spread__text" data-reveal>
+        <div class="dateline">
+          <svg class="dial dial--date" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="--a:135deg"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" pathLength="1" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/><line class="dial__hand" x1="50" y1="50" x2="50" y2="20"/></svg>
+          <p class="mono">August · Hixson</p>
+        </div>
         <h2>Mildew on grout and caulk</h2>
         <p>Humid-summer mildew on grout, caulk and the ceiling over the shower cleaned and kept back.</p>
         <blockquote class="review-mini">
-          <p>"The guest bathroom grows mildew every August. They cleaned the grout and caulk, then showed me where to leave the fan on. It has not come back as fast."</p>
-          <footer class="mono">— Ruby H., Hixson · <span class="sample-tag">Sample review</span></footer>
+          <p>“The guest bathroom grows mildew every August. They cleaned the grout and caulk, then showed me where to leave the fan on. It has not come back as fast.”</p>
+          <footer class="mono">Ruby H., Hixson · <span class="sample-tag">Sample review</span></footer>
         </blockquote>
-        <a href="#contact" class="btn btn--primary" data-service="Mildew">Price it</a>
+        <a href="#contact" class="btn btn--primary" data-service="Mildew">Price my cleaning</a>
       </div>
     </div>
   </section>
 
-  <!-- 5. BREAK -->
-  <section class="section t-deep break" data-reveal>
-    <figure class="frame" data-fallback="Older house on a hill street in Chattanooga" break__frame data-reveal="clip"><img src="media/home-chattanooga-1170.webp" srcset="media/home-chattanooga-1170.webp 1170w, media/home-chattanooga.webp 2340w" sizes="100vw" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-chattanooga" data-slot="home-chattanooga" alt="Older house on a hill street with trees"></figure>
-    <div class="break__caption container">
-      <p class="mono">Chattanooga, Tennessee · river valley fog and ridge lines</p>
+  <!-- 5. BREAK: the turn of the page -->
+  <section class="section t-deep break" aria-label="The year, by the house">
+    <figure class="frame break__frame" data-fallback="Craftsman bungalow gable with teal shingle siding, red trim and a brick chimney"><img src="media/home-greenville-1170.webp" srcset="media/home-greenville-1170.webp 1170w, media/home-greenville.webp 2340w" sizes="100vw" alt="Craftsman bungalow gable with teal shingle siding, red trim and a brick chimney" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-greenville" data-slot="home-greenville"></figure>
+    <div class="break__scrim" aria-hidden="true"></div>
+    <div class="container break__inner" data-reveal>
+      <p class="break__line">Same house. Four different messes a year.</p>
+      <p class="break__caption mono">A shingled gable in early summer, the box fan already in the window</p>
     </div>
   </section>
 
-  <!-- 6. FALL -->
-  <section id="almanac-fall" class="section t-paper split" data-hook="countdown" data-reveal>
-    <div class="container split__inner">
-      <div class="split__text">
-        <p class="dateline mono">November · East Ridge</p>
+  <!-- 6. FALL: the countdown planner -->
+  <section id="almanac-fall" class="section t-paper planner" data-hook="countdown" data-sw-signature="season-dial" data-season="fall">
+    <div class="container">
+      <div class="planner__head" data-reveal>
+        <div class="dateline">
+          <svg class="dial dial--date" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="--a:225deg"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" pathLength="1" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/><line class="dial__hand" x1="50" y1="50" x2="50" y2="20"/></svg>
+          <p class="mono">November · East Ridge</p>
+        </div>
         <h2>Guest-ready before the holidays</h2>
-        <p>Guest room made up, baths shined and the kitchen cleared before family arrives.</p>
-        <div class="countdown-tool" data-countdown>
-          <p class="mono">Guest arrival date?</p>
-          <label class="sr-only" for="guest-date">Arrival date</label>
-          <input type="date" id="guest-date" class="countdown-tool__input" />
-          <p class="countdown-tool__result mono" aria-live="polite"></p>
-          <a href="#contact" class="btn btn--secondary" data-service="Guest prep">Hold these dates</a>
+        <p class="lead">Guest room made up, baths shined and the kitchen cleared before family arrives.</p>
+      </div>
+      <div class="planner__grid">
+        <div class="countdown" data-countdown>
+          <div class="countdown__dial" aria-hidden="true">
+            <svg class="dial dial--count" viewBox="0 0 100 100" focusable="false">
+              <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+              <circle class="dial__track" cx="50" cy="50" r="40"/>
+              <circle class="dial__sweep" cx="50" cy="50" r="40" pathLength="100" data-cd-sweep/>
+              <circle class="countdown__mark countdown__mark--book" r="3.6" cx="50" cy="10" data-cd-mark="book"/>
+              <circle class="countdown__mark countdown__mark--deep" r="3.6" cx="50" cy="10" data-cd-mark="deep"/>
+              <circle class="countdown__mark countdown__mark--touch" r="3.6" cx="50" cy="10" data-cd-mark="touch"/>
+              <circle class="countdown__mark countdown__mark--now" r="2.4" cx="50" cy="10"/>
+            </svg>
+            <p class="countdown__center"><span class="countdown__days" data-cd-days>—</span><span class="mono">days out</span></p>
+          </div>
+          <div class="countdown__body">
+            <label class="countdown__label mono" for="guest-date">When do your guests arrive?</label>
+            <input type="date" id="guest-date" class="countdown__input" />
+            <ol class="countdown__plan" aria-live="polite" data-cd-plan>
+              <li class="countdown__step countdown__step--book"><span class="mono">Book by</span><strong data-cd-out="book">a week ahead</strong></li>
+              <li class="countdown__step countdown__step--deep"><span class="mono">Deep clean</span><strong data-cd-out="deep">about 7 days before</strong></li>
+              <li class="countdown__step countdown__step--touch"><span class="mono">Touch-up</span><strong data-cd-out="touch">the day before</strong></li>
+            </ol>
+            <p class="countdown__note mono" data-cd-note>Two visits: a deep clean first, then a touch-up the day before they ring the bell.</p>
+            <a href="#contact" class="btn btn--primary" data-service="Guest prep">Hold these dates</a>
+          </div>
+        </div>
+        <div class="planner__media">
+          <figure class="frame frame--tall frame--q-fall" data-fallback="Folded white bath towels stacked on a chrome rack above beige bathroom tile" data-reveal="clip"><img src="media/detail-towels-1170.webp" srcset="media/detail-towels-1170.webp 1170w, media/detail-towels.webp 2340w" sizes="100vw" alt="Folded white bath towels stacked on a chrome rack above beige bathroom tile" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-towels" data-slot="detail-towels"></figure>
         </div>
       </div>
-      <div class="split__media">
-        <figure class="frame" data-fallback="Set dining table ready for guests" data-reveal="clip"><img src="media/season-holiday-1170.webp" srcset="media/season-holiday-1170.webp 1170w, media/season-holiday.webp 2340w" sizes="100vw" alt="Set dining table ready for guests" width="1170" height="780" loading="lazy" decoding="async" data-photo="season-holiday" data-slot="season-holiday"></figure>
-      </div>
     </div>
   </section>
 
-  <!-- 7. WINTER -->
-  <section id="almanac-winter" class="section t-deep split split--rev" data-reveal>
-    <div class="container split__inner">
-      <div class="split__media">
-        <figure class="frame" data-fallback="Tidy family living room, lived-in" data-reveal="clip"><img src="media/room-living-1170.webp" srcset="media/room-living-1170.webp 1170w, media/room-living.webp 2340w" sizes="100vw" alt="Tidy family living room, lived-in" width="1170" height="780" loading="lazy" decoding="async" data-photo="room-living" data-slot="room-living"></figure>
-      </div>
-      <div class="split__text">
-        <p class="dateline mono">January · Lookout Mountain</p>
-        <h2>Weekend houses and move-outs</h2>
-        <p>Cabins on the mountain aired out and cleaned between your visits or your guests.</p>
-        <p class="addon mono">Every-two-weeks base: $140–$195 per visit <span class="sample-tag">Sample pricing</span></p>
-        <a href="#contact" class="btn btn--primary" data-service="Weekend houses">Price it</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 8. SERVICES -->
-  <section id="services" class="section t-paper grid-section" data-reveal>
+  <!-- 7. WINTER: wide ledger spread -->
+  <section id="almanac-winter" class="section t-deep ledger" data-sw-signature="season-dial" data-season="winter">
     <div class="container">
-      <h2>What we clean</h2>
-      <ul class="svc-grid" data-reveal-stagger>
-        
-        <li class="svc-card">
-          <h3>Every-two-weeks cleaning</h3>
-          <p>A steady visit every other week, with the season&#39;s extra job worked into the list.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Every two weeks">Price it</a>
-        </li>
-        
-        <li class="svc-card">
-          <h3>Spring pollen clean</h3>
-          <p>The yellow film off sills, screens, porch rails and ceiling fans once the pines let go.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Pollen clean">Price it</a>
-        </li>
-        
-        <li class="svc-card">
-          <h3>Deep clean</h3>
-          <p>Baseboards, grout, cabinet fronts and light fixtures, done once to set a new starting point.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Deep clean">Price it</a>
-        </li>
-        
-        <li class="svc-card">
-          <h3>Old-house care</h3>
-          <p>Plaster walls, heart pine floors and clawfoot tubs cleaned with products that suit them.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Old houses">Price it</a>
-        </li>
-        
-        <li class="svc-card">
-          <h3>Bathroom mildew</h3>
-          <p>Humid-summer mildew on grout, caulk and the ceiling over the shower cleaned and kept back.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Mildew">Price it</a>
-        </li>
-        
-        <li class="svc-card">
-          <h3>Holiday guest prep</h3>
-          <p>Guest room made up, baths shined and the kitchen cleared before family arrives.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Guest prep">Price it</a>
-        </li>
-        
-        <li class="svc-card">
-          <h3>Move-in &amp; move-out cleaning</h3>
-          <p>Empty rooms, cabinets, oven and fridge cleaned for the next keys or for your own.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Move in/out">Price it</a>
-        </li>
-        
-        <li class="svc-card">
-          <h3>Mountain &amp; weekend houses</h3>
+      <figure class="frame frame--wide frame--q-winter" data-fallback="Old clawfoot tub with blue-painted sides beside a toilet in a pine-panelled bathroom" data-reveal="clip"><img src="media/hero-C2-1170.webp" srcset="media/hero-C2-1170.webp 1170w, media/hero-C2.webp 2340w" sizes="100vw" alt="Old clawfoot tub with blue-painted sides beside a toilet in a pine-panelled bathroom" width="1170" height="878" loading="lazy" decoding="async" data-photo="hero-C2" data-slot="hero-C2"></figure>
+      <div class="ledger__grid">
+        <div class="ledger__head" data-reveal>
+          <div class="dateline">
+            <svg class="dial dial--date" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="--a:315deg"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" pathLength="1" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/><line class="dial__hand" x1="50" y1="50" x2="50" y2="20"/></svg>
+            <p class="mono">January · Lookout Mountain</p>
+          </div>
+          <h2>Weekend houses and move-outs</h2>
+        </div>
+        <div class="ledger__body" data-reveal>
           <p>Cabins on the mountain aired out and cleaned between your visits or your guests.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Weekend houses">Price it</a>
-        </li>
-        
-        <li class="svc-card">
-          <h3>Inside windows &amp; screens</h3>
-          <p>Glass, sills and screens cleaned so the valley view comes back after pollen and storms.</p>
-          <a href="#contact" class="btn btn--ghost svc-card__cta" data-service="Windows">Price it</a>
-        </li>
-        
-      </ul>
+          <p>For move-outs: Empty rooms, cabinets, oven and fridge cleaned for the next keys or for your own.</p>
+        </div>
+        <div class="ledger__act" data-reveal>
+          <p class="addon mono"><span>Move-in or move-out: $300–$540</span> <span>empty house</span> <span class="sample-tag">Sample pricing</span></p>
+          <a href="#contact" class="btn btn--primary" data-service="Weekend houses">Price my cleaning</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- 9. PROOF -->
-  <section id="proof" class="section t-light stack" data-reveal>
-    <div class="container stack__inner">
-      <h2>What neighbors say</h2>
-      <p class="stack__sub mono"><span class="sample-tag">Sample reviews</span> · 122 total · 4.9 average</p>
-      <ul class="review-list" data-reveal-stagger>
-        
-        <li class="review-card">
-          <p class="review-card__stars" aria-label="5 out of 5 stars"><!-- repeated via CSS or inline --><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
-          <p class="review-card__text">"Our house on the North Shore is from 1905 and the plaster scares most cleaners. Delia&#39;s crew knew to dust it, not scrub it, and to keep water off the heart pine."</p>
-          <footer class="review-card__meta mono">— Eleanor R., Chattanooga · Old-house care · <span class="sample-tag">Sample review</span></footer>
-        </li>
-        
-        <li class="review-card">
-          <p class="review-card__stars" aria-label="5 out of 5 stars"><!-- repeated via CSS or inline --><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
-          <p class="review-card__text">"Every April the porch turns yellow. They do the pollen clean the week after the pines finish, and the screens actually let light through again."</p>
-          <footer class="review-card__meta mono">— Josh M., Red Bank · Spring pollen clean · <span class="sample-tag">Sample review</span></footer>
-        </li>
-        
-        <li class="review-card">
-          <p class="review-card__stars" aria-label="4 out of 5 stars"><!-- repeated via CSS or inline --><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
-          <p class="review-card__text">"The guest bathroom grows mildew every August. They cleaned the grout and caulk, then showed me where to leave the fan on. It has not come back as fast."</p>
-          <footer class="review-card__meta mono">— Ruby H., Hixson · Bathroom mildew · <span class="sample-tag">Sample review</span></footer>
-        </li>
-        
-        <li class="review-card">
-          <p class="review-card__stars" aria-label="5 out of 5 stars"><!-- repeated via CSS or inline --><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
-          <p class="review-card__text">"Our cabin on Signal Mountain sits empty for weeks. They air it out, clean the kitchen and make the beds the Thursday before we drive up."</p>
-          <footer class="review-card__meta mono">— Grant L., Signal Mountain · Mountain &amp; weekend houses · <span class="sample-tag">Sample review</span></footer>
-        </li>
-        
-        <li class="review-card">
-          <p class="review-card__stars" aria-label="5 out of 5 stars"><!-- repeated via CSS or inline --><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
-          <p class="review-card__text">"Thanksgiving with fourteen people. They came on Tuesday, made up both guest rooms and did the kitchen floor twice, once before and once after the pies."</p>
-          <footer class="review-card__meta mono">— Carmen E., East Ridge · Holiday guest prep · <span class="sample-tag">Sample review</span></footer>
-        </li>
-        
-        <li class="review-card">
-          <p class="review-card__stars" aria-label="5 out of 5 stars"><!-- repeated via CSS or inline --><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
-          <p class="review-card__text">"Every two weeks for three years. The list changes with the season: pollen in spring, mildew in summer, leaves tracked in come fall."</p>
-          <footer class="review-card__meta mono">— Neil P., Ooltewah · Every-two-weeks cleaning · <span class="sample-tag">Sample review</span></footer>
-        </li>
-        
-      </ul>
+  <!-- 8. SERVICES: the year ledger, one column per quarter under a large dial -->
+  <section id="services" class="section t-paper services" data-sw-signature="season-dial">
+    <div class="container">
+      <div class="services__head">
+        <svg class="dial dial--big" viewBox="0 0 100 100" aria-hidden="true" focusable="false" data-ledger-dial>
+          <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+          <circle class="dial__track" cx="50" cy="50" r="40"/>
+          <path class="dial__q is-on" data-q="spring" pathLength="1" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+          <path class="dial__q is-on" data-q="summer" pathLength="1" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+          <path class="dial__q is-on" data-q="fall" pathLength="1" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+          <path class="dial__q is-on" data-q="winter" pathLength="1" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+          <circle class="dial__inner" cx="50" cy="50" r="24"/>
+          <line class="dial__hand" x1="50" y1="50" x2="50" y2="18"/>
+          <circle class="dial__hub" cx="50" cy="50" r="3"/>
+        </svg>
+        <div class="services__title">
+          <p class="kicker mono">The whole year’s list</p>
+          <h2>Nine jobs, each tagged with its season</h2>
+        </div>
+      </div>
+      <div class="yr">
+        <div class="yr-col yr-col--spring" data-q="spring">
+          <h3 class="yr-col__head"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/></svg><span>Spring</span><span class="yr-col__when mono">Mar–May</span></h3>
+          <ul class="yr-jobs">
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Spring pollen clean</h4><a href="#contact" class="yr-job__cta" data-service="Pollen clean">Price this</a></div><p>The yellow film off sills, screens, porch rails and ceiling fans once the pines let go.</p></li>
+            
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Inside windows &amp; screens</h4><a href="#contact" class="yr-job__cta" data-service="Windows">Price this</a></div><p>Glass, sills and screens cleaned so the valley view comes back after pollen and storms.</p></li>
+            
+          </ul>
+        </div>
+        <div class="yr-col yr-col--summer" data-q="summer">
+          <h3 class="yr-col__head"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/></svg><span>Summer</span><span class="yr-col__when mono">Jun–Aug</span></h3>
+          <ul class="yr-jobs">
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Bathroom mildew</h4><a href="#contact" class="yr-job__cta" data-service="Mildew">Price this</a></div><p>Humid-summer mildew on grout, caulk and the ceiling over the shower cleaned and kept back.</p></li>
+            
+          </ul>
+        </div>
+        <div class="yr-col yr-col--fall" data-q="fall">
+          <h3 class="yr-col__head"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/></svg><span>Fall</span><span class="yr-col__when mono">Sep–Nov</span></h3>
+          <ul class="yr-jobs">
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Holiday guest prep</h4><a href="#contact" class="yr-job__cta" data-service="Guest prep">Price this</a></div><p>Guest room made up, baths shined and the kitchen cleared before family arrives.</p></li>
+            
+          </ul>
+        </div>
+        <div class="yr-col yr-col--winter" data-q="winter">
+          <h3 class="yr-col__head"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/><path class="dial__q is-on" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/></svg><span>Winter</span><span class="yr-col__when mono">Dec–Feb</span></h3>
+          <ul class="yr-jobs">
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Mountain &amp; weekend houses</h4><a href="#contact" class="yr-job__cta" data-service="Weekend houses">Price this</a></div><p>Cabins on the mountain aired out and cleaned between your visits or your guests.</p></li>
+            
+          </ul>
+        </div>
+        <div class="yr-col yr-col--year">
+          <h3 class="yr-col__head"><svg class="dial dial--pip" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dial__track" cx="50" cy="50" r="40"/></svg><span>All year</span><span class="yr-col__when mono">Any visit</span></h3>
+          <ul class="yr-jobs">
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Every-two-weeks cleaning</h4><a href="#contact" class="yr-job__cta" data-service="Every two weeks">Price this</a></div><p>A steady visit every other week, with the season&#39;s extra job worked into the list.</p></li>
+            
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Deep clean</h4><a href="#contact" class="yr-job__cta" data-service="Deep clean">Price this</a></div><p>Baseboards, grout, cabinet fronts and light fixtures, done once to set a new starting point.</p></li>
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Old-house care</h4><a href="#contact" class="yr-job__cta" data-service="Old houses">Price this</a></div><p>Plaster walls, heart pine floors and clawfoot tubs cleaned with products that suit them.</p></li>
+            
+            
+            <li class="yr-job"><div class="yr-job__top"><h4>Move-in &amp; move-out cleaning</h4><a href="#contact" class="yr-job__cta" data-service="Move in/out">Price this</a></div><p>Empty rooms, cabinets, oven and fridge cleaned for the next keys or for your own.</p></li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. PROOF: six notes set around the year's ring -->
+  <section id="proof" class="section t-light proof" data-sw-signature="season-dial">
+    <div class="container">
+      <div class="proof__head">
+        <svg class="dial dial--year" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <circle class="dial__track" cx="50" cy="50" r="40"/>
+          <path class="dial__q is-on" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+          <path class="dial__q is-on" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+          <path class="dial__q is-on" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+          <path class="dial__q is-on" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+        </svg>
+        <div>
+          <h2>Notes from neighbors, in the order of the year</h2>
+          <p class="proof__sub mono">4.9 average · 122 reviews <span class="sample-tag">Sample reviews</span></p>
+        </div>
+      </div>
+      <div class="ring">
+        <div class="ring__hub" aria-hidden="true">
+          <svg class="dial dial--ring" viewBox="0 0 100 100" focusable="false" data-ring-dial>
+            <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+            <circle class="dial__track" cx="50" cy="50" r="40"/>
+            <path class="dial__q is-on" data-q="spring" pathLength="1" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+            <path class="dial__q is-on" data-q="summer" pathLength="1" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+            <path class="dial__q is-on" data-q="fall" pathLength="1" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+            <path class="dial__q is-on" data-q="winter" pathLength="1" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+          </svg>
+          <span class="ring__lbl ring__lbl--spring">Spring</span>
+          <span class="ring__lbl ring__lbl--summer">Summer</span>
+          <span class="ring__lbl ring__lbl--fall">Fall</span>
+          <span class="ring__lbl ring__lbl--winter">Winter</span>
+          <span class="ring__centre">One house,<br> four seasons</span>
+        </div>
+        <ol class="review-list">
+          <li class="review-card review-card--spring" data-reveal>
+            <p class="review-card__when mono">Spring · April</p>
+            <p class="review-card__stars" data-stars="5" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
+            <p class="review-card__text">“Every April the porch turns yellow. They do the pollen clean the week after the pines finish, and the screens actually let light through again.”</p>
+            <footer class="review-card__meta"><span>Josh M., Red Bank</span> <span>Spring pollen clean</span> <span class="sample-tag">Sample review</span></footer>
+          </li>
+          <li class="review-card review-card--summer review-card--pointer" data-reveal>
+            <p class="review-card__when mono">Summer · August</p>
+            <p class="review-card__text">Ruby H. from Hixson wrote about the guest-bath mildew. Her note sits with the August page.</p>
+            <a href="#almanac-summer" class="review-card__jump">Read it in Summer</a>
+          </li>
+          <li class="review-card review-card--fall" data-reveal>
+            <p class="review-card__when mono">Fall · November</p>
+            <p class="review-card__stars" data-stars="5" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
+            <p class="review-card__text">“Thanksgiving with fourteen people. They came on Tuesday, made up both guest rooms and did the kitchen floor twice, once before and once after the pies.”</p>
+            <footer class="review-card__meta"><span>Carmen E., East Ridge</span> <span>Holiday guest prep</span> <span class="sample-tag">Sample review</span></footer>
+          </li>
+          <li class="review-card review-card--winter" data-reveal>
+            <p class="review-card__when mono">Winter</p>
+            <p class="review-card__stars" data-stars="5" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
+            <p class="review-card__text">“Our cabin on Signal Mountain sits empty for weeks. They air it out, clean the kitchen and make the beds the Thursday before we drive up.”</p>
+            <footer class="review-card__meta"><span>Grant L., Signal Mountain</span> <span>Mountain &amp; weekend houses</span> <span class="sample-tag">Sample review</span></footer>
+          </li>
+          <li class="review-card review-card--year review-card--y1" data-reveal>
+            <p class="review-card__when mono">All year</p>
+            <p class="review-card__stars" data-stars="5" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
+            <p class="review-card__text">“Our house on the North Shore is from 1905 and the plaster scares most cleaners. Delia&#39;s crew knew to dust it, not scrub it, and to keep water off the heart pine.”</p>
+            <footer class="review-card__meta"><span>Eleanor R., Chattanooga</span> <span>Old-house care</span> <span class="sample-tag">Sample review</span></footer>
+          </li>
+          <li class="review-card review-card--year review-card--y2" data-reveal>
+            <p class="review-card__when mono">All year</p>
+            <p class="review-card__stars" data-stars="5" aria-label="5 out of 5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></p>
+            <p class="review-card__text">“Every two weeks for three years. The list changes with the season: pollen in spring, mildew in summer, leaves tracked in come fall.”</p>
+            <footer class="review-card__meta"><span>Neil P., Ooltewah</span> <span>Every-two-weeks cleaning</span> <span class="sample-tag">Sample review</span></footer>
+          </li>
+        </ol>
+      </div>
       <div class="trust-row">
-        <p class="trust-row__item mono">Re-clean promise: Not happy with a room? Tell us within 24 hours and we come back to clean it again.</p>
-        <p class="trust-row__item mono">License # SAMPLE-TN-72315 <span class="sample-tag">Sample license</span></p>
-        <p class="trust-row__item mono">Insured</p>
+        <p class="trust-row__item"><span class="mono">Re-clean promise</span>Not happy with a room? Tell us within 24 hours and we come back to clean it again.</p>
+        <p class="trust-row__item"><span class="mono">License</span>SAMPLE-TN-72315 <span class="sample-tag">Sample license</span></p>
+        <p class="trust-row__item"><span class="mono">Coverage</span>Insured while we’re in your house</p>
       </div>
     </div>
   </section>
 
   <!-- 10. AREA -->
-  <section id="area" class="section t-deep rail" data-hook="zip" data-reveal>
-    <div class="container rail__inner">
-      <div class="rail__text">
+  <section id="area" class="section t-deep area" data-hook="zip">
+    <div class="container area__grid">
+      <div class="area__text">
         <h2>Serving Chattanooga and the ridges</h2>
-        <p class="mono">Signal Mountain, Lookout Mountain, Red Bank, Hixson, East Ridge, Ooltewah and Fort Oglethorpe</p>
-        <div class="zip-checker" data-zip>
-          <label for="zip-input" class="sr-only">Check your ZIP</label>
+        <p class="area__towns">Signal Mountain, Lookout Mountain, Red Bank, Hixson, East Ridge, Ooltewah and Fort Oglethorpe</p>
+        <div class="zip-checker" data-zip data-zip-yes="Yes, {zip} is on our route. Pick a visit type below." data-zip-no="{zip} is outside our usual route. Call {phone} and we’ll tell you straight.">
+          <label for="zip-input" class="zip-checker__label mono">Is my street on your route?</label>
           <div class="zip-checker__row">
-            <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Your ZIP" autocomplete="postal-code" class="zip-checker__input" />
-            <button type="button" class="btn btn--primary zip-checker__btn">Check</button>
+            <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="5-digit ZIP" autocomplete="postal-code" class="zip-checker__input" />
+            <button type="button" class="btn btn--primary zip-checker__btn">Check my ZIP</button>
           </div>
-          <p class="zip-checker__result mono" aria-live="polite"></p>
+          <p class="zip-checker__result mono" data-zip-result aria-live="polite"></p>
         </div>
       </div>
-      <div class="rail__aside">
-        <p class="mono">Hours</p>
+      <div class="area__hours">
+        <p class="area__hours-title mono">Office hours</p>
         <dl class="hours"><div><dt>Mon</dt><dd>8 am – 5 pm</dd></div><div><dt>Tue</dt><dd>8 am – 5 pm</dd></div><div><dt>Wed</dt><dd>8 am – 5 pm</dd></div><div><dt>Thu</dt><dd>8 am – 5 pm</dd></div><div><dt>Fri</dt><dd>8 am – 5 pm</dd></div><div><dt>Sat</dt><dd>Closed</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
-        <p class="mono" data-open-now></p>
+        <p class="area__open mono" data-open-now></p>
       </div>
     </div>
   </section>
 
   <!-- 11. CONTACT -->
-  <section id="contact" class="section t-paper stack" data-hook="form" data-reveal>
-    <div class="container stack__inner">
-      <h2>Book a visit</h2>
-      <p class="lead">Tell us the basics and we will call you back to set up a walk-through or send a sample price from photos.</p>
+  <section id="contact" class="section t-paper contact" data-hook="form">
+    <div class="container contact__grid">
+      <div class="contact__intro">
+        <h2>Price my cleaning: four questions, about a minute</h2>
+        <p class="lead">Tell us the basics and we will call you back to set up a walk-through or send a sample price from photos.</p>
+        <p class="contact__call mono">Rather talk? <a class="tel-plain" href="tel:+14235550154">(423) 555-0154</a> · <span data-open-now>Mon–Fri 8 am – 5 pm</span></p>
+      </div>
       <form class="lead-form" data-lead novalidate>
         <div class="lead-form__step" data-step="1">
           <fieldset>
-            <legend class="mono">Step 1 · Visit type</legend>
-            <label class="radio-card">
-              <input type="radio" name="service" value="Every two weeks" required />
-              <span>Every two weeks</span>
-            </label>
-            <label class="radio-card">
-              <input type="radio" name="service" value="Deep clean" />
-              <span>First deep clean</span>
-            </label>
-            <label class="radio-card">
-              <input type="radio" name="service" value="Move in/out" />
-              <span>Move-in or move-out</span>
-            </label>
-            <label class="radio-card">
-              <input type="radio" name="service" value="Other" />
-              <span>Something else</span>
-            </label>
+            <legend class="mono">Step 1 of 4 · Visit type</legend>
+            <label class="radio-card"><input type="radio" name="service" value="Every two weeks" required /><span>Every two weeks</span></label>
+            <label class="radio-card"><input type="radio" name="service" value="Deep clean" /><span>First deep clean</span></label>
+            <label class="radio-card"><input type="radio" name="service" value="Move in/out" /><span>Move-in or move-out</span></label>
+            <label class="radio-card"><input type="radio" name="service" value="Other" /><span>Something else</span></label>
           </fieldset>
           <button type="button" class="btn btn--primary lead-form__next">Next</button>
         </div>
         <div class="lead-form__step" data-step="2" hidden>
           <fieldset>
-            <legend class="mono">Step 2 · House size</legend>
+            <legend class="mono">Step 2 of 4 · House size</legend>
             <label for="beds">Bedrooms</label>
             <select id="beds" name="beds" required>
               <option value="">Select</option>
@@ -824,14 +1213,14 @@ button, input, select { font: inherit; color: inherit; }
             </select>
           </fieldset>
           <div class="lead-form__nav">
-            <button type="button" class="btn btn--ghost lead-form__back">Back</button>
+            <button type="button" class="btn btn--line lead-form__back">Back</button>
             <button type="button" class="btn btn--primary lead-form__next">Next</button>
           </div>
         </div>
         <div class="lead-form__step" data-step="3" hidden>
           <fieldset>
-            <legend class="mono">Step 3 · When</legend>
-            <label for="frequency">Preferred frequency</label>
+            <legend class="mono">Step 3 of 4 · When</legend>
+            <label for="frequency">How often</label>
             <select id="frequency" name="frequency">
               <option value="every-two-weeks">Every two weeks</option>
               <option value="weekly">Weekly</option>
@@ -849,13 +1238,13 @@ button, input, select { font: inherit; color: inherit; }
             </select>
           </fieldset>
           <div class="lead-form__nav">
-            <button type="button" class="btn btn--ghost lead-form__back">Back</button>
+            <button type="button" class="btn btn--line lead-form__back">Back</button>
             <button type="button" class="btn btn--primary lead-form__next">Next</button>
           </div>
         </div>
         <div class="lead-form__step" data-step="4" hidden>
           <fieldset>
-            <legend class="mono">Step 4 · Contact</legend>
+            <legend class="mono">Step 4 of 4 · Contact</legend>
             <label for="name">Name</label>
             <input id="name" name="name" type="text" autocomplete="name" required />
             <label for="phone">Phone</label>
@@ -863,18 +1252,18 @@ button, input, select { font: inherit; color: inherit; }
             <label for="email">Email</label>
             <input id="email" name="email" type="email" autocomplete="email" />
             <label class="sr-only" for="website2">Leave this blank</label>
-            <input id="website2" name="website2" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <input id="website2" name="website2" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" class="lead-form__hp" />
             <input type="hidden" name="t" value="" />
           </fieldset>
           <div class="lead-form__nav">
-            <button type="button" class="btn btn--ghost lead-form__back">Back</button>
-            <button type="submit" class="btn btn--primary">Send request</button>
+            <button type="button" class="btn btn--line lead-form__back">Back</button>
+            <button type="submit" class="btn btn--primary">Send for my price</button>
           </div>
-          <p class="lead-form__micro mono">We will call you back to set up a visit. Hours: <span data-open-now>Mon–Fri 8 am – 5 pm</span></p>
+          <p class="lead-form__micro mono">Riverfog calls back during office hours: <span data-open-now>Mon–Fri 8 am – 5 pm</span></p>
         </div>
         <div class="lead-form__thanks" hidden>
           <p class="lead-form__thanks-title">Thanks, <span data-thanks-name></span>.</p>
-          <p>In your version this goes straight to your phone and inbox. For now, call <a class="tel-plain" href="tel:+14235550154">(423) 555-0154</a> or email <a href="mailto:hello@riverfog-housekeeping.example">hello@riverfog-housekeeping.example</a>.</p>
+          <p>This is a demo, nothing was sent. On the real site this goes to Riverfog. For now, call <a class="tel-plain" href="tel:+14235550154">(423) 555-0154</a> or email <a href="mailto:hello@riverfog-housekeeping.example">hello@riverfog-housekeeping.example</a>.</p>
         </div>
       </form>
     </div>
@@ -882,37 +1271,38 @@ button, input, select { font: inherit; color: inherit; }
 
 </main>
 
-<footer class="section t-deep rail footer" data-sw-signature="season-dial">
-  <div class="container rail__inner">
-    <div class="rail__text">
+<footer class="section t-deep footer" data-sw-signature="season-dial">
+  <div class="container footer__grid">
+    <div class="footer__dial" aria-hidden="true">
+      <svg class="dial dial--reset" viewBox="0 0 100 100" focusable="false">
+        <circle class="dial__ticks" cx="50" cy="50" r="47" pathLength="120"/>
+        <circle class="dial__track" cx="50" cy="50" r="40"/>
+        <path class="dial__q is-on" d="M52.09 10.05A40 40 0 0 1 89.95 47.91"/>
+        <path class="dial__q is-on" d="M89.95 52.09A40 40 0 0 1 52.09 89.95"/>
+        <path class="dial__q is-on" d="M47.91 89.95A40 40 0 0 1 10.05 52.09"/>
+        <path class="dial__q is-on" d="M10.05 47.91A40 40 0 0 1 47.91 10.05"/>
+        <line class="dial__hand" x1="50" y1="50" x2="50" y2="17"/>
+        <circle class="dial__hub" cx="50" cy="50" r="3"/>
+      </svg>
+      <p class="mono">Back to spring</p>
+    </div>
+    <div class="footer__text">
       <p class="footer__brand">Riverfog Housekeeping</p>
       <p class="mono">Chattanooga, TN · <a class="tel-plain" href="tel:+14235550154">(423) 555-0154</a> · <a href="mailto:hello@riverfog-housekeeping.example">hello@riverfog-housekeeping.example</a></p>
       <p class="mono footer__disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
       <p class="mono">© 2026 Riverfog Housekeeping</p>
-    </div>
-    <div class="rail__aside">
-      <ul class="credits"><li>Photo by Ximonic on <a href="https://commons.wikimedia.org/wiki/File:Morning_fog_at_some_trees_by_Keravanjoki_river_in_Vantaa,_Finland,_2021_October.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/3.0" rel="noopener license" target="_blank">CC BY 3.0</a></li></ul>
-      <div class="season-dial footer__dial" aria-hidden="true">
-        <svg viewBox="0 0 100 100" class="season-dial__svg">
-          <circle cx="50" cy="50" r="46" fill="none" stroke="var(--rule)" stroke-width="2"/>
-          <path class="season-dial__seg season-dial__seg--spring" d="M50 4 A46 46 0 0 1 96 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-          <path class="season-dial__seg season-dial__seg--summer" d="M96 50 A46 46 0 0 1 50 96" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-          <path class="season-dial__seg season-dial__seg--fall" d="M50 96 A46 46 0 0 1 4 50" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-          <path class="season-dial__seg season-dial__seg--winter" d="M4 50 A46 46 0 0 1 50 4" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-        </svg>
-      </div>
+      <ul class="credits"><li>Photo by Ximonic on <a href="https://commons.wikimedia.org/wiki/File:Morning_fog_at_some_trees_by_Keravanjoki_river_in_Vantaa,_Finland,_2021_October.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/3.0" rel="noopener license" target="_blank">CC BY 3.0</a></li><li>Photo by Tomasz Sienicki on <a href="https://commons.wikimedia.org/wiki/File:ST0VFANGER_ubt.JPG" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/3.0" rel="noopener license" target="_blank">CC BY 3.0</a></li><li>Photo by Government of the United States Virgin Islands on <a href="https://commons.wikimedia.org/wiki/File:USVI_IMG_5251_-_Clean_white_tiles_modern_shower_with_handheld_nozzle_and_glass_enclosure_neatly_arranged_toiletries_on_the_wall.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:USVI_IMG_5251_-_Clean_white_tiles_modern_shower_with_handheld_nozzle_and_glass_enclosure_neatly_arranged_toiletries_on_the_wall.jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by Bmzuckerman on <a href="https://commons.wikimedia.org/wiki/File:Craftsman_Bungalow_-_Northfield,_MN_-_Union_Street_(320)_(2).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li><li>Photo by Blake Handley from Victoria, Canada on <a href="https://commons.wikimedia.org/wiki/File:InterContinental_Grand_Yokohoma_17_(47853039322).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Oaktree b on <a href="https://commons.wikimedia.org/wiki/File:Leacock_House_bathroom.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul>
     </div>
   </div>
 </footer>
 
 <div class="mobilebar" data-mobilebar>
-  <a href="tel:+14235550154" class="btn btn--ghost mobilebar__call"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> Call</a>
-  <a href="#contact" class="btn btn--primary mobilebar__book">Price it</a>
+  <a href="tel:+14235550154" class="btn btn--line mobilebar__call"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> Call</a>
+  <a href="#contact" class="btn btn--primary mobilebar__book">Price my cleaning</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Riverfog Housekeeping","short":"Riverfog","phone":"(423) 555-0154","phoneE164":"+14235550154","sms":true,"email":"hello@riverfog-housekeeping.example","city":"Chattanooga","state":"TN","timezone":"America/New_York","areas":["Signal Mountain","Lookout Mountain","Red Bank","Hixson","East Ridge","Ooltewah","Fort Oglethorpe"],"zips":["37402","37403","37405","37409","37411","37415","37377","37350","37343","37412","37363","30742"],"hours":{"mon":["08:00","17:00"],"tue":["08:00","17:00"],"wed":["08:00","17:00"],"thu":["08:00","17:00"],"fri":["08:00","17:00"],"sat":null,"sun":null},"emergency":false},"services":[{"name":"Every-two-weeks cleaning","short":"Every two weeks"},{"name":"Spring pollen clean","short":"Pollen clean"},{"name":"Deep clean","short":"Deep clean"},{"name":"Old-house care","short":"Old houses"},{"name":"Bathroom mildew","short":"Mildew"},{"name":"Holiday guest prep","short":"Guest prep"},{"name":"Move-in & move-out cleaning","short":"Move in/out"},{"name":"Mountain & weekend houses","short":"Weekend houses"},{"name":"Inside windows & screens","short":"Windows"}],"proof":{"label":"Sample","prices":[{"item":"Every-two-weeks visit","from":"$140","to":"$195","unit":"per visit","note":"3 bed / 2 bath"},{"item":"Deep clean","from":"$270","to":"$440"},{"item":"Move-in or move-out","from":"$300","to":"$540","note":"empty house"},{"item":"Pollen clean add-on","from":"$60","to":"$120","note":"porches, screens, fans"},{"item":"Inside windows & screens","from":"$90","to":"$180"}]},"hours":{"mon":["08:00","17:00"],"tue":["08:00","17:00"],"wed":["08:00","17:00"],"thu":["08:00","17:00"],"fri":["08:00","17:00"],"sat":null,"sun":null},"timezone":"America/New_York","zips":["37402","37403","37405","37409","37411","37415","37377","37350","37343","37412","37363","30742"],"areas":["Signal Mountain","Lookout Mountain","Red Bank","Hixson","East Ridge","Ooltewah","Fort Oglethorpe"],"phone":"(423) 555-0154","phoneE164":"+14235550154"}</script>
 <script defer src="vendor/gsap.min.js"></script>
 <script defer src="vendor/ScrollTrigger.min.js"></script>
-<script defer src="vendor/lenis.min.js"></script>
 <script defer src="app.js"></script>
 </body>
 </html>
