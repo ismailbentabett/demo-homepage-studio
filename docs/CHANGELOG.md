@@ -71,3 +71,8 @@ The render errors cover sideways overflow at 390/320 and text hidden under reduc
 
 ## 2026-10-26 — clean photo-credit names
 - Wikimedia Commons creator fields can hold wiki markup, "Category:" prefixes and e-mail addresses (one cleaning credit printed a photographer's e-mail). `fetch-media.mjs` now stores a plain name, and `build.mjs` cleans the name again when it writes the credit list, so older manifests are safe too.
+
+## 2026-10-26: reopen needs-human sites for more rounds
+- New `tools/reopen.mjs <id> [--rounds N]`: takes the lock, sets `site.json.roundCap = round + N` (default 2) and moves the site from needs-human back to `fix` on its best round.
+- `tools/lib/scoring.mjs` `verdictFor` now uses `site.json.roundCap` when present instead of the mode's `maxRounds`. Pass bars are unchanged; sites without `roundCap` behave exactly as before, so no recheck of delivered sites is needed.
+- Why: most needs-human sites stalled on placeholder photos; once a niche gets real photos, the site needs extra rounds to be re-scored.
