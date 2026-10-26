@@ -1,0 +1,77 @@
+{
+  "round": 2,
+  "categories": {
+    "firstScreen": {
+      "score": 8.0,
+      "notes": "dist/index.html lines 688-693: h1 states trade+city+outcome in 7 words. Phone visible in header (line 647) and hero (line 691). Cannot verify next band peek or fold position at 390/1440 without screenshots (qa/screens/ missing per render-check.json)."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "dist/index.html: Perforated Weigh Ticket signature appears in hero rail (line 682), scope stack (lines 706-723), services grid (lines 734-813), tools output (lines 873,903,921), review rail (lines 937-983), footer closing ticket (line 1128) — 6 sections including hero and footer. Three layout families: split, grid, stack."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "dist/index.html: Chivo display, Work Sans body, DM Mono accent. Fluid clamp scale (lines 276-281). Tabular-nums on counters (line 646) and ticket numbers. h1 letter-spacing -0.03em. Cannot verify orphans or size count without screenshots."
+    },
+    "layout": {
+      "score": 8.0,
+      "notes": "dist/index.html: 9 sections alternating paper/accent/paper/deep/mid/paper/deep/paper/deep. Layouts: split (scope, area), grid (services), full-bleed break, stack (tools), rail (reviews). Cannot verify dark bands touching or blank gaps without screenshots."
+    },
+    "photo": {
+      "score": 7.0,
+      "notes": "dist/index.html lines 679,821: placeholder-hero-B1.jpg and placeholder-process-loading-trailer.jpg with descriptive alt text (improved from round 1) but images remain placeholders not curated niche media. Consistent filter applied."
+    },
+    "copy": {
+      "score": 8.5,
+      "notes": "dist/index.html: Plain specific voice. Sample labels on pricing (line 692), reviews (lines 946,958,970,982), rating (line 934). Form submit now says 'Get my estimate' (line 1111). Menu drawer (line 664) still says 'Get a Price' vs service cards 'Price it' — two names for primary action."
+    },
+    "mobile": {
+      "score": 8.0,
+      "notes": "dist/index.html: Mobile bar fixed bottom (line 1149), min-height 48px on buttons/inputs. Review rail horizontal scroll on mobile, grid at 1200px. Cannot verify tap targets, bar hide behavior, or h1 line count at 390x844 without screenshots."
+    },
+    "a11y": {
+      "score": 7.5,
+      "notes": "dist/index.html: Skip link (line 632), focus-visible 3px outline (line 334), reduced-motion query (lines 473-475), forced-colors borders (lines 335-337). Labels on all inputs. h1 has data-split='lines' (line 688) but no sr-only static fallback — mustFix from round 1 NOT fixed."
+    },
+    "motion": {
+      "score": 8.0,
+      "notes": "dist/index.html: Reveal with translate-y and clip-path (lines 468-475), stagger delays, split text on h1 (line 688), counter in header (line 646), ticket hover lift. Lenis loaded. Cannot verify intro timing or hook variety without screenshots."
+    },
+    "wow": {
+      "score": 8.0,
+      "notes": "dist/index.html: Tear-Out Sizer (line 831), Debris Load Estimator (line 880), House-Year Check (line 910) output into ticket-styled cards. Tools tied to thesis. Cannot verify tool functionality or output design without JS execution and screenshots."
+    },
+    "polish": {
+      "score": 8.0,
+      "notes": "dist/index.html: SVG favicon + apple-touch-icon (lines 20-21), OG 1200x630 (lines 13-15), JSON-LD GeneralContractor (line 22), print stylesheet (lines 244-253), theme-color (line 9). Credits list generic (line 1135). Consistent 2px radius."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html line 688",
+      "problem": "h1 has data-split='lines' but no sr-only static fallback for screen readers. MustFix from round 1 NOT fixed.",
+      "fix": "Add <span class='sr-only'>Deck, Shed & Garage Demolition in Toledo</span> inside h1 before the split wrapper."
+    },
+    {
+      "where": "dist/index.html lines 679,821",
+      "problem": "Images remain placeholders (placeholder-hero-B1.jpg, placeholder-process-loading-trailer.jpg). Alt text improved but images not curated niche media.",
+      "fix": "Replace with approved media from niches/demolition/media/manifest.json."
+    },
+    {
+      "where": "qa/screens/",
+      "problem": "Screenshots directory still missing per render-check.json warning. Cannot verify firstScreen fold, mobile layout, reduced-motion visibility, or motion timing.",
+      "fix": "Run render check to capture screenshots before further scoring rounds."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "photo",
+      "move": "Replace placeholder images with curated niche media showing residential-scale demolition. Use object-position to place subject on right third so ticket stubs don't overlap. Vary crop ratios between hero (wide) and break (square/portrait) to create visual tension while maintaining the consistent sepia/saturate grade."
+    },
+    {
+      "category": "a11y",
+      "move": "Add sr-only static fallback for h1 split text immediately, then audit reduced-motion screenshot to ensure all content is visible. Add aria-hidden='true' to rotating/split elements with parallel sr-only span containing full static text so screen readers get stable content."
+    }
+  ],
+  "verdictHint": "FIX"
+}
