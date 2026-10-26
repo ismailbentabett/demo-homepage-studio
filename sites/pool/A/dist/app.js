@@ -1026,18 +1026,53 @@ SW.mod('media-fallback', function (SW) {
 
   var main = document.getElementById('main');
 
-  /* 1. Waterline rail: its tip sits 60% down the viewport, so the line is always "drawn to here". */
-  var rail = document.querySelector('[data-page-rail]');
-  if (rail && main) {
-    var railY = function () {
-      var top = main.getBoundingClientRect().top;
-      var y = Math.max(0, Math.min(main.offsetHeight, window.innerHeight * 0.6 - top));
-      rail.style.setProperty('--sw-y', y.toFixed(0) + 'px');
-    };
-    gsap.fromTo(rail, { '--sw-y': '0px' }, { '--sw-y': (window.innerHeight * 0.6).toFixed(0) + 'px', duration: 1, ease: 'power2.out', delay: 0.1, onComplete: function () {
-      ScrollTrigger.create({ trigger: main, start: 'top top', end: 'bottom bottom', onUpdate: railY, onRefresh: railY });
-      railY();
-    } });
+  /* 1. Waterline rail: fills to the reader's position (tip 60% down the viewport).
+     The phone/tablet margin rail and the desktop spine timeline both read --rail-p. */
+  var root = document.documentElement;
+  var book = document.querySelector('.logbook') || main;
+  var railQueued = false;
+  function railP() {
+    railQueued = false;
+    if (!main) return;
+    var wide = window.matchMedia('(min-width: 1200px)').matches;
+    var host = wide ? book : main;
+    var r = host.getBoundingClientRect();
+    var p = (window.innerHeight * 0.6 - r.top) / Math.max(1, r.height);
+    if (wide) p = (window.innerHeight * 0.5 - r.top) / Math.max(1, r.height - window.innerHeight * 0.5);
+    root.style.setProperty('--rail-p', Math.max(0, Math.min(1, p)).toFixed(4));
+  }
+  function queueRail() { if (!railQueued) { railQueued = true; requestAnimationFrame(railP); } }
+  window.addEventListener('scroll', queueRail, { passive: true });
+  window.addEventListener('resize', queueRail);
+  ScrollTrigger.create({ trigger: main, start: 'top bottom', end: 'bottom top', onUpdate: queueRail, onRefresh: queueRail });
+  railP();
+
+  /* 1b. The filter gauge: the needle swings up to its reading as the 08:22 line arrives. */
+  var needle = document.querySelector('.gauge__needle');
+  if (needle) {
+    gsap.from(needle, { rotation: -75, svgOrigin: '100 105', duration: 1.1, ease: 'elastic.out(1, 0.6)',
+      scrollTrigger: { trigger: needle.closest('.gauge'), start: 'top 85%', once: true } });
+  }
+
+  /* 1c. The 08:09 readout: each marker slides to its reading. The 08:36 pump: callouts draw to the parts. */
+  var marks = gsap.utils.toArray('.readout__bar span');
+  if (marks.length) {
+    gsap.from(marks, { left: '0%', duration: 0.9, ease: 'power3.out', stagger: 0.08,
+      scrollTrigger: { trigger: '.readout', start: 'top 85%', once: true } });
+  }
+  var calls = gsap.utils.toArray('.pump .callout');
+  if (calls.length) {
+    gsap.from(calls, { opacity: 0, y: 8, duration: 0.5, ease: 'power2.out', stagger: 0.18,
+      scrollTrigger: { trigger: '.pump', start: 'top 75%', once: true } });
+    gsap.fromTo('.pump .p-cap', { fillOpacity: 0.2 }, { fillOpacity: 0.7, duration: 0.6, repeat: 3, yoyo: true, ease: 'sine.inOut',
+      scrollTrigger: { trigger: '.pump', start: 'top 60%', once: true } });
+  }
+
+  /* 1d. The 08:24 break: the cobalt rail runs along the tile line with the scroll. */
+  var bl = document.querySelector('.break-rail__line');
+  if (bl) {
+    gsap.fromTo(bl, { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: 'power2.inOut',
+      scrollTrigger: { trigger: '.break-section', start: 'top 80%', once: true } });
   }
 
   /* 2. The visit card ticks a line per section; the phone bar shows the latest line. */
@@ -1045,6 +1080,8 @@ SW.mod('media-fallback', function (SW) {
   var lines = card ? Array.prototype.slice.call(card.querySelectorAll('[data-log]')) : [];
   var now = document.querySelector('[data-log-now]');
   var meterHost = document.querySelector('[data-mobilebar]');
+  var nowT = document.querySelector('[data-vc-now-t]');
+  var nowR = document.querySelector('[data-vc-now-r]');
   if (!card || !lines.length) return;
 
   card.classList.add('is-live');
@@ -1060,6 +1097,11 @@ SW.mod('media-fallback', function (SW) {
     if (last) {
       last.classList.add('is-current');
       if (now) now.textContent = last.querySelector('.vc-t').textContent + ' ' + last.querySelector('.vc-l').textContent;
+      if (nowT && nowR && nowT.textContent !== last.querySelector('.vc-t').textContent) {
+        nowT.textContent = last.querySelector('.vc-t').textContent;
+        nowR.textContent = last.getAttribute('data-read') || '';
+        gsap.fromTo([nowT, nowR], { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', stagger: 0.05, clearProps: 'all' });
+      }
     }
   }
 

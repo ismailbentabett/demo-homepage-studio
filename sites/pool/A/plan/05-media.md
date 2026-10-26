@@ -1,3 +1,6 @@
+## Round 3 media (current)
+hero salt-cell (zoomed to water + handrail) · process-1 skimming · process-3 clear-after (tight crop, "after") · story-1 cloudy-water ("before") · break waterline-tile · detail-2 tampa-neighborhood. Dropped: hero-A2 (cage re-screen, not a service), heat-pump (commercial plant room → drawn pump), test-vials (filler → drawn readout).
+
 # Media Plan — pool-A (Tileline Pool Care)
 
 ## Hero
