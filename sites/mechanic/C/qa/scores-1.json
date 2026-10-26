@@ -1,0 +1,67 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 9,
+      "notes": "dist/index.html lines 634-653: h1 'Auto repair for the Anchorage car-year' is 7 words, trade+city+outcome. Primary CTA 'Book a drop-off' and secondary 'What's my car doing?' above fold. Phone visible in header (line 603) and mobile bar (line 1092). Proof line with years, reviews, SAMPLE license (line 642). Thermo-rail signature visible (line 648). Next band peeks."
+    },
+    "distinctiveness": {
+      "score": 9,
+      "notes": "dist/index.html: thermo-rail signature in hero (line 648), winter-story/breakup-story/summer-story (data-season attributes lines 656, 680, 800), proof (line 819), footer (line 1083) — 6 sections. Three layout families: magazine-cover hero, split-story with reverse variant, tools-band tabs. Siblings mechanic-A (Arvo, invoice aesthetic) and mechanic-B (Syne, code-reader aesthetic) differ in font pair and palette. Bodoni Moda + glacier/fireweed/spruce palette unique."
+    },
+    "type": {
+      "score": 9,
+      "notes": "dist/index.html lines 257-259: Bodoni Moda display, Source Sans 3 text, DM Mono accent. Fluid scale via clamp (lines 261-267). Body >=16px. Measure capped at 64ch (line 336). Scale-contrast h1 at clamp(2.6rem, min(9vw, 9.5svh)+0.1rem, 5.25rem). Tabular numerals on [data-count] (line 133). Display tracking -0.03em on h1 (line 333). No orphans, no straight quotes, no banned display fonts."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "dist/index.html: 10 sections with alternating tones (t-deep/light/mid/paper/deep/light/paper/accent/light/paper/deep). Three layout families. Deduction: lines 656-701 winter-story and breakup-story are adjacent identical split-story structures (-0.5). Lines 880-951 services section has 8 uniform svc-row cards with no visual break (-0.5)."
+    },
+    "photo": {
+      "score": 8,
+      "notes": "dist/index.html lines 636, 658, 682, 802, 826, 793: six images on-topic for Anchorage auto repair. Consistent filter (saturate .8, contrast 1.08, hue-rotate -4deg, brightness .95). Width/height present. Lazy loading on non-hero. Deduction: alt text reads 'Placeholder for [filename]' on all six images (-0.5). Object-position centered (50% 40%/50%) rather than rule-of-thirds; cannot verify composition without screenshots (-0.5)."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "dist/index.html: concrete trade nouns ('block heater cord', 'tie rod', 'blend door', 'upper hose'). Anchorage-specific references ('Northern Lights', 'Glenn', 'Seward', 'Denali', 'Haul Road'). Microcopy at doubt points (line 746 'general guidance, not a diagnosis'; line 967 'tell you honestly if the drive is worth it'). Primary action consistently 'Book a drop-off'. Sample labels on reviews (line 855) and pricing (line 830). No banned phrases."
+    },
+    "mobile": {
+      "score": 9,
+      "notes": "dist/index.html: sticky mobile bar (lines 1091-1094) hidden at 900px+. Tap targets >=48px (.btn min-height 48px line 347, .input min-height 48px line 363). Split-story stacks below 900px (line 440). Services single-column below 640px (line 506). Menu overlay for nav. No horizontal scroll. H1 wraps to ~3 lines at 390 based on clamp formula."
+    },
+    "a11y": {
+      "score": 9,
+      "notes": "dist/index.html: skip link (line 587). Focus 3px outline accent color 3px offset (line 326). All inputs labeled. Tabs have proper ARIA (lines 709-713). Filter group aria-label (line 718). Estimator/noise/zip results aria-live polite. Reduced motion disables animations (lines 554-557). No-JS hides JS-only controls. Forced colors handled (lines 563-566). Heading order correct. Deduction: placeholder alt text on 6 images (-0.5). Thermo-rail aria-hidden contains temperature readout (-0.5)."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "dist/index.html: split-text line reveal on h1 (line 641 data-split='lines'). Clip reveal on story frames (line 433 frame--clip). Staggered reveals. Tab panel transitions. Reduced motion respected. Lenis loaded. Three hooks beyond plain reveals. Deduction: same translateY reveal on every [data-reveal] section (lines 544-545) reduces variety (-0.5). Cannot verify intro timing without render.json (-0.5). Thermo-rail counter animation unverifiable (-0.5)."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "dist/index.html: Car-Year Thermometer Rail signature (hero line 648, footer line 1083) tied to thesis and trade. Warning light decoder tool (lines 715-747) is usable and outputs designed content. Deduction: estimator output is plain text in bordered box, not integrated into signature language (-0.5). Temperature tick animation unverifiable without screenshots (-0.5)."
+    },
+    "polish": {
+      "score": 9,
+      "notes": "dist/index.html: SVG favicon (line 20). Apple-touch-icon (line 21). OG 1200x630 (lines 13-15). JSON-LD AutoRepair type (line 22). Theme-color (line 9). Print stylesheet for estimator (lines 250-254). Lazy images with width/height. Hero preloaded (lines 25-26). Forced colors handled. Consistent radius (4px buttons/inputs, 999px pills). Consistent icon stroke (2px). Footer designed with thermo-rail."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html lines 636, 658, 682, 802, 826, 793",
+      "problem": "Alt text reads 'Placeholder for [filename]' — not descriptive alt text for screen readers",
+      "fix": "Replace each placeholder alt with a description matching the data-fallback attribute or actual image content (e.g., 'Car headlights in blue winter twilight' for hero-C1)"
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Break the split-story repetition by turning the breakup section into a pinned scroll story where the frost-heave photo stays fixed while alignment/suspension service cards scroll past it, creating a distinct layout family that embodies the breakup thesis physically"
+    },
+    {
+      "category": "motion",
+      "move": "Drive the thermo-rail temperature readout with a GSAP ScrollTrigger scrub so the mercury bulb physically rises/falls and the number ticks in sync with scroll position, making the signature moment a continuous motion narrative rather than discrete state changes"
+    }
+  ],
+  "verdictHint": "ELEVATE"
+}

@@ -1,0 +1,8 @@
+# Strategy — mechanic-A (Line Item Auto Repair)
+
+1. **The one job.** A worried Lansing driver lands, sees "Auto Repair & Diagnosis in Lansing" + phone + "we call before any work", and taps Call or Book Drop-off within 8 seconds.
+2. **Homeowner's first 5 seconds.** H1: "Auto Repair & Diagnosis in Lansing, MI". Kicker: "By appointment · nothing done without your yes". Primary CTA: [[call]]. Secondary: "Book a drop-off". Proof line: "4.8 ★ from 341 reviews in Holt, Okemos, East Lansing".
+3. **Contractor's first 5 seconds.** The page is a repair order that fills as you read; no other Lansing shop shows the visit as numbered line items with status chips and a labor clock. Signature = Repair Order Line.
+4. **Objections → sections.** "They'll find 100 things" → Process story (line 3: call with photo + price). "Paid for a part that didn't fix it" → Proof/prices (sample ranges, diag applied). "Safe to drive?" → Warning-light tool + ZIP checker. "Won't understand" → Voice samples + plain-English blurbs. "Car kept a week" → Drop-off planner timeline. "Work first, call after" → Guarantee banner + line 4 "Your yes".
+5. **Conversion paths.** Primary: [[call]] sticky mobile bar + hero. Secondary: Book Drop-off → multi-step form. Tool → form: warning-light / noise / brake-wear outputs prefill service + complaint fields. Phone visible top-right on 390px, bottom bar under 900px.
+6. **What this is NOT.** Not B's dark code-panel aesthetic. Not C's seasonal magazine. Not a generic "we fix everything" grid with car logos.

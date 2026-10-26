@@ -1,0 +1,8 @@
+# Strategy — mechanic-C (Frost Heave Auto Repair)
+
+1. **The one job.** A worried Anchorage driver lands, sees their season's problem named above the fold, and books a drop-off or calls within 8 seconds.
+2. **Homeowner's first 5 seconds.** H1: "Auto repair for the Anchorage car-year" with current-season kicker; live outside-temperature readout; primary CTA "Book a drop-off"; secondary "What's my car doing?"; proof line "Mon–Fri 7:30–5:30 · Eagle River to Girdwood · 4.8 (Sample rating)".
+3. **Contractor's first 5 seconds.** The page is a magazine issue that tracks the car-year; nobody else in Anchorage shows repairs by season with a live temperature readout that follows the scroll. This becomes the signature.
+4. **Objections mapped.** "They'll find a hundred things" → Season story (only this season's work shown). "Pay for a part that won't fix it" → Proof section (photo + price before yes). "Safe to drive?" → Warning-light / noise tools. "Car kept a week" → Drop-off planner tool. "Won't understand" → Voice samples in each season card. "Did they do work first?" → Guarantee banner. "Is it worth the drive from Wasilla?" → ZIP checker.
+5. **Conversion paths.** Primary: sticky mobile bar + hero CTA → multi-step quote form (#contact). Secondary: tel: link always visible; tool outputs prefill the form with season + symptom. Phone thumb-reach on 390px via mobile bar.
+6. **What this direction is NOT.** Not a repair-order line-item list (that is A). Not a dark code-reader translation screen (that is B). Not a generic service grid with car-maker logos (competitor cliché).
