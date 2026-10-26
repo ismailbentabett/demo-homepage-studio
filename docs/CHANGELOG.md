@@ -31,3 +31,8 @@ tool changes behaviour.
   `facts.json`, `docs/RUBRIC.md`, brief §1, sibling screenshots. Never `src/`.
 - **Must / Should:** `qa/scores-N.json` carries only `mustFix`; the should list lives in
   `qa/critique-N.md`. Stage 11 fixes both.
+
+## 2026-10-26: build.mjs credits
+- `tools/build.mjs` no longer prints "Photo by unknown on Pexels" for media with no credit on file
+  (the placeholder libraries). Those items are skipped; a credit line appears only with a real name.
+  Reason: the critic correctly flagged the "unknown" lines as false credits on every site.

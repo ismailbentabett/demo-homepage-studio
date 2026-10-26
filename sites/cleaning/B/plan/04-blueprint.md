@@ -1,5 +1,11 @@
 # Blueprint — cleaning-B (Every Other Friday Cleaning)
 
+## Round 2
+Rebuilt src in full: every section is now a receipt spine (left third, paper strip running through the bands) plus content, with no reveal/pin/GSAP from-state hiding content (the cause of the blank bands in fullPage captures). Photos are printed inside the strips as tinted, captioned frames that read without real images. Live receipt quote builder in app.js, real tabs markup, copy-2 applied, footer Pages column removed, 390 header and mobile bar fixed.
+
+## Round 2
+Rebuilt src in full: every section is now a receipt spine (left third, paper strip running through the bands) plus content, with no reveal/pin/GSAP from-state hiding content (the cause of the blank bands in fullPage captures). Photos are printed inside the strips as tinted, captioned frames that read without real images. Live receipt quote builder in app.js, real tabs markup, copy-2 applied, footer Pages column removed, 390 header and mobile bar fixed.
+
 ## Round 1
 Elevate photo: swap every placeholder frame for approved manifest keys (hero-A1 kitchen daylight hero; checklist tabs use process-oven/shower-glass/mop/high-dust; crew story uses detail-sink/vacuum/bed; area uses home-huntsville; break uses room-kitchen). Apply uniform grade saturate(.85)/contrast(1.05)/sepia(.08) in CSS. Tie hero frame to signature with clip-reveal driven by --sw-p wipe.
 Elevate layout: re-tone lower half so #area becomes t-paper (was t-deep), keeping reviews t-deep as single dark band before it. Sequence now paper hero -> mid quote-builder -> paper crew -> mid checklist -> accent break -> paper frequency -> deep services -> paper proof -> paper area -> deep contact -> deep footer. Receipt rule runs across tonal breaks via dashed left border on .receipt-strip regardless of section tone.

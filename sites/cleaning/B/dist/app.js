@@ -249,40 +249,6 @@
 })();
 
 ;
-/* kit: reveal */
-/* reveal: adds .is-in when [data-reveal] / [data-reveal-stagger] elements enter the bottom 85% of the viewport.
-   Children of [data-reveal-stagger] get --i (0, 1, 2...) for the CSS delay. Without sw-motion everything is shown at once. */
-SW.mod('reveal', function (SW) {
-  var els = SW.$$('[data-reveal], [data-reveal-stagger]');
-  if (!els.length) return;
-  SW.$$('[data-reveal-stagger]').forEach(function (group) {
-    Array.prototype.forEach.call(group.children, function (child, i) { child.style.setProperty('--i', i); });
-  });
-  function show(el) { el.classList.add('is-in'); }
-  function showAll() { els.forEach(show); }
-  window.addEventListener('beforeprint', showAll);
-  if (SW.reduced || !('IntersectionObserver' in window)) { showAll(); return; }
-
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (en) {
-      if (en.isIntersecting) { show(en.target); io.unobserve(en.target); }
-    });
-  }, { rootMargin: '0px 0px -15% 0px' });
-  els.forEach(function (el) { io.observe(el); });
-
-  // a jump (anchor link, End key) can skip past elements without them ever intersecting: show what is above the fold
-  var pending = false;
-  function catchUp() {
-    pending = false;
-    els.forEach(function (el) {
-      if (!el.classList.contains('is-in') && el.getBoundingClientRect().bottom < 0) { show(el); io.unobserve(el); }
-    });
-  }
-  window.addEventListener('scroll', function () { if (!pending) { pending = true; requestAnimationFrame(catchUp); } }, { passive: true });
-  catchUp();
-});
-
-;
 /* kit: header */
 /* header: [data-header] gets .is-scrolled past 8px and .is-hidden while scrolling down past 160px
    (never while focus is inside it or the menu is open). [data-progress] gets --p (0..1) of the page read.
@@ -447,45 +413,6 @@ SW.mod('mobilebar', function (SW) {
 });
 
 ;
-/* kit: lenis */
-/* lenis: smooth scrolling when <html data-smooth> is set, window.Lenis is loaded and motion is allowed.
-   lerp .1, wheelMultiplier 1, driven by the GSAP ticker (and synced to ScrollTrigger) when GSAP is loaded.
-   Sets SW.lenis. Same-page anchor links scroll through Lenis and focus their target. */
-SW.mod('lenis', function (SW) {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-smooth') || SW.reduced || typeof window.Lenis !== 'function') return;
-  var lenis = new window.Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    // never hijack scrolling inside an open dialog or an element that scrolls itself
-    prevent: function (node) { return !!(node && node.closest && node.closest('[data-lenis-prevent], dialog[open]')); },
-  });
-  SW.lenis = lenis;
-
-  if (window.gsap && window.gsap.ticker) {
-    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
-    window.gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-    window.gsap.ticker.lagSmoothing(0);
-  } else {
-    var raf = function (time) { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var hash = a.getAttribute('href');
-    if (hash.length < 2) return;
-    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) return;
-    e.preventDefault();
-    SW.scrollTo(target);
-    if (history.pushState) history.pushState(null, '', hash);
-  });
-});
-
-;
 /* kit: split */
 /* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
    Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
@@ -559,58 +486,6 @@ SW.mod('split', function (SW) {
     else SW.inView(el, function () { el.classList.add('is-in'); }, { rootMargin: '0px 0px -10% 0px' });
   });
   window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('is-in'); }); });
-});
-
-;
-/* kit: counters */
-/* counters: <span data-count="143">143 reviews</span> counts the first number in the text up from 0 once in view.
-   Write the final value in the HTML too (it is what shows without JS). Decimals follow the data-count value ("4.9").
-   data-count-duration in ms (default 1200). Screen readers get the final text; the moving copy is aria-hidden.
-   Static (final value) under reduced motion. */
-SW.mod('counters', function (SW) {
-  SW.$$('[data-count]').forEach(function (el) {
-    if (el.querySelector('.sw-count-num')) return;
-    var raw = el.getAttribute('data-count');
-    var target = parseFloat(String(raw).replace(/[^0-9.\-]/g, ''));
-    if (isNaN(target)) return;
-    var decimals = (String(raw).split('.')[1] || '').replace(/\D/g, '').length;
-    var fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-    var text = el.textContent;
-    var m = text.match(/\d[\d,]*(\.\d+)?/);
-    var before = m ? text.slice(0, m.index) : '';
-    var after = m ? text.slice(m.index + m[0].length) : text;
-    var finalText = fmt.format(target);
-
-    el.textContent = '';
-    var sr = document.createElement('span');
-    sr.className = 'sr-only';
-    sr.textContent = (before + finalText + after).trim();
-    var visual = document.createElement('span');
-    visual.setAttribute('aria-hidden', 'true');
-    var num = document.createElement('span');
-    num.className = 'sw-count-num';
-    visual.appendChild(document.createTextNode(before));
-    visual.appendChild(num);
-    visual.appendChild(document.createTextNode(after));
-    el.appendChild(sr);
-    el.appendChild(visual);
-
-    if (SW.reduced) { num.textContent = finalText; el.classList.add('is-counted'); return; }
-    num.textContent = fmt.format(0);
-    var duration = parseInt(el.getAttribute('data-count-duration'), 10) || 1200;
-    SW.inView(el, function () {
-      var t0 = performance.now();
-      function frame(now) {
-        var k = Math.min(1, (now - t0) / duration);
-        var eased = 1 - Math.pow(1 - k, 3);
-        num.textContent = fmt.format(target * eased);
-        if (k < 1) requestAnimationFrame(frame);
-        else { num.textContent = finalText; el.classList.add('is-counted'); }
-      }
-      requestAnimationFrame(frame);
-    }, { threshold: 0.4 });
-    window.addEventListener('beforeprint', function () { num.textContent = finalText; });
-  });
 });
 
 ;
@@ -748,6 +623,41 @@ SW.mod('zip', function (SW) {
       input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); check(); } });
     }
     input.addEventListener('input', function () { input.removeAttribute('aria-invalid'); });
+  });
+});
+
+;
+/* kit: checklist */
+/* checklist: a self-check list ("Signs you need a new roof").
+   <div data-checklist data-checklist-results="0:Tick what you see.|1:One sign: worth a free look.|3:{n} of {total}: time to call.">
+     <label><input type="checkbox"> Shingles curling</label> ...
+     <p data-checklist-result></p>   (aria-live; created when missing)
+   </div>
+   The result line uses the highest threshold that n reaches. Sets data-checked="n" and --checked / --total on the box. */
+SW.mod('checklist', function (SW) {
+  SW.$$('[data-checklist]').forEach(function (box) {
+    var boxes = SW.$$('input[type="checkbox"]', box);
+    if (!boxes.length) return;
+    var out = SW.$('[data-checklist-result]', box);
+    if (!out) { out = document.createElement('p'); out.setAttribute('data-checklist-result', ''); box.appendChild(out); }
+    out.setAttribute('aria-live', 'polite');
+    var rules = (box.getAttribute('data-checklist-results') || '0:{n} of {total} checked.')
+      .split('|').map(function (r) {
+        var i = r.indexOf(':');
+        return { min: parseInt(r.slice(0, i), 10) || 0, text: r.slice(i + 1).trim() };
+      }).sort(function (a, b) { return a.min - b.min; });
+    function update() {
+      var n = boxes.filter(function (b) { return b.checked; }).length;
+      var rule = rules.filter(function (r) { return n >= r.min; }).pop() || rules[0];
+      box.setAttribute('data-checked', String(n));
+      box.style.setProperty('--checked', n);
+      box.style.setProperty('--total', boxes.length);
+      box.style.setProperty('--checked-pct', (n / boxes.length * 100).toFixed(1) + '%');
+      out.textContent = rule.text.replace(/\{n\}/g, n).replace(/\{total\}/g, boxes.length);
+      boxes.forEach(function (b) { var l = b.closest('label'); if (l) l.classList.toggle('is-checked', b.checked); });
+    }
+    boxes.forEach(function (b) { b.addEventListener('change', update); });
+    update();
   });
 });
 
@@ -1078,131 +988,30 @@ SW.mod('opennow', function (SW) {
 });
 
 ;
-/* kit: estimator */
-/* estimator: shows the sample price ranges from facts proof.prices. It never does math on dollars.
-   <div data-estimator>
-     <label for="est-item">Job</label> <select id="est-item" data-est-item></select>   (filled from the prices when empty)
-     <label for="est-size">Size</label> <input id="est-size" type="range" min="0" max="2" value="1" data-est-size>   (optional)
-     <div data-est-sketch></div>      (optional; gets data-item / data-level / --est for a drawing)
-     <p data-est-out></p>             (aria-live; created when missing)
-     <button data-est-print>Print this price</button>   (optional)
-   </div>
-   The range only sets a level (low / mid / high) and --est 0..1 for the sketch; the shown range stays the facts' from-to.
-   Output: "Leak repair: $300 to $950", the note, and a .sample-tag "Sample price". */
-SW.mod('estimator', function (SW) {
-  var LEVELS = ['low', 'mid', 'high'];
-  SW.$$('[data-estimator]').forEach(function (box) {
-    var prices = SW.fact('proof.prices', 'prices') || [];
-    var sel = SW.$('[data-est-item]', box);
-    var size = SW.$('[data-est-size]', box);
-    var sketch = SW.$('[data-est-sketch]', box);
-    var out = SW.$('[data-est-out]', box);
-    var printBtn = SW.$('[data-est-print]', box);
-    if (!sel || !prices.length) { SW.warn('estimator: needs [data-est-item] and proof.prices', box); return; }
-    if (!out) { out = document.createElement('p'); out.setAttribute('data-est-out', ''); box.appendChild(out); }
-    out.setAttribute('aria-live', 'polite');
-    if (!sel.options.length) {
-      prices.forEach(function (p, i) {
-        var o = document.createElement('option');
-        o.value = String(i);
-        o.textContent = p.item;
-        sel.appendChild(o);
-      });
+/* kit: prefill */
+/* prefill: any link or button with data-service="Leak repair" (outside the lead form) fills the form's
+   "service" field, scrolls to #contact and focuses that field. The [[quote]] macro writes these links
+   (href="#contact" so they still work without JS). The value can be a service name or its short name. */
+SW.mod('prefill', function (SW) {
+  // capture phase: runs before the smooth-scroll anchor handler
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var t = e.target.closest ? e.target.closest('[data-service]') : null;
+    if (!t || t.closest('form[data-lead]')) return;
+    var form = SW.$('form[data-lead]');
+    if (!form) return; // plain anchor behaviour
+    e.preventDefault();
+    var want = (t.getAttribute('data-service') || '').trim().toLowerCase();
+    var services = SW.fact('services') || [];
+    var hit = services.find(function (s) {
+      return String(s.name || '').toLowerCase() === want || String(s.short || '').toLowerCase() === want;
+    });
+    var name = hit ? hit.name : t.getAttribute('data-service');
+    SW.prefillForm(name ? { service: name } : {}, { focus: 'service' });
+    if (t.getAttribute('href') && t.getAttribute('href').charAt(0) === '#') {
+      try { history.pushState(null, '', t.getAttribute('href')); } catch (err) { /* file:// */ }
     }
-    function money(v) {
-      if (typeof v === 'number') return '$' + v.toLocaleString('en-US');
-      return String(v);
-    }
-    function current() {
-      var v = sel.value;
-      var byIndex = /^\d+$/.test(v) ? prices[parseInt(v, 10)] : null;
-      return byIndex || prices.find(function (p) { return p.item.toLowerCase() === String(sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : v).toLowerCase(); }) || prices[0];
-    }
-    function update() {
-      var p = current();
-      var level = 1, k = 0.5;
-      if (size) {
-        var min = parseFloat(size.min) || 0, max = parseFloat(size.max) || 100, val = parseFloat(size.value);
-        k = max > min ? (val - min) / (max - min) : 0.5;
-        level = k < 1 / 3 ? 0 : k < 2 / 3 ? 1 : 2;
-        size.setAttribute('aria-valuetext', LEVELS[level] === 'low' ? 'Small job' : LEVELS[level] === 'mid' ? 'Typical job' : 'Large job');
-      }
-      box.style.setProperty('--est', k.toFixed(3));
-      box.setAttribute('data-level', LEVELS[level]);
-      if (sketch) {
-        sketch.setAttribute('data-item', p.item);
-        sketch.setAttribute('data-level', LEVELS[level]);
-        sketch.style.setProperty('--est', k.toFixed(3));
-      }
-      out.textContent = '';
-      var line = document.createElement('span');
-      line.className = 'sw-est-range';
-      line.textContent = p.item + ': ' + money(p.from) + ' to ' + money(p.to) + (p.unit ? ' ' + p.unit : '');
-      out.appendChild(line);
-      if (p.note) {
-        var note = document.createElement('span');
-        note.className = 'sw-est-note';
-        note.textContent = ' (' + p.note + ')';
-        out.appendChild(note);
-      }
-      out.appendChild(document.createTextNode(' '));
-      var tag = document.createElement('span');
-      tag.className = 'sample-tag';
-      tag.textContent = 'Sample price';
-      out.appendChild(tag);
-    }
-    sel.addEventListener('change', update);
-    if (size) size.addEventListener('input', update);
-    if (printBtn) {
-      printBtn.type = 'button';
-      printBtn.addEventListener('click', function () {
-        document.documentElement.classList.add('sw-print-est');
-        box.classList.add('is-printing');
-        window.print();
-      });
-      window.addEventListener('afterprint', function () {
-        document.documentElement.classList.remove('sw-print-est');
-        box.classList.remove('is-printing');
-      });
-    }
-    box.setAttribute('data-estimator-ready', '');
-    update();
-  });
-});
-
-;
-/* kit: checklist */
-/* checklist: a self-check list ("Signs you need a new roof").
-   <div data-checklist data-checklist-results="0:Tick what you see.|1:One sign: worth a free look.|3:{n} of {total}: time to call.">
-     <label><input type="checkbox"> Shingles curling</label> ...
-     <p data-checklist-result></p>   (aria-live; created when missing)
-   </div>
-   The result line uses the highest threshold that n reaches. Sets data-checked="n" and --checked / --total on the box. */
-SW.mod('checklist', function (SW) {
-  SW.$$('[data-checklist]').forEach(function (box) {
-    var boxes = SW.$$('input[type="checkbox"]', box);
-    if (!boxes.length) return;
-    var out = SW.$('[data-checklist-result]', box);
-    if (!out) { out = document.createElement('p'); out.setAttribute('data-checklist-result', ''); box.appendChild(out); }
-    out.setAttribute('aria-live', 'polite');
-    var rules = (box.getAttribute('data-checklist-results') || '0:{n} of {total} checked.')
-      .split('|').map(function (r) {
-        var i = r.indexOf(':');
-        return { min: parseInt(r.slice(0, i), 10) || 0, text: r.slice(i + 1).trim() };
-      }).sort(function (a, b) { return a.min - b.min; });
-    function update() {
-      var n = boxes.filter(function (b) { return b.checked; }).length;
-      var rule = rules.filter(function (r) { return n >= r.min; }).pop() || rules[0];
-      box.setAttribute('data-checked', String(n));
-      box.style.setProperty('--checked', n);
-      box.style.setProperty('--total', boxes.length);
-      box.style.setProperty('--checked-pct', (n / boxes.length * 100).toFixed(1) + '%');
-      out.textContent = rule.text.replace(/\{n\}/g, n).replace(/\{total\}/g, boxes.length);
-      boxes.forEach(function (b) { var l = b.closest('label'); if (l) l.classList.toggle('is-checked', b.checked); });
-    }
-    boxes.forEach(function (b) { b.addEventListener('change', update); });
-    update();
-  });
+  }, true);
 });
 
 ;
@@ -1219,70 +1028,118 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* cleaning-B — Running Receipt signature + scroll stories */
+/* cleaning-B · Running Receipt
+   1. The live receipt (always on): every pick in the quote builder prints a line on the strip.
+   2. Motion (only with sw-motion): hero ticket print-in, strip rule draws, crew triptych drift.
+   Nothing here hides content: every start state is a transform or a clip that ends visible within 1.2 s,
+   and the page reads complete with JS off or reduced motion. */
 (function () {
   if (!window.SW) return;
 
-  /* Signature: receipt strip wipe-in on scroll via clip-path */
-  SW.mod('receipt-signature', function () {
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
+  function num(s) { var n = parseFloat(String(s || '').replace(/[^0-9.]/g, '')); return isNaN(n) ? 0 : n; }
+  function sym(s) { var m = String(s || '').match(/^[^0-9]*/); return m ? m[0] : ''; }
 
-    var strips = document.querySelectorAll('[data-sw-signature="receipt"] .receipt-strip');
-    if (!strips.length) return;
+  SW.mod('receipt-live', function () {
+    var rc = document.querySelector('[data-rc]');
+    var form = document.querySelector('[data-rc-form]');
+    if (!rc || !form) return;
+    var prices = SW.fact('proof.prices') || [];
+    var lines = rc.querySelector('[data-rc-lines]');
+    var total = rc.querySelector('[data-rc-total]');
+    var send = document.querySelector('[data-rc-send]');
+    var visits = Array.prototype.slice.call(form.querySelectorAll('[data-rc-visit]'));
+    if (visits.length && !visits.some(function (v) { return v.checked; })) visits[0].checked = true;
+    var addOn = prices[prices.length - 1] || {};
 
-    gsap.registerPlugin(ScrollTrigger);
+    function line(label, value) {
+      var li = document.createElement('li');
+      li.className = 'tk__line';
+      var a = document.createElement('span'); a.textContent = label;
+      var i = document.createElement('i');
+      var b = document.createElement('span'); b.textContent = value;
+      li.appendChild(a); li.appendChild(i); li.appendChild(b);
+      return li;
+    }
+    function flash(el) { el.classList.remove('is-new'); void el.offsetWidth; el.classList.add('is-new'); }
 
-    strips.forEach(function (strip) {
-      gsap.fromTo(strip,
-        { clipPath: 'inset(0 100% 0 0)' },
-        {
-          clipPath: 'inset(0 0% 0 0)',
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: strip,
-            start: 'top 85%',
-            once: true
-          }
+    var last = '';
+    function update(changed) {
+      var v = form.querySelector('[data-rc-visit]:checked');
+      var p = prices[v ? parseInt(v.value, 10) - 1 : 0] || prices[0] || {};
+      var size = form.querySelector('[data-rc-size]:checked');
+      var sizeText = size ? size.nextElementSibling.textContent : (p.note || '');
+      var adds = Array.prototype.slice.call(form.querySelectorAll('[data-rc-add]:checked'));
+      var lo = num(p.from), hi = num(p.to), cur = sym(p.from);
+      var frag = document.createDocumentFragment();
+      frag.appendChild(line('Visit', p.item || ''));
+      frag.appendChild(line('House', sizeText));
+      if (!adds.length) frag.appendChild(line('Add-ons', 'none'));
+      adds.forEach(function (a) {
+        var label = a.nextElementSibling.textContent;
+        if (a.hasAttribute('data-priced') && addOn.from) {
+          lo += num(addOn.from); hi += num(addOn.to);
+          frag.appendChild(line(label, addOn.from + '–' + addOn.to));
+        } else {
+          frag.appendChild(line(label, 'priced at walk-through'));
         }
-      );
+      });
+      var key = (p.item || '') + sizeText + adds.map(function (a) { return a.value; }).join();
+      lines.innerHTML = '';
+      lines.appendChild(frag);
+      total.textContent = cur + lo + ' to ' + cur + hi;
+      if (send && p.item) send.setAttribute('data-service', p.item);
+      if (changed && key !== last && !SW.reduced) {
+        var kids = lines.children;
+        flash(kids[changed === 'visit' ? 0 : changed === 'size' ? 1 : kids.length - 1]);
+        flash(total);
+      }
+      last = key;
+    }
+    form.addEventListener('change', function (e) {
+      var t = e.target;
+      update(t.hasAttribute('data-rc-visit') ? 'visit' : t.hasAttribute('data-rc-size') ? 'size' : 'add');
+    });
+    update(null);
+  });
+
+  if (SW.reduced || !document.documentElement.classList.contains('sw-motion') || !window.gsap) return;
+  if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+  /* Signature intro: the hero ticket prints its lines (first viewport only, ≤ 1.2 s, transforms + clip only). */
+  SW.mod('hero-print', function () {
+    var tk = document.querySelector('.spine--hero .tk');
+    if (!tk) return;
+    var rows = tk.querySelectorAll('.tk__line, .tk__total, .tk__foot');
+    gsap.fromTo(rows, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.45, stagger: 0.07, ease: 'power3.out', delay: 0.15, clearProps: 'clipPath' });
+    var photo = tk.querySelector('.tk__photo');
+    if (photo) gsap.fromTo(photo, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.8, ease: 'power3.inOut', clearProps: 'clipPath' });
+  });
+
+  /* Each strip's red rule draws when it enters view (decorative; the strip itself is always visible). */
+  SW.mod('strip-rules', function () {
+    var spines = document.querySelectorAll('[data-print]');
+    if (!('IntersectionObserver' in window)) { spines.forEach(function (s) { s.classList.add('is-printed'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-printed'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -15% 0px' });
+    spines.forEach(function (s) { io.observe(s); });
+  });
+
+  /* Story: the three visits drift at different speeds on desktop (transform only, no pin). */
+  SW.mod('crew-drift', function () {
+    if (!window.ScrollTrigger) return;
+    ScrollTrigger.matchMedia({
+      '(min-width: 900px)': function () {
+        var steps = document.querySelectorAll('[data-crew] .step');
+        steps.forEach(function (s, i) {
+          gsap.fromTo(s, { y: 40 * (i + 1) }, { y: 0, ease: 'none', scrollTrigger: { trigger: '[data-crew]', start: 'top bottom', end: 'center center', scrub: 0.6 } });
+        });
+      }
     });
   });
 
-  /* Story: hero h1 line-mask reveal handled by split module + CSS;
-     this adds staggered cover lines rise */
-  SW.mod('hero-entrance', function () {
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-
-    var lines = document.querySelectorAll('.hero__lines li');
-    if (!lines.length) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    gsap.fromTo(lines,
-      { opacity: 0, y: 16 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.52,
-        stagger: 0.06,
-        ease: 'power3.out',
-        delay: 0.4,
-        scrollTrigger: {
-          trigger: '.hero',
-          start: 'top top',
-          once: true
-        }
-      }
-    );
-  });
-
-  /* Refresh ScrollTrigger after fonts load */
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () {
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.refresh();
-      }
-    });
+  if (document.fonts && document.fonts.ready && window.ScrollTrigger) {
+    document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   }
 })();
+

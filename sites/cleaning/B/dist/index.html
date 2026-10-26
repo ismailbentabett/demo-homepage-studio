@@ -22,7 +22,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Every Other Friday Cleaning","description":"Huntsville house cleaning priced line by line. Build a quote by rooms, pick how often, and see sample prices before anyone comes to the door.","telephone":"+12565550153","email":"hello@every-other-friday.example","areaServed":[{"@type":"City","name":"Huntsville"},{"@type":"City","name":"Madison"},{"@type":"City","name":"Harvest"},{"@type":"City","name":"Meridianville"},{"@type":"City","name":"Owens Cross Roads"},{"@type":"City","name":"Athens"},{"@type":"City","name":"Decatur"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"08:00","closes":"17:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday"],"opens":"08:00","closes":"17:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"09:00","closes":"13:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/bricolage-grotesque/bricolage-grotesque-200-800-normal.woff2" crossorigin>
-<link rel="stylesheet" href="vendor/lenis.css">
+<link rel="preload" as="image" href="media/hero-B1-1170.webp" imagesrcset="media/hero-B1-1170.webp 1170w, media/hero-B1.webp 2340w" imagesizes="100vw" fetchpriority="high">
 <style>
 @font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque/bricolage-grotesque-200-800-normal.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 @font-face{font-family:"Figtree";src:url("fonts/figtree/figtree-300-900-normal.woff2") format("woff2");font-weight:300 900;font-style:normal;font-display:swap}
@@ -251,967 +251,1116 @@ html.lenis, html.lenis body { height: auto; }
   html.sw-print-est [data-est-print] { display: none; }
 }
 
+/* cleaning-B · Every Other Friday · "Running Receipt"
+   One thermal-paper strip runs down the left third of the page; each section prints its line onto it.
+   Mobile first: base = 320-389, then 390 / 640 / 900 / 1200 / 1440. Hidden start states only under .sw-motion. */
+
 :root {
-  --header-h: 64px;
-  --fs--1: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);
-  --fs-0: clamp(0.875rem, 0.825rem + 0.25vw, 0.9375rem);
-  --fs-1: clamp(1rem, 0.925rem + 0.375vw, 1.125rem);
-  --fs-2: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --fs-3: clamp(1.75rem, 1.4rem + 1.75vw, 2.5rem);
-  --fs-4: clamp(2.25rem, 1.6rem + 3.25vw, 3.5rem);
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --font-text: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --fs--1: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
+  --fs-0: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --fs-1: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --fs-2: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+  --fs-3: clamp(2rem, 1.3rem + 2.8vw, 3.5rem);
   --fs-h1: clamp(2.6rem, min(9vw, 9.5svh) + 0.1rem, 5.25rem);
-  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
-  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
-  --ease-out: cubic-bezier(.23,1,.32,1);
-  --ease-io: cubic-bezier(.77,0,.175,1);
-  --dur-press: 120ms;
-  --dur-ui: 200ms;
-  --dur-page: 520ms;
-  --dur-story: 900ms;
-  --stagger: 60ms;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
+  --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 120px;
+
+  --paper: #F5F2EB; --ink: #2D2A26; --sienna: #9C4A18; --deep: #1E1B17; --signal: #3B7A57; --mid: #D4CFC4;
+  --slip: #FFFDF8; --slip-ink: #2D2A26; --slip-muted: #5F5852; --slip-rule: #C9C0B0;
+
+  --header-h: 60px;
+  --gutter: 20px;
+  --pad: var(--s-8);
+  --radius: 4px;
+  --grade: saturate(.85) contrast(1.05) sepia(.08);
+
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --ease-io: cubic-bezier(.77, 0, .175, 1);
+  --dur-press: 120ms; --dur-ui: 200ms; --dur-page: 520ms; --dur-story: 900ms; --stagger: 60ms;
+  --sw-anchor-offset: calc(var(--header-h) + 16px);
 }
 
-.t-paper {
-  --bg: #faf8f5; --ink: #2d2a26; --muted: #6b6560; --rule: #d8d3cc; --accent: #9c4a18; --focus: #9c4a18;
-}
-.t-mid {
-  --bg: #e8e4de; --ink: #2d2a26; --muted: #5c5650; --rule: #c8c2ba; --accent: #9c4a18; --focus: #9c4a18;
-}
-.t-deep {
-  --bg: #2d2a26; --ink: #faf8f5; --muted: #b8b2aa; --rule: #4a4640; --accent: null; --focus: #faf8f5;
-}
-.t-accent {
-  --bg: #9c4a18; --ink: #faf8f5; --muted: #f0d8c8; --rule: #b86830; --accent: #faf8f5; --focus: #faf8f5;
-}
+/* ---------- tones ---------- */
+.t-paper { --bg: #F5F2EB; --fg: #2D2A26; --muted: #5E5852; --rule: #CFC8BB; --accent: #9C4A18; --focus: #2F6B4B;
+  --btn-bg: #9C4A18; --btn-ink: #FFFDF8; --chip-bg: #FFFDF8; }
+.t-mid { --bg: #D4CFC4; --fg: #2D2A26; --muted: #4A4540; --rule: #A8A196; --accent: #7A3B12; --focus: #2D6B4A;
+  --btn-bg: #7A3B12; --btn-ink: #FFFDF8; --chip-bg: #E6E1D7; }
+.t-deep { --bg: #1E1B17; --fg: #F5F2EB; --muted: #B5AEA6; --rule: #4A443C; --accent: #E09466; --focus: #6BBF96;
+  --btn-bg: #E09466; --btn-ink: #1E1B17; --chip-bg: #2A2621; }
+.t-accent { --bg: #9C4A18; --fg: #FFFDF8; --muted: #F3E3D6; --rule: #C47040; --accent: #FFFDF8; --focus: #FFFDF8;
+  --btn-bg: #FFFDF8; --btn-ink: #9C4A18; --chip-bg: #8A4015; }
+.t-paper, .t-mid, .t-deep, .t-accent { background: var(--bg); color: var(--fg); }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* ---------- base ---------- */
+html { background: var(--paper); }
 body {
-  font-family: 'Figtree', sans-serif;
-  font-size: var(--fs-1);
-  line-height: 1.5;
-  color: var(--ink);
-  background: var(--bg);
-  text-wrap: pretty;
+  font-family: var(--font-text); font-size: var(--fs-0); line-height: 1.55; color: var(--ink); background: var(--paper);
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
-.display {
-  font-family: 'Bricolage Grotesque', sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 0.92;
-  text-wrap: balance;
-}
-.mono {
-  font-family: 'DM Mono', monospace;
-  font-weight: 400;
-}
-h1 { font-size: var(--fs-h1); }
-h2 { font-size: var(--fs-3); }
-h3 { font-size: var(--fs-2); }
-p { max-width: 65ch; }
-.lead { font-size: var(--fs-2); font-weight: 450; line-height: 1.3; }
-.kicker { font-size: var(--fs-0); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: var(--s-3); }
-
-a { color: inherit; text-decoration: none; }
-a:hover { text-decoration: underline; text-underline-offset: 3px; }
-ul, ol { list-style: none; padding: 0; }
-img, video { display: block; max-width: 100%; height: auto; }
-
-:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-@media (forced-colors: active) {
-  .btn, .input, select, textarea { border: 2px solid ButtonText; }
-}
-
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-.skip-link { position: absolute; top: -100%; left: var(--s-4); background: var(--ink); color: var(--bg); padding: var(--s-2) var(--s-4); z-index: 1000; border-radius: 2px; }
-.skip-link:focus { top: var(--s-2); }
-
-.container { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: var(--s-4); }
-.container--narrow { max-width: 720px; }
-
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
-  min-height: 48px; padding: var(--s-3) var(--s-5);
-  font-family: 'Figtree', sans-serif; font-weight: 600; font-size: var(--fs-0);
-  border-radius: 2px; border: none; cursor: pointer; text-decoration: none;
-  transition: background var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
-}
-.btn-primary { background: var(--accent); color: #faf8f5; }
-.btn-primary:hover { background: #7a3a12; }
-.btn-secondary { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
-.btn-secondary:hover { background: var(--ink); color: var(--bg); }
-.btn-ghost { background: transparent; color: var(--ink); padding-inline: 0; min-height: auto; }
-.btn-ghost:hover { text-decoration: underline; }
-.btn-text { background: transparent; color: var(--ink); padding: 0; min-height: auto; text-decoration: underline; text-underline-offset: 3px; }
-.t-deep .btn-primary { background: #faf8f5; color: #2d2a26; }
-.t-deep .btn-primary:hover { background: #e8e4de; }
-.t-deep .btn-secondary { border-color: #faf8f5; color: #faf8f5; }
-.t-deep .btn-secondary:hover { background: #faf8f5; color: #2d2a26; }
-.t-deep .btn-ghost { color: #faf8f5; }
-
-.input, select, textarea {
-  display: block; width: 100%; min-height: 48px; padding: var(--s-3) var(--s-4);
-  font-family: 'Figtree', sans-serif; font-size: var(--fs-1); color: var(--ink);
-  background: var(--bg); border: 1px solid var(--rule); border-radius: 2px;
-  transition: border-color var(--dur-ui) var(--ease-out);
-}
-.input:focus, select:focus, textarea:focus { border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 25%, transparent); }
-textarea { resize: vertical; min-height: 96px; }
-
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.03em; text-wrap: balance; }
+h2 { font-size: var(--fs-2); line-height: 0.98; margin-bottom: var(--s-4); }
+h3 { font-size: var(--fs-1); line-height: 1.1; letter-spacing: -0.015em; }
+p, li, blockquote { text-wrap: pretty; }
+.mono, .kicker { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.kicker { font-size: var(--fs--1); letter-spacing: 0.04em; color: var(--accent); margin-bottom: var(--s-4); display: flex; align-items: center; gap: var(--s-3); }
+.kicker::before { content: ""; width: 28px; border-top: 1.5px dashed currentColor; }
+.lead { font-size: var(--fs-1); font-weight: 450; line-height: 1.45; max-width: 52ch; color: var(--fg); margin-bottom: var(--s-6); }
+.micro { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-3); }
+.i { width: 1.1em; height: 1.1em; flex: none; }
+a { text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--focus, #2F6B4B); outline-offset: 3px; }
+.skip-link { background: var(--ink); color: var(--paper); padding: 12px 16px; border-radius: var(--radius); }
 .sample-tag {
-  display: inline-block; font-family: 'DM Mono', monospace; font-size: var(--fs--1);
-  text-transform: uppercase; letter-spacing: 0.05em;
-  padding: 2px 6px; border: 1px solid currentColor; border-radius: 2px;
-  vertical-align: middle; margin-left: var(--s-2);
+  display: inline-block; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.02em; line-height: 1.3;
+  padding: 1px 8px; border: 1px solid currentColor; border-radius: 999px; vertical-align: 0.1em; white-space: nowrap;
+}
+.wrap { width: min(100% - 2 * var(--gutter), 1280px); margin-inline: auto; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 24px;
+  border-radius: var(--radius); border: 1.5px solid transparent; font-weight: 650; font-size: 1rem; letter-spacing: 0.01em;
+  text-decoration: none; line-height: 1.2; text-align: center;
+  transition: transform var(--dur-press) var(--ease-out), filter var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out);
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--btn-bg); color: var(--btn-ink); }
+.btn-ghost { background: transparent; color: var(--accent); border-color: currentColor; }
+.btn-lg { min-height: 56px; padding: 14px 28px; font-size: 1.0625rem; }
+.btn-block { width: 100%; }
+.btn .i { transition: transform var(--dur-ui) var(--ease-out); }
+@media (hover: hover) {
+  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-ghost:hover { background: var(--accent); color: var(--bg); }
+  .btn:hover .i { transform: translateX(3px); }
+}
+.tel-plain { font-family: var(--font-mono); font-weight: 500; color: inherit; display: inline-block; padding-block: 12px; margin-block: -12px; }
+
+/* ---------- header ---------- */
+.header { position: sticky; top: 0; z-index: 50; height: var(--header-h); border-bottom: 1px solid var(--rule); }
+.header__inner { height: 100%; display: flex; align-items: center; gap: var(--s-5); }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; min-height: 48px; margin-right: auto; }
+.logo__tag {
+  font-family: var(--font-mono); font-weight: 500; font-size: 0.875rem; letter-spacing: 0.06em; background: var(--ink); color: var(--paper);
+  padding: 6px 8px 9px; line-height: 1;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 6px 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 6px 100%;
+}
+.logo__name { font-family: var(--font-display); font-weight: 700; font-size: 1.125rem; letter-spacing: -0.02em; line-height: 1; display: grid; gap: 3px; }
+.logo__name small { font-family: var(--font-mono); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.04em; color: var(--muted); }
+.header__nav, .header__tel, .header__cta { display: none; }
+.header__nav ul { display: flex; gap: var(--s-5); }
+.header__nav a, .header__tel { text-decoration: none; position: relative; padding-block: 12px; }
+.header__nav a { display: inline-block; }
+.header__nav a::after, .footer a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 8px; border-top: 1.5px solid var(--accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-ui) var(--ease-out); }
+@media (hover: hover) { .header__nav a:hover::after, .footer a:hover::after { transform: scaleX(1); } }
+.header__tel { font-size: 0.9375rem; font-weight: 500; }
+.header__menu-btn { width: 48px; height: 48px; display: grid; place-items: center; background: none; border: 1.5px solid var(--rule); border-radius: var(--radius); }
+.header__menu-btn .i { width: 22px; height: 22px; }
+
+.mobile-menu { position: fixed; inset: 0; z-index: 60; overflow: auto; }
+.sw-js .mobile-menu:not(.is-open) { visibility: hidden; pointer-events: none; }
+html:not(.sw-js) .mobile-menu { display: none; }
+.mobile-menu__inner { padding: var(--s-5) var(--gutter) var(--s-8); display: grid; gap: var(--s-5); }
+.mobile-menu__close { justify-self: end; width: 48px; height: 48px; display: grid; place-items: center; background: none; border: 1.5px solid var(--rule); border-radius: var(--radius); }
+.mobile-menu__links { display: grid; }
+.mobile-menu__links a { display: flex; min-height: 52px; align-items: center; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; text-decoration: none; border-bottom: 1.5px dashed var(--rule); }
+.mobile-menu__call { width: 100%; }
+
+/* ---------- the receipt primitive ---------- */
+.tk { --fg: var(--slip-ink); --muted: var(--slip-muted); --rule: var(--slip-rule); --accent: #9C4A18; --focus: #2F6B4B; --btn-bg: #9C4A18; --btn-ink: #FFFDF8;
+  color: var(--slip-ink); font-family: var(--font-mono); font-size: var(--fs--1); line-height: 1.5; display: flex; flex-direction: column; gap: var(--s-4); }
+.tk__mast { font-family: var(--font-display); font-weight: 700; font-size: 1.375rem; letter-spacing: -0.02em; line-height: 1.1; position: relative; padding-bottom: var(--s-3); border-bottom: 2px solid var(--slip-ink); }
+.tk__mast span { color: #9C4A18; }
+.tk__mast::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; border-top: 2px solid #9C4A18; transform-origin: left; transition: transform var(--dur-story) var(--ease-io); }
+.tk__meta { display: flex; justify-content: space-between; gap: var(--s-3); color: var(--slip-muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.8125rem; }
+.tk__meta .sample-tag { text-transform: none; color: #9C4A18; }
+.tk__lines { display: grid; gap: 2px; }
+.tk__line { display: flex; align-items: baseline; gap: 8px; padding-block: 7px; border-bottom: 1px dashed var(--slip-rule); }
+.tk__line > span:first-child { text-transform: uppercase; letter-spacing: 0.04em; }
+.tk__line > span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.tk__line i { flex: 1 1 12px; min-width: 12px; border-bottom: 1.5px dotted var(--slip-rule); transform: translateY(-4px); }
+.tk__total { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); padding: var(--s-3) 0; border-block: 2px solid var(--slip-ink); text-transform: uppercase; letter-spacing: 0.04em; }
+.tk__total strong { font-family: var(--font-display); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); letter-spacing: -0.02em; text-transform: none; font-variant-numeric: tabular-nums; line-height: 1; }
+.tk__note { color: var(--slip-muted); }
+.tk__note .sample-tag { color: #9C4A18; }
+.tk__foot { text-align: center; color: var(--slip-muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.8125rem; }
+
+/* the strip: on phones a torn ticket inside the flow; from 900px a column that runs through the sections */
+.spine {
+  background: var(--slip) repeating-linear-gradient(180deg, transparent 0 31px, rgba(45, 42, 38, .035) 31px 32px);
+  border-inline: 2px dashed var(--slip-rule); padding: var(--s-6) var(--s-5) calc(var(--s-6) + 12px);
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
 }
 
-.frame { position: relative; overflow: hidden; border-radius: 2px; }
-.frame img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9) contrast(1.03) sepia(.06) brightness(1.02); }
-.t-deep .frame img { filter: saturate(.9) contrast(1.03) sepia(.06) brightness(1.02); }
-.t-deep .frame::after { content: ''; position: absolute; inset: 0; background: rgba(45,42,38,.3); mix-blend-mode: multiply; pointer-events: none; }
-
-.receipt-strip {
-  position: relative; padding: var(--s-5) var(--s-5) var(--s-6);
-  border-left: 2px dashed var(--rule);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), 98% 100%, 96% calc(100% - 8px), 94% 100%, 92% calc(100% - 8px), 90% 100%, 88% calc(100% - 8px), 86% 100%, 84% calc(100% - 8px), 82% 100%, 80% calc(100% - 8px), 78% 100%, 76% calc(100% - 8px), 74% 100%, 72% calc(100% - 8px), 70% 100%, 68% calc(100% - 8px), 66% 100%, 64% calc(100% - 8px), 62% 100%, 60% calc(100% - 8px), 58% 100%, 56% calc(100% - 8px), 54% 100%, 52% calc(100% - 8px), 50% 100%, 48% calc(100% - 8px), 46% 100%, 44% calc(100% - 8px), 42% 100%, 40% calc(100% - 8px), 38% 100%, 36% calc(100% - 8px), 34% 100%, 32% calc(100% - 8px), 30% 100%, 28% calc(100% - 8px), 26% 100%, 24% calc(100% - 8px), 22% 100%, 20% calc(100% - 8px), 18% 100%, 16% calc(100% - 8px), 14% 100%, 12% calc(100% - 8px), 10% 100%, 8% calc(100% - 8px), 6% 100%, 4% calc(100% - 8px), 2% 100%, 0 calc(100% - 8px));
+/* ---------- frames (the photo is printed on the paper) ---------- */
+.frame {
+  position: relative; overflow: hidden; margin: 0; isolation: isolate;
+  background: linear-gradient(150deg, rgba(255, 253, 248, .0) 0 40%, rgba(156, 74, 24, .10)),
+    repeating-linear-gradient(-45deg, rgba(156, 74, 24, .09) 0 2px, transparent 2px 14px), #E7DCCB;
 }
-.receipt-strip__header { font-size: var(--fs-0); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--s-4); padding-bottom: var(--s-3); border-bottom: 1px dashed var(--rule); }
-.receipt-strip__lines { display: flex; flex-direction: column; gap: var(--s-2); }
-.receipt-strip__lines li { display: flex; justify-content: space-between; gap: var(--s-4); font-size: var(--fs-0); }
-.receipt-strip__total { display: flex; justify-content: space-between; margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px dashed var(--rule); font-weight: 600; font-size: var(--fs-1); }
-.receipt-strip__note { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-3); }
-.receipt-strip__body { font-size: var(--fs-1); margin-bottom: var(--s-3); }
-.receipt-strip__price { font-size: var(--fs-2); font-weight: 600; margin-bottom: var(--s-2); }
-.receipt-strip__meta { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-3); }
-.receipt-strip__stars { color: var(--accent); margin-bottom: var(--s-2); letter-spacing: 2px; }
-.t-deep .receipt-strip__stars { color: #faf8f5; }
-.receipt-strip--mini { padding: var(--s-2) var(--s-3); border-left-width: 1px; }
-.receipt-strip--masthead { display: flex; justify-content: space-between; align-items: center; padding: var(--s-3) var(--s-4); border-left: none; border-bottom: 2px dashed var(--rule); clip-path: none; background: none; }
-.receipt-strip--review { margin-bottom: var(--s-4); }
-.receipt-strip--tear { border-left: none; border-top: 2px dashed var(--rule); clip-path: polygon(0 0, 2% 8px, 4% 0, 6% 8px, 8% 0, 10% 8px, 12% 0, 14% 8px, 16% 0, 18% 8px, 20% 0, 22% 8px, 24% 0, 26% 8px, 28% 0, 30% 8px, 32% 0, 34% 8px, 36% 0, 38% 8px, 40% 0, 42% 8px, 44% 0, 46% 8px, 48% 0, 50% 8px, 52% 0, 54% 8px, 56% 0, 58% 8px, 60% 0, 62% 8px, 64% 0, 66% 8px, 68% 0, 70% 8px, 72% 0, 74% 8px, 76% 0, 78% 8px, 80% 0, 82% 8px, 84% 0, 86% 8px, 88% 0, 90% 8px, 92% 0, 94% 8px, 96% 0, 98% 8px, 100% 0, 100% 100%, 0 100%); padding-top: var(--s-5); text-align: center; }
+.frame img { width: 100%; height: 100%; object-fit: cover; filter: var(--grade); color: transparent; }
+.frame.is-broken .frame-fallback {
+  display: flex; align-items: flex-end; justify-content: flex-start; place-items: unset; text-align: left;
+  font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.35; color: #4A3A2E; padding: var(--s-3) var(--s-4);
+}
+.frame.is-broken .frame-fallback::before { content: "Photo · "; color: #9C4A18; white-space: pre; }
 
-.section { padding-block: var(--s-8); background: var(--bg); color: var(--ink); }
-@media (min-width: 640px) { .section { padding-block: var(--s-9); } }
+/* ---------- section scaffolding ---------- */
+.band { padding-block: var(--pad); }
+.row { display: flex; flex-direction: column; gap: var(--s-7); }
+.band__body { min-width: 0; }
 
-.header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--header-h); background: var(--bg); transition: box-shadow var(--dur-ui) var(--ease-out); }
-.header.is-scrolled { box-shadow: 0 1px 0 var(--rule); }
-.header__inner { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: var(--s-4); }
-.header__logo { font-family: 'DM Mono', monospace; font-size: var(--fs-0); text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; }
-.header__nav { display: none; }
-.header__links { display: flex; gap: var(--s-5); }
-.header__links a { font-size: var(--fs-0); font-weight: 500; }
-.header__cta { display: none; }
-.header__menu-btn { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: none; border: none; cursor: pointer; color: var(--ink); }
-.header__progress { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--accent); width: calc(var(--p, 0) * 100%); transition: width 100ms linear; }
+/* ---------- 1 hero ---------- */
+.hero { padding-block: var(--s-6) var(--s-8); }
+.hero__copy { display: flex; flex-direction: column; }
+.hero__title { font-size: var(--fs-h1); line-height: 0.92; max-width: 17ch; margin-bottom: var(--s-5); font-variation-settings: "opsz" 96; }
+.hero__lines { display: grid; gap: var(--s-2); margin-bottom: var(--s-6); font-size: var(--fs-0); }
+.hero__lines li { display: flex; align-items: center; gap: 10px; }
+.hero__lines .i { color: var(--signal); width: 20px; height: 20px; }
+.hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-bottom: var(--s-5); }
+.hero__call { font-size: var(--fs-0); }
+.hero__proof { font-size: var(--fs--1); color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.hero__proof .sample-tag { color: var(--accent); }
+.spine--hero .tk__photo { aspect-ratio: 4 / 3; }
+
+/* ---------- 2 quote builder ---------- */
+.qb { display: grid; gap: var(--s-6); }
+.qb__group { border: 0; padding: 0; margin: 0; min-width: 0; }
+.qb__group legend, .ticks legend { font-family: var(--font-mono); font-size: var(--fs--1); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: var(--s-3); padding: 0; }
+.chips { display: grid; gap: var(--s-2); }
+.chip { position: relative; display: block; cursor: pointer; }
+.chip input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.chip span {
+  display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 12px 16px; border: 1.5px solid var(--rule);
+  background: var(--chip-bg); border-radius: var(--radius); font-weight: 550; line-height: 1.25;
+  transition: border-color var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
+}
+.chip span::before { content: ""; width: 16px; height: 16px; flex: none; border: 1.5px solid currentColor; border-radius: 50%; box-shadow: inset 0 0 0 3px var(--chip-bg); }
+.chip--box span::before { border-radius: 2px; }
+.chip input:checked + span { border-color: var(--accent); background: var(--fg); color: var(--bg); }
+.chip input:checked + span::before { background: var(--accent); border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--fg); }
+.chip input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+@media (hover: hover) { .chip:hover span { border-color: var(--accent); } }
+.qb__send { margin-top: var(--s-6); }
+.tk--live .tk__line.is-new { animation: tk-print var(--dur-page) var(--ease-out) both; }
+.tk--live [data-rc-total].is-new { animation: tk-print var(--dur-page) var(--ease-out) both; }
+
+/* ---------- 3 checklist ---------- */
+.tk__tabs { display: grid; gap: 4px; }
+.tk__tab {
+  display: flex; align-items: baseline; gap: 8px; width: 100%; min-height: 48px; padding: 12px 12px; background: none; color: var(--slip-ink);
+  border: 0; border-bottom: 1px dashed var(--slip-rule); font: inherit; text-align: left; text-transform: uppercase; letter-spacing: 0.04em;
+  transition: background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
+}
+.tk__tab i { flex: 1 1 12px; border-bottom: 1.5px dotted var(--slip-rule); transform: translateY(-4px); }
+.tk__tab span:last-child { text-transform: none; color: var(--slip-muted); }
+.tk__tab[aria-selected="true"] { background: var(--slip-ink); color: var(--slip); }
+.tk__tab[aria-selected="true"] span:last-child { color: #E8D9C8; }
+.tk__tab[aria-selected="true"] i { border-color: #8A8178; }
+@media (hover: hover) { .tk__tab:hover:not([aria-selected="true"]) { background: #F1EADF; } }
+.panels { display: grid; gap: var(--s-6); }
+.panel { display: grid; gap: var(--s-5); outline-offset: 6px; }
+.panel__photo { aspect-ratio: 4 / 3; }
+.panel__list h3 { margin-bottom: var(--s-3); font-size: var(--fs-1); }
+.lines { counter-reset: ln; display: grid; }
+.lines li { counter-increment: ln; display: flex; gap: var(--s-3); padding-block: 10px; border-bottom: 1px dashed var(--rule); }
+.lines li::before { content: counter(ln, decimal-leading-zero); font-family: var(--font-mono); font-size: var(--fs--1); color: var(--muted); padding-top: 2px; }
+.lines li.is-deep { color: var(--accent); font-weight: 550; }
+.endline { margin-top: var(--s-6); padding-top: var(--s-4); border-top: 2px dashed var(--fg); font-family: var(--font-mono); font-size: var(--fs--1); letter-spacing: 0.02em; }
+
+/* ---------- 4 break ---------- */
+.break { display: grid; }
+.break__photo { aspect-ratio: 16 / 10; order: 2; }
+.break__slip { padding: var(--s-8) var(--gutter); display: grid; gap: var(--s-5); align-content: center; }
+.break__kicker { font-size: var(--fs--1); letter-spacing: 0.04em; color: var(--muted); }
+.break__quote { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-3); line-height: 0.96; letter-spacing: -0.03em; text-wrap: balance; max-width: 13ch; }
+.break__quote em { font-style: normal; display: block; color: var(--slip); text-decoration: underline 3px; text-underline-offset: 8px; text-decoration-color: rgba(255, 253, 248, .45); }
+
+/* ---------- 5 crew ---------- */
+.crew__head { max-width: 760px; margin-bottom: var(--s-7); }
+.crew__steps { display: grid; gap: var(--s-7); }
+.step { display: grid; gap: var(--s-3); align-content: start; }
+.step__photo { aspect-ratio: 4 / 3; margin-bottom: var(--s-3); }
+.step__no { font-size: var(--fs--1); color: var(--accent); letter-spacing: 0.04em; padding-bottom: var(--s-2); border-bottom: 2px solid var(--fg); }
+.step h3 { font-size: var(--fs-2); }
+.step p:last-child { color: var(--muted); max-width: 36ch; }
+
+/* ---------- 6 frequency ---------- */
+.ticks { border: 0; padding: 0; margin: 0; display: grid; gap: var(--s-2); }
+.tick { position: relative; display: block; cursor: pointer; }
+.tick input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.tick span { display: flex; align-items: center; gap: var(--s-4); min-height: 56px; padding: 12px 16px; background: var(--chip-bg); border: 1.5px solid var(--rule); border-radius: var(--radius); font-weight: 550;
+  transition: border-color var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out); }
+.tick span::before { content: ""; width: 22px; height: 22px; flex: none; border: 1.5px solid var(--fg); border-radius: 3px; background: var(--slip) center / 16px no-repeat; }
+.tick input:checked + span { border-color: var(--accent); background: var(--slip); }
+.tick input:checked + span::before { background-color: var(--accent); border-color: var(--accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFDF8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"); }
+.tick input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+.tk__answer { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); line-height: 1.05; letter-spacing: -0.02em; min-height: 3.2em; }
+.tk__answer.is-new { animation: tk-print var(--dur-page) var(--ease-out) both; }
+.tk__meter { height: 10px; border: 1.5px solid var(--slip-ink); }
+.tk__meter span { display: block; height: 100%; width: var(--checked-pct, 0%); background: repeating-linear-gradient(90deg, #9C4A18 0 6px, transparent 6px 9px); transition: width var(--dur-page) var(--ease-out); }
+
+/* ---------- 7 services ---------- */
+.svc { display: grid; gap: 0; border-top: 1.5px solid var(--rule); }
+.svc__item { display: grid; gap: var(--s-3); align-content: start; padding: var(--s-6) 0; border-bottom: 1.5px solid var(--rule); }
+.svc__no { font-size: var(--fs--1); color: var(--accent); }
+.svc__item h3 { font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); }
+.svc__item p:not(.svc__no) { color: var(--muted); }
+.svc__item .btn { justify-self: start; margin-top: var(--s-2); }
+.tk__lines--prices .tk__line { flex-wrap: wrap; row-gap: 0; }
+.tk__lines--prices .tk__line > span:first-child { text-transform: none; letter-spacing: 0; }
+
+/* ---------- 8 reviews ---------- */
+.rv__head { display: grid; gap: var(--s-5); margin-bottom: var(--s-7); }
+.rv__score { display: grid; gap: 4px; align-content: start; }
+.rv__num { font-family: var(--font-display); font-weight: 800; font-size: clamp(4rem, 3rem + 4vw, 7rem); line-height: 0.85; letter-spacing: -0.05em; }
+.rv__num span { color: var(--accent); font-size: 0.5em; vertical-align: 0.7em; margin-left: 4px; }
+.rv__score .mono { font-size: var(--fs--1); }
+.rv__score .sample-tag { color: var(--accent); }
+.rv { display: grid; gap: var(--s-5); }
+.slip {
+  background: var(--slip) repeating-linear-gradient(180deg, transparent 0 31px, rgba(45, 42, 38, .03) 31px 32px);
+  border-inline: 2px dashed var(--slip-rule); padding: var(--s-5) var(--s-5) calc(var(--s-5) + 12px); display: grid; gap: var(--s-4); align-content: start;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+}
+.slip__top { display: flex; justify-content: space-between; gap: var(--s-3); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--slip-muted); padding-bottom: var(--s-2); border-bottom: 2px solid var(--slip-ink); }
+.slip__top span:last-child { color: #9C4A18; white-space: nowrap; }
+.slip blockquote { margin: 0; font-size: 1.0625rem; line-height: 1.5; }
+.slip__who { font-size: var(--fs--1); }
+.slip__tag { color: #9C4A18; }
+.rv__promise { margin-top: var(--s-7); padding-top: var(--s-4); border-top: 2px dashed var(--fg); font-size: var(--fs-1); max-width: 60ch; display: grid; gap: var(--s-2); }
+.rv__promise .mono { font-size: var(--fs--1); color: var(--accent); }
+
+/* ---------- 9 area ---------- */
+.area { display: grid; gap: var(--s-7); }
+.area__towns { display: flex; flex-wrap: wrap; gap: 6px 0; margin-bottom: var(--s-7); font-family: var(--font-display); font-weight: 600; font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.25rem); letter-spacing: -0.02em; line-height: 1.15; }
+.area__towns li:not(:last-child)::after { content: "·"; color: var(--accent); margin-inline: 0.35em; }
+.zip { margin-top: var(--s-6); display: grid; gap: var(--s-3); max-width: 520px; padding: var(--s-5); background: var(--slip); border: 2px dashed var(--slip-rule); --fg: var(--slip-ink); --muted: var(--slip-muted); --accent: #9C4A18; --btn-bg: #9C4A18; --btn-ink: #FFFDF8; color: var(--slip-ink); }
+.zip label { font-family: var(--font-mono); font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.04em; }
+.zip__row { display: flex; gap: var(--s-2); }
+.zip input { flex: 1; min-width: 0; min-height: 52px; padding: 12px 16px; border: 1.5px solid var(--slip-ink); border-radius: var(--radius); background: #fff; font-family: var(--font-mono); font-size: 1.125rem; letter-spacing: 0.1em; }
+.zip__out { min-height: 1.5em; font-size: var(--fs-0); }
+.zip__out:empty { display: none; }
+.sw-zip-go, .sw-zip-call { display: inline-flex; align-items: center; min-height: 48px; margin-top: var(--s-2); padding: 10px 16px; background: #9C4A18; color: #FFFDF8; border: 0; border-radius: var(--radius); font-weight: 650; text-decoration: none; }
+.area__side { display: grid; gap: var(--s-5); align-content: start; }
+.area__photo { aspect-ratio: 4 / 3; }
+.tk--hours { background: var(--slip); border-inline: 2px dashed var(--slip-rule); padding: var(--s-5); }
+.tk__open { font-size: var(--fs-1); font-weight: 500; display: flex; align-items: center; gap: 10px; }
+.tk__open::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--slip-muted); flex: none; }
+.tk__open.is-open::before { background: var(--signal); box-shadow: 0 0 0 4px rgba(59, 122, 87, .2); }
+.hours { display: grid; margin: 0; }
+.hours > div { display: flex; justify-content: space-between; gap: var(--s-3); padding-block: 6px; border-bottom: 1px dashed var(--slip-rule); }
+.hours dt, .hours dd { margin: 0; }
+.hours dt { text-transform: uppercase; letter-spacing: 0.04em; }
+.hours .is-today { font-weight: 500; color: #9C4A18; }
+
+/* ---------- 10 contact ---------- */
+.lead-form { display: grid; gap: var(--s-5); }
+.fstep { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: var(--s-4); }
+.fstep legend { font-family: var(--font-mono); font-size: var(--fs--1); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); padding: 0; margin-bottom: var(--s-4); }
+.chips--form { grid-template-columns: 1fr; }
+.fgrid { display: grid; gap: var(--s-4); }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: 52px; padding: 12px 16px; border: 1.5px solid var(--rule); border-radius: var(--radius); background: var(--chip-bg); color: var(--fg);
+}
+.field textarea { min-height: 96px; resize: vertical; }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { border-color: var(--accent); }
+.field-error { color: var(--accent); font-weight: 600; font-size: var(--fs--1); }
+.fnav { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+[data-form-progress] { height: 6px; background: var(--rule); position: relative; overflow: hidden; }
+[data-form-progress]::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform-origin: left; transform: scaleX(var(--progress, .25)); transition: transform var(--dur-page) var(--ease-out); }
+[data-form-status]:empty { display: none; }
+.thanks { background: var(--slip); padding: var(--s-6); border-inline: 2px dashed var(--slip-rule); }
+.thanks__body { font-family: var(--font-text); font-size: var(--fs-1); line-height: 1.45; }
+.spine--contact .tk__photo--short { aspect-ratio: 16 / 9; }
+.tk__note .tel-plain { color: #9C4A18; }
+html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display: none; }
+
+/* ---------- footer ---------- */
+.footer { padding-block: var(--s-8) var(--s-7); border-top: 1px solid var(--rule); }
+.footer .wrap { display: grid; gap: var(--s-7); }
+.footer__receipt {
+  background: var(--slip); border-inline: 2px dashed var(--slip-rule); padding: calc(var(--s-6) + 10px) var(--s-5) var(--s-6);
+  font-family: var(--font-mono); font-size: var(--fs--1); display: grid; gap: var(--s-4);
+  -webkit-mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
+  mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
+}
+.footer__mast { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; line-height: 1.1; padding-bottom: var(--s-3); border-bottom: 2px solid var(--ink); }
+.footer__mast span { color: #9C4A18; margin-right: 6px; }
+.footer__lines .tk__line i { flex: 1 1 12px; }
+.footer__thanks { text-align: center; text-transform: uppercase; letter-spacing: 0.08em; padding-top: var(--s-3); border-top: 2px solid var(--ink); }
+.footer__thanks a { position: relative; display: inline-block; padding-block: 12px; margin-block: -12px; color: #9C4A18; font-weight: 500; }
+.footer__cols { display: grid; gap: var(--s-6); }
+.footer__h { font-family: var(--font-mono); font-weight: 500; font-size: var(--fs--1); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--s-3); padding-bottom: var(--s-2); border-bottom: 1.5px dashed var(--rule); }
+.footer__col { display: grid; gap: var(--s-2); align-content: start; font-size: 0.9375rem; color: var(--ink); }
+.footer__col a { position: relative; display: inline-block; padding-block: 12px; margin-block: -12px; text-decoration: none; }
+.footer__credits summary { cursor: pointer; min-height: 48px; display: flex; align-items: center; font-family: var(--font-mono); font-size: var(--fs--1); }
+.footer__credits .credits { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 0.875rem; }
+
+/* ---------- mobile bar ---------- */
+.mobile-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2);
+  padding: var(--s-2) var(--s-3) calc(var(--s-2) + env(safe-area-inset-bottom)); border-top: 1px solid var(--rule); box-shadow: 0 -2px 12px rgba(0, 0, 0, .08);
+}
+.mobile-bar__call {
+  display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 8px 10px; border: 1.5px solid var(--ink); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 0.875rem; font-weight: 500; text-decoration: none; white-space: nowrap; color: var(--ink);
+}
+.mobile-bar__go { min-height: 52px; padding: 8px 10px; font-size: 0.9375rem; white-space: nowrap; }
+
+/* ---------- motion (enhancement only; nothing is hidden) ---------- */
+@keyframes tk-print { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes tk-wipe { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
+.sw-motion .spine:not(.is-printed) .tk__mast::after { transform: scaleX(0); }
+.sw-motion .panel.is-active .panel__photo { animation: tk-wipe var(--dur-story) var(--ease-io) both; }
+.sw-motion .panel.is-active .lines li { animation: tk-print var(--dur-page) var(--ease-out) both; }
+.sw-motion .panel.is-active .lines li:nth-child(2) { animation-delay: 60ms; }
+.sw-motion .panel.is-active .lines li:nth-child(3) { animation-delay: 120ms; }
+.sw-motion .panel.is-active .lines li:nth-child(4) { animation-delay: 180ms; }
+.sw-motion .panel.is-active .lines li:nth-child(5) { animation-delay: 240ms; }
+.sw-motion .panel.is-active .lines li:nth-child(6) { animation-delay: 300ms; }
+.sw-motion .panel.is-active .lines li:nth-child(7) { animation-delay: 360ms; }
+.sw-motion .panel.is-active .lines li:nth-child(8) { animation-delay: 420ms; }
+
+/* ---------- 390 ---------- */
+@media (min-width: 390px) {
+  :root { --gutter: 22px; }
+  .mobile-bar__call { font-size: 0.9375rem; }
+}
+
+/* ---------- 640 ---------- */
+@media (min-width: 640px) {
+  :root { --gutter: 32px; --header-h: 68px; }
+  .header__cta { display: inline-flex; min-height: 44px; padding: 10px 18px; }
+  .chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chips--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ticks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chips--form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .field--wide { grid-column: 1 / -1; }
+  .svc { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-6); }
+  .rv { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .rv__head { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: end; }
+  .footer__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crew__steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); }
+  .step:nth-child(2) { margin-top: var(--s-7); }
+  .step:nth-child(3) { margin-top: var(--s-9); }
+  .panel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+}
+
+/* ---------- 900: the strip becomes the page's spine ---------- */
 @media (min-width: 900px) {
+  :root { --header-h: 72px; --pad: var(--s-9); }
+  body { padding-bottom: 0; }
+  .mobile-bar { display: none; }
+  .header__tel { display: inline-block; }
+  .header__cta { min-height: 48px; padding: 12px 22px; }
+  .row { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 0 var(--s-8); align-items: start; }
+  .row > .spine {
+    grid-column: 1; grid-row: 1; align-self: stretch; margin-block: calc(-1 * var(--pad)); padding: var(--pad) var(--s-5);
+    -webkit-mask: none; mask: none;
+  }
+  .row > .spine.spine--tear {
+    padding-bottom: calc(var(--pad) + 12px);
+    -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
+    mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
+  }
+  .row > .band__body, .row > .hero__copy { grid-column: 2; grid-row: 1; }
+  .spine > .tk { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+
+  .hero { min-height: calc(100svh - var(--header-h) - 76px); padding-block: var(--s-7); display: flex; }
+  .hero > .wrap { flex: 1 1 auto; max-width: min(100% - 2 * var(--gutter), 1280px); }
+  .hero .row { min-height: 100%; }
+  .hero .row > .spine { margin-block: calc(-1 * var(--s-7)); padding-block: var(--s-6); }
+  .hero__copy { justify-content: center; }
+  .spine--hero > .tk { position: static; height: 100%; }
+  .spine--hero .tk__photo { aspect-ratio: auto; flex: 1 1 180px; min-height: 180px; }
+
+  .break { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); min-height: 72svh; }
+  .break__photo { order: 2; aspect-ratio: auto; height: 100%; }
+  .break__slip { order: 1; padding: var(--s-9) var(--s-8); }
+
+  .area { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: start; }
+  .panel { grid-template-columns: 1fr; }
+  .footer .wrap { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: var(--s-8); align-items: start; }
+}
+
+/* ---------- 1200 ---------- */
+@media (min-width: 1200px) {
+  :root { --gutter: 48px; }
   .header__nav { display: block; }
-  .header__cta { display: block; }
   .header__menu-btn { display: none; }
+  .mobile-menu { display: none; }
+  .header__inner { gap: var(--s-6); }
+  .svc { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .rv { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .rv .slip:nth-child(3n + 2) { margin-top: var(--s-7); }
+  .rv .slip:nth-child(3n + 3) { margin-top: var(--s-5); }
+  .panel { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: var(--s-6); }
+  .crew__steps { gap: var(--s-6); }
 }
 
-.mobile-menu { position: fixed; inset: 0; z-index: 200; background: var(--bg); display: flex; flex-direction: column; padding: var(--s-8) var(--s-4); }
-.mobile-menu[hidden] { display: none; }
-.mobile-menu__inner { display: flex; flex-direction: column; height: 100%; }
-.mobile-menu__close { align-self: flex-end; width: 48px; height: 48px; background: none; border: none; cursor: pointer; color: var(--ink); }
-.mobile-menu__links { display: flex; flex-direction: column; gap: var(--s-5); margin-top: var(--s-8); }
-.mobile-menu__links a { font-size: var(--fs-3); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; }
-.mobile-menu__cta { margin-top: auto; }
-
-.hero { min-height: calc(100svh - var(--header-h)); padding-top: calc(var(--header-h) + var(--s-8)); display: flex; align-items: center; }
-.hero__grid { display: grid; gap: var(--s-7); grid-template-columns: 1fr; }
-.hero__cover-lines { display: flex; flex-direction: column; gap: var(--s-5); }
-.hero__title { margin-bottom: var(--s-4); }
-.hero__lines { display: flex; flex-direction: column; gap: var(--s-2); font-size: var(--fs-0); color: var(--muted); }
-.hero__cta { margin-top: var(--s-4); }
-.hero__proof { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-3); }
-.hero__media { order: -1; }
-.hero__frame { aspect-ratio: 4/3; }
-.hero__masthead { margin-top: var(--s-5); }
-@media (min-width: 900px) {
-  .hero__grid { grid-template-columns: 1fr 1fr; align-items: center; }
-  .hero__media { order: 0; }
-  .hero__frame { aspect-ratio: 3/4; max-height: 70vh; }
+/* ---------- 1440 ---------- */
+@media (min-width: 1440px) {
+  .band__body .lead { max-width: 56ch; }
 }
 
-.quote-builder__grid { display: grid; gap: var(--s-7); grid-template-columns: 1fr; }
-.quote-builder__controls { display: flex; flex-direction: column; gap: var(--s-5); }
-.estimator-form { display: flex; flex-direction: column; gap: var(--s-5); }
-.form-field { display: flex; flex-direction: column; gap: var(--s-2); }
-.form-field label, .form-field legend { font-weight: 600; font-size: var(--fs-0); }
-.radio-group, .checkbox-group { display: flex; flex-direction: column; gap: var(--s-3); }
-.radio, .checkbox { display: flex; align-items: center; gap: var(--s-3); cursor: pointer; font-size: var(--fs-1); }
-.radio input, .checkbox input { width: 20px; height: 20px; accent-color: var(--accent); }
-.quote-builder__receipt { position: relative; }
-.quote-builder__submit { margin-top: var(--s-5); }
-@media (min-width: 900px) {
-  .quote-builder__grid { grid-template-columns: 1fr 1fr; align-items: start; }
-  .quote-builder__receipt { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+/* ---------- forced colours / print ---------- */
+@media (forced-colors: active) {
+  .btn, .chip span, .tick span, .tk__tab { border: 2px solid ButtonText; }
+  .spine, .slip, .footer__receipt, .logo__tag { mask: none; -webkit-mask: none; border: 1px solid CanvasText; }
+  :focus-visible { outline: 3px solid Highlight; }
+}
+@media print {
+  .spine, .slip, .footer__receipt { mask: none; -webkit-mask: none; }
+  .row > .spine { margin: 0; }
 }
 
-.crew { text-align: center; }
-.crew .container--narrow { display: flex; flex-direction: column; gap: var(--s-5); align-items: center; }
-.crew__proof { color: var(--muted); margin-top: var(--s-3); }
-
-.checklist .tabs { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-6); border-bottom: 1px solid var(--rule); padding-bottom: var(--s-2); }
-.tabs__tab { padding: var(--s-3) var(--s-4); background: none; border: none; cursor: pointer; font-size: var(--fs-0); color: var(--muted); border-bottom: 2px solid transparent; transition: color var(--dur-ui), border-color var(--dur-ui); }
-.tabs__tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
-.tabs__tab:hover { color: var(--ink); }
-.tabs__panel { animation: wipeIn var(--dur-story) var(--ease-out); }
-@keyframes wipeIn { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-.checklist__cta { margin-top: var(--s-6); }
-
-.break { padding: 0; min-height: 60svh; }
-.break__frame { height: 60svh; }
-.break__frame img { height: 100%; }
-
-.frequency .container--narrow { display: flex; flex-direction: column; gap: var(--s-6); }
-.quiz-form { display: flex; flex-direction: column; gap: var(--s-6); }
-.quiz-step { display: flex; flex-direction: column; gap: var(--s-3); border: none; padding: 0; }
-.quiz-step legend { font-weight: 600; font-size: var(--fs-1); margin-bottom: var(--s-2); }
-.quiz-result { margin-top: var(--s-6); }
-.quiz-result__cta { margin-top: var(--s-5); }
-
-.services__grid { display: grid; gap: var(--s-5); grid-template-columns: 1fr; }
-.service-card { padding: var(--s-5); border: 1px solid var(--rule); border-radius: 2px; display: flex; flex-direction: column; gap: var(--s-3); }
-.service-card__name { font-size: var(--fs-2); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; }
-.service-card__blurb { font-size: var(--fs-0); color: var(--muted); flex: 1; }
-.t-deep .service-card { border-color: var(--rule); }
-.t-deep .service-card__blurb { color: var(--muted); }
-@media (min-width: 640px) { .services__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { .services__grid { grid-template-columns: repeat(3, 1fr); } }
-
-.proof__grid { display: grid; gap: var(--s-7); grid-template-columns: 1fr; }
-.proof__stats { display: flex; flex-direction: column; gap: var(--s-4); }
-.proof__rating { font-size: var(--fs-4); color: var(--accent); }
-.proof__count { font-size: var(--fs-2); }
-.proof__years { color: var(--muted); }
-.proof__guarantee { margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--rule); font-size: var(--fs-0); }
-.proof__reviews { display: flex; flex-direction: column; gap: var(--s-4); }
-@media (min-width: 900px) {
-  .proof__grid { grid-template-columns: 1fr 1.5fr; }
-}
-
-.area__grid { display: grid; gap: var(--s-7); grid-template-columns: 1fr; }
-.area__info { display: flex; flex-direction: column; gap: var(--s-5); }
-.area__hours { display: flex; flex-direction: column; gap: var(--s-3); }
-.hours { display: grid; grid-template-columns: auto 1fr; gap: var(--s-2) var(--s-4); font-size: var(--fs-0); }
-.hours dt { font-weight: 600; }
-.hours dd { color: var(--muted); }
-.area__open-now { margin-top: var(--s-3); font-weight: 600; }
-.area__checker { display: flex; flex-direction: column; gap: var(--s-4); }
-.zip-form { display: flex; flex-direction: column; gap: var(--s-3); }
-.zip-input-row { display: flex; gap: var(--s-3); }
-.zip-input-row .input { flex: 1; }
-.zip-result { font-size: var(--fs-0); min-height: 1.5em; }
-@media (min-width: 900px) {
-  .area__grid { grid-template-columns: 1fr 1fr; }
-}
-
-.contact .container--narrow { display: flex; flex-direction: column; gap: var(--s-6); }
-.lead-form { display: flex; flex-direction: column; gap: var(--s-6); }
-.hp { position: absolute; opacity: 0; pointer-events: none; }
-.form-step { display: flex; flex-direction: column; gap: var(--s-5); }
-.form-step__label { font-size: var(--fs-0); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-.form-step__nav { display: flex; gap: var(--s-4); justify-content: flex-end; }
-.radio-group--cards { display: grid; gap: var(--s-3); grid-template-columns: 1fr; }
-.radio-card { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-4); border: 1px solid var(--rule); border-radius: 2px; cursor: pointer; transition: border-color var(--dur-ui); }
-.radio-card:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
-.radio-card input { width: 20px; height: 20px; accent-color: var(--accent); }
-.radio-card__label { font-weight: 500; }
-@media (min-width: 640px) { .radio-group--cards { grid-template-columns: repeat(2, 1fr); } }
-.form-thank-you { margin-top: var(--s-6); }
-
-.footer { padding-top: var(--s-9); padding-bottom: 0; }
-.footer__grid { display: grid; gap: var(--s-7); grid-template-columns: 1fr; padding-bottom: var(--s-8); }
-.footer__brand { display: flex; flex-direction: column; gap: var(--s-3); }
-.footer__logo { font-size: var(--fs-3); }
-.footer__nav ul { display: flex; flex-direction: column; gap: var(--s-3); }
-.footer__nav a { font-size: var(--fs-0); color: var(--muted); }
-.footer__nav a:hover { color: var(--ink); }
-.footer__legal { display: flex; flex-direction: column; gap: var(--s-3); font-size: var(--fs-0); color: var(--muted); }
-.footer__credits { font-size: var(--fs--1); color: var(--muted); }
-.credits { display: flex; flex-direction: column; gap: var(--s-2); }
-.credits li { font-size: var(--fs--1); }
-.footer__tear { margin-top: var(--s-6); padding-bottom: var(--s-6); }
-@media (min-width: 640px) { .footer__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { .footer__grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
-
-.mobile-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 90; background: var(--bg); box-shadow: 0 -2px 8px rgba(45,42,38,.12); padding: var(--s-3) var(--s-4); transform: translateY(0); transition: transform var(--dur-ui) var(--ease-out); }
-.mobile-bar.is-hidden { transform: translateY(100%); }
-.mobile-bar__inner { display: flex; gap: var(--s-3); max-width: 1280px; margin-inline: auto; }
-.mobile-bar__btn { flex: 1; font-size: var(--fs-0); }
-@media (min-width: 900px) { .mobile-bar { display: none; } }
-
-[data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-[data-reveal].is-in { opacity: 1; transform: translateY(0); }
-[data-reveal="clip"] { clip-path: inset(0 0 100% 0); transition: clip-path var(--dur-story) var(--ease-out); }
-[data-reveal="clip"].is-in { clip-path: inset(0 0 0 0); }
-[data-reveal-stagger] > * { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-[data-reveal-stagger].is-in > * { opacity: 1; transform: translateY(0); }
-[data-reveal-stagger].is-in > *:nth-child(1) { transition-delay: 0ms; }
-[data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: var(--stagger); }
-[data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: calc(var(--stagger) * 2); }
-[data-reveal-stagger].is-in > *:nth-child(4) { transition-delay: calc(var(--stagger) * 3); }
-[data-reveal-stagger].is-in > *:nth-child(5) { transition-delay: calc(var(--stagger) * 4); }
-[data-reveal-stagger].is-in > *:nth-child(6) { transition-delay: calc(var(--stagger) * 5); }
-[data-reveal-stagger].is-in > *:nth-child(7) { transition-delay: calc(var(--stagger) * 6); }
-[data-reveal-stagger].is-in > *:nth-child(8) { transition-delay: calc(var(--stagger) * 7); }
-[data-reveal-stagger].is-in > *:nth-child(9) { transition-delay: calc(var(--stagger) * 8); }
-
-.sw-motion [data-split="lines"] .line { display: block; overflow: hidden; }
-.sw-motion [data-split="lines"] .line-inner { display: block; transform: translateY(110%); transition: transform var(--dur-page) var(--ease-out); }
-.sw-motion [data-split="lines"].is-in .line-inner { transform: translateY(0); }
-.sw-motion [data-split="lines"].is-in .line:nth-child(1) .line-inner { transition-delay: 0ms; }
-.sw-motion [data-split="lines"].is-in .line:nth-child(2) .line-inner { transition-delay: 70ms; }
-.sw-motion [data-split="lines"].is-in .line:nth-child(3) .line-inner { transition-delay: 140ms; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-  [data-reveal], [data-reveal="clip"], [data-reveal-stagger] > * { opacity: 1; transform: none; clip-path: none; }
-  .sw-motion [data-split="lines"] .line-inner { transform: none; }
-}
 </style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
-  <symbol id="i-map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
-  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
-  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" pathLength="1"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<header data-header class="header t-paper" aria-label="Site navigation">
-  <div class="header__inner container">
-    <a href="#hero" class="header__logo receipt-strip receipt-strip--mini" aria-label="Every Other Friday Cleaning home">
-      <span class="receipt-strip__masthead">EOF · EST.</span>
+<header data-header class="header t-paper">
+  <div class="header__inner wrap">
+    <a href="#hero" class="logo" aria-label="Every Other Friday Cleaning, back to top">
+      <span class="logo__tag">EOF</span>
+      <span class="logo__name">Every Other Friday<small>EOF · Huntsville</small></span>
     </a>
     <nav class="header__nav" aria-label="Primary">
-      <ul class="header__links">
-        <li><a href="#quote-builder">Quote</a></li>
+      <ul role="list">
+        <li><a href="#quote-builder">Price</a></li>
+        <li><a href="#checklist">Checklist</a></li>
         <li><a href="#services">Services</a></li>
-        <li><a href="#proof">Reviews</a></li>
+        <li><a href="#reviews">Reviews</a></li>
         <li><a href="#area">Area</a></li>
       </ul>
     </nav>
-    <div class="header__cta">
-      <a class="btn btn-primary" href="#contact" data-service="Every other week">Build your quote</a>
-    </div>
-    <button class="header__menu-btn" data-menu-btn aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
-      <svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
-    </button>
+    <a class="header__tel mono" href="tel:+12565550153">(256) 555-0153</a>
+    <a class="btn btn-primary header__cta" href="#quote-builder">Price my house</a>
+    <button class="header__menu-btn" type="button" data-menu-btn aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg></button>
   </div>
-  <div class="header__progress" data-progress></div>
 </header>
 
-<div class="mobile-menu" id="mobile-menu" data-menu hidden>
+<div class="mobile-menu t-paper" id="mobile-menu" data-menu data-menu-mq="(max-width: 899px)">
   <div class="mobile-menu__inner">
-    <button class="mobile-menu__close" data-menu-btn aria-label="Close menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></button>
-    <nav aria-label="Mobile navigation">
-      <ul class="mobile-menu__links">
-        <li><a href="#quote-builder">Quote builder</a></li>
-        <li><a href="#crew">Your crew</a></li>
-        <li><a href="#checklist">Checklist</a></li>
-        <li><a href="#frequency">Frequency quiz</a></li>
+    <button class="mobile-menu__close" type="button" data-menu-btn aria-label="Close menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></button>
+    <nav aria-label="Mobile">
+      <ul role="list" class="mobile-menu__links">
+        <li><a href="#quote-builder">Price my house</a></li>
+        <li><a href="#checklist">The checklist</a></li>
+        <li><a href="#crew">Same crew</a></li>
+        <li><a href="#frequency">How often</a></li>
         <li><a href="#services">Services</a></li>
-        <li><a href="#proof">Reviews</a></li>
-        <li><a href="#area">Service area</a></li>
-        <li><a href="#contact">Book a visit</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#area">Area and hours</a></li>
+        <li><a href="#contact">Send my price</a></li>
       </ul>
     </nav>
-    <div class="mobile-menu__cta">
-      <a class="btn btn-call btn-primary" href="tel:+12565550153"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (256) 555-0153</span></a>
-    </div>
+    <a class="btn btn-call btn-primary mobile-menu__call" href="tel:+12565550153"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (256) 555-0153</span></a>
   </div>
 </div>
 
 <main id="main">
 
-  <!-- 1. Hero -->
-  <section id="hero" class="section hero t-paper" data-sw-signature="receipt">
-    <div class="container hero__grid">
-      <div class="hero__cover-lines" data-reveal>
-        <p class="kicker mono">House Cleaning · Huntsville, AL</p>
-        <h1 class="hero__title display" data-split="lines">Every Other Friday,<br>the house gets done.</h1>
-        <ul class="hero__lines mono">
-          <li>Your price, line by line</li>
-          <li>Same crew every visit</li>
-          <li>Sample prices before anyone comes</li>
+  <!-- 1 · hero -->
+  <section id="hero" class="hero t-paper" data-layout="hero-strip" data-hook="intro" data-sw-signature="receipt">
+    <div class="wrap row">
+      <div class="hero__copy">
+        <p class="kicker">Every Other Friday · Huntsville, AL</p>
+        <h1 class="hero__title" data-split="lines">Huntsville house cleaning, priced line by line.</h1>
+        <ul role="list" class="hero__lines">
+          <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>The room checklist is on this page</span></li>
+          <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Same crew every visit</span></li>
+          <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Sample prices before anyone comes</span></li>
         </ul>
         <div class="hero__cta">
-          <a class="btn btn-primary" href="#contact" data-service="Every other week">Build your quote</a>
+          <a class="btn btn-primary btn-lg" href="#quote-builder">Price my house <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <p class="hero__call">or call <a class="tel-plain" href="tel:+12565550153">(256) 555-0153</a></p>
         </div>
-        <p class="hero__proof mono">4.8 ★ (<span class="sample-tag">Sample rating</span>) · Huntsville, AL</p>
+        <p class="hero__proof mono"><span data-open-now>Mon–Thu 8 am – 5:30 pm · Fri 8 am – 5 pm · Sat 9 am – 1 pm</span> <span class="dot">·</span> 4.8 ★ <span class="sample-tag">Sample rating</span></p>
       </div>
-      <div class="hero__media">
-        <figure class="frame hero__frame" data-fallback="Placeholder hero B1" eager><img src="media/hero-B1-1170.webp" srcset="media/hero-B1-1170.webp 1170w, media/hero-B1.webp 2340w" sizes="100vw" alt="Placeholder hero B1" width="1170" height="1463" loading="lazy" decoding="async" data-photo="hero-B1" data-slot="hero"></figure>
-      </div>
-      <div class="hero__masthead receipt-strip receipt-strip--masthead mono">
-        <span>EOF · EST.</span>
-        <span class="hero__date">2026</span>
+      <div class="spine spine--hero" data-print>
+        <div class="tk">
+          <p class="tk__mast"><span>EOF</span> · Huntsville</p>
+          <p class="tk__meta"><span>Ticket 0001</span><span>Friday</span></p>
+          <figure class="frame tk__photo" data-fallback="Bright, tidy family kitchen in daylight"><img src="media/hero-B1-1170.webp" srcset="media/hero-B1-1170.webp 1170w, media/hero-B1.webp 2340w" sizes="100vw" alt="Bright, tidy family kitchen in daylight" width="1170" height="1463" fetchpriority="high" decoding="async" data-photo="hero-B1" data-slot="hero"></figure>
+          <ul role="list" class="tk__lines">
+            <li class="tk__line"><span>Rooms</span><i></i><span>you pick</span></li>
+            <li class="tk__line"><span>How often</span><i></i><span>you pick</span></li>
+            <li class="tk__line"><span>Price</span><i></i><span>before we come</span></li>
+          </ul>
+          <p class="tk__foot">* * * line by line * * *</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 2. Quote Builder -->
-  <section id="quote-builder" class="section quote-builder t-mid" data-estimator data-sw-signature="receipt">
-    <div class="container quote-builder__grid">
-      <div class="quote-builder__controls">
-        <h2 class="display">Build your quote</h2>
+  <!-- 2 · quote builder (signature tool) -->
+  <section id="quote-builder" class="band t-mid" data-layout="spine-tool" data-hook="estimate" data-sw-signature="receipt">
+    <div class="wrap row">
+      <div class="spine spine--receipt" data-print>
+        <div class="tk tk--live" aria-live="polite" data-rc>
+          <p class="tk__mast"><span>EOF</span> · Your price</p>
+          <p class="tk__meta"><span>Line 02</span><span>Sample</span></p>
+          <ul role="list" class="tk__lines" data-rc-lines>
+            <li class="tk__line"><span>Visit</span><i></i><span>Every-other-week visit</span></li>
+            <li class="tk__line"><span>House</span><i></i><span>3 bed / 2 bath</span></li>
+            <li class="tk__line"><span>Add-ons</span><i></i><span>none</span></li>
+          </ul>
+          <p class="tk__total"><span>Range</span><strong data-rc-total>$135 to $185</strong></p>
+          <p class="tk__note"><span class="sample-tag">Sample pricing</span> · final price after walk-through</p>
+          <p class="tk__foot">* * * no surprise at the door * * *</p>
+        </div>
+      </div>
+      <div class="band__body">
+        <p class="kicker">Line 02 · The price</p>
+        <h2>Price your house</h2>
         <p class="lead">Pick your rooms, pick how often, see the number. No phone call required.</p>
-        <form class="estimator-form" aria-label="Quote estimator">
-          <div class="form-field">
-            <label for="est-bedrooms">Bedrooms</label>
-            <select id="est-bedrooms" name="bedrooms" data-est-input="bedrooms">
-              <option value="1">1 bedroom</option>
-              <option value="2">2 bedrooms</option>
-              <option value="3" selected>3 bedrooms</option>
-              <option value="4">4 bedrooms</option>
-              <option value="5">5 bedrooms</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label for="est-bathrooms">Bathrooms</label>
-            <select id="est-bathrooms" name="bathrooms" data-est-input="bathrooms">
-              <option value="1">1 bathroom</option>
-              <option value="2" selected>2 bathrooms</option>
-              <option value="3">3 bathrooms</option>
-              <option value="4">4 bathrooms</option>
-            </select>
-          </div>
-          <fieldset class="form-field">
-            <legend>Frequency</legend>
-            <div class="radio-group">
-              <label class="radio"><input type="radio" name="frequency" value="eow" checked data-est-input="frequency"> Every other week</label>
-              <label class="radio"><input type="radio" name="frequency" value="weekly" data-est-input="frequency"> Weekly</label>
-              <label class="radio"><input type="radio" name="frequency" value="monthly" data-est-input="frequency"> Monthly</label>
+        <form class="qb" aria-label="Price your house" data-rc-form>
+          <fieldset class="qb__group">
+            <legend>How often, or what kind of visit</legend>
+            <div class="chips">
+              
+              <label class="chip"><input type="radio" name="qb-visit" value="1" data-rc-visit><span>Every-other-week visit</span></label>
+              
+              <label class="chip"><input type="radio" name="qb-visit" value="2" data-rc-visit><span>Weekly visit</span></label>
+              
+              <label class="chip"><input type="radio" name="qb-visit" value="3" data-rc-visit><span>Monthly visit</span></label>
+              
+              <label class="chip"><input type="radio" name="qb-visit" value="4" data-rc-visit><span>Deep clean</span></label>
+              
+              <label class="chip"><input type="radio" name="qb-visit" value="5" data-rc-visit><span>Move-out cleaning</span></label>
+              
             </div>
           </fieldset>
-          <fieldset class="form-field">
-            <legend>Add-ons</legend>
-            <div class="checkbox-group">
-              <label class="checkbox"><input type="checkbox" name="addon" value="oven" data-est-input="addon"> Inside oven</label>
-              <label class="checkbox"><input type="checkbox" name="addon" value="fridge" data-est-input="addon"> Inside fridge</label>
-              <label class="checkbox"><input type="checkbox" name="addon" value="windows" data-est-input="addon"> Inside windows</label>
+          <fieldset class="qb__group">
+            <legend>Size of the house</legend>
+            <div class="chips chips--3">
+              <label class="chip"><input type="radio" name="qb-size" value="low" data-rc-size><span>1–2 bed, 1 bath</span></label>
+              <label class="chip"><input type="radio" name="qb-size" value="mid" data-rc-size checked><span>3 bed, 2 bath</span></label>
+              <label class="chip"><input type="radio" name="qb-size" value="high" data-rc-size><span>4+ bed, 3 bath</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="qb__group">
+            <legend>Add to the visit</legend>
+            <div class="chips chips--3">
+              <label class="chip chip--box"><input type="checkbox" name="qb-add" value="Oven" data-rc-add data-priced><span>Inside oven</span></label>
+              <label class="chip chip--box"><input type="checkbox" name="qb-add" value="Fridge" data-rc-add data-priced><span>Inside fridge</span></label>
+              <label class="chip chip--box"><input type="checkbox" name="qb-add" value="Windows" data-rc-add><span>Inside windows</span></label>
             </div>
           </fieldset>
         </form>
-        <div class="quote-builder__submit">
-          <a class="btn btn-primary" href="#contact" data-service="Every other week">Send this quote request</a>
+        <div class="qb__send">
+          <a class="btn btn-primary" href="#contact" data-service="Every-other-week cleaning" data-rc-send>Send my price</a>
+          <p class="micro">We confirm the price on a short walk-through before the first visit.</p>
         </div>
       </div>
-      <div class="quote-builder__receipt" aria-live="polite">
-        <div class="receipt-strip" data-est-output>
-          <div class="receipt-strip__header mono">EOF · QUOTE</div>
-          <ul class="receipt-strip__lines mono" data-est-lines>
-            <li class="receipt-line"><span>Base visit</span><span data-est-base>—</span></li>
+    </div>
+  </section>
+
+  <!-- 3 · checklist explorer -->
+  <section id="checklist" class="band t-paper" data-layout="spine-tabs" data-hook="tabs" data-tabs data-sw-signature="receipt">
+    <div class="wrap row">
+      <div class="spine spine--tabs" data-print>
+        <div class="tk">
+          <p class="tk__mast"><span>EOF</span> · The list</p>
+          <p class="tk__meta"><span>Line 03</span><span>Room by room</span></p>
+          <div class="tk__tabs" data-tablist aria-label="Rooms">
+            <button class="tk__tab" type="button" data-tab><span>Kitchen</span><i></i><span>8 lines</span></button>
+            <button class="tk__tab" type="button" data-tab><span>Bathrooms</span><i></i><span>7 lines</span></button>
+            <button class="tk__tab" type="button" data-tab><span>Bedrooms + living</span><i></i><span>8 lines</span></button>
+            <button class="tk__tab" type="button" data-tab><span>Floors</span><i></i><span>5 lines</span></button>
+          </div>
+          <p class="tk__nojs" data-nojs-only>Four rooms, every line listed on the right.</p>
+          <p class="tk__foot">(D) = deep clean only</p>
+        </div>
+      </div>
+      <div class="band__body">
+        <p class="kicker">Line 03 · What gets done</p>
+        <h2>What's on the list</h2>
+        <p class="lead">Room by room, line by line. Deep-only items marked (D).</p>
+        <div class="panels">
+          <div class="panel" data-tabpanel>
+            <figure class="frame panel__photo" data-fallback="Clean open oven interior"><img src="media/process-oven-1170.webp" srcset="media/process-oven-1170.webp 1170w, media/process-oven.webp 2340w" sizes="100vw" alt="Clean open oven interior" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-oven" data-slot="checklist-kitchen"></figure>
+            <div class="panel__list">
+              <h3>Kitchen</h3>
+              <ol role="list" class="lines">
+                <li>Counters cleared and wiped</li><li>Sink and faucet scrubbed</li><li>Stovetop degreased</li><li>Microwave, outside</li>
+                <li>Cabinet fronts wiped</li><li>Floor swept and mopped</li><li class="is-deep">(D) Inside the microwave</li><li class="is-deep">(D) Cabinet tops dusted</li>
+              </ol>
+            </div>
+          </div>
+          <div class="panel" data-tabpanel>
+            <figure class="frame panel__photo" data-fallback="Squeegee clearing shower glass, clean streak visible"><img src="media/process-shower-glass-1170.webp" srcset="media/process-shower-glass-1170.webp 1170w, media/process-shower-glass.webp 2340w" sizes="100vw" alt="Squeegee clearing shower glass, clean streak visible" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-shower-glass" data-slot="checklist-bath"></figure>
+            <div class="panel__list">
+              <h3>Bathrooms</h3>
+              <ol role="list" class="lines">
+                <li>Toilet, inside and out</li><li>Tub and shower scrubbed</li><li>Vanity and sink wiped</li><li>Mirror cleaned</li>
+                <li>Floor swept and mopped</li><li class="is-deep">(D) Grout scrubbed</li><li class="is-deep">(D) Shower door descaled</li>
+              </ol>
+            </div>
+          </div>
+          <div class="panel" data-tabpanel>
+            <figure class="frame panel__photo" data-fallback="Duster reaching a ceiling fan blade, hand only"><img src="media/process-high-dust-1170.webp" srcset="media/process-high-dust-1170.webp 1170w, media/process-high-dust.webp 2340w" sizes="100vw" alt="Duster reaching a ceiling fan blade, hand only" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-high-dust" data-slot="checklist-dust"></figure>
+            <div class="panel__list">
+              <h3>Bedrooms + living</h3>
+              <ol role="list" class="lines">
+                <li>Beds made</li><li>Surfaces and shelves dusted</li><li>Mirrors and glass cleaned</li><li>Cushions straightened</li>
+                <li>Trash emptied</li><li>Floors vacuumed</li><li class="is-deep">(D) Ceiling fan blades</li><li class="is-deep">(D) Under the beds</li>
+              </ol>
+            </div>
+          </div>
+          <div class="panel" data-tabpanel>
+            <figure class="frame panel__photo" data-fallback="Damp mop on hardwood floor"><img src="media/process-mop-1170.webp" srcset="media/process-mop-1170.webp 1170w, media/process-mop.webp 2340w" sizes="100vw" alt="Damp mop on hardwood floor" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-mop" data-slot="checklist-floors"></figure>
+            <div class="panel__list">
+              <h3>Floors</h3>
+              <ol role="list" class="lines">
+                <li>Hard floors swept and mopped</li><li>Carpet vacuumed</li><li>Rugs vacuumed both sides</li>
+                <li class="is-deep">(D) Baseboards wiped throughout</li><li class="is-deep">(D) Stair risers and treads</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <p class="endline">End of list. (D) lines come with a deep clean.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · break (colour band) -->
+  <section class="break t-accent" data-layout="full-bleed" aria-label="The rhythm">
+    <figure class="frame break__photo" data-fallback="Modest residential kitchen in daylight"><img src="media/room-kitchen-1170.webp" srcset="media/room-kitchen-1170.webp 1170w, media/room-kitchen.webp 2340w" sizes="100vw" alt="Modest residential kitchen in daylight" width="1170" height="780" loading="lazy" decoding="async" data-photo="room-kitchen" data-slot="break"></figure>
+    <div class="break__slip">
+      <p class="break__kicker mono">Line 04 · The rhythm</p>
+      <p class="break__quote">Same crew. Same list. <em>Every Other Friday.</em></p>
+    </div>
+  </section>
+
+  <!-- 5 · same crew (scroll story) -->
+  <section id="crew" class="band t-paper" data-layout="triptych" data-hook="story">
+    <div class="wrap">
+      <div class="crew__head">
+        <p class="kicker">Line 05 · The crew</p>
+        <h2>Same crew, same Friday, same list.</h2>
+        <p class="lead">The team that cleans your house the first time is the team that comes back. By the third visit they know it.</p>
+      </div>
+      <ol role="list" class="crew__steps" data-crew>
+        <li class="step">
+          <figure class="frame step__photo" data-fallback="Kitchen sink and faucet, close-up shine"><img src="media/detail-sink-1170.webp" srcset="media/detail-sink-1170.webp 1170w, media/detail-sink.webp 2340w" sizes="100vw" alt="Kitchen sink and faucet, close-up shine" width="1170" height="878" loading="lazy" decoding="async" data-photo="detail-sink" data-slot="story-1"></figure>
+          <p class="step__no mono">Visit 01</p>
+          <h3>They learn the house</h3>
+          <p>Which sink spots, which shower glass, where the caddy goes first.</p>
+        </li>
+        <li class="step">
+          <figure class="frame step__photo" data-fallback="Vacuum lines across a carpet, no brand logos"><img src="media/process-vacuum-1170.webp" srcset="media/process-vacuum-1170.webp 1170w, media/process-vacuum.webp 2340w" sizes="100vw" alt="Vacuum lines across a carpet, no brand logos" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-vacuum" data-slot="story-2"></figure>
+          <p class="step__no mono">Visit 02</p>
+          <h3>They learn the dog</h3>
+          <p>Where the hair piles up, which rug to lift, which door stays shut.</p>
+        </li>
+        <li class="step">
+          <figure class="frame step__photo" data-fallback="Freshly made bed with crisp sheets, soft light"><img src="media/detail-bed-1170.webp" srcset="media/detail-bed-1170.webp 1170w, media/detail-bed.webp 2340w" sizes="100vw" alt="Freshly made bed with crisp sheets, soft light" width="1170" height="878" loading="lazy" decoding="async" data-photo="detail-bed" data-slot="story-3"></figure>
+          <p class="step__no mono">Visit 03</p>
+          <h3>They start where you want</h3>
+          <p>Your list, in your order. You stop explaining and start coming home to it.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6 · frequency quiz -->
+  <section id="frequency" class="band t-mid" data-layout="spine-quiz" data-hook="quiz">
+    <div class="wrap row" data-checklist data-checklist-results="0:Tick what's true. Your answer prints here.|1:Monthly keeps a calm house reset.|2:Every other week fits most houses like yours.|4:Weekly. That's the one that keeps up.">
+      <div class="spine spine--quiz" data-print>
+        <div class="tk">
+          <p class="tk__mast"><span>EOF</span> · How often</p>
+          <p class="tk__meta"><span>Line 06</span><span>Your answer</span></p>
+          <p class="tk__answer" data-checklist-result>Tick what's true. Your answer prints here.</p>
+          <div class="tk__meter" aria-hidden="true"><span></span></div>
+          <a class="btn btn-primary btn-block" href="#contact" data-service="Every-other-week cleaning">Price this frequency</a>
+          <p class="tk__foot">You can change it any visit</p>
+        </div>
+      </div>
+      <div class="band__body">
+        <p class="kicker">Line 06 · Weekly, every other, monthly</p>
+        <h2>How often is right for your house?</h2>
+        <p class="lead">Tick what's true. The answer prints on the slip.</p>
+        <fieldset class="ticks">
+          <legend class="sr-only">What's true at your house</legend>
+          <label class="tick"><input type="checkbox"><span>Kids live here full time</span></label>
+          <label class="tick"><input type="checkbox"><span>A dog or cat that sheds</span></label>
+          <label class="tick"><input type="checkbox"><span>Someone cooks most nights</span></label>
+          <label class="tick"><input type="checkbox"><span>Someone works from home</span></label>
+          <label class="tick"><input type="checkbox"><span>By day ten the house starts to slip</span></label>
+          <label class="tick"><input type="checkbox"><span>Guests over most weekends</span></label>
+        </fieldset>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · services (deep band, paper price slip overlaps) -->
+  <section id="services" class="band t-deep" data-layout="spine-grid" data-hook="prices" data-sw-signature="receipt">
+    <div class="wrap row">
+      <div class="spine spine--prices" data-print>
+        <div class="tk">
+          <p class="tk__mast"><span>EOF</span> · Price list</p>
+          <p class="tk__meta"><span>Line 07</span><span><span class="sample-tag">Sample pricing</span></span></p>
+          <ul role="list" class="tk__lines tk__lines--prices">
+            
+            <li class="tk__line"><span>Every-other-week visit</span><i></i><span>$135–$185</span></li>
+            
+            <li class="tk__line"><span>Weekly visit</span><i></i><span>$115–$160</span></li>
+            
+            <li class="tk__line"><span>Monthly visit</span><i></i><span>$160–$220</span></li>
+            
+            <li class="tk__line"><span>Deep clean</span><i></i><span>$250–$420</span></li>
+            
+            <li class="tk__line"><span>Move-out cleaning</span><i></i><span>$290–$500</span></li>
+            
+            <li class="tk__line"><span>Oven or fridge add-on</span><i></i><span>$35–$50</span></li>
+            
           </ul>
-          <div class="receipt-strip__total mono">
-            <span>Total</span>
-            <span data-est-total>—</span>
-          </div>
-          <p class="receipt-strip__note mono"><span class="sample-tag">Sample pricing</span> — final price after walk-through</p>
+          <p class="tk__note">Sample pricing for a 3 bed, 2 bath house. Walk-through confirms it.</p>
         </div>
+      </div>
+      <div class="band__body">
+        <p class="kicker">Line 07 · What we clean</p>
+        <h2>Nine visits, each with its own line.</h2>
+        <ul role="list" class="svc">
+          
+          <li class="svc__item">
+            <p class="svc__no mono">01</p>
+            <h3>Every-other-week cleaning</h3>
+            <p>The same crew every visit, so they learn your house, your pets and your preferences.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Every other week">Price it</a>
+          </li>
+          
+          <li class="svc__item">
+            <p class="svc__no mono">02</p>
+            <h3>Weekly cleaning</h3>
+            <p>For busy houses with kids and dogs: floors, kitchen and baths kept ahead of the week.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Weekly">Price it</a>
+          </li>
+          
+          <li class="svc__item">
+            <p class="svc__no mono">03</p>
+            <h3>Monthly cleaning</h3>
+            <p>A fuller once-a-month visit for tidy households that want the bathrooms and floors reset.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Monthly">Price it</a>
+          </li>
+          
+          <li class="svc__item">
+            <p class="svc__no mono">04</p>
+            <h3>Deep clean</h3>
+            <p>Baseboards, door frames, grout and inside the microwave: the list regular visits do not touch.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Deep clean">Price it</a>
+          </li>
+          
+          <li class="svc__item">
+            <p class="svc__no mono">05</p>
+            <h3>Move-out cleaning for PCS moves</h3>
+            <p>Military move-out cleans timed around the packers, with photos for your landlord or housing office.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Move-out (PCS)">Price it</a>
+          </li>
+          
+          <li class="svc__item">
+            <p class="svc__no mono">06</p>
+            <h3>Move-in cleaning</h3>
+            <p>Cabinets, closets and appliances wiped out before the moving truck arrives.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Move-in">Price it</a>
+          </li>
+          
+          <li class="svc__item">
+            <p class="svc__no mono">07</p>
+            <h3>Oven &amp; fridge add-on</h3>
+            <p>Inside the oven and the fridge cleaned and shelves wiped, added to any visit.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Oven &amp; fridge">Price it</a>
+          </li>
+          
+          <li class="svc__item">
+            <p class="svc__no mono">08</p>
+            <h3>Inside windows</h3>
+            <p>Inside glass, sills and tracks cleaned room by room, add it to any visit.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Windows">Price it</a>
+          </li>
+          
+          <li class="svc__item">
+            <p class="svc__no mono">09</p>
+            <h3>Pet hair visit</h3>
+            <p>Extra time on stairs, sofas and corners where dog and cat hair piles up.</p>
+            <a class="btn btn-ghost" href="#contact" data-service="Pet hair">Price it</a>
+          </li>
+          
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- 3. Dedicated Crew -->
-  <section id="crew" class="section crew t-paper" data-reveal>
-    <div class="container container--narrow">
-      <h2 class="display">Same crew, same Friday, same list.</h2>
-      <p class="lead">Your team learns your house, your pets and your preferences. They arrive with the caddy stocked for your rooms, not a generic kit.</p>
-      <p class="mono crew__proof">10 years serving Huntsville families.</p>
-    </div>
-  </section>
-
-  <!-- 4. Checklist Explorer -->
-  <section id="checklist" class="section checklist t-mid" data-tabs data-sw-signature="receipt">
-    <div class="container">
-      <h2 class="display">What's on the list</h2>
-      <p class="lead">Room by room, line by line. Deep-only items marked (D).</p>
-      <div class="tabs" role="tablist" aria-label="Room checklists">
-        <button role="tab" aria-selected="true" aria-controls="panel-kitchen" id="tab-kitchen" class="tabs__tab mono">Kitchen</button>
-        <button role="tab" aria-selected="false" aria-controls="panel-bath" id="tab-bath" class="tabs__tab mono">Bath</button>
-        <button role="tab" aria-selected="false" aria-controls="panel-bedroom" id="tab-bedroom" class="tabs__tab mono">Bedroom</button>
-        <button role="tab" aria-selected="false" aria-controls="panel-living" id="tab-living" class="tabs__tab mono">Living</button>
-        <button role="tab" aria-selected="false" aria-controls="panel-floors" id="tab-floors" class="tabs__tab mono">Floors</button>
-      </div>
-      <div class="tabs__panels">
-        <div role="tabpanel" id="panel-kitchen" aria-labelledby="tab-kitchen" class="tabs__panel">
-          <div class="receipt-strip">
-            <ul class="receipt-strip__lines mono">
-              <li>Countertops wiped</li>
-              <li>Sink scrubbed</li>
-              <li>Stovetop cleaned</li>
-              <li>Microwave exterior</li>
-              <li>Cabinet fronts wiped</li>
-              <li>Floor swept and mopped</li>
-              <li>(D) Inside microwave</li>
-              <li>(D) Cabinet tops dusted</li>
-            </ul>
-          </div>
+  <!-- 8 · reviews -->
+  <section id="reviews" class="band t-paper" data-layout="slips" data-sw-signature="receipt">
+    <div class="wrap">
+      <div class="rv__head">
+        <div>
+          <p class="kicker">Line 08 · What neighbours say</p>
+          <h2>The receipt matched the list.</h2>
         </div>
-        <div role="tabpanel" id="panel-bath" aria-labelledby="tab-bath" class="tabs__panel" hidden>
-          <div class="receipt-strip">
-            <ul class="receipt-strip__lines mono">
-              <li>Toilet cleaned inside and out</li>
-              <li>Tub and shower scrubbed</li>
-              <li>Vanity and sink wiped</li>
-              <li>Mirror cleaned</li>
-              <li>Floor swept and mopped</li>
-              <li>(D) Grout scrubbed</li>
-              <li>(D) Shower door descaled</li>
-            </ul>
-          </div>
-        </div>
-        <div role="tabpanel" id="panel-bedroom" aria-labelledby="tab-bedroom" class="tabs__panel" hidden>
-          <div class="receipt-strip">
-            <ul class="receipt-strip__lines mono">
-              <li>Beds made</li>
-              <li>Nightstands and dresser dusted</li>
-              <li>Mirrors cleaned</li>
-              <li>Floor vacuumed</li>
-              <li>Trash emptied</li>
-              <li>(D) Baseboards wiped</li>
-              <li>(D) Under bed vacuumed</li>
-            </ul>
-          </div>
-        </div>
-        <div role="tabpanel" id="panel-living" aria-labelledby="tab-living" class="tabs__panel" hidden>
-          <div class="receipt-strip">
-            <ul class="receipt-strip__lines mono">
-              <li>Surfaces dusted</li>
-              <li>Cushions straightened</li>
-              <li>TV stand and shelves wiped</li>
-              <li>Floor vacuumed</li>
-              <li>Trash emptied</li>
-              <li>(D) Ceiling fan blades</li>
-              <li>(D) Window sills wiped</li>
-            </ul>
-          </div>
-        </div>
-        <div role="tabpanel" id="panel-floors" aria-labelledby="tab-floors" class="tabs__panel" hidden>
-          <div class="receipt-strip">
-            <ul class="receipt-strip__lines mono">
-              <li>All hard floors swept and mopped</li>
-              <li>All carpet vacuumed</li>
-              <li>Rugs shaken or vacuumed</li>
-              <li>(D) Baseboards wiped throughout</li>
-              <li>(D) Stair risers and treads</li>
-            </ul>
-          </div>
+        <div class="rv__score">
+          <p class="rv__num">4.8<span>★</span></p>
+          <p class="mono">264 reviews · <span class="sample-tag">Sample rating</span></p>
+          <p class="mono">10 years in Huntsville · Sample</p>
         </div>
       </div>
-      <div class="checklist__cta">
-        <a class="btn btn-secondary" href="#contact" data-service="Deep clean">That's the list we follow</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. Break -->
-  <section class="section break t-accent" data-reveal="clip">
-    <figure class="frame break__frame" data-fallback="Modest residential kitchen in daylight" eager><img src="media/room-kitchen-1170.webp" srcset="media/room-kitchen-1170.webp 1170w, media/room-kitchen.webp 2340w" sizes="100vw" alt="Modest residential kitchen in daylight" width="1170" height="780" loading="lazy" decoding="async" data-photo="room-kitchen" data-slot="break"></figure>
-  </section>
-
-  <!-- 6. Frequency Quiz -->
-  <section id="frequency" class="section frequency t-paper" data-checklist>
-    <div class="container container--narrow">
-      <h2 class="display">How often is right for you?</h2>
-      <p class="lead">Four quick questions. The answer comes with a sample price.</p>
-      <form class="quiz-form" aria-label="Frequency quiz">
-        <fieldset class="quiz-step" data-quiz-step="1">
-          <legend>People living at home</legend>
-          <div class="radio-group">
-            <label class="radio"><input type="radio" name="people" value="1-2"> 1–2</label>
-            <label class="radio"><input type="radio" name="people" value="3-4"> 3–4</label>
-            <label class="radio"><input type="radio" name="people" value="5+"> 5+</label>
-          </div>
-        </fieldset>
-        <fieldset class="quiz-step" data-quiz-step="2">
-          <legend>Pets in the house</legend>
-          <div class="radio-group">
-            <label class="radio"><input type="radio" name="pets" value="none"> None</label>
-            <label class="radio"><input type="radio" name="pets" value="1-2"> 1–2</label>
-            <label class="radio"><input type="radio" name="pets" value="3+"> 3+</label>
-          </div>
-        </fieldset>
-        <fieldset class="quiz-step" data-quiz-step="3">
-          <legend>Cooking at home</legend>
-          <div class="radio-group">
-            <label class="radio"><input type="radio" name="cooking" value="rarely"> Rarely</label>
-            <label class="radio"><input type="radio" name="cooking" value="most-days"> Most days</label>
-            <label class="radio"><input type="radio" name="cooking" value="daily"> Daily</label>
-          </div>
-        </fieldset>
-        <fieldset class="quiz-step" data-quiz-step="4">
-          <legend>How does the house feel by day 10?</legend>
-          <div class="radio-group">
-            <label class="radio"><input type="radio" name="feel" value="fine"> Still fine</label>
-            <label class="radio"><input type="radio" name="feel" value="slipping"> Starting to slip</label>
-            <label class="radio"><input type="radio" name="feel" value="overwhelmed"> Overwhelmed</label>
-          </div>
-        </fieldset>
-      </form>
-      <div class="quiz-result" data-quiz-result hidden>
-        <div class="receipt-strip">
-          <div class="receipt-strip__header mono">EOF · RECOMMENDATION</div>
-          <p class="receipt-strip__body" data-quiz-text></p>
-          <p class="receipt-strip__price mono" data-quiz-price></p>
-          <p class="receipt-strip__note mono"><span class="sample-tag">Sample pricing</span></p>
-        </div>
-        <div class="quiz-result__cta">
-          <a class="btn btn-primary" href="#contact" data-service="Every other week">Book this frequency</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. Services -->
-  <section id="services" class="section services t-deep" data-reveal-stagger>
-    <div class="container">
-      <h2 class="display">What we clean</h2>
-      <ul class="services__grid">
+      <ul role="list" class="rv">
         
-        <li class="service-card">
-          <h3 class="service-card__name">Every-other-week cleaning</h3>
-          <p class="service-card__blurb">The same crew every visit, so they learn your house, your pets and your preferences.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Every other week">Price it</a>
+        <li class="slip">
+          <p class="slip__top mono"><span>Every-other-week cleaning</span><span>5/5</span></p>
+          <blockquote><p>The quote builder priced our house within ten dollars of what we paid. No surprise upsell at the door, and the receipt matched the list line for line.</p></blockquote>
+          <p class="slip__who mono">Jamal B. · Madison</p>
+          <p class="slip__tag"><span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="service-card">
-          <h3 class="service-card__name">Weekly cleaning</h3>
-          <p class="service-card__blurb">For busy houses with kids and dogs: floors, kitchen and baths kept ahead of the week.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Weekly">Price it</a>
+        <li class="slip">
+          <p class="slip__top mono"><span>Move-out cleaning for PCS moves</span><span>5/5</span></p>
+          <blockquote><p>We had orders to Fort Bragg and two weeks to clear housing. They came the afternoon the packers left, sent photos of every room, and we passed the inspection first try.</p></blockquote>
+          <p class="slip__who mono">Kristen O. · Huntsville</p>
+          <p class="slip__tag"><span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="service-card">
-          <h3 class="service-card__name">Monthly cleaning</h3>
-          <p class="service-card__blurb">A fuller once-a-month visit for tidy households that want the bathrooms and floors reset.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Monthly">Price it</a>
+        <li class="slip">
+          <p class="slip__top mono"><span>Weekly cleaning</span><span>5/5</span></p>
+          <blockquote><p>Three kids, two labs, one hallway. Weekly is the only thing that works for us. Same crew every Friday, and they know which rooms to do first.</p></blockquote>
+          <p class="slip__who mono">Derek S. · Harvest</p>
+          <p class="slip__tag"><span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="service-card">
-          <h3 class="service-card__name">Deep clean</h3>
-          <p class="service-card__blurb">Baseboards, door frames, grout and inside the microwave: the list regular visits do not touch.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Deep clean">Price it</a>
+        <li class="slip">
+          <p class="slip__top mono"><span>Oven &amp; fridge add-on</span><span>4/5</span></p>
+          <blockquote><p>I added the oven and fridge to my regular visit before Thanksgiving. Cost what the add-on line said. The fridge shelves came out and went back sparkling.</p></blockquote>
+          <p class="slip__who mono">Pam G. · Meridianville</p>
+          <p class="slip__tag"><span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="service-card">
-          <h3 class="service-card__name">Move-out cleaning for PCS moves</h3>
-          <p class="service-card__blurb">Military move-out cleans timed around the packers, with photos for your landlord or housing office.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Move-out (PCS)">Price it</a>
+        <li class="slip">
+          <p class="slip__top mono"><span>Pet hair visit</span><span>5/5</span></p>
+          <blockquote><p>Our husky sheds a second dog every spring. The pet hair visit got the stairs, the couch cushions and under the beds. They brought a rubber broom for the rugs.</p></blockquote>
+          <p class="slip__who mono">Andrea V. · Athens</p>
+          <p class="slip__tag"><span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="service-card">
-          <h3 class="service-card__name">Move-in cleaning</h3>
-          <p class="service-card__blurb">Cabinets, closets and appliances wiped out before the moving truck arrives.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Move-in">Price it</a>
-        </li>
-        
-        <li class="service-card">
-          <h3 class="service-card__name">Oven &amp; fridge add-on</h3>
-          <p class="service-card__blurb">Inside the oven and the fridge cleaned and shelves wiped, added to any visit.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Oven &amp; fridge">Price it</a>
-        </li>
-        
-        <li class="service-card">
-          <h3 class="service-card__name">Inside windows</h3>
-          <p class="service-card__blurb">Inside glass, sills and tracks cleaned room by room, add it to any visit.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Windows">Price it</a>
-        </li>
-        
-        <li class="service-card">
-          <h3 class="service-card__name">Pet hair visit</h3>
-          <p class="service-card__blurb">Extra time on stairs, sofas and corners where dog and cat hair piles up.</p>
-          <a class="btn btn-ghost" href="#contact" data-service="Pet hair">Price it</a>
+        <li class="slip">
+          <p class="slip__top mono"><span>Monthly cleaning</span><span>5/5</span></p>
+          <blockquote><p>Monthly is enough for the two of us. The frequency quiz pointed us there, and it was right. Bathrooms and floors reset, nothing more.</p></blockquote>
+          <p class="slip__who mono">Walter K. · Owens Cross Roads</p>
+          <p class="slip__tag"><span class="sample-tag">Sample review</span></p>
         </li>
         
       </ul>
+      <p class="rv__promise"><span class="mono">Redo promise · Sample</span> If a room on your list is not right, call within 24 hours and we come back and redo it.</p>
     </div>
   </section>
 
-  <!-- 8. Proof Band -->
-  <section id="proof" class="section proof t-paper" data-sw-signature="receipt">
-    <div class="container proof__grid">
-      <div class="proof__stats" data-reveal>
-        <p class="proof__rating display">4.8 ★</p>
-        <p class="proof__count mono"><span data-count="264">264</span> reviews</p>
-        <p class="proof__years mono">10 years in Huntsville</p>
-        <p class="proof__guarantee">If a room on your list is not right, call within 24 hours and we come back and redo it.</p>
-      </div>
-      <div class="proof__reviews" data-reveal-stagger>
-        
-        <div class="receipt-strip receipt-strip--review">
-          <div class="receipt-strip__stars mono">
-            <!-- repeat stars based on .stars --><span>★★★★★</span>
+  <!-- 9 · area + hours + ZIP -->
+  <section id="area" class="band t-mid" data-layout="split-area" data-hook="zip">
+    <div class="wrap area">
+      <div class="area__main">
+        <p class="kicker">Line 09 · Where and when</p>
+        <h2>Huntsville and the towns around it.</h2>
+        <ul role="list" class="area__towns">
+          <li>Huntsville</li>
+          
+          <li>Madison</li>
+          
+          <li>Harvest</li>
+          
+          <li>Meridianville</li>
+          
+          <li>Owens Cross Roads</li>
+          
+          <li>Athens</li>
+          
+          <li>Decatur</li>
+          
+        </ul>
+        <form class="zip" data-zip aria-label="Check your ZIP code" data-zip-yes="Yes, we clean in {zip}." data-zip-no="{zip} is outside our usual route. Call and we'll tell you straight.">
+          <label for="zip-in">Check your ZIP code</label>
+          <div class="zip__row">
+            <input id="zip-in" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="5 digits">
+            <button type="submit" class="btn btn-primary">Check</button>
           </div>
-          <p class="receipt-strip__text">"The quote builder priced our house within ten dollars of what we paid. No surprise upsell at the door, and the receipt matched the list line for line."</p>
-          <p class="receipt-strip__meta mono">Jamal B. · Madison · Every-other-week cleaning</p>
-          <span class="sample-tag"><span class="sample-tag">Sample review</span></span>
-        </div>
-        
-        <div class="receipt-strip receipt-strip--review">
-          <div class="receipt-strip__stars mono">
-            <!-- repeat stars based on .stars --><span>★★★★★</span>
-          </div>
-          <p class="receipt-strip__text">"We had orders to Fort Bragg and two weeks to clear housing. They came the afternoon the packers left, sent photos of every room, and we passed the inspection first try."</p>
-          <p class="receipt-strip__meta mono">Kristen O. · Huntsville · Move-out cleaning for PCS moves</p>
-          <span class="sample-tag"><span class="sample-tag">Sample review</span></span>
-        </div>
-        
-        <div class="receipt-strip receipt-strip--review">
-          <div class="receipt-strip__stars mono">
-            <!-- repeat stars based on .stars --><span>★★★★★</span>
-          </div>
-          <p class="receipt-strip__text">"Three kids, two labs, one hallway. Weekly is the only thing that works for us. Same crew every Friday, and they know which rooms to do first."</p>
-          <p class="receipt-strip__meta mono">Derek S. · Harvest · Weekly cleaning</p>
-          <span class="sample-tag"><span class="sample-tag">Sample review</span></span>
-        </div>
-        
-        <div class="receipt-strip receipt-strip--review">
-          <div class="receipt-strip__stars mono">
-            <!-- repeat stars based on .stars --><span>★★★★★</span>
-          </div>
-          <p class="receipt-strip__text">"I added the oven and fridge to my regular visit before Thanksgiving. Cost what the add-on line said. The fridge shelves came out and went back sparkling."</p>
-          <p class="receipt-strip__meta mono">Pam G. · Meridianville · Oven &amp; fridge add-on</p>
-          <span class="sample-tag"><span class="sample-tag">Sample review</span></span>
-        </div>
-        
-      </div>
-    </div>
-  </section>
-
-  <!-- 9. Service Area + ZIP -->
-  <section id="area" class="section area t-mid" data-zip data-open-now>
-    <div class="container area__grid">
-      <div class="area__info" data-reveal>
-        <h2 class="display">Where we work</h2>
-        <p class="lead">Madison, Harvest, Meridianville, Owens Cross Roads, Athens and Decatur</p>
-        <div class="area__hours">
-          <h3 class="mono">Hours</h3>
-          <dl class="hours"><div><dt>Mon</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Tue</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Wed</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Thu</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Fri</dt><dd>8 am – 5 pm</dd></div><div><dt>Sat</dt><dd>9 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
-          <p class="area__open-now mono" data-open-now></p>
-        </div>
-      </div>
-      <div class="area__checker" data-reveal>
-        <h3 class="display">Check your ZIP</h3>
-        <form class="zip-form" aria-label="ZIP code checker">
-          <label for="zip-input" class="sr-only">Enter your ZIP code</label>
-          <div class="zip-input-row">
-            <input type="text" id="zip-input" class="input" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Your ZIP" data-zip-input autocomplete="postal-code">
-            <button type="submit" class="btn btn-secondary">Check</button>
-          </div>
-          <div class="zip-result" data-zip-result aria-live="polite"></div>
+          <p class="zip__out" data-zip-result></p>
         </form>
       </div>
+      <div class="area__side">
+        <figure class="frame area__photo" data-fallback="Suburban two-story with lawn in Huntsville"><img src="media/home-huntsville-1170.webp" srcset="media/home-huntsville-1170.webp 1170w, media/home-huntsville.webp 2340w" sizes="100vw" alt="Suburban two-story with lawn in Huntsville" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-huntsville" data-slot="proof-1"></figure>
+        <div class="tk tk--hours">
+          <p class="tk__mast"><span>EOF</span> · Hours</p>
+          <p class="tk__open mono" data-open-now>Mon to Fri, 8 am to 5:30 pm</p>
+          <dl class="hours"><div><dt>Mon</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Tue</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Wed</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Thu</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Fri</dt><dd>8 am – 5 pm</dd></div><div><dt>Sat</dt><dd>9 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
+          <p class="tk__foot">Times are Huntsville time</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- 10. Contact Form -->
-  <section id="contact" class="section contact t-paper">
-    <div class="container container--narrow">
-      <h2 class="display">Book your visit</h2>
-      <p class="lead">Tell us about your house. We'll confirm the price before anyone shows up.</p>
-      <form class="lead-form" data-lead aria-label="Booking form">
-        <input type="hidden" name="service" data-service>
-        <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off">
-        <input type="hidden" name="t" data-time-trap>
-        <div class="form-steps">
-          <div class="form-step" data-step="1">
-            <h3 class="form-step__label mono">Step 1 · Service</h3>
-            <fieldset>
-              <legend class="sr-only">What kind of visit?</legend>
-              <div class="radio-group radio-group--cards">
-                
-                <label class="radio-card">
-                  <input type="radio" name="visitType" value="Every other week">
-                  <span class="radio-card__label">Every-other-week cleaning</span>
-                </label>
-                
-                <label class="radio-card">
-                  <input type="radio" name="visitType" value="Weekly">
-                  <span class="radio-card__label">Weekly cleaning</span>
-                </label>
-                
-                <label class="radio-card">
-                  <input type="radio" name="visitType" value="Monthly">
-                  <span class="radio-card__label">Monthly cleaning</span>
-                </label>
-                
-                <label class="radio-card">
-                  <input type="radio" name="visitType" value="Deep clean">
-                  <span class="radio-card__label">Deep clean</span>
-                </label>
-                
-                <label class="radio-card">
-                  <input type="radio" name="visitType" value="Move-out (PCS)">
-                  <span class="radio-card__label">Move-out cleaning for PCS moves</span>
-                </label>
-                
-                <label class="radio-card">
-                  <input type="radio" name="visitType" value="Move-in">
-                  <span class="radio-card__label">Move-in cleaning</span>
-                </label>
-                
-              </div>
-            </fieldset>
-            <button type="button" class="btn btn-primary form-step__next" data-next>Next</button>
-          </div>
-          <div class="form-step" data-step="2" hidden>
-            <h3 class="form-step__label mono">Step 2 · Job details</h3>
-            <div class="form-field">
-              <label for="lead-bedrooms">Bedrooms</label>
-              <select id="lead-bedrooms" name="bedrooms">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3" selected>3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="lead-bathrooms">Bathrooms</label>
-              <select id="lead-bathrooms" name="bathrooms">
-                <option value="1">1</option>
-                <option value="2" selected>2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-              </select>
-            </div>
-            <fieldset class="form-field">
-              <legend>Frequency</legend>
-              <div class="radio-group">
-                <label class="radio"><input type="radio" name="frequency" value="eow"> Every other week</label>
-                <label class="radio"><input type="radio" name="frequency" value="weekly"> Weekly</label>
-                <label class="radio"><input type="radio" name="frequency" value="monthly"> Monthly</label>
-                <label class="radio"><input type="radio" name="frequency" value="once"> One time</label>
-              </div>
-            </fieldset>
-            <div class="form-step__nav">
-              <button type="button" class="btn btn-text form-step__prev" data-prev>Back</button>
-              <button type="button" class="btn btn-primary form-step__next" data-next>Next</button>
-            </div>
-          </div>
-          <div class="form-step" data-step="3" hidden>
-            <h3 class="form-step__label mono">Step 3 · When</h3>
-            <div class="form-field">
-              <label for="lead-day">Preferred day of week</label>
-              <select id="lead-day" name="preferredDay">
-                <option value="">No preference</option>
-                <option value="mon">Monday</option>
-                <option value="tue">Tuesday</option>
-                <option value="wed">Wednesday</option>
-                <option value="thu">Thursday</option>
-                <option value="fri">Friday</option>
-                <option value="sat">Saturday</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="lead-pets">Pets at home</label>
-              <select id="lead-pets" name="pets">
-                <option value="none">None</option>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="both">Dog and cat</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="lead-entry">Entry instructions</label>
-              <textarea id="lead-entry" name="entry" rows="2" placeholder="Gate code, key location, etc."></textarea>
-            </div>
-            <div class="form-step__nav">
-              <button type="button" class="btn btn-text form-step__prev" data-prev>Back</button>
-              <button type="button" class="btn btn-primary form-step__next" data-next>Next</button>
-            </div>
-          </div>
-          <div class="form-step" data-step="4" hidden>
-            <h3 class="form-step__label mono">Step 4 · Contact</h3>
-            <div class="form-field">
-              <label for="lead-name">Name</label>
-              <input type="text" id="lead-name" name="name" required autocomplete="name">
-            </div>
-            <div class="form-field">
-              <label for="lead-phone">Phone</label>
-              <input type="tel" id="lead-phone" name="phone" required autocomplete="tel">
-            </div>
-            <div class="form-field">
-              <label for="lead-email">Email</label>
-              <input type="email" id="lead-email" name="email" required autocomplete="email">
-            </div>
-            <div class="form-step__nav">
-              <button type="button" class="btn btn-text form-step__prev" data-prev>Back</button>
-              <button type="submit" class="btn btn-primary">Send request</button>
-            </div>
-          </div>
+  <!-- 10 · contact -->
+  <section id="contact" class="band t-deep" data-layout="spine-form" data-hook="form">
+    <div class="wrap row">
+      <div class="spine spine--contact" data-print>
+        <div class="tk">
+          <p class="tk__mast"><span>EOF</span> · Your ticket</p>
+          <p class="tk__meta"><span>Line 10</span><span>Four steps</span></p>
+          <ol role="list" class="tk__lines">
+            <li class="tk__line"><span>01</span><i></i><span>The visit</span></li>
+            <li class="tk__line"><span>02</span><i></i><span>The house</span></li>
+            <li class="tk__line"><span>03</span><i></i><span>The day</span></li>
+            <li class="tk__line"><span>04</span><i></i><span>You</span></li>
+          </ol>
+          <figure class="frame tk__photo tk__photo--short" data-fallback="Cleaner from behind carrying a caddy"><img src="media/crew-back-1170.webp" srcset="media/crew-back-1170.webp 1170w, media/crew-back.webp 2340w" sizes="100vw" alt="Cleaner from behind carrying a caddy" width="1170" height="1463" loading="lazy" decoding="async" data-photo="crew-back" data-slot="proof-2"></figure>
+          <p class="tk__note">Rather talk? <a class="tel-plain" href="tel:+12565550153">(256) 555-0153</a></p>
         </div>
-        <div class="form-thank-you" data-thank-you hidden>
-          <div class="receipt-strip">
-            <div class="receipt-strip__header mono">EOF · RECEIVED</div>
-            <p class="receipt-strip__body">We have your details. Someone from the crew will call within one business day to confirm the visit and the price.</p>
-            <p class="receipt-strip__meta mono"><a class="tel-plain" href="tel:+12565550153">(256) 555-0153</a></p>
+      </div>
+      <div class="band__body">
+        <p class="kicker">Line 10 · Send it</p>
+        <h2>Your price, confirmed before the first visit.</h2>
+        <p class="lead">Tell us about your house. We'll confirm the price before anyone shows up.</p>
+        <form class="lead-form" data-lead aria-label="Send my price">
+          <fieldset class="fstep" data-step>
+            <legend>Step 1 of 4 · The visit</legend>
+            <div class="chips chips--form">
+              
+              <label class="chip"><input type="radio" name="service" value="Every-other-week cleaning" required><span>Every-other-week cleaning</span></label>
+              
+              <label class="chip"><input type="radio" name="service" value="Weekly cleaning" required><span>Weekly cleaning</span></label>
+              
+              <label class="chip"><input type="radio" name="service" value="Monthly cleaning" required><span>Monthly cleaning</span></label>
+              
+              <label class="chip"><input type="radio" name="service" value="Deep clean" required><span>Deep clean</span></label>
+              
+              <label class="chip"><input type="radio" name="service" value="Move-out cleaning for PCS moves" required><span>Move-out cleaning for PCS moves</span></label>
+              
+              <label class="chip"><input type="radio" name="service" value="Move-in cleaning" required><span>Move-in cleaning</span></label>
+              
+              <label class="chip"><input type="radio" name="service" value="Oven &amp; fridge add-on" required><span>Oven &amp; fridge add-on</span></label>
+              
+              <label class="chip"><input type="radio" name="service" value="Inside windows" required><span>Inside windows</span></label>
+              
+              <label class="chip"><input type="radio" name="service" value="Pet hair visit" required><span>Pet hair visit</span></label>
+              
+            </div>
+          </fieldset>
+          <fieldset class="fstep" data-step>
+            <legend>Step 2 of 4 · The house</legend>
+            <div class="fgrid">
+              <div class="field"><label for="f-beds">Bedrooms</label>
+                <select id="f-beds" name="bedrooms"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5 or more</option></select></div>
+              <div class="field"><label for="f-baths">Bathrooms</label>
+                <select id="f-baths" name="bathrooms"><option>1</option><option selected>2</option><option>3</option><option>4 or more</option></select></div>
+              <div class="field"><label for="f-zip">ZIP code</label>
+                <input id="f-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code"></div>
+              <div class="field"><label for="f-pets">Pets</label>
+                <select id="f-pets" name="pets"><option>None</option><option>Dog</option><option>Cat</option><option>Dog and cat</option></select></div>
+            </div>
+          </fieldset>
+          <fieldset class="fstep" data-step>
+            <legend>Step 3 of 4 · The day</legend>
+            <div class="fgrid">
+              <div class="field"><label for="f-day">Best day</label>
+                <select id="f-day" name="when"><option>Friday</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Saturday morning</option><option>Any day</option></select></div>
+              <div class="field field--wide"><label for="f-notes">Gate code, key or notes (optional)</label>
+                <textarea id="f-notes" name="details" rows="3"></textarea></div>
+            </div>
+          </fieldset>
+          <fieldset class="fstep" data-step>
+            <legend>Step 4 of 4 · You</legend>
+            <div class="fgrid">
+              <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+              <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required></div>
+              <div class="field field--wide"><label for="f-email">Email (optional)</label><input id="f-email" name="email" type="email" autocomplete="email"></div>
+            </div>
+          </fieldset>
+          <div class="hp" aria-hidden="true"><label>Website <input name="website2" tabindex="-1" autocomplete="off"></label></div>
+          <input type="hidden" name="t">
+          <div class="fnav" data-form-nav>
+            <button type="button" class="btn btn-ghost" data-back>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+            <button type="submit" class="btn btn-primary" data-submit>Send my price</button>
           </div>
+          <p class="micro">We'll call you back to set up a walk-through.</p>
+        </form>
+        <div class="thanks tk" data-thanks-box hidden tabindex="-1">
+          <p class="tk__mast"><span>EOF</span> · Received</p>
+          <p class="thanks__body">Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to Every Other Friday, and they call you to confirm the visit and the price.</p>
+          <p class="tk__foot">* * * thank you * * *</p>
         </div>
-      </form>
+      </div>
     </div>
   </section>
 
 </main>
 
-<footer class="footer t-deep" data-sw-signature="receipt">
-  <div class="container footer__grid">
-    <div class="footer__brand">
-      <p class="footer__logo display">EOF</p>
-      <p class="mono">Every Other Friday Cleaning</p>
-      <p class="mono"><a class="tel-plain" href="tel:+12565550153">(256) 555-0153</a></p>
-      <p class="mono">hello@every-other-friday.example</p>
-    </div>
-    <nav class="footer__nav" aria-label="Footer navigation">
-      <h3 class="mono">Pages</h3>
-      <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#quote-builder">Quote builder</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#proof">Reviews</a></li>
-        <li><a href="#area">Service area</a></li>
-        <li><a href="#contact">Book a visit</a></li>
+<footer class="footer t-paper" data-sw-signature="receipt">
+  <div class="wrap">
+    <div class="footer__receipt">
+      <p class="footer__mast"><span>EOF</span> Every Other Friday Cleaning</p>
+      <ul role="list" class="footer__lines">
+        <li class="tk__line"><span>Subtotal</span><i></i><span>your house, line by line</span></li>
+        <li class="tk__line"><span>Total</span><i></i><span>confirmed before the first visit</span></li>
+        <li class="tk__line"><span>Today</span><i></i><span><span data-open-now>Mon–Thu 8 am – 5:30 pm · Fri 8 am – 5 pm · Sat 9 am – 1 pm</span></span></li>
       </ul>
-    </nav>
-    <div class="footer__legal">
-      <h3 class="mono">Legal</h3>
-      <p class="mono">License: SAMPLE-AL-20564</p>
-      
-      <p class="mono">Insured</p>
-      
-      <p class="mono">Sample website by Site Sledge. Business details are illustrative.</p>
+      <p class="footer__thanks">Thank you · see you Friday · <a href="tel:+12565550153">(256) 555-0153</a></p>
     </div>
-    <div class="footer__credits">
-      <ul class="credits"><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li></ul>
+    <div class="footer__cols">
+      <div class="footer__col">
+        <h2 class="footer__h">Reach us</h2>
+        <p><a href="tel:+12565550153">Call (256) 555-0153</a></p>
+        <p><a href="sms:+12565550153">Text (256) 555-0153</a></p>
+        <p><a href="mailto:hello@every-other-friday.example">hello@every-other-friday.example</a></p>
+      </div>
+      <div class="footer__col">
+        <h2 class="footer__h">Where</h2>
+        <p>Huntsville, Alabama, with Madison, Harvest, Meridianville, Owens Cross Roads, Athens and Decatur.</p>
+      </div>
+      <div class="footer__col">
+        <h2 class="footer__h">The fine print</h2>
+        <p>Licence SAMPLE-AL-20564 (sample) · Insured (sample)</p>
+        <p>Sample website by Site Sledge. Business details are illustrative.</p>
+        <p>© 2026 Every Other Friday Cleaning</p>
+      </div>
+      <div class="footer__col">
+        <h2 class="footer__h">Photos</h2>
+        <p>Demo images. Photographer credits print here with the licensed photos.</p>
+        <details class="footer__credits"><summary>Image list</summary><ul class="credits"></ul></details>
+      </div>
     </div>
-  </div>
-  <div class="footer__tear receipt-strip receipt-strip--tear mono">
-    <span>THANK YOU · (256) 555-0153</span>
   </div>
 </footer>
 
-<div class="mobile-bar" data-mobilebar>
-  <div class="mobile-bar__inner">
-    <a class="btn btn-call btn-primary mobile-bar__btn" href="tel:+12565550153"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (256) 555-0153</span></a>
-    <a class="btn btn-secondary mobile-bar__btn" href="#contact" data-service="Every other week">Build quote</a>
-  </div>
+<div class="mobile-bar t-paper" data-mobilebar>
+  <a class="mobile-bar__call" href="tel:+12565550153"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (256) 555-0153</span></a>
+  <a class="btn btn-primary mobile-bar__go" href="#quote-builder">Price my house</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Every Other Friday Cleaning","short":"Every Other Friday","phone":"(256) 555-0153","phoneE164":"+12565550153","sms":true,"email":"hello@every-other-friday.example","city":"Huntsville","state":"AL","timezone":"America/Chicago","areas":["Madison","Harvest","Meridianville","Owens Cross Roads","Athens","Decatur"],"zips":["35801","35802","35803","35805","35806","35810","35811","35816","35757","35758","35749","35759","35763","35611","35601"],"hours":{"mon":["08:00","17:30"],"tue":["08:00","17:30"],"wed":["08:00","17:30"],"thu":["08:00","17:30"],"fri":["08:00","17:00"],"sat":["09:00","13:00"],"sun":null},"emergency":false},"services":[{"name":"Every-other-week cleaning","short":"Every other week"},{"name":"Weekly cleaning","short":"Weekly"},{"name":"Monthly cleaning","short":"Monthly"},{"name":"Deep clean","short":"Deep clean"},{"name":"Move-out cleaning for PCS moves","short":"Move-out (PCS)"},{"name":"Move-in cleaning","short":"Move-in"},{"name":"Oven & fridge add-on","short":"Oven & fridge"},{"name":"Inside windows","short":"Windows"},{"name":"Pet hair visit","short":"Pet hair"}],"proof":{"label":"Sample","prices":[{"item":"Every-other-week visit","from":"$135","to":"$185","unit":"per visit","note":"3 bed / 2 bath"},{"item":"Weekly visit","from":"$115","to":"$160","unit":"per visit","note":"3 bed / 2 bath"},{"item":"Monthly visit","from":"$160","to":"$220","unit":"per visit","note":"3 bed / 2 bath"},{"item":"Deep clean","from":"$250","to":"$420"},{"item":"Move-out cleaning","from":"$290","to":"$500","note":"empty house, photos included"},{"item":"Oven or fridge add-on","from":"$35","to":"$50","unit":"each"}]},"hours":{"mon":["08:00","17:30"],"tue":["08:00","17:30"],"wed":["08:00","17:30"],"thu":["08:00","17:30"],"fri":["08:00","17:00"],"sat":["09:00","13:00"],"sun":null},"timezone":"America/Chicago","zips":["35801","35802","35803","35805","35806","35810","35811","35816","35757","35758","35749","35759","35763","35611","35601"],"areas":["Madison","Harvest","Meridianville","Owens Cross Roads","Athens","Decatur"],"phone":"(256) 555-0153","phoneE164":"+12565550153"}</script>
 <script defer src="vendor/gsap.min.js"></script>
 <script defer src="vendor/ScrollTrigger.min.js"></script>
-<script defer src="vendor/lenis.min.js"></script>
 <script defer src="app.js"></script>
 </body>
 </html>
