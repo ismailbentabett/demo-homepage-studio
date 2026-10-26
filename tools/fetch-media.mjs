@@ -274,7 +274,7 @@ async function fetchPhotoSlotOpenverse(spec) {
         const { dominant } = await sharp(raw).stats();
         index.candidates[cid] = {
           id: cid, kind: "photo", slot, pexelsId: `ov:${r.id}`,
-          photographer: r.creator || "Unknown creator", photographerUrl: r.creatorUrl || r.landing, url: r.landing,
+          photographer: cleanCreator(r.creator), photographerUrl: r.creatorUrl || r.landing, url: r.landing,
           source: OV_SOURCE_NAMES[r.source] || r.source,
           license: r.license === "by" ? `CC BY ${r.licenseVersion || ""}`.trim() : r.license === "by-sa" ? `CC BY-SA ${r.licenseVersion || ""}`.trim() : r.license === "cc0" ? "CC0" : "Public domain",
           licenseUrl: r.licenseUrl, alt: cleanAlt(r.title) || spec.must || slot, w: info.width, h: info.height,
@@ -418,6 +418,12 @@ function runFfmpeg(args) {
 function sha(buf) {
   return crypto.createHash("sha256").update(buf).digest("hex").slice(0, 16);
 }
+// Commons creator fields can carry wiki markup, user pages and e-mail addresses: keep only a plain name.
+function cleanCreator(s) {
+  const n = String(s || "").replace(/\[[^\]]*\]|\([^)]*\)/g, " ").replace(/^Category:/i, "").replace(/\S+@\S+|\S+ at \S+\.\w+/g, " ").replace(/\s+/g, " ").trim();
+  return n || "Unknown creator";
+}
+
 function cleanAlt(s) {
   return String(s || "").replace(/\s+/g, " ").trim();
 }

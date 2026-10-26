@@ -68,3 +68,6 @@ The render errors cover sideways overflow at 390/320 and text hidden under reduc
 ## 2026-10-26: check-static accepts Commons / CC credit links
 - `tools/check-static.mjs`: links inside `ul.credits` (matched by prefix, since the URL scanner stops at `)` in Commons file names) may point to pexels.com, wikimedia.org, creativecommons.org, openverse.org or flickr.com (was Pexels only). Why: build.mjs now writes the real source and licence links for Openverse / Commons photos (CC BY requires them), so every site with a real photo failed `external-url`. Found on cleaning-C. Run `node tools/recheck-all.mjs`.
 
+
+## 2026-10-26 — clean photo-credit names
+- Wikimedia Commons creator fields can hold wiki markup, "Category:" prefixes and e-mail addresses (one cleaning credit printed a photographer's e-mail). `fetch-media.mjs` now stores a plain name, and `build.mjs` cleans the name again when it writes the credit list, so older manifests are safe too.

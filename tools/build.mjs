@@ -357,7 +357,8 @@ if (/\{\{|\}\}/.test(css)) die("src/style.css: tokens {{...}} are not allowed in
   // Media with no credit on file (placeholders) gets no credit line rather than a false "by unknown".
   const credited = [...usedMedia.entries()].filter(([, { entry }]) => entry.credit?.name);
   const items = credited.map(([key, { kind, entry }]) => {
-    const who = esc(entry.credit.name);
+    // Commons names can carry wiki markup or an e-mail address: print a plain name only.
+    const who = esc(String(entry.credit.name).replace(/\[[^\]]*\]|\([^)]*\)/g, " ").replace(/^Category:/i, "").replace(/\S+@\S+|\S+ at \S+\.\w+/g, " ").replace(/\s+/g, " ").trim() || "Unknown creator");
     const url = entry.credit?.url ? ` href="${esc(entry.credit.url)}" rel="noopener" target="_blank"` : "";
     const src = esc(entry.credit.source || "Pexels");
     const lic = entry.credit.license ? `, ${entry.credit.licenseUrl ? `<a href="${esc(entry.credit.licenseUrl)}" rel="noopener license" target="_blank">${esc(entry.credit.license)}</a>` : esc(entry.credit.license)}` : "";
