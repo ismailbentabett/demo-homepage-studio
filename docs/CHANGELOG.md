@@ -36,3 +36,15 @@ tool changes behaviour.
 - `tools/build.mjs` no longer prints "Photo by unknown on Pexels" for media with no credit on file
   (the placeholder libraries). Those items are skipped; a credit line appears only with a real name.
   Reason: the critic correctly flagged the "unknown" lines as false credits on every site.
+
+## 2026-10-26: score.mjs keeps the scored round on NEEDS_HUMAN
+On NEEDS_HUMAN, score.mjs copies qa/best/ over src/ and dist/. When the scored round was not the best, that wiped the newer rebuild with no copy left (it happened to cleaning-B round 3). It now saves the scored round's src/ and dist/ to qa/last/ before restoring. Scores and verdicts are unchanged, so no recheck is needed.
+
+## 2026-10-26: capture-screens.mjs writes the critic's full evidence
+capture-screens.mjs used to take 5 jpgs and leave old pngs and an old qa/render.json in place, and the critic scored against them. It now:
+- clears old shots;
+- serves dist over local HTTP, because file:// blocked fonts;
+- adds 1440/390 reduced-motion full pages and 1440 scroll frames at 25/50/75 %;
+- writes qa/render.json with console errors and render errors.
+
+The render errors cover sideways overflow at 390/320 and text hidden under reduced motion. check-render.mjs already treats render.json errors as blockers. Delivered sites should be re-captured before their next recheck.
