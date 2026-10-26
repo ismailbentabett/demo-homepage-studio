@@ -1,0 +1,494 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4M12 2v3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="header t-paper" data-header>
+  <div class="header__inner">
+    <a href="#hero" class="header__logo" aria-label="{{biz.name}}, back to top">
+      <span class="logo-mark" aria-hidden="true"><span>{{biz.initials}}</span></span>
+      <span class="logo-text">{{biz.short}}</span>
+    </a>
+    <nav class="header__nav" aria-label="Primary">
+      <a href="#stations">How a visit runs</a>
+      <a href="#services">Services</a>
+      <a href="#wait-or-drop">Wait or drop</a>
+      <a href="#area">Area &amp; hours</a>
+    </nav>
+    <div class="header__actions">
+      <span class="header__hours">{{hours|today}}</span>
+      [[call btn-secondary header__call]]
+      <a class="btn btn-primary header__book" href="#contact">Book a time</a>
+      <button class="header__menu-btn" type="button" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="header__progress" data-progress aria-hidden="true"></div>
+  <div class="lapstrip" aria-hidden="true" data-lapstrip>
+    <span class="lapstrip__track"><span class="lapstrip__fill"></span></span>
+    <span class="lapstrip__ticks" data-lapstrip-ticks></span>
+    <span class="lapstrip__flag"><b data-lapstrip-num>01</b><span>/</span><span data-lapstrip-of>10</span> <em data-lapstrip-name>Start</em></span>
+  </div>
+</header>
+
+<nav class="menu t-deep" id="menu" data-menu data-menu-mq="(max-width: 899px)" aria-label="Menu">
+  <div class="menu__inner">
+    <a href="#stations"><span class="mono">01</span> How a visit runs</a>
+    <a href="#services"><span class="mono">02</span> Services</a>
+    <a href="#wait-or-drop"><span class="mono">03</span> Wait or drop</a>
+    <a href="#area"><span class="mono">04</span> Area &amp; hours</a>
+    <a href="#contact"><span class="mono">05</span> Book a time</a>
+    <p class="menu__tel">[[tel]]</p>
+  </div>
+</nav>
+<main id="main">
+
+  <!-- 1. HERO · the starting line -->
+  <section id="hero" class="hero t-paper" data-sw-signature="stopwatch-stations" data-lap="Start">
+    <div class="container hero__text">
+      <p class="kicker">Quick service by appointment, {{biz.city}}, {{biz.state}}</p>
+      <h1 class="hero__h1">
+        <span class="lm"><span>{{biz.city}} oil changes</span></span>
+        <span class="lm"><span>and tune-ups,</span></span>
+        <span class="lm lm--last"><span>timed.</span></span>
+      </h1>
+      <div class="hero__row">
+        <p class="hero__lead">Book it, then wait or walk. Most oil changes take about 30 minutes. Longer jobs get a drop-off slot and a text when they’re done.</p>
+        <div class="hero__ctas">
+          <a class="btn btn-primary" href="#contact">Book a time [[i arrow]]</a>
+          [[call btn-secondary]]
+        </div>
+      </div>
+      <p class="proofline"><span>[[i clock]] {{hours|today}}</span><span>[[i pin]] Cars from {{biz.city}} to {{biz.areas.5}}</span><span>{{proof.rating}} average [[sample rating]]</span></p>
+    </div>
+    <div class="hero__strip">
+      [[frame hero frame--strip station | | eager]]
+      <div class="case" aria-hidden="true" data-case>
+        <span class="case__crown"></span>
+        <span class="case__face">
+          <span class="case__time" data-case-time>00:00</span>
+          <span class="case__sub">start</span>
+        </span>
+      </div>
+      <p class="hero__lap" aria-hidden="true"><span class="hero__lapnum">Lap 01</span> Check-in <b>2 min</b><span class="hero__lapbar"><span></span></span></p>
+    </div>
+  </section>
+
+  <!-- 2. STATIONS · the scroll story -->
+  <section id="stations" class="sec stations t-deep" data-sw-signature="stopwatch-stations" data-lap="Stations">
+    <div class="container stations__grid">
+      <div class="stations__head">
+        <p class="kicker">One oil-change visit, start to finish [[sample visit]]</p>
+        <h2>Six stations. One clock.</h2>
+        <p class="lead">Every job has a posted time. Here is a typical wait-for-it visit, split by station, so you know where your car is while you sit.</p>
+        <div class="bigdial" data-bigdial aria-hidden="true">
+          <svg viewBox="0 0 200 200" class="bigdial__svg">
+            <circle cx="100" cy="100" r="88" class="bigdial__ring"/>
+            <circle cx="100" cy="100" r="88" class="bigdial__fill" pathLength="100"/>
+            <g class="bigdial__ticks">
+              <line x1="100" y1="6" x2="100" y2="20"/><line x1="194" y1="100" x2="180" y2="100"/><line x1="100" y1="194" x2="100" y2="180"/><line x1="6" y1="100" x2="20" y2="100"/>
+            </g>
+            <line x1="100" y1="100" x2="100" y2="24" class="bigdial__hand"/>
+            <circle cx="100" cy="100" r="5" class="bigdial__hub"/>
+          </svg>
+          <span class="bigdial__time" data-bigdial-time>31:00</span>
+          <span class="bigdial__lap" data-bigdial-lap>Lap 06, hand-back</span>
+        </div>
+      </div>
+      <ol class="laps" role="list" data-reveal-stagger>
+        <li class="lap" data-split-at="2">
+          <span class="lap__num">01</span>
+          <div class="lap__body"><h3>Check-in</h3><p>Keys, mileage and what you want done, written on the ticket. Wait with it or walk for a coffee.</p></div>
+          [[frame hands-keys lap__shot station | data-station="01" data-label="Keys on the counter"]]
+          <span class="lap__time"><span class="lap__dur">2 min</span><span class="lap__split">02:00</span></span>
+        </li>
+        <li class="lap" data-split-at="20">
+          <span class="lap__num">02</span>
+          <div class="lap__body"><h3>Oil</h3><p>Old oil drained, new filter on, filled with the oil your manual calls for, level checked twice.</p></div>
+          [[frame lap-drain lap__shot station | data-station="02" data-label="Drain plug out"]]
+          <span class="lap__time"><span class="lap__dur">18 min</span><span class="lap__split">20:00</span></span>
+        </li>
+        <li class="lap" data-split-at="24">
+          <span class="lap__num">03</span>
+          <div class="lap__body"><h3>Filters</h3><p>Engine and cabin filters pulled and held up next to new ones. If they can wait, we say so.</p></div>
+          [[frame station-filters lap__shot station | data-station="03" data-label="Old filter, new filter"]]
+          <span class="lap__time"><span class="lap__dur">4 min</span><span class="lap__split">24:00</span></span>
+        </li>
+        <li class="lap" data-split-at="27">
+          <span class="lap__num">04</span>
+          <div class="lap__body"><h3>Tires</h3><p>Pressures set to the door sticker, tread read with a gauge, lugs looked over.</p></div>
+          [[frame lap-pressure lap__shot station | data-station="04" data-label="Pressure to the sticker"]]
+          <span class="lap__time"><span class="lap__dur">3 min</span><span class="lap__split">27:00</span></span>
+        </li>
+        <li class="lap" data-split-at="30">
+          <span class="lap__num">05</span>
+          <div class="lap__body"><h3>Check</h3><p>Wipers, bulbs, belts and fluid levels looked at. Nothing gets swapped without your yes.</p></div>
+          [[frame lap-dipstick lap__shot station | data-station="05" data-label="Levels read"]]
+          <span class="lap__time"><span class="lap__dur">3 min</span><span class="lap__split">30:00</span></span>
+        </li>
+        <li class="lap" data-split-at="31">
+          <span class="lap__num">06</span>
+          <div class="lap__body"><h3>Hand-back</h3><p>Keys back with a short report: what was done, what wasn’t due, and the mileage when it will be.</p></div>
+          <span class="lap__time"><span class="lap__dur">1 min</span><span class="lap__split">31:00</span></span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3. SERVICES · the station board -->
+  <section id="services" class="sec services t-paper" data-tabs data-lap="Services">
+    <div class="container">
+      <div class="services__head">
+        <h2>What’s due today?</h2>
+        <p class="lead">Nine jobs, each with a posted time and a sample price where there is one. Pick one to book it.</p>
+      </div>
+      <div class="board">
+        <div class="board__tabs" data-tablist aria-label="Services">
+          <!-- each services -->
+          <button class="board__tab" type="button" data-tab><span class="mono">{{#2}}</span> {{.short}}</button>
+          <!-- /each -->
+        </div>
+        <div class="board__panels">
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>01</span> About 30 min · wait</p>
+              <h3>{{services.0.name}}</h3>
+              <p>{{services.0.blurb}}</p>
+              <p class="price"><span class="price__range">{{proof.prices.0.from}}–{{proof.prices.0.to}}</span> <span class="price__note">{{proof.prices.0.item}}, {{proof.prices.0.note}}</span> [[sample pricing]]</p>
+              [[quote {{services.0.short}} btn-primary | Book a time]]
+            </div>
+            [[frame station-oil frame--4-3 panel__media station | data-station="01" data-label="{{services.0.short}} · about 30 min"]]
+          </section>
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>02</span> Drop-off · morning slot</p>
+              <h3>{{services.1.name}}</h3>
+              <p>{{services.1.blurb}}</p>
+              <p class="price"><span class="price__range">{{proof.prices.1.from}}–{{proof.prices.1.to}}</span> <span class="price__note">{{proof.prices.1.note}}</span> [[sample pricing]]</p>
+              [[quote {{services.1.short}} btn-primary | Book a time]]
+            </div>
+            [[frame detail-plugs frame--4-3 panel__media station | data-station="02" data-label="{{services.1.short}} · morning drop-off"]]
+          </section>
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>03</span> About 10 min · wait</p>
+              <h3>{{services.2.name}}</h3>
+              <p>{{services.2.blurb}}</p>
+              <p class="price"><span class="price__range">{{proof.prices.2.from}}–{{proof.prices.2.to}}</span> <span class="price__note">{{proof.prices.2.note}}</span> [[sample pricing]]</p>
+              [[quote {{services.2.short}} btn-primary | Book a time]]
+            </div>
+            <div class="swatch panel__media" aria-hidden="true">
+              <span class="swatch__card swatch__card--old"><b>Yours</b><em>gray, leaves in the pleats</em></span>
+              <span class="swatch__card swatch__card--new"><b>New</b><em>white, same size</em></span>
+            </div>
+          </section>
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>04</span> About 20 min · wait</p>
+              <h3>{{services.3.name}}</h3>
+              <p>{{services.3.blurb}}</p>
+              <p class="price"><span class="price__range">{{proof.prices.3.from}}–{{proof.prices.3.to}}</span> <span class="price__note">{{proof.prices.3.note}}</span> [[sample pricing]]</p>
+              [[quote {{services.3.short}} btn-primary | Book a time]]
+            </div>
+            [[frame station-tires frame--4-3 panel__media station | data-station="04" data-label="{{services.3.short}} · about 20 min"]]
+          </section>
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>05</span> About 25 min · wait or drop</p>
+              <h3>{{services.4.name}}</h3>
+              <p>{{services.4.blurb}}</p>
+              [[quote {{services.4.short}} btn-primary | Book a time]]
+            </div>
+            [[frame station-fluids frame--4-3 panel__media station | data-station="05" data-label="{{services.4.short}} · about 25 min"]]
+          </section>
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>06</span> 5 min test · wait</p>
+              <h3>{{services.5.name}}</h3>
+              <p>{{services.5.blurb}}</p>
+              <p class="price"><span class="price__range">{{proof.prices.4.from}}–{{proof.prices.4.to}}</span> <span class="price__note">{{proof.prices.4.note}}</span> [[sample pricing]]</p>
+              [[quote {{services.5.short}} btn-primary | Book a time]]
+            </div>
+            [[frame station-battery frame--4-3 panel__media station | data-station="06" data-label="{{services.5.short}} · 5 min test"]]
+          </section>
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>07</span> Under 10 min · wait</p>
+              <h3>{{services.6.name}}</h3>
+              <p>{{services.6.blurb}}</p>
+              [[quote {{services.6.short}} btn-primary | Book a time]]
+            </div>
+            [[frame station-wipers frame--4-3 panel__media station | data-station="07" data-label="{{services.6.short}} · under 10 min"]]
+          </section>
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>08</span> Drop-off · picked up by lunch</p>
+              <h3>{{services.7.name}}</h3>
+              <p>{{services.7.blurb}}</p>
+              [[quote {{services.7.short}} btn-primary | Book a time]]
+            </div>
+            <div class="odo panel__media" aria-hidden="true">
+              <span class="odo__row"><span>030,000</span><em>filters · plugs check</em></span>
+              <span class="odo__row"><span>060,000</span><em>fluids · plugs</em></span>
+              <span class="odo__row"><span>090,000</span><em>plugs · belts · coolant</em></span>
+            </div>
+          </section>
+          <section class="panel" data-tabpanel>
+            <div class="panel__text">
+              <p class="lap-pill"><span>09</span> About 20 min · wait</p>
+              <h3>{{services.8.name}}</h3>
+              <p>{{services.8.blurb}}</p>
+              [[quote {{services.8.short}} btn-primary | Book a time]]
+            </div>
+            [[frame tool-tread frame--4-3 panel__media station | data-station="09" data-label="{{services.8.short}} · about 20 min"]]
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WAIT OR DROP · the planner (color band) -->
+  <section id="wait-or-drop" class="sec wait t-accent" data-lap="Planner">
+    <div class="container wait__grid">
+      <div class="wait__head">
+        <p class="kicker">Planner</p>
+        <h2>Wait for it, or drop it off?</h2>
+        <p class="lead">Tick what’s due. The clock adds it up and tells you which kind of visit to book.</p>
+      </div>
+      <form class="wait__form" data-wait aria-label="Wait or drop planner">
+        <fieldset>
+          <legend class="sr-only">Jobs you need</legend>
+          <label class="chk"><input type="checkbox" value="{{services.0.name}}" data-min="30" checked> <span>{{services.0.short}}</span> <em>30 min</em></label>
+          <label class="chk"><input type="checkbox" value="{{services.2.name}}" data-min="10"> <span>{{services.2.short}}</span> <em>10 min</em></label>
+          <label class="chk"><input type="checkbox" value="{{services.3.name}}" data-min="20"> <span>{{services.3.short}}</span> <em>20 min</em></label>
+          <label class="chk"><input type="checkbox" value="{{services.5.name}}" data-min="15"> <span>{{services.5.short}}</span> <em>15 min</em></label>
+          <label class="chk"><input type="checkbox" value="{{services.6.name}}" data-min="10"> <span>{{services.6.short}}</span> <em>10 min</em></label>
+          <label class="chk"><input type="checkbox" value="{{services.1.name}}" data-min="0" data-drop> <span>{{services.1.short}}</span> <em>drop-off</em></label>
+          <label class="chk"><input type="checkbox" value="{{services.7.name}}" data-min="0" data-drop> <span>{{services.7.short}}</span> <em>drop-off</em></label>
+        </fieldset>
+      </form>
+      <div class="ticket t-paper" aria-live="polite" data-wait-out>
+        <p class="ticket__kind" data-wait-kind>Short jobs: wait. Tune-ups and mileage services: drop off.</p>
+        <p class="ticket__time" data-wait-time>~30 min</p>
+        <ol class="ticket__laps" data-wait-laps role="list"><li><span>{{services.0.short}}</span><span>30 min</span></li></ol>
+        <p class="ticket__note" data-wait-note>Anything under an hour, you can wait for. Drop-offs come in at the 7:30 slot and are usually ready by lunch.</p>
+        <a class="btn btn-primary" href="#contact" data-wait-go data-service="{{services.0.short}}">Book this time [[i arrow]]</a>
+      </div>
+      [[frame place-waiting frame--4-3 wait__media station | data-reveal="clip" data-station="~30" data-label="Wait with it, or walk"]]
+    </div>
+  </section>
+
+  <!-- 5. OIL GUIDE · spec first -->
+  <section id="oil" class="sec oil t-paper" data-lap="Oil guide">
+    <div class="container">
+      <div class="oil__head">
+        <h2>Which oil does your car need?</h2>
+        <p class="lead">The one your owner’s manual names. Here is how the three types differ, in plain words.</p>
+      </div>
+      <div class="oil__table" role="table" aria-label="Oil types compared">
+        <div class="oil__row oil__row--head" role="row">
+          <span role="columnheader" class="oil__corner">Type</span>
+          <span role="columnheader">Conventional</span>
+          <span role="columnheader">Synthetic blend</span>
+          <span role="columnheader">Full synthetic</span>
+        </div>
+        <div class="oil__row" role="row">
+          <span role="rowheader">How often</span>
+          <span role="cell" data-l="Conventional">Shortest; your manual sets it</span>
+          <span role="cell" data-l="Synthetic blend">In between</span>
+          <span role="cell" data-l="Full synthetic">Longest the manual allows</span>
+        </div>
+        <div class="oil__row" role="row">
+          <span role="rowheader">Cold mornings</span>
+          <span role="cell" data-l="Conventional">Thicker at start-up</span>
+          <span role="cell" data-l="Synthetic blend">Flows better</span>
+          <span role="cell" data-l="Full synthetic">Flows fastest on an inversion morning</span>
+        </div>
+        <div class="oil__row" role="row">
+          <span role="rowheader">Older engines</span>
+          <span role="cell" data-l="Conventional">Fine when it’s the spec</span>
+          <span role="cell" data-l="Synthetic blend">A common middle choice</span>
+          <span role="cell" data-l="Full synthetic">Holds up longer under heat</span>
+        </div>
+        <div class="oil__row" role="row">
+          <span role="rowheader">When we pour it</span>
+          <span role="cell" data-l="Conventional">The manual says conventional</span>
+          <span role="cell" data-l="Synthetic blend">The manual allows either</span>
+          <span role="cell" data-l="Full synthetic">The manual calls for synthetic</span>
+        </div>
+      </div>
+      <div class="oil__foot">
+        <p class="oil__rule">We read the spec off your manual or the oil cap. No upsell to a better bottle.</p>
+        [[quote {{services.0.short}} btn-primary | Book an oil change]]
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. BREAK -->
+  <section id="canyon" class="break t-deep" aria-label="Photo: canyon road" data-lap="On the road">
+    [[frame break frame--break | data-reveal="clip"]]
+    <p class="break__caption"><span class="break__lap">Lap 05, on the road</span> <span class="break__line">A canyon drive after a fresh rotation. The car is the part we look after.</span></p>
+  </section>
+
+  <!-- 7. PROOF · split-time printouts -->
+  <section id="proof" class="sec proof t-paper" data-sw-signature="stopwatch-stations" data-lap="Reviews">
+    <div class="container">
+      <div class="proof__head">
+        <h2>Out the door when we said.</h2>
+        <p class="proof__rating"><span class="proof__num">{{proof.rating}}</span> average from {{proof.reviewCount}} reviews [[sample rating]]</p>
+      </div>
+      <div class="slips" data-reveal-stagger>
+        <!-- each proof.reviews 0:3 -->
+        <article class="slip">
+          <header class="slip__head">
+            <span class="mono">Split {{#2}}</span>
+            <span class="slip__svc">{{.service}}</span>
+          </header>
+          <blockquote class="slip__text"><p>{{.text}}</p></blockquote>
+          <footer class="slip__by">
+            <span><strong>{{.name}}</strong> · {{.town}}</span>
+            [[sample review]]
+          </footer>
+          <span class="slip__stamp" aria-hidden="true">Done</span>
+        </article>
+        <!-- /each -->
+      </div>
+      <div class="promise">
+        <p class="promise__text">“{{proof.guarantee}}”</p>
+        <p class="promise__meta">Licence # {{proof.license}} [[sample licence]]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. AREA + HOURS -->
+  <section id="area" class="sec area t-mid" data-lap="Area &amp; hours">
+    <div class="container area__grid">
+      <div class="area__text">
+        <h2>Under the Wasatch, from {{biz.city}} out.</h2>
+        <p class="lead">We work on cars from {{biz.areas|list}}. Check your ZIP before you book.</p>
+        <form class="zip" data-zip data-zip-yes="Yes, {zip} is on our list. Book a time and we’ll have a bay ready." data-zip-no="{zip} is a longer drive. A booked drop-off works best; call and we’ll set one up.">
+          <label for="zip-in">Your ZIP code</label>
+          <div class="zip__row">
+            <input id="zip-in" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="5 digits">
+            <button type="submit" class="btn btn-primary">Check</button>
+          </div>
+          <p class="zip__out" data-zip-result></p>
+        </form>
+      </div>
+      <div class="hours-card">
+        <h3><span class="mono">Hours</span> {{hours|today}}</h3>
+        {{hours|table}}
+        <p class="hours-card__tel">[[call btn-secondary]]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. CONTACT -->
+  <section id="contact" class="sec contact t-paper" data-lap="Book">
+    <div class="container contact__grid">
+      <div class="contact__text">
+        <p class="kicker">Last lap: hand-back</p>
+        <h2>Book a time.</h2>
+        <p class="lead">Four short steps. We call back with a slot, wait or drop-off.</p>
+        <p class="contact__call">Rather talk? [[tel]] <span>{{hours|today}}</span></p>
+      </div>
+      <form class="lead-form" data-lead data-thanks="Thanks, {name}. In your version of this site, this request goes straight to your phone and inbox." aria-label="Book a time">
+        <div class="lead-form__bar" data-form-progress aria-label="Form progress"><span></span></div>
+        <fieldset data-step>
+          <legend>1 · What’s due</legend>
+          <label for="f-service">Service</label>
+          <select id="f-service" name="service" required>
+            <option value="">Pick a service</option>
+            <!-- each services -->
+            <option value="{{.name}}">{{.name}}</option>
+            <!-- /each -->
+          </select>
+        </fieldset>
+        <fieldset data-step>
+          <legend>2 · Your car</legend>
+          <label for="f-car">Year, make and model</label>
+          <input id="f-car" name="car" type="text" required placeholder="e.g. 2016 minivan">
+          <label for="f-miles">Mileage (rough is fine)</label>
+          <input id="f-miles" name="miles" type="text" inputmode="numeric">
+          <label for="f-zip">ZIP code</label>
+          <input id="f-zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5">
+        </fieldset>
+        <fieldset data-step>
+          <legend>3 · Wait or drop off</legend>
+          <div class="radios" role="radiogroup" aria-label="Visit type">
+            <label class="radio"><input type="radio" name="visit" value="Wait" required> I’ll wait</label>
+            <label class="radio"><input type="radio" name="visit" value="Drop off"> I’ll drop it off</label>
+          </div>
+          <label for="f-when">Best time</label>
+          <select id="f-when" name="when">
+            <option>Early morning</option>
+            <option>Late morning</option>
+            <option>Afternoon</option>
+            <option>Saturday</option>
+          </select>
+        </fieldset>
+        <fieldset data-step>
+          <legend>4 · How to reach you</legend>
+          <label for="f-name">Name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
+          <label for="f-email">Email (optional)</label>
+          <input id="f-email" name="email" type="email" autocomplete="email">
+        </fieldset>
+        <div class="hp" aria-hidden="true"><label>Website <input name="website2" tabindex="-1" autocomplete="off"></label></div>
+        <input type="hidden" name="t">
+        <div class="lead-form__nav" data-form-nav>
+          <button type="button" class="btn btn-text" data-back>Back</button>
+          <button type="button" class="btn btn-primary" data-next>Next [[i arrow]]</button>
+          <button type="submit" class="btn btn-primary" data-submit>Send my request</button>
+        </div>
+        <p class="lead-form__micro">We’ll call you back to set up a visit. Nothing is booked until we talk.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer t-deep" data-sw-signature="stopwatch-stations" data-lap="Done">
+  <div class="container">
+    <div class="stop" data-reveal>
+      <p class="stop__label"><span class="stop__tick" aria-hidden="true"></span> Clock stopped</p>
+      <p class="stop__time">Done · 31:00</p>
+      <p class="stop__next">Next oil due around 48,200 mi. We write it on the ticket.</p>
+    </div>
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <span class="logo-mark" aria-hidden="true"><span>{{biz.initials}}</span></span>
+        <p><strong>{{biz.name}}</strong><br>{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="#stations">How a visit runs</a>
+        <a href="#services">Services</a>
+        <a href="#oil">Oil guide</a>
+        <a href="#area">Area &amp; hours</a>
+        <a href="#contact">Book a time</a>
+      </nav>
+      <div class="footer__contact">
+        <p>[[tel]]</p>
+        <p>{{hours|today}}</p>
+      </div>
+    </div>
+    <div class="footer__fine">
+      <p>{{demo.disclaimer}}</p>
+      [[credits]]
+      <p>© {{year}} {{biz.name}}</p>
+    </div>
+  </div>
+</footer>
+
+<div class="mobilebar t-paper" data-mobilebar>
+  <a class="btn btn-primary" href="#contact">Book a time</a>
+  <a class="btn btn-secondary btn-call" href="tel:{{biz.phoneE164}}" aria-label="Call {{biz.phone}}">[[i phone]]<span>Call<span class="mb-num"> {{biz.phone}}</span></span></a>
+</div>

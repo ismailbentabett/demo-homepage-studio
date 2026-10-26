@@ -1,0 +1,8 @@
+# Strategy — autotuneup-A (Quarter Hour Tune-Up)
+
+1. **The one job.** A Provo driver lands, sees the posted times and the "Book a time" button, and books an oil change or tune-up slot in under 10 seconds; phone is always one thumb-reach away on mobile.
+2. **Homeowner's first 5 seconds.** H1: "Oil changes & tune-ups in Provo, UT" with kicker "Quarter Hour Tune-Up"; primary CTA "Book a time"; secondary "Text to book"; proof line "Most oil changes in about 30 min · Mon–Sat 7:30–6 · 4.9 (Sample rating)".
+3. **Contractor's first 5 seconds.** The stopwatch stations: every section is a timed station on a relay, with a running total that proves speed without hype. Nobody in Provo shows the clock this honestly.
+4. **Objections mapped.** "They'll upsell me" → Service menu with "not due yet" callouts + guarantee. "Quick means two hours" → Posted times per station + wait-or-drop planner. "Wrong oil?" → Oil type explainer + spec-first language. "Find something wrong because I'm there" → Sample report showing watch vs due. "No idea what's due at my mileage" → Mileage tool + service menu by interval. "Can I wait or do I drop off?" → Wait-or-drop planner in hero and tools.
+5. **Conversion paths.** Primary: "Book a time" → multi-step quote form (#contact). Secondary: tel: and sms: in header, mobile bar, and every station footer. Tool → form hand-off: mileage tool prefills services; wait-or-drop prefills visit type. Phone is sticky on 390px via mobile bar.
+6. **What this direction is NOT.** Not B's odometer-tool-first hero (we use family 4 stacked headline + strip). Not C's altitude/local-story dark-led tone (we are color-led bright). Not a coupon/starburst chain look; no car-maker logo grid; no scare copy.
