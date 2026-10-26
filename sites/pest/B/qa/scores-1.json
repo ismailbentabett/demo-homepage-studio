@@ -1,0 +1,29 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": { "score": 7, "notes": "1440-first.jpg / 390-first.jpg: h1 7 words trade+city, 3 lines, proof line, ZIP band peeks ~65px; no phone on either first screen (-1.0); hero visual is a flat beige placeholder with 12 unlabeled circles, signature unreadable (-0.5); 3 tracked caps/mono strings in view (-0.5)." },
+    "distinctiveness": { "score": 7, "notes": "1440-rm-full.jpg: ring is decorative circles in hero/story/footer, never organises info (-1.0); 1440-scroll-50.jpg: 3x3 identical service cards with Price it buttons (-0.5); mono micro-labels, middle-dot strings, decorative BR-0N numbering (-0.5). Palette/type differ from sites/pest/A/qa/screens/1440-first.jpg." },
+    "type": { "score": 7, "notes": "Straight quotes on all reviews in dist/index.html (-0.5); 1440-scroll-50.jpg: BR-07 pill text wraps out of its circle (-0.5); 1440-scroll-25.jpg: mono h3s at display size rag 3 lines (-0.5); 3+ tracked caps labels per view in 1440-first.jpg (-0.5)." },
+    "layout": { "score": 7, "notes": "1440-rm-full.jpg: half-screen blank below mosquito tabs (-0.5); placeholder break + empty 'How a visit reads' boxes do no job (-0.5); narrow centred ZIP band with empty header row (-0.5); 1440-scroll-25.jpg: compare columns lopsided (-0.5). Tone alternation good." },
+    "photo": { "score": 4, "notes": "1440-first.jpg, 1440-scroll-50.jpg, 1440-rm-full.jpg: all 9 frames are identical blank #D4CFC6 placeholder JPGs; alt text says coastal Carolina / Wilmington on a Baton Rouge site (-2.0); caption describes a frame that does not exist; hero-A1 is sibling pest-A's hero (mustFix)." },
+    "copy": { "score": 7.5, "notes": "Trade-true reviews and services, consistent 'Book an inspection'. dist/index.html #mosquito: same sentence 7 times (-0.5); 1440-scroll-25.jpg: log rows are dateless column words (-0.5); 1440-scroll-75.jpg: headings with no lead (-0.5). mustFix: form success 'Request received' pretends to send." },
+    "mobile": { "score": 7.5, "notes": "390-first.jpg: h1 3 lines, both buttons above fold, no h-scroll (render.json); no phone visible (-0.5); 390-rm-full.jpg: collapsed not composed, 12,622px page, nine full-width cards each with a button (-0.5); compare tool runs ~2.5 screens (-0.5)." },
+    "a11y": { "score": 7.5, "notes": "1440-rm-full.jpg and 390-rm-full.jpg show all content; skip link, labels, heading order fine. 1440-scroll-50.jpg: focus ring #4DB8A4 on the #4DB8A4 plan band is invisible (-1.0, mustFix); forced-colors + print present (+0.5)." },
+    "motion": { "score": 7, "notes": "1440-scroll-75.jpg: review cards invisible while in viewport; 1440-full.jpg and 390-full.jpg: services/reviews/gallery blank (-1.0, mustFix). 1440-scroll-25.jpg: ring not pinned, no station lighting, log rows static, promised dial story absent (-0.5)." },
+    "wow": { "score": 6.5, "notes": "1440-first.jpg: ring is unlabeled circles on a placeholder; 1440-rm-full.jpg: estimator output is plain 'Select options above' text (-1.0); 1440-scroll-25.jpg: compare output static cards, ring does not respond (-0.5)." },
+    "polish": { "score": 7, "notes": "Radius consistent, no transition:all. 1440-scroll-50.jpg: BR pill text overflow on 9 cards (-0.5); 1440-rm-full.jpg: footer 'Next visit — scheduled —' stray dashes (-0.5); empty placeholder frames and empty ZIP header row look unfinished (-0.5)." }
+  },
+  "mustFix": [
+    { "where": "1440-first.jpg, 1440-rm-full.jpg, all [data-photo]", "problem": "All 9 photos are blank placeholder JPGs (niches/pest/media manifest is placeholder-only)", "fix": "Curate and approve real pest/Gulf South frames in niches/pest/media/manifest.json and re-place every slot" },
+    { "where": "dist/index.html [data-slot=hero] (hero-A1)", "problem": "Hero photo is sibling pest-A's hero photo", "fix": "Assign pest-B a hero frame no sibling uses" },
+    { "where": "dist/index.html hero + break alt/caption", "problem": "Alt text names coastal Carolina / Wilmington on a Baton Rouge site; caption describes a frame that is not shown", "fix": "Rewrite alt and caption from the actual approved frame, Louisiana-true or region-neutral" },
+    { "where": "dist/index.html #contact success state", "problem": "'Request received. We'll be in touch shortly.' pretends a demo form sent", "fix": "Replace with 'Sample site: this form does not send. Call {{biz.phone}} to book.'" },
+    { "where": "1440-scroll-75.jpg, 1440-full.jpg, 390-full.jpg", "problem": "Reveal never fires on reviews/services/gallery; bands appear empty when scrolled to", "fix": "Trigger reveals at top 90% with a fallback that marks everything above the viewport bottom .is-in on load and scroll end; drop the stagger hide on the review grid" },
+    { "where": "1440-scroll-50.jpg #plan", "problem": "Focus ring #4DB8A4 on #4DB8A4 band is invisible; ~2:1 on bone", "fix": "Set --focus: #1A332A inside the teal band and on bone bands; keep teal focus only on deep green" }
+  ],
+  "elevate": [
+    { "category": "photo", "move": "Present every frame as inspector evidence: a log-ticket frame with station number and reading line, tight detail crops (mud tube, bait cap, sill plate) so stock reads as one dated inspection" },
+    { "category": "wow", "move": "Make the station ring the tool: a house footprint with BR-01..12 that relights from the compare inputs (liquid as a continuous trench, bait as discrete stations), and an estimator that prints its result as a dated year log under the ring" }
+  ],
+  "verdictHint": "FIX"
+}

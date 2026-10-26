@@ -1,0 +1,205 @@
+/* pest-B · Trap Count
+   1. Tools (everyone, motion or not): the liquid-or-bait map, the year log, print, form step labels.
+   2. Motion (only with sw-motion and no reduced motion): map sweeps, log rows, footer map. */
+(function () {
+  'use strict';
+  var SW = window.SW || {};
+  var html = document.documentElement;
+  var motion = !SW.reduced && html.classList.contains('sw-motion');
+  var q = function (s, r) { return (r || document).querySelector(s); };
+  var qa = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* ── 1a. Liquid or bait: the map is the answer ── */
+  var tool = q('[data-maptool]');
+  var toolMap = q('[data-tool-map]');
+  var cards = q('.compare__cards');
+  var sheet = q('.compare__sheet');
+  var verdict = q('[data-verdict]');
+  var HOUSE = { slab: 'the slab', crawl: 'the crawlspace', raised: 'the piers' };
+  var HOUSE_NAME = { slab: 'slab house', crawl: 'crawlspace house', raised: 'house on piers' };
+
+  function val(form, name) {
+    var el = form.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : '';
+  }
+
+  function relight(map) {
+    if (!motion || !map) return;
+    map.classList.remove('is-in');
+    void map.offsetWidth;
+    map.classList.add('is-in');
+  }
+
+  function updateTool() {
+    if (!tool || !toolMap) return;
+    var house = val(tool, 'house') || 'slab';
+    var water = val(tool, 'water') === 'yes';
+    var read = val(tool, 'read') !== 'no';
+    var lean = (water || read) ? 'bait' : 'liquid';
+    toolMap.setAttribute('data-house', house);
+    toolMap.setAttribute('data-method', lean);
+    toolMap.setAttribute('aria-label', 'Station map of a ' + HOUSE_NAME[house] + ': ' +
+      (lean === 'bait' ? '12 bait stations lit, liquid trench dimmed' : 'liquid trench drawn around the footprint, stations dimmed'));
+    if (cards) cards.setAttribute('data-lean', lean);
+    if (sheet) sheet.setAttribute('data-lean', lean);
+    var why;
+    if (lean === 'bait') {
+      why = water ? 'Leans bait. A well or a creek near ' + HOUSE[house] + ' rules out trenching chemicals into the soil, so stations go in the ground instead.'
+                  : 'Leans bait. Twelve numbered stations around ' + HOUSE[house] + ', each one read and written down on every visit.';
+    } else {
+      why = 'Leans liquid. One trenched and rodded barrier around ' + HOUSE[house] + ', done in a day, nothing to read after.';
+    }
+    if (verdict) verdict.textContent = why;
+  }
+
+  if (tool) {
+    tool.addEventListener('change', function () {
+      updateTool();
+      if (toolMap && toolMap.classList.contains('is-in')) relight(toolMap);
+    });
+    tool.addEventListener('submit', function (e) { e.preventDefault(); });
+    updateTool();
+  }
+
+  /* ── 1b. Year plan: one dated log row per visit, a sample range on each line, never a sum ── */
+  var plan = q('[data-yearplan]');
+  var rowsEl = q('[data-yearlog-rows]');
+  var countEl = q('[data-yearlog-count]');
+  var prices = (SW.fact && SW.fact('proof.prices')) || null;
+  var MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  function range(i) {
+    var p = prices && prices[i];
+    if (!p) return '';
+    return p.from + '–' + p.to + (p.unit ? ' ' + p.unit : (p.note ? ' · ' + p.note : ''));
+  }
+
+  function buildRows() {
+    var termite = val(plan, 'termite');
+    var renewal = plan.querySelector('input[name="renewal"]').checked;
+    var quarterly = plan.querySelector('input[name="quarterly"]').checked;
+    var months = qa('input[name="mosq"]:checked', plan).map(function (m) { return +m.value; });
+    var rows = [];
+    if (termite === 'liquid') rows.push({ m: 2, what: 'Perimeter trenched and rodded, one barrier', price: range(1), visit: true });
+    if (termite === 'bait') {
+      rows.push({ m: 2, what: 'BR-01 to BR-12, stations installed', price: range(2), visit: true });
+      if (!quarterly) [5, 8, 11].forEach(function (m) { rows.push({ m: m, what: 'Stations read, BR-01 to BR-12', price: 'In plan', visit: true }); });
+    }
+    if (quarterly) [0, 3, 6, 9].forEach(function (m) {
+      rows.push({ m: m, what: 'Quarterly visit' + (termite === 'bait' ? ', stations read' : ''), price: range(4), visit: true });
+    });
+    months.forEach(function (m) { rows.push({ m: m - 1, what: 'Yard, mosquito treatment', price: range(3), visit: true }); });
+    if (renewal) rows.push({ m: 12, what: 'Termite contract renewal', price: range(0), visit: false });
+    rows.sort(function (a, b) { return a.m - b.m; });
+    return rows;
+  }
+
+  function renderPlan() {
+    if (!plan || !rowsEl) return;
+    var rows = buildRows();
+    rowsEl.textContent = '';
+    if (!rows.length) {
+      var li = document.createElement('li');
+      li.className = 'yrow yrow--empty';
+      li.textContent = 'Pick a termite plan or a service to see your yearly range.';
+      rowsEl.appendChild(li);
+    }
+    rows.forEach(function (r, i) {
+      var li = document.createElement('li');
+      li.className = 'yrow' + (motion ? ' is-new' : '');
+      li.style.setProperty('--i', i);
+      var d = document.createElement('span'); d.className = 'yrow__date'; d.textContent = r.m === 12 ? 'Year end' : MON[r.m];
+      var w = document.createElement('span'); w.className = 'yrow__what'; w.textContent = r.what;
+      var p = document.createElement('span'); p.className = 'yrow__price'; p.textContent = r.price;
+      li.appendChild(d); li.appendChild(w); li.appendChild(p);
+      rowsEl.appendChild(li);
+    });
+    if (countEl) {
+      var n = rows.filter(function (r) { return r.visit; }).length;
+      countEl.textContent = n;
+    }
+  }
+
+  if (plan) {
+    plan.addEventListener('change', renderPlan);
+    plan.addEventListener('submit', function (e) { e.preventDefault(); });
+  }
+
+  var printBtn = q('[data-yearlog-print]');
+  if (printBtn) {
+    printBtn.addEventListener('click', function () {
+      html.classList.add('print-log');
+      window.print();
+    });
+    window.addEventListener('afterprint', function () { html.classList.remove('print-log'); });
+  }
+
+  /* ── 1c. Lead form: the Next button names the next step ── */
+  var lead = q('form[data-lead]');
+  var nextBtn = lead && q('[data-next]', lead);
+  var NEXT = ['Next: house type', 'Next: details', 'Next: your number'];
+  function syncNext() {
+    if (!lead || !nextBtn) return;
+    var i = parseInt(lead.getAttribute('data-step-current') || '0', 10) || 0;
+    if (NEXT[i]) nextBtn.textContent = NEXT[i];
+  }
+  if (lead && nextBtn && 'MutationObserver' in window) {
+    new MutationObserver(syncNext).observe(lead, { attributes: true, attributeFilter: ['data-step-current'] });
+    syncNext();
+  }
+
+  /* ── 1d. Reveal safety net: anything already on screen is shown, even if the observer missed it ── */
+  function sweepReveals() {
+    var limit = window.innerHeight * 0.95;
+    qa('[data-reveal]:not(.is-in), [data-reveal-stagger]:not(.is-in)').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < limit && r.bottom > 0) el.classList.add('is-in');
+    });
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { ticking = false; sweepReveals(); });
+  }, { passive: true });
+  window.addEventListener('load', sweepReveals);
+  sweepReveals();
+
+  /* ── 2. Motion: the maps relight when they come into view ── */
+  var watched = qa('[data-tool-map], [data-footer-map]');
+  if (!motion) {
+    watched.forEach(function (m) { m.classList.add('is-in'); });
+    return;
+  }
+
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.35 });
+    watched.forEach(function (m) { io.observe(m); });
+  } else {
+    watched.forEach(function (m) { m.classList.add('is-in'); });
+  }
+
+  /* Count-up on the visits number when the year log changes */
+  if (plan && countEl) {
+    plan.addEventListener('change', function () {
+      countEl.animate([{ transform: 'translateY(-6px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 320, easing: 'cubic-bezier(.23,1,.32,1)' });
+    });
+  }
+
+  if (window.ScrollTrigger && window.gsap) {
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.matchMedia({
+      '(min-width: 640px)': function () {
+        /* The break photo drifts slower than the page: a quiet depth cue, no pin. */
+        var img = q('.break__frame img');
+        if (img) gsap.fromTo(img, { yPercent: -6, scale: 1.12 }, { yPercent: 6, scale: 1.12, ease: 'none', scrollTrigger: { trigger: '.break__frame', start: 'top bottom', end: 'bottom top', scrub: true } });
+      }
+    });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+  }
+})();
