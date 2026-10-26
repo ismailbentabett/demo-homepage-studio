@@ -249,40 +249,6 @@
 })();
 
 ;
-/* kit: reveal */
-/* reveal: adds .is-in when [data-reveal] / [data-reveal-stagger] elements enter the bottom 85% of the viewport.
-   Children of [data-reveal-stagger] get --i (0, 1, 2...) for the CSS delay. Without sw-motion everything is shown at once. */
-SW.mod('reveal', function (SW) {
-  var els = SW.$$('[data-reveal], [data-reveal-stagger]');
-  if (!els.length) return;
-  SW.$$('[data-reveal-stagger]').forEach(function (group) {
-    Array.prototype.forEach.call(group.children, function (child, i) { child.style.setProperty('--i', i); });
-  });
-  function show(el) { el.classList.add('is-in'); }
-  function showAll() { els.forEach(show); }
-  window.addEventListener('beforeprint', showAll);
-  if (SW.reduced || !('IntersectionObserver' in window)) { showAll(); return; }
-
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (en) {
-      if (en.isIntersecting) { show(en.target); io.unobserve(en.target); }
-    });
-  }, { rootMargin: '0px 0px -15% 0px' });
-  els.forEach(function (el) { io.observe(el); });
-
-  // a jump (anchor link, End key) can skip past elements without them ever intersecting: show what is above the fold
-  var pending = false;
-  function catchUp() {
-    pending = false;
-    els.forEach(function (el) {
-      if (!el.classList.contains('is-in') && el.getBoundingClientRect().bottom < 0) { show(el); io.unobserve(el); }
-    });
-  }
-  window.addEventListener('scroll', function () { if (!pending) { pending = true; requestAnimationFrame(catchUp); } }, { passive: true });
-  catchUp();
-});
-
-;
 /* kit: header */
 /* header: [data-header] gets .is-scrolled past 8px and .is-hidden while scrolling down past 160px
    (never while focus is inside it or the menu is open). [data-progress] gets --p (0..1) of the page read.
@@ -965,6 +931,7 @@ SW.mod('media-fallback', function (SW) {
     } catch (e) { return new Date().getMonth() + 1; }
   }
   var NOW = nowMonth();
+  var lightRail = null;
 
   /* 1. The index: current month, then the month each spread covers lights as you read */
   SW.mod('almanac-index', function () {
@@ -976,11 +943,21 @@ SW.mod('media-fallback', function (SW) {
     var rail = document.querySelector('[data-rail]');
     if (!rail) return;
     var tabs = rail.querySelectorAll('[data-m]');
+    var legend = rail.querySelector('[data-rail-legend]');
     function light(m) {
       tabs.forEach(function (t) { t.classList.toggle('is-on', +t.getAttribute('data-m') === m); });
+      if (legend) legend.textContent = (m ? 'Reading: ' + MONTHS[m - 1] + '. ' : 'Reading: contents. ') + 'This month: ' + MONTHS[NOW - 1] + '.';
     }
     light(NOW);
+    lightRail = light;
     if (!('IntersectionObserver' in window)) return;
+    /* the rail steps aside while a full-bleed plate passes behind it */
+    var bleeding = new Set();
+    var bio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) bleeding.add(e.target); else bleeding.delete(e.target); });
+      rail.classList.toggle('is-bleed', bleeding.size > 0);
+    }, { rootMargin: '-22% 0px -22% 0px', threshold: 0 });
+    document.querySelectorAll('[data-bleed]').forEach(function (b) { bio.observe(b); });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
@@ -1000,29 +977,61 @@ SW.mod('media-fallback', function (SW) {
     }
   });
 
-  /* 2. Folio count-up: each spread's number counts on from the last month you saw */
+  /* 2. The year turns as you read. One gesture, one 500ms ease-out: on each spread the folio
+        numeral rolls in a digit slot from the previous spread's month, the 12-cell ruler fills
+        cell by cell to the same month, and the rail tab slides out. Reduced motion / no JS: final states. */
   SW.mod('almanac-folio', function () {
     if (!motion || !('IntersectionObserver' in window)) return;
-    var last = 0;
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         io.unobserve(e.target);
-        var el = e.target, to = parseInt(el.getAttribute('data-folio'), 10), from = Math.min(last, to);
-        last = to;
-        if (from === to) return;
-        var t0 = null;
-        function step(t) {
-          if (!t0) t0 = t;
-          var k = Math.min(1, (t - t0) / 600);
-          var v = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3)));
-          el.textContent = (v < 10 ? '0' : '') + v;
-          if (k < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
+        (e.target._folios || []).forEach(turn);
       });
-    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.02 });
-    document.querySelectorAll('[data-folio]').forEach(function (el) { io.observe(el); });
+    }, { rootMargin: '0px 0px -20% 0px', threshold: 0 });
+
+    document.querySelectorAll('[data-folio][data-from]').forEach(function (el) {
+      var to = parseInt(el.getAttribute('data-folio'), 10), from = parseInt(el.getAttribute('data-from'), 10);
+      if (!(to > from)) return;
+      var nums = [];
+      for (var n = Math.max(from, 0); n <= to; n++) nums.push(n);
+      el.innerHTML = '<span class="sr-only">' + pad(to) + '</span><span class="slot" aria-hidden="true"><span class="slot__reel">' + nums.map(function (n) { return '<span>' + pad(n) + '</span>'; }).join('') + '</span></span>';
+      el._steps = nums.length - 1;
+      var ruler = el.parentNode.querySelector('.folio__ruler');
+      if (ruler) {
+        var cells = [].slice.call(ruler.children);
+        el._cells = cells;
+        el._final = cells.map(function (c) { return c.className; });
+        cells.forEach(function (c, i) {
+          var m = i + 1;
+          c.className = m < from ? 'is-past' : (m === from ? 'is-m' : '');
+        });
+      }
+      el._from = from; el._to = to;
+      var sec = el.closest('section') || el;
+      if (!sec._folios) { sec._folios = []; io.observe(sec); }
+      sec._folios.push(el);
+    });
+
+    function turn(el) {
+      var reel = el.querySelector('.slot__reel');
+      if (reel) requestAnimationFrame(function () { reel.style.transform = 'translateY(' + (-1.28 * el._steps) + 'em)'; });
+      if (typeof lightRail === 'function') lightRail(el._to);
+      var cells = el._cells;
+      if (!cells) return;
+      var span = el._to - el._from, each = 500 / span, k = 0;
+      (function step() {
+        k++;
+        var m = el._from + k;
+        cells.forEach(function (c, i) {
+          var n = i + 1;
+          c.className = n < m ? ('is-past' + (n > el._from ? ' is-turned' : '') + (n === el._from ? ' is-from' : '')) : (n === m ? 'is-m' : '');
+        });
+        if (k < span) setTimeout(step, each);
+        else cells.forEach(function (c, i) { c.className = el._final[i]; });
+      })();
+    }
   });
 
   function stamp(card) {
@@ -1087,8 +1096,18 @@ SW.mod('media-fallback', function (SW) {
   if (motion) {
     document.addEventListener('DOMContentLoaded', function () {
       if (typeof gsap === 'undefined') return;
-      var plate = document.querySelector('.plate--cover .plate__art');
-      if (plate) gsap.from(plate, { scale: 1.03, duration: 1.1, ease: 'power2.out', transformOrigin: '50% 60%' });
+      var plate = document.querySelector('.plate--cover img');
+      if (plate) gsap.from(plate, { scale: 1.04, duration: 1.1, ease: 'power2.out', transformOrigin: '40% 70%' });
+      /* Plate IV opens with the scroll: the monsoon frame widens from a narrow column to full bleed as July arrives */
+      var jul = document.querySelector('[data-plate-scrub]');
+      if (jul && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.fromTo(jul, { clipPath: 'inset(0% 16% 0% 16%)' }, {
+          clipPath: 'inset(0% 0% 0% 0%)', ease: 'none',
+          scrollTrigger: { trigger: jul, start: 'top 90%', end: 'top 30%', scrub: 0.4 }
+        });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+      }
       var lines = document.querySelectorAll('.cover-lines li');
       if (lines.length) gsap.from(lines, { x: 28, opacity: 0, duration: 0.55, stagger: 0.08, ease: 'power3.out', delay: 0.2 });
       var sweep = document.querySelectorAll('.almanac-rail [data-m], .cover-index [data-m]');

@@ -21,3 +21,6 @@
 - **spa** — Attached spa with sheer descent water feature. Crop: `object-position: 50% 40%`. Caption: "Attached spa with scale-free sheer descent."
 - **pool-deck** — Stone deck with lounge chairs, no people. Crop: `object-position: 50% 70%`. Caption: "Stone pool deck in desert backyard."
 - **tech-behind** — Technician from behind carrying test kit. Crop: `object-position: 50% 30%`. Caption: "Pool technician arriving for weekly service."
+
+## Round 2 swap
+hero: scottsdale-neighborhood (eager) · break: monsoon-sky (eager, scroll clip) · story-2: drained-pool · detail-1: waterline-tile · detail-2: clear-after. Dropped: hero-C1 (no pool), calcium-scale, bead-blast, equipment-pad (placeholder), pool-deck (placeholder), pebble-finish (missing), spa, tech-behind (gallery is unused).
