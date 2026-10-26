@@ -79,3 +79,6 @@ The render errors cover sideways overflow at 390/320 and text hidden under reduc
 
 ## 2026-10-26: capture-screens waits for lazy images
 `tools/capture-screens.mjs` walked the page at 120 ms a step and shot the full page straight away, so `loading="lazy"` photos far down the page were still empty frames in `*-full.jpg` (the critic flagged them as missing photos on cleaning-B and pest-C). After the walk it now waits until every image has loaded or failed, up to 8 s. Real visitors scroll slower than that walk, so the shot now matches what they see.
+
+## 2026-10-26: roofer-B fixture removed
+roofer-B was a test fixture (11-byte stub, worker t2) force-delivered at 8.88. Its fixture files moved to sites/roofer/B/qa/fixture-old/, its design-registry entry was removed, and the site is being built for real.
