@@ -1,0 +1,27 @@
+{
+  "round": 2,
+  "categories": {
+    "firstScreen": { "score": 7, "notes": "1440-first.jpg / 390-first.jpg: h1 trade+city, Price it + phone, sample rating line all clear. But broken hero image shows alt text over the logo, nav near-invisible, empty hollow dial ring, bottom half of hero dead black with no photo; no 'why them' line (-0.5, -0.5)." },
+    "distinctiveness": { "score": 7, "notes": "1440-first.jpg, 1440-rm-full.jpg: Season Dial is a hollow ring in header/tool/footer, never segmented or filled (-1.0); without it the page reads as a generic dark-serif template with alternating text/box splits (-0.5). Datelines (1440-scroll-25.jpg) are the only ownable device." },
+    "type": { "score": 8, "notes": "1440-first.jpg: strong Fraunces h1, mono datelines consistent. Straight quotes in reviews and pull-quote (1440-scroll-75.jpg, 1440-scroll-25.jpg) -0.5; mono price wraps 'per / visit' with hanging tag (1440-scroll-50.jpg) -0.5." },
+    "layout": { "score": 7, "notes": "1440-rm-full.jpg: four almanac spreads same split shape (-0.5); break band is a near-empty dark void with a tiny caption box (-1.0); services grid orphan last card (-0.5); Price it button touching blockquote (1440-scroll-25.jpg) and ragged hours table (-0.5)." },
+    "photo": { "score": 5, "notes": "1440-first.jpg: hero img broken, alt text painted. 1440-scroll-50.jpg: figures are flat colour blocks with caption strings; 1440-scroll-25.jpg: summer figure is a blank cream rectangle. No photograph anywhere on the page (dist/media files are 30-byte stubs)." },
+    "copy": { "score": 8.5, "notes": "1440-scroll-75.jpg: specific local reviews (heart pine, porch turns yellow), Sample labels everywhere, action buttons. Hero carries only trade+city, the seasonal promise is buried in section 2 (1440-first.jpg) -0.5." },
+    "mobile": { "score": 7.5, "notes": "390-first.jpg: h1 2 lines, CTAs above fold, sticky Call/Price it bar good; render.json no overflow. Alt text and grey skeleton bars in header (-0.5); 390-rm-full.jpg: nine stacked service cards and flat colour boxes, nothing composed for phone (-0.5)." },
+    "a11y": { "score": 7, "notes": "1440-rm-full.jpg / 390-rm-full.jpg: all content visible in reduced motion. 1440-first.jpg / 1024-first.jpg: logo and nav dark-on-dark far below 4.5:1 (mustFix, -1.0); dial ring overlaps Book link at 1024 (-0.5)." },
+    "motion": { "score": 6.5, "notes": "1440-scroll-25/50/75.jpg: reveals fire but the dial never turns or fills (-1.0); 390-full.jpg: split-line masks stuck as black bars over intro (-0.5); 1440-full.jpg / 390-full.jpg: ~5000px blank where unrevealed content sits (-0.5); no motion idea beyond fade-ups." },
+    "wow": { "score": 6.5, "notes": "1440-scroll-50.jpg / 1440-rm-full.jpg: countdown tool is a date input, an empty ring and a button; dial is a hollow circle (1440-first.jpg). Nothing to show a partner." },
+    "polish": { "score": 6.5, "notes": "1440-first.jpg broken image + visible alt; 1440-scroll-25.jpg empty figure and button touching blockquote; 390-first.jpg skeleton bars in header; 1024-first.jpg dial overlapping nav; 1440-rm-full.jpg ragged hours table." }
+  },
+  "mustFix": [
+    { "where": "1440-first.jpg, 1024-first.jpg, 390-first.jpg: .hero__img", "problem": "Hero image is broken (dist/media/hero-C1*.webp are 30-byte stubs) and its alt text paints over the logo", "fix": "Ship a decodable hero image; until the library lands, hide a failed img (onerror -> hidden) and give .hero a designed fog-gradient fallback so alt text never renders" },
+    { "where": "1440-first.jpg, 1024-first.jpg: header over the dark hero", "problem": "RH logo and nav links are dark-on-dark, far below 4.5:1", "fix": "Set header text/logo to --paper (#F3EFE6) while the header sits over t-deep; switch to ink only once the header is solid paper" },
+    { "where": "1440-scroll-25.jpg: #almanac-summer figure", "problem": "Blank cream rectangle with no image and no caption", "fix": "Fill the slot or give it the same captioned placeholder as the other figures; never ship an empty box" },
+    { "where": "390-first.jpg: header at 390", "problem": "Two grey skeleton bars float in the header area", "fix": "Remove or correctly size whatever draws them (dial pill / menu lines) so the mobile header shows logo + menu button only" }
+  ],
+  "elevate": [
+    { "category": "motion", "move": "Make the Season Dial the scroll's clock: four real arcs, the active season filled and the rest hairline, pinned top-right and swept by ScrollTrigger across the four almanac spreads with the season label changing at each dateline" },
+    { "category": "wow", "move": "Let the countdown tool speak the dial's language: on date entry the tool's ring sweeps from today to the deadline, marks the book-by date on its rim and shows the two-visit plan as ticks on the arc, so the output is an almanac diagram, not a line of text" }
+  ],
+  "verdictHint": "NEEDS_HUMAN"
+}
