@@ -1,0 +1,77 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "dist/index.html: h1 'Termite Inspection in Wilmington, NC' (6 words, trade+city); station badge 01 beside it; lead line names sample report format; two CTAs with phone visible in header and hero. Cannot verify intro timing or 390 fold without screenshots; capped at 8.5."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "dist/index.html: Station Tag Rail signature in hero (badge 01), story sections (badges 02-05 with finding tags), proof (report card rows), footer (badge 06). Palette and type pair unique per concept.json. -0.5 for unverified visual execution without screenshots."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "dist/index.html: Zilla Slab display with -0.02em tracking, Source Sans 3 body at fluid scale >=16px, DM Mono for station numbers/tags/prices. Tabular-nums on prices. Measure 65ch. -0.5 for unverified rag and typographic refinements without screenshots."
+    },
+    "layout": {
+      "score": 8.0,
+      "notes": "dist/index.html: 11 sections with alternating tones (paper/mid/accent break/deep footer). Asymmetric station grid 80px rail + 1fr at >=900px. Full-bleed accent break band. -1.0 for unverified rhythm and potential template-feel services grid. -0.5 for unconfirmed full-bleed span."
+    },
+    "photo": {
+      "score": 7.5,
+      "notes": "dist/index.html: All images reference niche-approved media slots with descriptive alt text. Consistent CSS filter (saturate .85, contrast 1.05, sepia .08). -1.0 for unverified crop quality and face/logo absence. -0.5 for uniform filter risking AI-slop tell. Below pass mark 8.5."
+    },
+    "copy": {
+      "score": 9.0,
+      "notes": "dist/index.html: Voice matches concept samples. Sample labels on prices, reviews, report card. No banned phrases. Buttons named for action. Microcopy at ZIP checker and form steps. Primary action consistent except services list 'Get a price' which serves different intent."
+    },
+    "mobile": {
+      "score": 8.0,
+      "notes": "dist/index.html: Breakpoints at 640px and 900px reflow grids. Mobile bar with sticky CTA/tel, min-height 48px. Form inputs 48px. -1.0 for unverified mobile bar hide behavior and h1 line count at 390 without screenshots."
+    },
+    "a11y": {
+      "score": 8.0,
+      "notes": "dist/index.html: Skip link, focus-visible 3px outline, aria-live on ZIP/identifier results, fieldset/legend, labels on all inputs, reduced-motion media query, forced-colors borders. -1.0 for unverified reduced-motion content visibility without screenshots."
+    },
+    "motion": {
+      "score": 7.5,
+      "notes": "dist/index.html: Reveal system with fade/clip variants, compare slider with role=slider, Lenis loaded. Concept promises flashlight intro <=1.2s and dotted path draw but cannot verify without render.json. -1.0 for unverified signature motion. -0.5 for insufficient verified hooks."
+    },
+    "wow": {
+      "score": 7.5,
+      "notes": "dist/index.html: Termite-or-flying-ant identifier tool is trade-specific. Report card renders signature as deliverable. -1.0 for unverified visual design and missing report card animation per concept."
+    },
+    "polish": {
+      "score": 8.0,
+      "notes": "dist/index.html: SVG favicon, apple-touch-icon, OG 1200x630, theme-color, JSON-LD, print stylesheet, lazy images with dimensions, consistent 3px radius, forced-colors. -0.5 for unverified detail consistency. -0.5 for missing video poster check."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "qa/render-check.json",
+      "problem": "Screenshots absent — qa/screens/ directory does not exist. Cannot verify photo quality, motion timing, reduced-motion visibility, or mobile composition.",
+      "fix": "Re-run render check to generate screenshots before delivery can be considered. This is a blocker for any score above floor."
+    },
+    {
+      "where": "dist/index.html, photo category",
+      "problem": "Photo score 7.5 below pass mark 8.5. Cannot verify crops, face/logo absence, or region-appropriateness without screenshots.",
+      "fix": "Ensure render check captures all photo frames and verifies they are on-topic, free of identifying details, and consistently graded."
+    },
+    {
+      "where": "dist/index.html, motion category",
+      "problem": "Concept promises flashlight intro <=1.2s and dotted path draw via --sw-p clip-path wipe. Cannot verify execution or whether intro blocks reading.",
+      "fix": "Run render check to capture motion frames and confirm intro duration and non-blocking behavior."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Turn the services list into a station-style grid with finding-tag pills for each service category, threading the signature into a fifth section family and breaking the template 3-column grid."
+    },
+    {
+      "category": "motion",
+      "move": "Implement the dotted path draw from station 01→06 using --sw-p clip-path wipe as specified in concept.json, and tie the report card row entrances to the same draw so the signature moves in three places instead of one."
+    }
+  ],
+  "verdictHint": "FIX"
+}
