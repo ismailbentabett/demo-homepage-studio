@@ -1,0 +1,24 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": { "score": 8.5, "notes": "1440-first.jpg: h1 6 words, trade+city clear, phone visible. 390-first.jpg: h1 3 lines, buttons above fold. Deduction: next band does not peek." },
+    "distinctiveness": { "score": 7.5, "notes": "1440-first.jpg: Code-to-plain concept visible in hero. Palette distinct. Deduction: cannot verify signature in lower sections due to render failure." },
+    "type": { "score": 8.5, "notes": "1440-first.jpg: Syne/Figtree/Space Mono pairing clear. Good hierarchy in hero." },
+    "layout": { "score": 3.0, "notes": "1440-full.jpg: Page is mostly white space below hero. Sections not rendering. Catastrophic failure." },
+    "photo": { "score": 6.0, "notes": "1440-first.jpg: Hero image is a grey placeholder. Deduction: placeholder media." },
+    "copy": { "score": 7.5, "notes": "1440-first.jpg: Strong hero copy. 'The code is only the start.' Specific voice." },
+    "mobile": { "score": 3.0, "notes": "390-full.jpg: Same white gap rendering failure as desktop." },
+    "a11y": { "score": 4.0, "notes": "render.json: motionFallbacks true but content hidden in screenshots. Implies fallback failure." },
+    "motion": { "score": 4.0, "notes": "Cannot judge motion, but result is hidden content. Reveal logic fragile." },
+    "wow": { "score": 5.0, "notes": "Cannot see tools or signature moments below fold." },
+    "polish": { "score": 6.0, "notes": "1440-first.jpg: Header/hero polished. 1440-full.jpg: Footer renders. Middle missing." }
+  },
+  "mustFix": [
+    { "where": "qa/screens/1440-full.jpg, qa/screens/390-full.jpg", "problem": "Content below hero is invisible (white background). data-reveal opacity:0 start state not cleared in capture.", "fix": "Ensure CSS reduced-motion fallback forces visibility (opacity: 1) or fix screenshot tool to trigger scroll reveals. The page must not be blank below the fold." }
+  ],
+  "elevate": [
+    { "category": "layout", "move": "Fix the rendering pipeline so the dark sections (t-paper/t-deep) appear. Then verify the tone rhythm alternates correctly." },
+    { "category": "motion", "move": "Verify the code-typing signature and ensure the static fallback is robust. The content must never be permanently hidden." }
+  ],
+  "verdictHint": "FIX"
+}
