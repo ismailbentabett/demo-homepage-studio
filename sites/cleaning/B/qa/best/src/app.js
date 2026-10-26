@@ -72,7 +72,6 @@
       if (changed) {
         var range = total.textContent + ' (sample)';
         echo('size', sizeText); echo('visit', p.item || ''); echo('total', range);
-        echo('subtotal', (p.item || '') + ', ' + sizeText); echo('total-note', range + ', confirmed at the walk-through');
       }
       if (changed && key !== last && !SW.reduced) {
         var kids = lines.children;
@@ -86,6 +85,33 @@
       update(t.hasAttribute('data-rc-visit') ? 'visit' : t.hasAttribute('data-rc-size') ? 'size' : 'add');
     });
     update(null);
+  });
+
+  /* Photo slips never wait on the lazy loader once the page is in: after load, every remaining
+     lazy image is fetched (small files via sizes), so no frame is ever caught empty. */
+  SW.mod('photos-eager', function () {
+    function go() {
+      document.querySelectorAll('img[loading="lazy"]').forEach(function (img) {
+        img.loading = 'eager';
+        if (img.decode) img.decode().then(function () { img.closest('.frame') && img.closest('.frame').classList.add('is-loaded'); }, function () {});
+      });
+    }
+    if (document.readyState === 'complete') setTimeout(go, 200);
+    else window.addEventListener('load', function () { setTimeout(go, 200); });
+  });
+
+  /* The frequency quiz answer prints onto the hero ticket's How often line too. */
+  SW.mod('quiz-echo', function () {
+    var out = document.querySelector('[data-checklist-result]');
+    if (!out || !window.MutationObserver) return;
+    var map = [[/every other week/i, 'Every other week'], [/monthly/i, 'Monthly'], [/weekly/i, 'Weekly']];
+    new MutationObserver(function () {
+      var t = out.textContent || '';
+      for (var i = 0; i < map.length; i++) if (map[i][0].test(t)) {
+        document.querySelectorAll('[data-echo="visit"]').forEach(function (el) { el.textContent = map[i][1]; });
+        return;
+      }
+    }).observe(out, { childList: true, characterData: true, subtree: true });
   });
 
   if (SW.reduced || !document.documentElement.classList.contains('sw-motion') || !window.gsap) return;
@@ -108,10 +134,17 @@
     document.querySelectorAll('[data-print]:not(.spine--hero), .footer__receipt').forEach(function (strip) {
       var rows = strip.querySelectorAll('.tk__mast, .tk__meta, .tk__line, .tk__tab, .tk__total, .tk__answer, .tk__note, .tk__foot, .footer__mast, .footer__thanks');
       if (!rows.length) return;
-      gsap.fromTo(rows, { clipPath: 'inset(0 100% 0 0)' }, {
-        clipPath: 'inset(0 0% 0 0)', duration: 0.42, stagger: 0.09, ease: 'power2.out', clearProps: 'clipPath',
-        scrollTrigger: { trigger: strip, start: 'top 88%', once: true }
-      });
+      /* a print head runs down the strip while its lines feed out under it, top to bottom */
+      var host = strip.querySelector('.tk') || strip;
+      var head = document.createElement('span');
+      head.className = 'tk__head'; head.setAttribute('aria-hidden', 'true');
+      host.appendChild(head);
+      var tl = gsap.timeline({ scrollTrigger: { trigger: strip, start: 'top 80%', once: true } });
+      tl.fromTo(rows, { clipPath: 'inset(0 0 100% 0)', y: -8 }, {
+        clipPath: 'inset(0 0 0% 0)', y: 0, duration: 0.38, stagger: 0.11, ease: 'power2.out', clearProps: 'clipPath,transform'
+      }, 0);
+      tl.fromTo(head, { top: '0%', autoAlpha: 1 }, { top: '100%', duration: Math.min(0.38 + rows.length * 0.11, 2.2), ease: 'none' }, 0)
+        .to(head, { autoAlpha: 0, duration: 0.2 });
       var photo = strip.querySelector('.frame');
       if (photo) gsap.fromTo(photo, { clipPath: 'inset(0 0 100% 0)' }, {
         clipPath: 'inset(0 0 0% 0)', duration: 0.9, ease: 'power3.inOut', clearProps: 'clipPath',

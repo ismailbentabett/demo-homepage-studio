@@ -22,7 +22,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Every Other Friday Cleaning","description":"Huntsville house cleaning priced line by line. Build a quote by rooms, pick how often, and see sample prices before anyone comes to the door.","telephone":"+12565550153","email":"hello@every-other-friday.example","areaServed":[{"@type":"City","name":"Huntsville"},{"@type":"City","name":"Madison"},{"@type":"City","name":"Harvest"},{"@type":"City","name":"Meridianville"},{"@type":"City","name":"Owens Cross Roads"},{"@type":"City","name":"Athens"},{"@type":"City","name":"Decatur"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"08:00","closes":"17:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday"],"opens":"08:00","closes":"17:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"09:00","closes":"13:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/bricolage-grotesque/bricolage-grotesque-200-800-normal.woff2" crossorigin>
-<link rel="preload" as="image" href="media/hero-B2-1170.webp" imagesrcset="media/hero-B2-1170.webp 1170w, media/hero-B2.webp 2340w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" href="media/hero-A3-1170.webp" imagesrcset="media/hero-A3-1170.webp 1170w, media/hero-A3.webp 2340w" imagesizes="100vw" fetchpriority="high">
 <style>
 @font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque/bricolage-grotesque-200-800-normal.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 @font-face{font-family:"Figtree";src:url("fonts/figtree/figtree-300-900-normal.woff2") format("woff2");font-weight:300 900;font-style:normal;font-display:swap}
@@ -277,7 +277,8 @@ html.lenis, html.lenis body { height: auto; }
   --gutter: 20px;
   --pad: var(--s-8);
   --radius: 2px;
-  --grade: saturate(.85) contrast(1.05) sepia(.08);
+  --grade: sepia(.16) saturate(.9) contrast(1.03) brightness(1.02);
+  --strip: clamp(280px, 22vw, 330px); --strip-x: 40px;
 
   --ease-out: cubic-bezier(.23, 1, .32, 1);
   --ease-io: cubic-bezier(.77, 0, .175, 1);
@@ -390,7 +391,8 @@ html:not(.sw-js) .mobile-menu { display: none; }
 .tk__total strong { font-family: var(--font-display); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); letter-spacing: -0.02em; text-transform: none; font-variant-numeric: tabular-nums; line-height: 1; }
 .tk__note { color: var(--slip-muted); }
 .tk__note .sample-tag { color: #9C4A18; }
-.tk__foot { text-align: center; color: var(--slip-muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.8125rem; }
+.tk__foot { text-align: center; color: var(--slip-muted); letter-spacing: 0; text-transform: none; font-size: 0.8125rem; }
+.tk__foot--plain { font-size: 0.875rem; color: var(--slip-ink); }
 
 /* the strip: on phones a torn ticket inside the flow; from 900px a column that runs through the sections */
 .spine {
@@ -401,12 +403,25 @@ html:not(.sw-js) .mobile-menu { display: none; }
 }
 
 /* ---------- frames (the photo is printed on the paper) ---------- */
-.frame {
-  position: relative; overflow: hidden; margin: 0; isolation: isolate;
-  background: linear-gradient(150deg, rgba(255, 253, 248, .0) 0 40%, rgba(156, 74, 24, .10)),
-    repeating-linear-gradient(-45deg, rgba(156, 74, 24, .09) 0 2px, transparent 2px 14px), #E7DCCB;
+.frame { position: relative; overflow: hidden; margin: 0; isolation: isolate; background: #F3EBDD; }
+.frame.is-broken { background: repeating-linear-gradient(-45deg, rgba(156, 74, 24, .09) 0 2px, transparent 2px 14px), #E7DCCB; }
+/* one paper grade for the whole shoot: the photo is multiplied onto warm paper (whites turn to paper),
+   then a light warm wash sits on top, so every frame reads as printed by the same till */
+.frame img { width: 100%; height: 100%; object-fit: cover; filter: var(--grade); color: transparent; mix-blend-mode: multiply; }
+.frame::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(170deg, rgba(245, 226, 196, .22), rgba(156, 74, 24, .12)); mix-blend-mode: multiply; }
+
+/* photo slips: each frame is a print on paper with the time of the visit stamped under it */
+.frame[data-time] { padding: 7px 7px 32px; background: var(--slip); box-shadow: 0 0 0 1px rgba(45, 42, 38, .08), 0 10px 22px -14px rgba(30, 27, 23, .55); }
+.frame[data-time]::after { inset: 7px 7px 32px; }
+.frame[data-time]::before {
+  content: attr(data-time); position: absolute; left: 10px; right: 10px; bottom: 7px; z-index: 2;
+  font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.02em; color: #5F5852;
+  display: flex; gap: 8px; white-space: nowrap; overflow: hidden;
 }
-.frame img { width: 100%; height: 100%; object-fit: cover; filter: var(--grade); color: transparent; }
+.frame.is-broken[data-time]::before { content: none; }
+.step__photo[data-time] { transform: rotate(-0.6deg); }
+.step:nth-child(2) .step__photo[data-time] { transform: rotate(0.5deg); }
+.step:nth-child(3) .step__photo[data-time] { transform: rotate(-0.3deg); }
 .frame.is-broken .frame-fallback {
   display: flex; align-items: flex-end; justify-content: flex-start; place-items: unset; text-align: left;
   font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.35; color: #4A3A2E; padding: var(--s-3) var(--s-4);
@@ -484,6 +499,9 @@ html:not(.sw-js) .tk__keep { display: none; }
 /* ---------- 4 break ---------- */
 .break { display: grid; }
 .break__photo { aspect-ratio: 16 / 10; order: 2; }
+.break__photo[data-time] { padding: 0; box-shadow: none; }
+.break__photo[data-time]::after { inset: 0; }
+.break__photo[data-time]::before { left: 16px; right: auto; bottom: 16px; padding: 6px 10px; background: var(--slip); color: var(--slip-ink); }
 .break__slip { padding: var(--s-8) var(--gutter); display: grid; gap: var(--s-5); align-content: center; }
 .break__kicker { font-size: var(--fs--1); letter-spacing: 0.04em; color: var(--muted); }
 .break__quote { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-3); line-height: 0.96; letter-spacing: -0.03em; text-wrap: balance; max-width: 13ch; }
@@ -500,6 +518,8 @@ html:not(.sw-js) .tk__keep { display: none; }
 .step p:last-child { max-width: 36ch; }
 
 /* ---------- 6 frequency ---------- */
+#frequency .spine { order: 2; }
+#frequency .band__body { order: 1; }
 .ticks { border: 0; padding: 0; margin: 0; display: grid; gap: var(--s-2); }
 .tick { position: relative; display: block; cursor: pointer; }
 .tick input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
@@ -517,18 +537,26 @@ html:not(.sw-js) .tk__keep { display: none; }
 
 /* ---------- 7 services ---------- */
 .svc { display: grid; border-top: 2px solid var(--fg); }
-.svc__item { display: grid; gap: 2px var(--s-5); padding: var(--s-4) 0 var(--s-2); border-bottom: 1px dashed var(--rule); }
+.svc__item { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px var(--s-5); padding: var(--s-4) 0 var(--s-2); border-bottom: 1px dashed var(--rule); }
 .svc__item h3 { font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); }
 .svc__item p { color: var(--muted); max-width: 46ch; }
-.btn.svc__go {
-  justify-self: start; position: relative; min-height: 48px; padding: 12px 0; background: none; border: 0; border-radius: 0;
-  color: var(--accent); font-family: var(--font-mono); font-weight: 500; font-size: var(--fs--1); letter-spacing: 0.02em;
+.svc__item { position: relative; }
+.svc__go {
+  justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 0;
+  color: var(--accent); font-family: var(--font-mono); font-weight: 500; font-size: var(--fs--1); text-decoration: none;
 }
-.btn.svc__go::before { content: "→"; order: 2; }
-.btn.svc__go::after { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; border-top: 1.5px solid currentColor; transform: scaleX(0); transform-origin: left; transition: transform var(--dur-ui) var(--ease-out); }
-@media (hover: hover) { .btn.svc__go:hover::after, .btn.svc__go:focus-visible::after { transform: scaleX(1); } .btn.svc__go:hover { background: none; color: var(--accent); } }
-.svc__end { margin-top: var(--s-5); text-align: center; color: var(--muted); font-size: var(--fs--1); letter-spacing: 0.08em; }
-.tk__lines--prices .tk__line { flex-wrap: wrap; row-gap: 0; }
+/* the whole row is the link; every row prints its own line: "Put it on my ticket →" */
+.svc__go::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.svc__label { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; transition: background-size var(--dur-ui) var(--ease-out); padding-bottom: 2px; }
+.svc__item:hover .svc__label, .svc__item:focus-within .svc__label { background-size: 100% 1.5px; }
+.svc__arrow { transition: transform var(--dur-ui) var(--ease-out); }
+.svc__item:hover .svc__arrow { transform: translateX(4px); }
+.svc__item:hover h3 { color: var(--accent); }
+.svc__go:focus-visible { outline: none; }
+.svc__go:focus-visible::after { outline: 3px solid var(--accent); outline-offset: 2px; }
+.svc__end { text-wrap: balance; margin-top: var(--s-5); text-align: center; color: var(--muted); font-size: var(--fs--1); letter-spacing: 0; }
+.tk__lines--prices .tk__line > span:first-child { flex: 0 1 auto; min-width: 0; }
+.tk__lines--prices .tk__line > span:last-child { flex: none; white-space: nowrap; }
 .tk__lines--prices .tk__line > span:first-child { text-transform: none; letter-spacing: 0; }
 
 /* ---------- 8 reviews ---------- */
@@ -574,6 +602,7 @@ html:not(.sw-js) .tk__keep { display: none; }
 .hours { display: grid; margin: 0; }
 .hours > div { display: flex; justify-content: space-between; gap: var(--s-3); padding-block: 6px; border-bottom: 1px dashed var(--slip-rule); }
 .hours dt, .hours dd { margin: 0; }
+.hours dd { white-space: nowrap; }
 .hours dt { font-weight: 500; }
 .hours .is-today { font-weight: 500; color: #9C4A18; }
 
@@ -620,7 +649,8 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 .footer__col { display: grid; gap: var(--s-2); align-content: start; font-size: 0.9375rem; color: var(--ink); }
 .footer__col a { position: relative; display: inline-block; padding-block: 12px; margin-block: -12px; text-decoration: none; }
 .footer__col .credits:empty { display: none; }
-.footer__col .credits { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 0.875rem; }
+.footer__col .credits { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.875rem; }
+.footer__col .credits a[rel~="license"] { white-space: nowrap; }
 
 /* ---------- mobile bar ---------- */
 .mobile-bar {
@@ -635,6 +665,9 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 .mobile-bar__go { min-height: 52px; padding: 8px 8px; font-size: 0.875rem; white-space: nowrap; }
 
 /* ---------- motion (enhancement only; nothing is hidden) ---------- */
+/* the print head that runs down a strip as it feeds (created by app.js, motion only) */
+.sw-motion .tk { position: relative; }
+.tk__head { position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 2; pointer-events: none; background: #9C4A18; box-shadow: 0 2px 10px rgba(156, 74, 24, .45); visibility: hidden; }
 @keyframes tk-print { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @keyframes tk-wipe { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
 .sw-motion .spine:not(.is-printed) .tk__mast::after { transform: scaleX(0); }
@@ -706,14 +739,17 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
   .break__photo { order: 2; aspect-ratio: auto; height: 100%; }
   .break__slip { order: 1; padding: var(--s-9) var(--s-8); }
 
-  .area { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: stretch; }
-  .area__side { display: contents; }
-  .area__main { grid-column: 1; grid-row: 1; }
-  .area__photo { grid-column: 2; grid-row: 1 / span 2; aspect-ratio: auto; min-height: 100%; }
-  .tk--hours { grid-column: 1; grid-row: 2; max-width: 520px; width: 100%; }
+  .area { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: start; }
+  .area__main { grid-column: 1; }
+  .area__side { grid-column: 2; }
+  .tk--hours { width: 100%; }
   .area { row-gap: var(--s-6); }
   .panel { grid-template-columns: 1fr; }
   .footer .wrap { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: var(--s-8); align-items: start; }
+  .svc__item { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; }
+  .svc__item h3 { grid-column: 1; grid-row: 1; }
+  .svc__go { grid-column: 2; grid-row: 1; justify-self: end; }
+  .svc__item p { grid-column: 1 / -1; }
 }
 
 /* ---------- 1200 ---------- */
@@ -723,12 +759,65 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
   .header__menu-btn { display: none; }
   .mobile-menu { display: none; }
   .header__inner { gap: var(--s-6); }
-  .svc__item { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) auto; align-items: baseline; padding-block: var(--s-3); }
+  /* a full-width ledger: name · what's in it · the line that puts it on your ticket */
+  .svc__item { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr) auto; column-gap: var(--s-6); padding-block: var(--s-4); }
+  .svc__item p { grid-column: 2; grid-row: 1; }
+  .svc__go { grid-column: 3; }
   .rv { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .rv .slip:nth-child(3n + 2) { margin-top: var(--s-7); }
   .rv .slip:nth-child(3n + 3) { margin-top: var(--s-5); }
   .panel { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: var(--s-6); }
   .crew__steps { gap: var(--s-6); }
+}
+
+/* ---------- 1200: one continuous receipt strip runs down the left edge of the page ----------
+   Each section prints its line onto it as you pass; the bands use the rest of the width in their own shapes. */
+.strip-line { display: none; }
+@media (min-width: 1200px) {
+  main { position: relative; z-index: 0; }
+  main::before {
+    content: ""; position: absolute; top: 0; bottom: 0; left: var(--strip-x); width: var(--strip); z-index: 1; pointer-events: none;
+    background: var(--slip) repeating-linear-gradient(180deg, transparent 0 31px, rgba(45, 42, 38, .035) 31px 32px);
+    border-inline: 2px dashed var(--slip-rule);
+    box-shadow: 0 0 0 1px rgba(30, 27, 23, .06), 0 24px 48px -20px rgba(30, 27, 23, .5);
+  }
+  main > section { position: relative; }
+  /* a perforation where one section's line ends and the next begins */
+  main > section + section::before {
+    content: ""; position: absolute; top: 0; left: calc(var(--strip-x) + 2px); width: calc(var(--strip) - 4px); z-index: 2;
+    border-top: 2px dashed #B9AE9C;
+  }
+  main > section:not(.break), .footer { padding-left: calc(var(--strip-x) + var(--strip)); }
+  main > section:not(.break) > .wrap { width: min(100% - var(--s-8) - var(--gutter), 1100px); margin-left: var(--s-8); margin-right: auto; }
+  main > section > .wrap.row, main > section > .wrap.area, .footer > .wrap {
+    width: calc(100% + var(--strip) - var(--gutter)); max-width: none; margin-left: calc(-1 * var(--strip)); margin-right: 0;
+    display: grid; grid-template-columns: var(--strip) minmax(0, 1100px); column-gap: var(--s-8); align-items: start;
+  }
+  main .row > .spine, main .row--flip > .spine, .area > .area__side { grid-column: 1; grid-row: 1; z-index: 2; }
+  main .row > .band__body, main .row--flip > .band__body, main .row > .hero__copy, .area > .area__main { grid-column: 2; grid-row: 1; }
+  /* the tickets are printed straight onto the strip: no paper of their own */
+  .row > .spine { background: none; border: 0; -webkit-mask: none; mask: none; padding-inline: var(--s-5); }
+  .area__side { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+  .tk--hours { background: none; border: 0; padding: var(--s-2) var(--s-5) 0; }
+  .strip-line {
+    display: flex; align-items: baseline; gap: 8px; position: absolute; z-index: 2; top: var(--s-6);
+    left: calc(var(--strip-x) + var(--s-5)); width: calc(var(--strip) - 2 * var(--s-5));
+    font-family: var(--font-mono); font-size: var(--fs--1); color: var(--slip-ink); text-transform: uppercase; letter-spacing: 0.04em;
+    padding-block: 7px; border-bottom: 1px dashed var(--slip-rule);
+  }
+  .strip-line span:first-child { color: #9C4A18; }
+  .strip-line i { flex: 1 1 12px; border-bottom: 1.5px dotted var(--slip-rule); transform: translateY(-4px); }
+  .break { grid-template-columns: calc(var(--strip-x) + var(--strip) + 520px) minmax(0, 1fr); }
+  .break__slip { padding-left: calc(var(--strip-x) + var(--strip) + var(--s-8)); padding-right: var(--s-7); }
+  .footer { padding-top: 0; }
+  .footer__receipt {
+    grid-column: 1; padding: var(--s-8) var(--s-5) calc(var(--s-6) + 14px); margin-top: 0;
+    -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
+    mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 20px 100%;
+  }
+  .footer__lines { font-size: 0.8125rem; letter-spacing: -0.01em; }
+  .footer__lines .tk__line > span:last-child { white-space: nowrap; }
+  .footer__cols { grid-column: 2; padding-top: var(--s-8); grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ---------- 1440 ---------- */
@@ -793,7 +882,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
       <ul role="list" class="mobile-menu__links">
         <li><a href="#quote-builder">Price my house</a></li>
         <li><a href="#checklist">The checklist</a></li>
-        <li><a href="#crew">Same crew</a></li>
+        <li><a href="#crew">The crew</a></li>
         <li><a href="#frequency">How often</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#reviews">Reviews</a></li>
@@ -828,13 +917,13 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
         <div class="tk">
           <p class="tk__mast"><span>EOF</span> · Huntsville</p>
           <p class="tk__meta"><span>Ticket 0001</span><span>Friday</span></p>
-          <figure class="frame tk__photo" data-fallback="Rolled peach and sage towels set on a made bed in a pine-panelled bedroom"><img src="media/hero-B2-1170.webp" srcset="media/hero-B2-1170.webp 1170w, media/hero-B2.webp 2340w" sizes="100vw" alt="Rolled peach and sage towels set on a made bed in a pine-panelled bedroom" width="1170" height="781" fetchpriority="high" decoding="async" data-photo="hero-B2" data-slot="hero"></figure>
+          <figure class="frame tk__photo" data-fallback="Dark sectional sofa and wooden coffee table in a tidy living room, curtains glowing with daylight" data-time="Fri 08:40 · living room"><img src="media/hero-A3-1170.webp" srcset="media/hero-A3-1170.webp 1170w, media/hero-A3.webp 2340w" sizes="100vw" alt="Dark sectional sofa and wooden coffee table in a tidy living room, curtains glowing with daylight" width="1170" height="779" fetchpriority="high" decoding="async" data-photo="hero-A3" data-slot="hero"></figure>
           <ul role="list" class="tk__lines">
-            <li class="tk__line"><span>Rooms</span><i></i><span data-echo="size">you pick</span></li>
-            <li class="tk__line"><span>How often</span><i></i><span data-echo="visit">you pick</span></li>
-            <li class="tk__line"><span>Price</span><i></i><span data-echo="total">before we come</span></li>
+            <li class="tk__line"><span>Rooms</span><i></i><span data-echo="size">not picked yet</span></li>
+            <li class="tk__line"><span>How often</span><i></i><span data-echo="visit">not picked yet</span></li>
+            <li class="tk__line"><span>Price</span><i></i><span data-echo="total">prints when you pick</span></li>
           </ul>
-          <p class="tk__foot">* * * line by line * * *</p>
+          <p class="tk__foot tk__foot--plain">Fills in as you price your house</p>
         </div>
       </div>
     </div>
@@ -860,7 +949,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
       <div class="band__body">
         <p class="kicker">Line 02 · The price</p>
         <h2>Price your house</h2>
-        <p class="lead">Pick your rooms, pick how often, see the number. No phone call required.</p>
+        <p class="lead">Pick the visit and the size. The range prints on the ticket, and the hero ticket up top fills in too.</p>
         <form class="qb" aria-label="Price your house" data-rc-form>
           <fieldset class="qb__group">
             <legend>How often, or what kind of visit</legend>
@@ -923,10 +1012,10 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
       <div class="band__body">
         <p class="kicker">Line 03 · What gets done</p>
         <h2>What's on the list</h2>
-        <p class="lead">Room by room, line by line. Deep-only items marked (D).</p>
+        <p class="lead">Four rooms, 28 lines. Deep-clean-only lines are marked (D).</p>
         <div class="panels">
           <div class="panel" data-tabpanel>
-            <figure class="frame panel__photo" data-fallback="Clean empty microwave interior with its glass turntable, door open to the light"><img src="media/process-oven-1170.webp" srcset="media/process-oven-1170.webp 1170w, media/process-oven.webp 2340w" sizes="100vw" alt="Clean empty microwave interior with its glass turntable, door open to the light" width="1170" height="878" loading="lazy" decoding="async" data-photo="process-oven" data-slot="checklist-kitchen"></figure>
+            <figure class="frame panel__photo" data-fallback="Clean empty microwave interior with its glass turntable, door open to the light" data-time="Fri 09:05 · kitchen"><img src="media/process-oven-1170.webp" srcset="media/process-oven-1170.webp 1170w, media/process-oven.webp 2340w" alt="Clean empty microwave interior with its glass turntable, door open to the light" width="1170" height="878" loading="lazy" decoding="async" data-photo="process-oven" data-slot="checklist-kitchen" sizes="(min-width: 900px) 34vw, 100vw"></figure>
             <div class="panel__list">
               <h3>Kitchen</h3>
               <ol role="list" class="lines">
@@ -936,7 +1025,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
             </div>
           </div>
           <div class="panel" data-tabpanel>
-            <figure class="frame panel__photo" data-fallback="Walk-in white tiled shower with a clear glass panel and a handheld shower head"><img src="media/process-shower-glass-1170.webp" srcset="media/process-shower-glass-1170.webp 1170w, media/process-shower-glass.webp 2340w" sizes="100vw" alt="Walk-in white tiled shower with a clear glass panel and a handheld shower head" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-shower-glass" data-slot="checklist-bath"></figure>
+            <figure class="frame panel__photo" data-fallback="Folded white bath towels stacked on a chrome rack above beige bathroom tile" data-time="Fri 09:50 · bathroom"><img src="media/detail-towels-1170.webp" srcset="media/detail-towels-1170.webp 1170w, media/detail-towels.webp 2340w" alt="Folded white bath towels stacked on a chrome rack above beige bathroom tile" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-towels" data-slot="checklist-bath" sizes="(min-width: 900px) 34vw, 100vw"></figure>
             <div class="panel__list">
               <h3>Bathrooms</h3>
               <ol role="list" class="lines">
@@ -946,7 +1035,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
             </div>
           </div>
           <div class="panel" data-tabpanel>
-            <figure class="frame panel__photo" data-fallback="Three-pronged microfiber blind duster on a plain white background, close-up"><img src="media/process-blinds-1170.webp" srcset="media/process-blinds-1170.webp 1170w, media/process-blinds.webp 2340w" sizes="100vw" alt="Three-pronged microfiber blind duster on a plain white background, close-up" width="1170" height="659" loading="lazy" decoding="async" data-photo="process-blinds" data-slot="checklist-dust"></figure>
+            <figure class="frame panel__photo" data-fallback="Three-pronged microfiber blind duster on a plain white background, close-up" data-time="Fri 10:20 · bedrooms"><img src="media/process-blinds-1170.webp" srcset="media/process-blinds-1170.webp 1170w, media/process-blinds.webp 2340w" alt="Three-pronged microfiber blind duster on a plain white background, close-up" width="1170" height="659" loading="lazy" decoding="async" data-photo="process-blinds" data-slot="checklist-dust" sizes="(min-width: 900px) 34vw, 100vw"></figure>
             <div class="panel__list">
               <h3>Bedrooms + living</h3>
               <ol role="list" class="lines">
@@ -956,7 +1045,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
             </div>
           </div>
           <div class="panel" data-tabpanel>
-            <figure class="frame panel__photo" data-fallback="Spin mop head lying on beige floor tile, its strands grey from use"><img src="media/process-mop-1170.webp" srcset="media/process-mop-1170.webp 1170w, media/process-mop.webp 2340w" sizes="100vw" alt="Spin mop head lying on beige floor tile, its strands grey from use" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-mop" data-slot="checklist-floors"></figure>
+            <figure class="frame panel__photo" data-fallback="Folds and hemmed edges of a green cotton cloth, a close texture detail" data-time="Fri 10:55 · floors"><img src="media/detail-microfiber-1170.webp" srcset="media/detail-microfiber-1170.webp 1170w, media/detail-microfiber.webp 2340w" alt="Folds and hemmed edges of a green cotton cloth, a close texture detail" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-microfiber" data-slot="checklist-floors" sizes="(min-width: 900px) 34vw, 100vw"></figure>
             <div class="panel__list">
               <h3>Floors</h3>
               <ol role="list" class="lines">
@@ -973,36 +1062,37 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
 
   <!-- 4 · break (colour band) -->
   <section class="break t-accent" data-layout="full-bleed" aria-label="The rhythm">
-    <figure class="frame break__photo" data-fallback="Bathroom with stone-tiled walls, a white basin, wide mirror and shower curtain"><img src="media/room-bath-1170.webp" srcset="media/room-bath-1170.webp 1170w, media/room-bath.webp 2340w" sizes="100vw" alt="Bathroom with stone-tiled walls, a white basin, wide mirror and shower curtain" width="1170" height="779" loading="lazy" decoding="async" data-photo="room-bath" data-slot="break"></figure>
+    <figure class="frame break__photo" data-fallback="Walk-in white tiled shower with a clear glass panel and a handheld shower head" data-time="Fri 11:30 · main bath"><img src="media/process-shower-glass-1170.webp" srcset="media/process-shower-glass-1170.webp 1170w, media/process-shower-glass.webp 2340w" alt="Walk-in white tiled shower with a clear glass panel and a handheld shower head" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-shower-glass" data-slot="break" sizes="(min-width: 900px) 58vw, 100vw"></figure>
     <div class="break__slip">
       <p class="break__kicker mono">Line 04 · The rhythm</p>
-      <p class="break__quote">Same crew. <em>Every Other Friday.</em></p>
+      <p class="break__quote">The crew you met, <em>Every Other Friday.</em></p>
     </div>
   </section>
 
-  <!-- 5 · same crew (scroll story) -->
+  <!-- 5 · crew (scroll story) -->
   <section id="crew" class="band t-paper" data-layout="triptych" data-hook="story">
+    <p class="strip-line" aria-hidden="true"><span>Line 05</span><i></i><span>3 visits</span></p>
     <div class="wrap">
       <div class="crew__head">
         <p class="kicker">Line 05 · The crew</p>
         <h2>By the third visit, they know your house.</h2>
-        <p class="lead">The people who clean your house the first time are the people who come back, on the weekday you picked.</p>
+        <p class="lead">Whoever cleans your house the first time comes back on the weekday you picked.</p>
       </div>
       <ol role="list" class="crew__steps" data-crew>
         <li class="step">
-          <figure class="frame step__photo" data-fallback="Hands rinsing a sweet potato under the tap of a stainless kitchen sink"><img src="media/detail-sink-1170.webp" srcset="media/detail-sink-1170.webp 1170w, media/detail-sink.webp 2340w" sizes="100vw" alt="Hands rinsing a sweet potato under the tap of a stainless kitchen sink" width="1170" height="781" loading="lazy" decoding="async" data-photo="detail-sink" data-slot="story-1"></figure>
+          <figure class="frame step__photo" data-fallback="Refrigerator shelf of leftovers packed in clear lidded containers, lit from inside" data-time="Visit 01 · Fri 09:15"><img src="media/process-fridge-1170.webp" srcset="media/process-fridge-1170.webp 1170w, media/process-fridge.webp 2340w" alt="Refrigerator shelf of leftovers packed in clear lidded containers, lit from inside" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-fridge" data-slot="story-1" sizes="(min-width: 640px) 30vw, 100vw"></figure>
           <p class="step__no mono">Visit 01</p>
           <h3>They learn the house</h3>
-          <p>Which sink spots, which shower glass, where the caddy goes first.</p>
+          <p>Which fridge shelf to leave alone, which shower glass spots, where the caddy goes first.</p>
         </li>
         <li class="step">
-          <figure class="frame step__photo" data-fallback="Carpeted staircase rising between white walls, soft pile visible on each tread"><img src="media/process-vacuum-1170.webp" srcset="media/process-vacuum-1170.webp 1170w, media/process-vacuum.webp 2340w" sizes="100vw" alt="Carpeted staircase rising between white walls, soft pile visible on each tread" width="1170" height="836" loading="lazy" decoding="async" data-photo="process-vacuum" data-slot="story-2"></figure>
+          <figure class="frame step__photo" data-fallback="Carpeted staircase rising between white walls, soft pile visible on each tread" data-time="Visit 02 · Fri 10:40"><img src="media/process-vacuum-1170.webp" srcset="media/process-vacuum-1170.webp 1170w, media/process-vacuum.webp 2340w" alt="Carpeted staircase rising between white walls, soft pile visible on each tread" width="1170" height="836" loading="lazy" decoding="async" data-photo="process-vacuum" data-slot="story-2" sizes="(min-width: 640px) 30vw, 100vw"></figure>
           <p class="step__no mono">Visit 02</p>
           <h3>They learn the dog</h3>
           <p>Where the hair piles up, which rug to lift, which door stays shut.</p>
         </li>
         <li class="step">
-          <figure class="frame step__photo" data-fallback="Folded white bath towels stacked on a chrome rack above beige bathroom tile"><img src="media/detail-towels-1170.webp" srcset="media/detail-towels-1170.webp 1170w, media/detail-towels.webp 2340w" sizes="100vw" alt="Folded white bath towels stacked on a chrome rack above beige bathroom tile" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-towels" data-slot="story-3"></figure>
+          <figure class="frame step__photo" data-fallback="Craftsman bungalow gable with teal shingle siding, red trim and a brick chimney" data-time="Visit 03 · Fri 12:10"><img src="media/home-greenville-1170.webp" srcset="media/home-greenville-1170.webp 1170w, media/home-greenville.webp 2340w" alt="Craftsman bungalow gable with teal shingle siding, red trim and a brick chimney" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-greenville" data-slot="story-3" sizes="(min-width: 640px) 30vw, 100vw"></figure>
           <p class="step__no mono">Visit 03</p>
           <h3>They start where you want</h3>
           <p>Your list, in your order. You stop explaining and start coming home to it.</p>
@@ -1020,8 +1110,8 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
           <p class="tk__meta"><span>Line 06</span><span>Your answer</span></p>
           <p class="tk__answer" data-checklist-result aria-live="polite">Nothing ticked yet. Your answer prints here.</p>
           <div class="tk__meter" aria-hidden="true"><span></span></div>
-          <a class="btn btn-primary btn-block" href="#contact" data-service="Every-other-week cleaning">Price this visit</a>
-          <p class="tk__foot">You can change it any visit</p>
+          <a class="btn btn-primary btn-block" href="#contact" data-service="Every-other-week cleaning">Put it on my ticket</a>
+          <p class="tk__foot tk__foot--plain">Change it any visit.</p>
         </div>
       </div>
       <div class="band__body">
@@ -1063,7 +1153,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
             <li class="tk__line"><span>Oven or fridge add-on</span><i></i><span>$35 to $50</span></li>
             
           </ul>
-          <p class="tk__note">Sample pricing for a 3 bed, 2 bath house. Walk-through confirms it.</p>
+          <p class="tk__note">For a 3 bed, 2 bath house. The walk-through confirms it.</p>
         </div>
       </div>
       <div class="band__body">
@@ -1073,66 +1163,67 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
           
           <li class="svc__item">
             <h3>Every-other-week cleaning</h3>
-            <p>The same crew every visit, so they learn your house, your pets and your preferences.</p>
-            <a class="btn svc__go" href="#contact" data-service="Every other week">Price this visit</a>
+            <p>Your house on a two-week rhythm: they learn the pets, the rooms and the order you like.</p>
+            <a class="svc__go" href="#contact" data-service="Every other week"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
           <li class="svc__item">
             <h3>Weekly cleaning</h3>
             <p>For busy houses with kids and dogs: floors, kitchen and baths kept ahead of the week.</p>
-            <a class="btn svc__go" href="#contact" data-service="Weekly">Price this visit</a>
+            <a class="svc__go" href="#contact" data-service="Weekly"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
           <li class="svc__item">
             <h3>Monthly cleaning</h3>
             <p>A fuller once-a-month visit for tidy households that want the bathrooms and floors reset.</p>
-            <a class="btn svc__go" href="#contact" data-service="Monthly">Price this visit</a>
+            <a class="svc__go" href="#contact" data-service="Monthly"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
           <li class="svc__item">
             <h3>Deep clean</h3>
             <p>Baseboards, door frames, grout and inside the microwave: the list regular visits do not touch.</p>
-            <a class="btn svc__go" href="#contact" data-service="Deep clean">Price this visit</a>
+            <a class="svc__go" href="#contact" data-service="Deep clean"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
           <li class="svc__item">
             <h3>Move-out cleaning for PCS moves</h3>
             <p>Military move-out cleans timed around the packers, with photos for your landlord or housing office.</p>
-            <a class="btn svc__go" href="#contact" data-service="Move-out (PCS)">Price this visit</a>
+            <a class="svc__go" href="#contact" data-service="Move-out (PCS)"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
           <li class="svc__item">
             <h3>Move-in cleaning</h3>
             <p>Cabinets, closets and appliances wiped out before the moving truck arrives.</p>
-            <a class="btn svc__go" href="#contact" data-service="Move-in">Price this visit</a>
+            <a class="svc__go" href="#contact" data-service="Move-in"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
           <li class="svc__item">
             <h3>Oven &amp; fridge add-on</h3>
             <p>Inside the oven and the fridge cleaned and shelves wiped, added to any visit.</p>
-            <a class="btn svc__go" href="#contact" data-service="Oven &amp; fridge">Price this visit</a>
+            <a class="svc__go" href="#contact" data-service="Oven &amp; fridge"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
           <li class="svc__item">
             <h3>Inside windows</h3>
             <p>Inside glass, sills and tracks cleaned room by room, add it to any visit.</p>
-            <a class="btn svc__go" href="#contact" data-service="Windows">Price this visit</a>
+            <a class="svc__go" href="#contact" data-service="Windows"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
           <li class="svc__item">
             <h3>Pet hair visit</h3>
             <p>Extra time on stairs, sofas and corners where dog and cat hair piles up.</p>
-            <a class="btn svc__go" href="#contact" data-service="Pet hair">Price this visit</a>
+            <a class="svc__go" href="#contact" data-service="Pet hair"><span class="svc__label">Put it on my ticket</span><span class="svc__arrow" aria-hidden="true">→</span></a>
           </li>
           
         </ul>
-        <p class="svc__end mono">* * * nine lines, one crew * * *</p>
+        <p class="svc__end mono">* * * walk-through confirms every line * * *</p>
       </div>
     </div>
   </section>
 
   <!-- 8 · reviews -->
   <section id="reviews" class="band t-paper" data-layout="slips" data-sw-signature="receipt">
+    <p class="strip-line" aria-hidden="true"><span>Line 08</span><i></i><span>Neighbours</span></p>
     <div class="wrap">
       <div class="rv__head">
         <div>
@@ -1226,10 +1317,9 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
         </form>
       </div>
       <div class="area__side">
-        <figure class="frame area__photo" data-fallback="Craftsman bungalow gable with teal shingle siding, red trim and a brick chimney"><img src="media/home-greenville-1170.webp" srcset="media/home-greenville-1170.webp 1170w, media/home-greenville.webp 2340w" sizes="100vw" alt="Craftsman bungalow gable with teal shingle siding, red trim and a brick chimney" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-greenville" data-slot="proof-1"></figure>
         <div class="tk tk--hours">
           <p class="tk__mast"><span>EOF</span> · Hours</p>
-          <p class="tk__open mono" data-open-now>Mon to Thu 8 am to 5:30 pm · Fri to 5 pm</p>
+          <p class="tk__open mono" data-open-now>Mon–Thu 8&nbsp;am&nbsp;–&nbsp;5:30&nbsp;pm · Fri 8&nbsp;am&nbsp;–&nbsp;5&nbsp;pm · Sat 9&nbsp;am&nbsp;–&nbsp;1&nbsp;pm</p>
           <dl class="hours"><div><dt>Mon</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Tue</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Wed</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Thu</dt><dd>8 am – 5:30 pm</dd></div><div><dt>Fri</dt><dd>8 am – 5 pm</dd></div><div><dt>Sat</dt><dd>9 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
           <p class="tk__foot">Times are Huntsville time</p>
         </div>
@@ -1250,14 +1340,13 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
             <li class="tk__line"><span>03</span><i></i><span>The day</span></li>
             <li class="tk__line"><span>04</span><i></i><span>You</span></li>
           </ol>
-          <figure class="frame tk__photo tk__photo--short" data-fallback="Folds and hemmed edges of a green cotton cloth, a close texture detail"><img src="media/detail-microfiber-1170.webp" srcset="media/detail-microfiber-1170.webp 1170w, media/detail-microfiber.webp 2340w" sizes="100vw" alt="Folds and hemmed edges of a green cotton cloth, a close texture detail" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-microfiber" data-slot="proof-2"></figure>
           <p class="tk__note">Rather talk? <a class="tel-plain" href="tel:+12565550153">(256) 555-0153</a></p>
         </div>
       </div>
       <div class="band__body">
         <p class="kicker">Line 10 · Send it</p>
         <h2>Your price, confirmed before the first visit.</h2>
-        <p class="lead">Tell us about your house. We'll confirm the price before anyone shows up.</p>
+        <p class="lead">Four short steps. Nothing is booked until the walk-through, and the price on your ticket is the one you pay.</p>
         <form class="lead-form" data-lead aria-label="Send my price">
           <fieldset class="fstep" data-step>
             <legend>Step 1 of 4 · The visit</legend>
@@ -1338,11 +1427,12 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
     <div class="footer__receipt">
       <p class="footer__mast"><span>EOF</span> · Every Other Friday Cleaning</p>
       <ul role="list" class="footer__lines">
-        <li class="tk__line"><span>Subtotal</span><i></i><span data-echo="subtotal">your house, line by line</span></li>
-        <li class="tk__line"><span>Total</span><i></i><span data-echo="total-note">confirmed before the first visit</span></li>
+        <li class="tk__line"><span>Visit</span><i></i><span data-echo="visit">not picked yet</span></li>
+        <li class="tk__line"><span>House</span><i></i><span data-echo="size">not picked yet</span></li>
+        <li class="tk__line"><span>Total</span><i></i><span data-echo="total">prints when you pick</span></li>
         <li class="tk__line"><span>Today</span><i></i><span><span data-open-now>Mon–Thu 8 am – 5:30 pm · Fri 8 am – 5 pm · Sat 9 am – 1 pm</span></span></li>
       </ul>
-      <p class="footer__thanks">Thank you · see you Friday · <a href="tel:+12565550153">(256) 555-0153</a></p>
+      <p class="footer__thanks">Thank you · see you Friday · <a href="tel:+12565550153">Call (256) 555-0153</a></p>
     </div>
     <div class="footer__cols">
       <div class="footer__col">
@@ -1364,7 +1454,7 @@ html:not(.sw-js) .fnav [data-next], html:not(.sw-js) .fnav [data-back] { display
       <div class="footer__col">
         <h2 class="footer__h">Photos</h2>
         <p>Stock photos, used under the licences below.</p>
-        <ul class="credits"><li>Photo by Shixart1985 on <a href="https://commons.wikimedia.org/w/index.php?curid=193969736" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0/" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Tony Webster on <a href="https://commons.wikimedia.org/wiki/File:Inside_of_a_Microwave_(53075889329).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Category:Government of the United States Virgin Islands on <a href="https://commons.wikimedia.org/wiki/File:USVI_IMG_5251_-_Clean_white_tiles_modern_shower_with_handheld_nozzle_and_glass_enclosure_neatly_arranged_toiletries_on_the_wall.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:USVI_IMG_5251_-_Clean_white_tiles_modern_shower_with_handheld_nozzle_and_glass_enclosure_neatly_arranged_toiletries_on_the_wall.jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by Tomasz Sienicki [user: tsca, mail: tomasz.sienicki at gmail.com] on <a href="https://commons.wikimedia.org/wiki/File:ST0VFANGER_ubt.JPG" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/3.0" rel="noopener license" target="_blank">CC BY 3.0</a></li><li>Photo by Junyu-K on <a href="https://commons.wikimedia.org/wiki/File:202510_%E5%B7%B2%E8%A2%AB%E6%9F%93%E8%89%B2%E7%9A%84%E6%97%8B%E8%BD%89%E6%8B%96%E6%8A%8A%E6%8B%96%E5%B8%83%E7%9B%A4_01.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by PattayaPatrol on <a href="https://commons.wikimedia.org/wiki/File:DZ6_0462_A_clean_marble-tiled_hotel_bathroom_with_a_granite_sink_countertop_large_mirror_and_a_shower_tucked_behind_a_curved_curtain_rod.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Shixart1985 on <a href="https://commons.wikimedia.org/wiki/File:Preparing_fresh_sweet_potatoes_by_washing_them_in_the_kitchen_sink_with_running_water.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Tony Webster on <a href="https://commons.wikimedia.org/wiki/File:Stairway_-_Carpet_Freshly_Vacuumed_(54127454416).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Blake Handley from Victoria, Canada on <a href="https://commons.wikimedia.org/wiki/File:InterContinental_Grand_Yokohoma_17_(47853039322).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Bmzuckerman on <a href="https://commons.wikimedia.org/wiki/File:Craftsman_Bungalow_-_Northfield,_MN_-_Union_Street_(320)_(2).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li><li>Photo by Franz van Duns on <a href="https://commons.wikimedia.org/wiki/File:2022-10-28_multiple_folds_of_green_table_cloth_(focus_stack_-_HiRes).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul>
+        <ul class="credits"><li>Photo by Shixart1985 on <a href="https://commons.wikimedia.org/w/index.php?curid=195360286" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0/" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Tony Webster on <a href="https://commons.wikimedia.org/wiki/File:Inside_of_a_Microwave_(53075889329).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Blake Handley from Victoria, Canada on <a href="https://commons.wikimedia.org/wiki/File:InterContinental_Grand_Yokohoma_17_(47853039322).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Tomasz Sienicki on <a href="https://commons.wikimedia.org/wiki/File:ST0VFANGER_ubt.JPG" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/3.0" rel="noopener license" target="_blank">CC BY 3.0</a></li><li>Photo by Franz van Duns on <a href="https://commons.wikimedia.org/wiki/File:2022-10-28_multiple_folds_of_green_table_cloth_(focus_stack_-_HiRes).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Government of the United States Virgin Islands on <a href="https://commons.wikimedia.org/wiki/File:USVI_IMG_5251_-_Clean_white_tiles_modern_shower_with_handheld_nozzle_and_glass_enclosure_neatly_arranged_toiletries_on_the_wall.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:USVI_IMG_5251_-_Clean_white_tiles_modern_shower_with_handheld_nozzle_and_glass_enclosure_neatly_arranged_toiletries_on_the_wall.jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by USDAgov on <a href="https://commons.wikimedia.org/wiki/File:Food_Safety_-_Cut_Waste_in_Refrigerators_(20200608-FSIS-LSC-0189).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:Food_Safety_-_Cut_Waste_in_Refrigerators_(20200608-FSIS-LSC-0189).jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by Tony Webster on <a href="https://commons.wikimedia.org/wiki/File:Stairway_-_Carpet_Freshly_Vacuumed_(54127454416).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Bmzuckerman on <a href="https://commons.wikimedia.org/wiki/File:Craftsman_Bungalow_-_Northfield,_MN_-_Union_Street_(320)_(2).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li></ul>
       </div>
     </div>
   </div>

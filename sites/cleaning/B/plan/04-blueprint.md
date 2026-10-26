@@ -1,5 +1,8 @@
 # Blueprint — cleaning-B (Every Other Friday Cleaning)
 
+## Round 5
+Elevate layout: from 1200px one continuous paper strip runs down the left edge of <main>. Every ticket (hero, price, list, quiz, price list, hours, form) prints straight onto it, with perforations at section joins. Crew and reviews print a strip line, and the footer receipt is the strip's torn end. The bands use the remaining width: services became a full-width 3-column ledger, and the dead left columns are gone. Elevate photo: every frame is a "photo slip" (paper margin, mono timestamp "Fri 09:05 · kitchen"…), one paper grade (multiply onto paper plus a warm wash). Swaps: break = process-shower-glass (was the cabin tub), story-2 = process-vacuum stairs (was the dirty mop), checklist bath = detail-towels, floors = detail-microfiber. MustFix: lazy images are promoted to eager after load, and frames carry real sizes, so the 1170 files load. The triptych was confirmed in 1440-full and 1440-rm-full. Shoulds: labelled row links, en-dash hours with nowrap, quiz slip after the question on phones, footer Visit/House lines echo like the hero, price stays on line one, copy-5 applied.
+
 ## Round 3 (photo pass)
 Real photos placed (mustFix 1): hero-B2 (towels on a made bed, ticket hero), checklist process-oven / shower-glass / blinds / mop, break room-bath, crew detail-sink / process-vacuum / detail-towels, area home-greenville (no caption names a place), contact detail-microfiber. hero-A3 / hero-C1 / hero-C2 left to the siblings. Footer credits now render real Commons credits; the quiz meter shows a faint empty track instead of a blank box.
 
@@ -138,3 +141,5 @@ Variation per section: hero = static print; quote-builder = interactive add; che
 - Marquee has `aria-hidden="true"` and pauses on hover/focus. Reduced motion stops it entirely.
 - Focus ring 3px solid var(--focus), offset 3px on all interactive elements.
 - Skip link to #quote-builder as primary action.
+## Round 4 (fix, reopened)
+Photo: the set was recast as one residential shoot (hero living room hero-A3, #break home bath hero-C2, story fridge/mop/bungalow, checklist vacuum stairs). The hotel, cabin, sweet-potato and green-cloth frames are gone, and every frame shares one warm paper grade (filter plus a multiply wash). The area and contact photos were dropped, because the library has only 9 usable real frames. Motion: each strip now prints top-down under a travelling print head, the quiz answer echoes into the hero ticket, and the footer total arrives filled from the estimator. Also: #services is 2 columns with whole-row links (the label shows on row 1 and on hover/focus), the ticket footers are sentence case, and the copy-4 replacements are applied.
