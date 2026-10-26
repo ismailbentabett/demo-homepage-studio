@@ -1,0 +1,27 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": { "score": 4, "notes": "1440-first.jpg: hero image missing (alt text fills left 55%), no centred statement+marquee as promised; header nav and phone dark-on-navy, unreadable; h1 4 lines at 1440, no city in h1. 390-first.jpg: h1 starts ~y690, primary action below fold." },
+    "distinctiveness": { "score": 4.5, "notes": "1440-full.jpg: none of the three signatures reads; white page instead of night-sky palette, no marquee, altitude rail is a clipped grey vertical string (1440-scroll-25.jpg). Services as 4x2 template card grid." },
+    "type": { "score": 6.5, "notes": "1440-first.jpg: Outfit Black + Space Mono pair works for h1. 1440-scroll-75.jpg: grey ~13px table notes and tracked caps headers, straight quotes in reviews; 3+ tracked mono labels in first view; mono used for running sentences (1440-scroll-25.jpg)." },
+    "layout": { "score": 5, "notes": "1440-full.jpg: five photo bands render as half-empty white fields, gallery 'Hands, tools, no logos' empty; all-white tonal run with no dark band; four identical grey tool boxes stacked (1440-scroll-25.jpg)." },
+    "photo": { "score": 2, "notes": "1440-first.jpg, 1440-scroll-25.jpg, 1440-scroll-50.jpg, 390-full.jpg: no photo renders anywhere; all 9 slots are 48-byte placeholder webps showing alt text. Alt text itself is good." },
+    "copy": { "score": 6.5, "notes": "1440-first.jpg lead and 1440-scroll-75.jpg pricing intro are specific and honest. Leaked internal heading 'Hands, tools, no logos' (1440-full.jpg); 'SAMPLE · SAMPLE' doubled on every price row (1440-scroll-75.jpg); 'Price it' vs 'Book a time'; 14 em dashes." },
+    "mobile": { "score": 4, "notes": "render.json + 390-full.jpg: page 456px wide (oil tabs, price table). 390-first.jpg: h1 below an empty image box, under the call bar; 390-full.jpg: 8 identical stacked service cards, desktop table squeezed. Call bar works." },
+    "a11y": { "score": 6, "notes": "1440-first.jpg: header nav and phone fail contrast on navy. 1440-scroll-75.jpg: grey notes/headers under 4.5:1. 1440-scroll-50.jpg: empty ZIP output renders as unlabeled field. 1440-rm-full.jpg shows all text." },
+    "motion": { "score": 5, "notes": "dist hooks exist (split, marquee, altitude, reveal) but 1440-scroll-25.jpg / 1440-scroll-50.jpg show the altitude rail clipped at x=0 with overlapping labels, no marquee visible; remaining motion is the same reveal everywhere. Intro does not block h1 (1440-first.jpg)." },
+    "wow": { "score": 4.5, "notes": "1440-scroll-25.jpg: four useful tools rendered as flat grey forms, outputs are plain text; the altitude climb never reads (1440-full.jpg)." },
+    "polish": { "score": 4, "notes": "1440-full.jpg: placeholder media shipped, OG fell back to flat colour; 1440-scroll-75.jpg doubled Sample tags; 1440-scroll-25.jpg rail clipped and overlapping; mixed pill/square radii. Favicon, apple-touch, JSON-LD, print and forced-colors present." }
+  },
+  "mustFix": [
+    { "where": "1440-first.jpg, 1440-full.jpg, 390-full.jpg; dist/media/placeholder-*.webp", "problem": "All 9 images are 48-byte 10x8 placeholder webps; no photo renders, alt text shows in every slot; OG image falls back to flat colour", "fix": "Place real approved frames from niches/autotuneup/media/manifest.json via the media plan, rebuild, verify dist/media files are real (tens of KB) and og.jpg builds from the hero" },
+    { "where": "qa/render.json, 390-full.jpg: button#tab-oil-full, table.price-table", "problem": "Horizontal overflow: page 456px wide at 390, 451px at 320", "fix": "flex-wrap the oil tablist (or overflow-x:auto on its own container); under 640px render price rows as stacked blocks, or wrap the table in a max-width:100% overflow-x:auto container" },
+    { "where": "1440-first.jpg: header nav links and header phone", "problem": "Dark ink on navy header, roughly 1.3:1; nav and phone effectively invisible", "fix": "Set header links and phone colour to #e8e4dc (light ink) on the navy header" },
+    { "where": "1440-full.jpg ~y7400: h2 'Hands, tools, no logos'", "problem": "Media-curation instruction leaked as a public heading", "fix": "Replace with a homeowner heading such as 'What you'll see when you pick it up', or cut the section" }
+  ],
+  "elevate": [
+    { "category": "photo", "move": "Make the photography the ascent: one dusk grade, frames ordered by elevation (Plaza 7,199 > Eldorado 7,450 > Ski Basin 8,200), each frame carrying its altitude marker in the corner so photos and rail tell one sequence" },
+    { "category": "mobile", "move": "Compose the phone page as the climb: statement and Book first, a swipe strip of the marquee photos, the altitude pill pinned under the header as each band's title, services as a compact 2-col list, prices re-cut as stacked rows" }
+  ],
+  "verdictHint": "FIX"
+}

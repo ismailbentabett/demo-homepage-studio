@@ -1,0 +1,25 @@
+{
+  "round": 0,
+  "categories": {
+    "firstScreen":     { "score": 5,   "notes": "1440-first.jpg: Hero image missing (alt text visible). Headline good. Phone visible. 390-first.jpg: Hero image missing. Layout broken." },
+    "distinctiveness": { "score": 4,   "notes": "1440-full.jpg: Signature 'Altitude Marker' not visible/executed. Page looks broken." },
+    "type":            { "score": 6,   "notes": "1440-first.jpg: Space Mono + Outfit loaded. Headline strong. Hard to judge fully due to missing content." },
+    "layout":          { "score": 3,   "notes": "1440-full.jpg: Page is 9416px tall but mostly empty white space. Sections not rendering." },
+    "photo":           { "score": 2,   "notes": "1440-first.jpg: All images missing. Only alt text visible." },
+    "copy":            { "score": 7,   "notes": "dist/index.html: Copy is specific and on-brand. Sample labels present." },
+    "mobile":          { "score": 4,   "notes": "390-first.jpg: Hero image missing. Sticky bar works. Page mostly empty." },
+    "a11y":            { "score": 5,   "notes": "dist/index.html: Skip link, focus styles, alt text present. But missing images break the experience." },
+    "motion":          { "score": 2,   "notes": "1440-full.jpg: Cannot judge motion; page is broken. Marquee/rail not visible." },
+    "wow":             { "score": 2,   "notes": "1440-full.jpg: No wow moment visible. Page is empty." },
+    "polish":          { "score": 3,   "notes": "1440-first.jpg: Favicon/theme-color set. But page is broken." }
+  },
+  "mustFix": [
+    { "where": "1440-first.jpg, 390-first.jpg", "problem": "All images are missing (showing alt text)", "fix": "Check image paths in dist/index.html and ensure media files exist in dist/media/. The src attributes point to 'media/placeholder-*.webp' which may not exist or be built." },
+    { "where": "1440-full.jpg", "problem": "Page is mostly empty white space; sections not rendering", "fix": "Check CSS/JS for display:none, height:0, or opacity:0 on sections. Ensure the build process included all content." }
+  ],
+  "elevate": [
+    { "category": "photo", "move": "Once images load, apply the 'high desert light' grade (saturate 0.8, contrast 1.1, sepia 0.12) to unify the shoot." },
+    { "category": "layout", "move": "Once content renders, make the 'Altitude Marker Rail' sticky on desktop and update it via JS as sections enter view, tying each band to its elevation." }
+  ],
+  "verdictHint": "FIX"
+}
