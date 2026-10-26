@@ -48,3 +48,19 @@ capture-screens.mjs used to take 5 jpgs and leave old pngs and an old qa/render.
 - writes qa/render.json with console errors and render errors.
 
 The render errors cover sideways overflow at 390/320 and text hidden under reduced motion. check-render.mjs already treats render.json errors as blockers. Delivered sites should be re-captured before their next recheck.
+
+## 2026-10-26: Openverse photo source when there is no Pexels key
+
+- `tools/fetch-media.mjs`: without `PEXELS_API_KEY` (or with `--source openverse`) photos come from the
+  Openverse API (no key). It keeps only CC0, public-domain and CC BY files that are landscape and at least
+  1600 wide. Searches are cached in `pool/.openverse-cache.json` because of the ~200/day anonymous limit.
+  Each query is retried shorter only when needed. Videos are skipped (they still need Pexels).
+  Why: every niche library was 1×1 placeholder stubs that render as broken images, so Photo could never pass.
+- `tools/approve-media.mjs`: the credit now carries `source` and, when present, `license` / `licenseUrl`.
+- `tools/build.mjs`: the credit line names the real source ("Photo by X on Wikimedia Commons, CC BY 4.0")
+  instead of always saying Pexels. Pexels credits are unchanged.
+
+## 2026-10-26: fetch-media falls back to Wikimedia Commons
+- `tools/fetch-media.mjs`: when Openverse answers 5xx or cannot be reached, the run switches to the Wikimedia Commons API (no key) for the rest of the run; `--source commons` uses it directly. Same filters (landscape, ≥1600 wide), licences CC0 / public domain / CC BY / CC BY-SA, credit keeps creator, source and licence. Commons answers are cached in `pool/.openverse-cache.json` under `commons:<query>`.
+
+- 2026-10-26: fetch-media spaces Wikimedia downloads 2.5 s apart, backs off 20 s+ on HTTP 429, and sends a descriptive User-Agent (Commons rate-limits anonymous bulk downloads).

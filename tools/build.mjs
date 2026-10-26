@@ -359,7 +359,9 @@ if (/\{\{|\}\}/.test(css)) die("src/style.css: tokens {{...}} are not allowed in
   const items = credited.map(([key, { kind, entry }]) => {
     const who = esc(entry.credit.name);
     const url = entry.credit?.url ? ` href="${esc(entry.credit.url)}" rel="noopener" target="_blank"` : "";
-    return `<li>${kind === "video" ? "Video" : "Photo"} by ${who} on ${url ? `<a${url}>Pexels</a>` : "<span>Pexels</span>"}</li>`;
+    const src = esc(entry.credit.source || "Pexels");
+    const lic = entry.credit.license ? `, ${entry.credit.licenseUrl ? `<a href="${esc(entry.credit.licenseUrl)}" rel="noopener license" target="_blank">${esc(entry.credit.license)}</a>` : esc(entry.credit.license)}` : "";
+    return `<li>${kind === "video" ? "Video" : "Photo"} by ${who} on ${url ? `<a${url}>${src}</a>` : `<span>${src}</span>`}${lic}</li>`;
   });
   body = body.split(CREDITS_MARK).join(`<ul class="credits">${items.join("")}</ul>`);
 }
