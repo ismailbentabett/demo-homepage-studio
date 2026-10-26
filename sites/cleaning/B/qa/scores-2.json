@@ -1,0 +1,29 @@
+{
+  "round": 2,
+  "categories": {
+    "firstScreen":     { "score": 6.5, "notes": "1440-first.png: h1 'Every Other Friday, the house gets done.' has no trade word (slogan, -0.5), 4 lines with orphan 'done.' (-0.5); no phone at 1440 or 1024-first.png (-1.0); hero >900px, next band does not peek (-0.5); right half is the text 'Placeholder hero B1'. 390-first.png: bottom bar broken, phone clipped to '0153'." },
+    "distinctiveness": { "score": 6.0, "notes": "1440-full.png / 390-full.png: the promised Running Receipt (strip, torn edge, line wipes, tally) appears in no section (-1.0); plain selects, radio quiz, radio grid and a 4-column 'Pages' footer read as a form template (-1.0). Bricolage + sienna is the only identity." },
+    "type":            { "score": 7.5, "notes": "1440-first.png: Bricolage display + Figtree body + DM Mono accent is a good pairing, body >=16px. Orphan 'done.' in h1 (-0.5); 1440-full.png footer mixes mono 'Pages' heading, grey sans links and grey mono legal with no hierarchy (-0.5)." },
+    "layout":          { "score": 5.5, "notes": "1440-full.png: empty white band after #quote-builder, empty #checklist tab panel, second white void, an empty ~1100px t-deep band, ~1400px of blank paper: over a third of the page is empty (-2.5); 'Closed · opens tomorrow' flush at x=0 outside the container (-0.5)." },
+    "photo":           { "score": 5.0, "notes": "1440-first.png / 390-first.png hero shows the text 'Placeholder hero B1'; 1440-full.png has zero photographs, yet the footer credits 'Photo by unknown on Pexels' twice. Below floor." },
+    "copy":            { "score": 7.5, "notes": "1440-full.png: good plain lines ('Pick your rooms, pick how often, see the number. No phone call required.'). Visible 'Placeholder hero B1' (1440-first.png, -0.5); primary action named 'Build your quote' / 'Send this quote request' / 'Book your visit' / 'Build quote' (390-first.png) (-0.5); 'That's the list we follow' styled as a button; reviews and prices are not visible, so their Sample labels cannot be verified." },
+    "mobile":          { "score": 6.5, "notes": "390-first.png: sticky bar renders an overlapping dark blob, clipped '0153' and an unstyled 'Build quote' label under the hero button (-1.0, mustFix). 390-full.png: same long empty bands as desktop (-0.5). No sideways scroll, h1 3 lines." },
+    "a11y":            { "score": 6.0, "notes": "1440-full.png / 390-full.png: #checklist panel, #services t-deep band, #proof and #area render empty although the content exists in dist (content hidden, -1.5, mustFix); footer grey-on-white text looks under 4.5:1 (-0.5); render.json has no reduced-motion shots to clear the nothing-hidden rule." },
+    "motion":          { "score": 6.0, "notes": "1440-full.png: no receipt wipe, tally or strip intro visible; sections stuck in their pre-reveal state (empty dark band, empty tab panel), so motion hides content. render.json has no 25/50/75 frames to credit anything else." },
+    "wow":             { "score": 6.0, "notes": "1440-full.png #quote-builder: four plain controls and a submit button, no live number or receipt output visible (-1.0); #frequency quiz shows radios and no answer. Nothing to show a partner." },
+    "polish":          { "score": 6.5, "notes": "1440-first.png: header lockup 'EOF · EST.' with no year (-0.5). 1440-full.png: footer undesigned (mixed faces, 'Photo by unknown' credits, 'Pages' sitemap on a one-page site) (-0.5); status line misaligned at x=0." }
+  },
+  "mustFix": [
+    { "where": "qa/render.json + qa/screens/* (2026-10-25 20:11) vs dist/index.html (2026-10-26 08:23)", "problem": "Screenshots and render report predate the current build; no reduced-motion shots exist", "fix": "Re-run check-render on the current dist (all fast-mode viewports, motion on and reduced motion) before the next critique" },
+    { "where": "1440-full.png / 390-full.png: #checklist panel, #services, #proof, #area", "problem": "Sections render empty: content hidden by reveal/tab state", "fix": "Content visible by default with no pre-JS opacity:0/visibility:hidden; the active tab panel is not hidden in the HTML; reveal only adds motion" },
+    { "where": "1440-first.png / 390-first.png #hero", "problem": "Visible text 'Placeholder hero B1' instead of a photo", "fix": "Place an approved hero image from niches/cleaning/media/manifest.json via [[img]]; no placeholder text on the page" },
+    { "where": "390-first.png bottom sticky bar", "problem": "Overlapping blob, phone clipped to '0153', unstyled 'Build quote' label stacked under the hero button", "fix": "Rebuild the bar as two >=48px targets ('Call {{biz.phone}}' + 'Build your quote') on its own background, not overlapping page CTAs" },
+    { "where": "1440-full.png footer", "problem": "Links, legal and credits pale grey on white, likely under 4.5:1", "fix": "Set footer text to ink at >= 72% on paper (>= 4.5:1)" },
+    { "where": "1440-full.png footer credits", "problem": "'Photo by unknown on Pexels' credits images not shown and names no photographer", "fix": "Generate credits from the manifest entries actually placed, with the photographer name" }
+  ],
+  "elevate": [
+    { "category": "photo", "move": "Make the photos the paper the receipt is printed on: a tall hero strip with the receipt's torn-edge clip-path and one warm-paper grade, and checklist room tabs that each clip-wipe in a process photo alongside their line items, so the images become part of the signature." },
+    { "category": "layout", "move": "Give the scroll one physical spine: a single receipt strip down the left third from hero to footer, where each section prints its line item (rooms, frequency, add-ons, total) while the right two-thirds carry the content, with one deliberate overlap where the torn edge crosses into the dark proof band." }
+  ],
+  "verdictHint": "FIX"
+}
