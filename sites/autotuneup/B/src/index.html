@@ -1,0 +1,489 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="i-odo" viewBox="0 0 40 24"><rect x="1" y="1" width="38" height="22" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="5" y="5" width="8" height="14" fill="currentColor"/><rect x="16" y="5" width="8" height="14" fill="currentColor"/><rect x="27" y="5" width="8" height="14" fill="#b53d0f"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header data-header aria-label="Site header">
+  <div class="header__inner">
+    <a href="#main" class="logo" aria-label="{{biz.name}} home">
+      <svg class="logo__mark" aria-hidden="true" focusable="false"><use href="#i-odo"/></svg>
+      <span class="logo__name">{{biz.short}}</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        <li><a href="#services">Intervals</a></li>
+        <li><a href="#report">Readings</a></li>
+        <li><a href="#oil">Oil</a></li>
+        <li><a href="#check">Self-check</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+    </nav>
+    <div class="header__cta">
+      [[call btn-primary]]
+    </div>
+    <button class="menu-btn" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <span class="menu-btn__bar"></span>
+      <span class="menu-btn__bar"></span>
+    </button>
+  </div>
+  <div class="progress-bar" data-progress></div>
+</header>
+
+<div class="menu-overlay" data-menu id="menu" aria-hidden="true">
+  <nav aria-label="Mobile navigation">
+    <ul>
+      <li><a href="#services">Intervals</a></li>
+      <li><a href="#report">Readings</a></li>
+      <li><a href="#oil">Oil</a></li>
+      <li><a href="#check">Self-check</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Get my plan</a></li>
+    </ul>
+  </nav>
+</div>
+
+<main id="main">
+
+  <!-- 1. Hero (t-light): 7/5, giant live readout right -->
+  <section id="hero" class="t-light hero" aria-labelledby="hero-h1">
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <p class="kicker">Car maintenance by mileage</p>
+        <h1 id="hero-h1" data-split="lines">What’s due at your odometer in {{biz.city}}</h1>
+        <p class="lead">Type your mileage. We show what’s due now and what can wait, with the reading behind each call.</p>
+        <form class="odo-form" data-hook="whats-due-estimator" data-odo-form aria-label="Mileage check">
+          <label class="odo-form__label" for="odo-input">Current odometer</label>
+          <div class="odo-form__row">
+            <div class="odo-input-wrap">
+              <input id="odo-input" name="odo" type="text" inputmode="numeric" autocomplete="off" placeholder="45,000" maxlength="7" aria-describedby="odo-result-label">
+              <span class="odo-unit" aria-hidden="true">mi</span>
+            </div>
+            <button type="submit" class="btn btn-primary">Check my interval</button>
+          </div>
+        </form>
+        <div class="hero__proof">
+          <p class="proof-line">{{hours|today}}</p>
+          <p class="proof-line">{{biz.city}}, {{biz.areas|list}} · {{proof.rating}} from {{proof.reviewCount}} reviews ({{proof.label}})</p>
+        </div>
+      </div>
+
+      <div class="hero__panel t-deep" data-sw-signature="odometer-readout">
+        <div class="cluster cluster--hero">
+          [[frame hero-B1 cluster__frame | | eager alt="Instrument cluster with the odometer lit at dusk"]]
+          <div class="readout" aria-hidden="true">
+            <span class="readout__label">ODO</span>
+            <span class="readout__digits" data-readout>045000</span>
+            <span class="readout__unit">mi</span>
+          </div>
+        </div>
+        <p class="est-sample" id="odo-result-label" data-odo-label>Sample: 45,000 mi</p>
+        <div class="est-results" aria-live="polite" data-odo-results>
+          <div class="odo-row" data-sw-signature="odometer-row">
+            <span class="odo-digits" data-odo-d="0">045000</span>
+            <span class="odo-pill pill--now">Due now</span>
+            <span class="odo-label">{{services.0.short}} · Rotation</span>
+          </div>
+          <div class="odo-row" data-sw-signature="odometer-row">
+            <span class="odo-digits" data-odo-d="1">060000</span>
+            <span class="odo-pill pill--next" data-odo-p="1">At 60k</span>
+            <span class="odo-label" data-odo-l="1">Air filter · Cabin filter · Brake fluid</span>
+          </div>
+          <div class="odo-row" data-sw-signature="odometer-row">
+            <span class="odo-digits" data-odo-d="2">100000</span>
+            <span class="odo-pill pill--wait">Not yet</span>
+            <span class="odo-label">Spark plugs · Coolant</span>
+          </div>
+        </div>
+        <a href="#contact" class="panel-link" data-odo-go>Get my plan [[i arrow-right]]</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Interval ledger (t-mid): sticky odometer column + trip-meter tape -->
+  <section id="services" class="t-mid ledger" aria-labelledby="svc-h2">
+    <div class="container ledger__grid">
+      <div class="ledger__rail">
+        <h2 id="svc-h2" data-reveal>30k, 60k, 100k: what the manual calls for</h2>
+        <p class="ledger__intro" data-reveal>Every service sits at the mileage your owner’s manual gives it. The ones that can wait stay on the list, so you see them coming.</p>
+        <div class="ledger__odo" aria-hidden="true">
+          <span class="ledger__odo-digits" data-ledger-odo>030000</span>
+          <span class="ledger__odo-unit">mi</span>
+        </div>
+      </div>
+
+      <div class="ledger__tape" data-hook="interval-ledger">
+        <div class="ledger__band" data-band="030000">
+          <div class="odo-row odo-row--band" data-sw-signature="odometer-row">
+            <span class="odo-digits">030000</span>
+            <span class="odo-pill pill--now">30,000 mi</span>
+            <span class="odo-label">and every oil change on the way</span>
+          </div>
+          <ul class="ledger__list">
+            <li class="ledger__item">
+              <h3>{{services.0.name}}</h3>
+              <p>{{services.0.blurb}}</p>
+              <p class="ledger__price"><span class="mono">{{proof.prices.0.from}}–{{proof.prices.0.to}}</span> {{proof.prices.0.note}} [[sample price]]</p>
+              [[quote {{services.0.short}} ledger__link | Get my plan]]
+            </li>
+            <li class="ledger__item">
+              <h3>{{services.6.name}}</h3>
+              <p>{{services.6.blurb}}</p>
+              [[quote {{services.6.short}} ledger__link | Get my plan]]
+            </li>
+            <li class="ledger__item">
+              <h3>{{services.7.name}}</h3>
+              <p>{{services.7.blurb}}</p>
+              [[quote {{services.7.short}} ledger__link | Get my plan]]
+            </li>
+          </ul>
+        </div>
+
+        <div class="ledger__band" data-band="060000">
+          <div class="odo-row odo-row--band" data-sw-signature="odometer-row">
+            <span class="odo-digits">060000</span>
+            <span class="odo-pill pill--next">60,000 mi</span>
+            <span class="odo-label">filters and fluids, tested first</span>
+          </div>
+          <ul class="ledger__list">
+            <li class="ledger__item">
+              <h3>{{services.1.name}}</h3>
+              <p>{{services.1.blurb}}</p>
+              <p class="ledger__price"><span class="mono">{{proof.prices.1.from}}–{{proof.prices.1.to}}</span> {{proof.prices.1.note}} [[sample price]]</p>
+              [[quote {{services.1.short}} ledger__link | Get my plan]]
+            </li>
+            <li class="ledger__item">
+              <h3>{{services.2.name}}</h3>
+              <p>{{services.2.blurb}}</p>
+              <p class="ledger__price"><span class="mono">{{proof.prices.2.from}}–{{proof.prices.2.to}}</span> {{proof.prices.2.note}} [[sample price]]</p>
+              [[quote {{services.2.short}} ledger__link | Get my plan]]
+            </li>
+            <li class="ledger__item">
+              <h3>{{services.4.name}}</h3>
+              <p>{{services.4.blurb}}</p>
+              <p class="ledger__price"><span class="mono">{{proof.prices.3.from}}–{{proof.prices.3.to}}</span> {{proof.prices.3.note}} [[sample price]]</p>
+              [[quote {{services.4.short}} ledger__link | Get my plan]]
+            </li>
+          </ul>
+        </div>
+
+        <div class="ledger__band" data-band="100000">
+          <div class="odo-row odo-row--band" data-sw-signature="odometer-row">
+            <span class="odo-digits">100000</span>
+            <span class="odo-pill pill--wait">100,000 mi</span>
+            <span class="odo-label">the long intervals</span>
+          </div>
+          <ul class="ledger__list">
+            <li class="ledger__item">
+              <h3>{{services.3.name}}</h3>
+              <p>{{services.3.blurb}}</p>
+              [[quote {{services.3.short}} ledger__link | Get my plan]]
+            </li>
+            <li class="ledger__item">
+              <h3>{{services.5.name}}</h3>
+              <p>{{services.5.blurb}}</p>
+              <p class="ledger__price"><span class="mono">{{proof.prices.4.from}}–{{proof.prices.4.to}}</span> {{proof.prices.4.note}} [[sample price]]</p>
+              [[quote {{services.5.short}} ledger__link | Get my plan]]
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Readings (t-deep): three instrument-cluster frames -->
+  <section id="report" class="t-deep report" aria-labelledby="report-h2">
+    <div class="container">
+      <div class="report__head">
+        <p class="kicker" data-reveal>Readings, not guesses</p>
+        <h2 id="report-h2" data-reveal>A sample report you can hold</h2>
+        <p class="report__lede" data-reveal>{{proof.guarantee}} [[sample report]]</p>
+      </div>
+      <div class="report-grid" data-hook="sample-report" data-reveal-stagger>
+        <article class="reading">
+          <div class="cluster" data-reveal="clip">
+            [[frame detail-1 cluster__frame | | alt="A new spark plug beside a worn one, the electrode gap compared"]]
+            <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+          </div>
+          <div class="reading__body">
+            <h3>Spark plugs</h3>
+            <p class="reading__val">Gap in spec</p>
+            <span class="status-pill status--ok">Not yet · due at 100k</span>
+          </div>
+        </article>
+        <article class="reading">
+          <div class="cluster" data-reveal="clip">
+            [[frame detail-3 cluster__frame | | alt="Tread depth gauge pressed into a tire groove"]]
+            <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+          </div>
+          <div class="reading__body">
+            <h3>Front tread</h3>
+            <p class="reading__val">4/32 in</p>
+            <span class="status-pill status--watch">Rotate and watch</span>
+          </div>
+        </article>
+        <article class="reading">
+          <div class="cluster" data-reveal="clip">
+            [[frame detail-4 cluster__frame | | alt="Brake fluid reservoir with a moisture test strip beside it"]]
+            <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+          </div>
+          <div class="reading__body">
+            <h3>Brake fluid</h3>
+            <p class="reading__val">Moisture OK</p>
+            <span class="status-pill status--ok">Check again at 60k</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Oil (t-accent) -->
+  <section id="oil" class="t-accent oil" aria-labelledby="oil-h2">
+    <div class="container oil__grid">
+      <div class="oil__text" data-reveal>
+        <h2 id="oil-h2">Conventional, blend or full synthetic</h2>
+        <p>Your owner’s manual sets the spec. We match it, write the viscosity on your receipt, and stick the next change on the windshield by mileage, not by date.</p>
+        <p class="oil__note">Ranges vary by make and driving. Your spec wins.</p>
+      </div>
+      <div class="oil__table-wrap" data-reveal data-hook="oil-type-compare">
+        <table class="oil-table">
+          <caption class="sr-only">Typical oil change intervals by oil type</caption>
+          <thead>
+            <tr><th scope="col">Type</th><th scope="col">Change interval</th><th scope="col">Suits</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Conventional</td><td class="mono">3,000–5,000 mi</td><td>Older engines, short trips</td></tr>
+            <tr><td>Synthetic blend</td><td class="mono">5,000–7,500 mi</td><td>Daily drivers, mixed use</td></tr>
+            <tr><td>Full synthetic</td><td class="mono">7,500–10,000 mi</td><td>Turbos, towing, desert heat</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Self-check (t-light) -->
+  <section id="check" class="t-light selfcheck" aria-labelledby="check-h2">
+    <div class="container selfcheck__grid">
+      <div class="selfcheck__content" data-reveal>
+        <h2 id="check-h2">Tread depth and wipers, checked in your driveway</h2>
+        <p>Run a quarter across three grooves. If the tread meets Washington’s head, you’re above 4/32. Lift each blade: if the rubber is cracked or streaks after one pass, swap it before the next storm.</p>
+        <div class="tread-scale" data-hook="tread-wiper-check" role="img" aria-label="Tread depth scale: new at 10/32 inch, watch at 4/32, replace at 2/32">
+          <span class="tread-scale__seg tread-scale__seg--new"><b>10/32</b> New</span>
+          <span class="tread-scale__seg tread-scale__seg--watch"><b>4/32</b> Watch</span>
+          <span class="tread-scale__seg tread-scale__seg--replace"><b>2/32</b> Replace</span>
+        </div>
+        <p class="selfcheck__wiper">Wipers: a cracked edge means replace. Heat here splits them before they wear out.</p>
+        [[quote {{services.6.short}} btn-primary | Get my plan]]
+      </div>
+      <div class="selfcheck__visual">
+        <div class="cluster cluster--tall" data-reveal="clip">
+          [[frame story-4 cluster__frame | | alt="Tire pressure gauge held to a valve stem"]]
+          <span class="cluster__odo" aria-hidden="true"><span data-roll="000004">000004</span>/32 in</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Full-bleed place break -->
+  <section class="break t-deep" aria-labelledby="break-h2">
+    <div class="cluster cluster--break">
+      [[frame break cluster__frame | | alt="Two-lane road through high desert north of town"]]
+    </div>
+    <div class="break__inner container">
+      <h2 id="break-h2" class="break__title" data-split="lines">Desert dust off this road ends up in your air filter.</h2>
+      <span class="cluster__odo cluster__odo--break" aria-hidden="true">TRIP <span data-roll="000412">000412</span> mi</span>
+    </div>
+  </section>
+
+  <!-- 7. Wait or drop (t-mid) -->
+  <section id="planner" class="t-mid planner" aria-labelledby="plan-h2">
+    <div class="container planner__grid">
+      <div class="planner__text" data-reveal>
+        <h2 id="plan-h2">Wait for it or drop it off</h2>
+        <p>Pick the services. Tell us whether you’ll sit in the lounge or leave the keys. We set the bay time when we call.</p>
+      </div>
+      <div class="planner-card" data-reveal data-hook="wait-or-drop">
+        <label class="planner__label" for="plan-svc">Services</label>
+        <select id="plan-svc" class="planner__select">
+          <option value="">Choose a service</option>
+          <!-- each services -->
+          <option value="{{.short}}">{{.name}}</option>
+          <!-- /each -->
+        </select>
+        <div class="planner__result">
+          <span class="planner__time-label">Bay time</span>
+          <span class="planner__time-val">Confirmed when we call you back</span>
+        </div>
+        <fieldset class="planner__options">
+          <legend class="sr-only">Wait or drop</legend>
+          <label class="radio-card">
+            <input type="radio" name="plan-mode" value="wait" checked>
+            <span>Wait in the lounge</span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="plan-mode" value="drop">
+            <span>Drop at 7:30, pick up by noon</span>
+          </label>
+        </fieldset>
+        <div class="planner__actions">
+          <a class="btn btn-primary" href="#contact">Get my plan</a>
+          [[call btn-secondary]]
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Reviews (t-light): logbook, one lead entry + two -->
+  <section id="reviews" class="t-light reviews" aria-labelledby="rev-h2">
+    <div class="container">
+      <div class="reviews__head">
+        <p class="kicker" data-reveal>From neighbors, with mileage</p>
+        <h2 id="rev-h2" data-reveal>What drivers in {{biz.city}} are saying</h2>
+        <p class="reviews__meta" data-reveal><span class="mono">{{proof.rating}}</span> from {{proof.reviewCount}} reviews [[sample reviews]]</p>
+      </div>
+      <div class="logbook" data-reveal-stagger>
+        <article class="log log--lead">
+          <div class="odo-row odo-row--log" data-sw-signature="odometer-row">
+            <span class="odo-digits" aria-hidden="true">042000</span>
+            <span class="odo-label">{{proof.reviews.0.service}}</span>
+          </div>
+          <blockquote>{{proof.reviews.0.text}}</blockquote>
+          <p class="log__who">{{proof.reviews.0.name}}, {{proof.reviews.0.town}}</p>
+        </article>
+        <article class="log">
+          <div class="odo-row odo-row--log" data-sw-signature="odometer-row">
+            <span class="odo-digits" aria-hidden="true">098000</span>
+            <span class="odo-label">{{proof.reviews.6.service}}</span>
+          </div>
+          <blockquote>{{proof.reviews.6.text}}</blockquote>
+          <p class="log__who">{{proof.reviews.6.name}}, {{proof.reviews.6.town}}</p>
+        </article>
+        <article class="log">
+          <div class="odo-row odo-row--log" data-sw-signature="odometer-row">
+            <span class="odo-digits" aria-hidden="true">061000</span>
+            <span class="odo-label">{{proof.reviews.2.service}}</span>
+          </div>
+          <blockquote>{{proof.reviews.2.text}}</blockquote>
+          <p class="log__who">{{proof.reviews.2.name}}, {{proof.reviews.2.town}}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. ZIP + hours (t-deep) -->
+  <section id="area" class="t-deep area" aria-labelledby="area-h2">
+    <div class="container area__grid">
+      <div class="area__zip" data-reveal>
+        <h2 id="area-h2">Check your ZIP before you drive in</h2>
+        <p>We work on cars from {{biz.city}}, {{biz.areas|list}}.</p>
+        <form class="zip-form" data-zip data-hook="zip" aria-label="ZIP code checker">
+          <label for="zip-input" class="zip-form__label">Your ZIP code</label>
+          <div class="zip-input-wrap">
+            <input id="zip-input" name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="5 digits" autocomplete="postal-code">
+            <button type="submit" class="btn btn-light">Check</button>
+          </div>
+          <p class="zip-result" data-zip-result></p>
+        </form>
+      </div>
+      <div class="area__hours" data-reveal data-hook="open-now">
+        <h3>Shop hours</h3>
+        <p class="open-now">{{hours|today}}</p>
+        {{hours|table}}
+        [[call btn-light]]
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Contact (t-light): split -->
+  <section id="contact" class="t-light contact" aria-labelledby="contact-h2">
+    <div class="container contact__grid">
+      <div class="contact__side" data-reveal>
+        <h2 id="contact-h2">Your plan in four short steps</h2>
+        <p>Mileage, services, wait or drop, then how to reach you. {{biz.short}} calls back to set a bay time.</p>
+        <p class="contact__call">Rather talk now? [[tel]]</p>
+        <div class="odo-row odo-row--contact" data-sw-signature="odometer-row" aria-hidden="true">
+          <span class="odo-digits" data-contact-odo>045000</span>
+          <span class="odo-pill pill--next">Your plan</span>
+        </div>
+      </div>
+      <div class="contact__form" data-reveal>
+        <form class="lead-form" data-lead data-hook="quote-form" aria-label="Plan request form">
+          <div class="form-step" data-step data-step-title="Mileage">
+            <p class="step-label">1 of 4 · Mileage</p>
+            <label for="f-mileage">Current odometer</label>
+            <input id="f-mileage" name="mileage" type="text" inputmode="numeric" required>
+          </div>
+          <fieldset class="form-step" data-step data-step-title="Services">
+            <legend>2 of 4 · What should we look at?</legend>
+            <div class="check-grid">
+              <!-- each services -->
+              <label class="checkbox-card">
+                <input type="checkbox" name="service" value="{{.name}}">
+                <span>{{.name}}</span>
+              </label>
+              <!-- /each -->
+            </div>
+          </fieldset>
+          <fieldset class="form-step" data-step data-step-title="Timing">
+            <legend>3 of 4 · Wait or drop</legend>
+            <label class="radio-card">
+              <input type="radio" name="timing" value="wait" checked>
+              <span>Wait in the lounge</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="timing" value="drop">
+              <span>Drop at 7:30, pick up by noon</span>
+            </label>
+          </fieldset>
+          <fieldset class="form-step" data-step data-step-title="Contact">
+            <legend>4 of 4 · How we reach you</legend>
+            <label for="f-name">Name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required>
+            <label for="f-phone">Phone</label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
+            <label for="f-email">Email (optional)</label>
+            <input id="f-email" name="email" type="email" autocomplete="email">
+          </fieldset>
+          <div class="hp-field" aria-hidden="true"><label>Website <input type="text" name="website2" tabindex="-1" autocomplete="off"></label></div>
+          <input type="hidden" name="t" value="">
+          <div class="form-nav" data-form-nav>
+            <button type="button" class="btn btn-secondary" data-back>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+            <button type="submit" class="btn btn-primary" data-submit>Get my plan</button>
+          </div>
+          <p class="form-microcopy">{{biz.short}} calls back to set a bay time. Rather talk now? {{biz.phone}}.</p>
+        </form>
+        <div class="form-thankyou" data-thanks-box hidden>
+          <h3>Demo only</h3>
+          <p>This is a demo, nothing was sent. On the real site this goes to {{biz.short}}.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="t-light site-footer" aria-label="Site footer">
+  <div class="container footer__inner">
+    <div class="footer-reminder">
+      <div class="odo-row odo-row--footer" data-sw-signature="odometer-row">
+        <span class="odo-digits" aria-hidden="true">050000</span>
+        <span class="odo-pill pill--next">Your next service</span>
+        <span class="odo-label">Written on a sticker at every oil change.</span>
+      </div>
+    </div>
+    <div class="footer__meta">
+      <p class="footer__brand">{{biz.name}} · {{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
+      <p class="disclaimer">{{demo.disclaimer}}</p>
+      [[credits]]
+      <p class="copyright">© {{year}} {{biz.name}}</p>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-bar" data-mobilebar aria-label="Quick actions">
+  [[call btn-primary]]
+  <a href="#contact" class="mobile-bar__plan">Get my plan</a>
+</div>
