@@ -47,12 +47,13 @@
 
 <main id="main">
 
-  <!-- 1. Hero (t-light): 7/5, giant live readout right -->
+  <!-- 1. Hero (t-light): title + check on top, the instrument strip full width under it (≥1200) -->
   <section id="hero" class="t-light hero" aria-labelledby="hero-h1">
     <div class="container hero__grid">
-      <div class="hero__content">
-        <p class="kicker">Car maintenance by mileage</p>
+      <div class="hero__title">
         <h1 id="hero-h1" data-split="lines">What’s due at your odometer in {{biz.city}}</h1>
+      </div>
+      <div class="hero__content">
         <p class="lead">Type your mileage. We show what’s due now and what can wait, with the reading behind each call.</p>
         <form class="odo-form" data-hook="whats-due-estimator" data-odo-form aria-label="Mileage check">
           <label class="odo-form__label" for="odo-input">Current odometer</label>
@@ -65,39 +66,42 @@
           </div>
         </form>
         <div class="hero__proof">
-          <p class="proof-line">{{hours|today}}</p>
-          <p class="proof-line">{{biz.city}}, {{biz.areas|list}} · {{proof.rating}} from {{proof.reviewCount}} reviews ({{proof.label}})</p>
+          <p class="proof-line proof-line--open">{{hours|today}}</p>
+          <p class="proof-line"><span>{{biz.city}}, {{biz.areas.0}} and nearby towns</span> <span><b class="mono">{{proof.rating}}</b> from {{proof.reviewCount}} reviews ({{proof.label}})</span></p>
         </div>
       </div>
 
       <div class="hero__panel t-deep" data-sw-signature="odometer-readout">
         <div class="cluster cluster--hero">
-          [[frame hero-B1 cluster__frame | | eager alt="Instrument cluster with the odometer lit at dusk"]]
+          [[frame hero-B1 cluster__frame | | eager alt=""]]
+          <span class="plate-fx" aria-hidden="true"></span>
           <div class="readout" aria-hidden="true">
             <span class="readout__label">ODO</span>
             <span class="readout__digits" data-readout>045000</span>
             <span class="readout__unit">mi</span>
           </div>
         </div>
-        <p class="est-sample" id="odo-result-label" data-odo-label>Sample: 45,000 mi</p>
+        <div class="hero__readings">
+        <p class="est-sample" id="odo-result-label" data-odo-label>Sample reading: 45,000 mi</p>
         <div class="est-results" aria-live="polite" data-odo-results>
           <div class="odo-row" data-sw-signature="odometer-row">
             <span class="odo-digits" data-odo-d="0">045000</span>
             <span class="odo-pill pill--now">Due now</span>
-            <span class="odo-label">{{services.0.short}} · Rotation</span>
+            <span class="odo-label">{{services.0.short}} and rotation</span>
           </div>
           <div class="odo-row" data-sw-signature="odometer-row">
             <span class="odo-digits" data-odo-d="1">060000</span>
             <span class="odo-pill pill--next" data-odo-p="1">At 60k</span>
-            <span class="odo-label" data-odo-l="1">Air filter · Cabin filter · Brake fluid</span>
+            <span class="odo-label" data-odo-l="1">Air filter, cabin filter, brake fluid</span>
           </div>
           <div class="odo-row" data-sw-signature="odometer-row">
             <span class="odo-digits" data-odo-d="2">100000</span>
             <span class="odo-pill pill--wait">Not yet</span>
-            <span class="odo-label">Spark plugs · Coolant</span>
+            <span class="odo-label">Spark plugs, coolant</span>
           </div>
         </div>
         <a href="#contact" class="panel-link" data-odo-go>Get my plan [[i arrow-right]]</a>
+        </div>
       </div>
     </div>
   </section>
@@ -120,23 +124,21 @@
             <span class="odo-digits">030000</span>
             <span class="odo-pill pill--now">30,000 mi</span>
             <span class="odo-label">and every oil change on the way</span>
+            [[quote {{services.0.short}} band-link | Get my plan]]
           </div>
           <ul class="ledger__list">
             <li class="ledger__item">
               <h3>{{services.0.name}}</h3>
               <p>{{services.0.blurb}}</p>
-              <p class="ledger__price"><span class="mono">{{proof.prices.0.from}}–{{proof.prices.0.to}}</span> {{proof.prices.0.note}} [[sample price]]</p>
-              [[quote {{services.0.short}} ledger__link | Get my plan]]
+              <p class="ledger__price"><span class="rng">{{proof.prices.0.from}}<span class="dash">–</span>{{proof.prices.0.to}}</span> {{proof.prices.0.note}} [[sample price]]</p>
             </li>
             <li class="ledger__item">
               <h3>{{services.6.name}}</h3>
               <p>{{services.6.blurb}}</p>
-              [[quote {{services.6.short}} ledger__link | Get my plan]]
             </li>
             <li class="ledger__item">
               <h3>{{services.7.name}}</h3>
               <p>{{services.7.blurb}}</p>
-              [[quote {{services.7.short}} ledger__link | Get my plan]]
             </li>
           </ul>
         </div>
@@ -146,25 +148,23 @@
             <span class="odo-digits">060000</span>
             <span class="odo-pill pill--next">60,000 mi</span>
             <span class="odo-label">filters and fluids, tested first</span>
+            [[quote {{services.1.short}} band-link | Get my plan]]
           </div>
           <ul class="ledger__list">
             <li class="ledger__item">
               <h3>{{services.1.name}}</h3>
               <p>{{services.1.blurb}}</p>
-              <p class="ledger__price"><span class="mono">{{proof.prices.1.from}}–{{proof.prices.1.to}}</span> {{proof.prices.1.note}} [[sample price]]</p>
-              [[quote {{services.1.short}} ledger__link | Get my plan]]
+              <p class="ledger__price"><span class="rng">{{proof.prices.1.from}}<span class="dash">–</span>{{proof.prices.1.to}}</span> {{proof.prices.1.note}} [[sample price]]</p>
             </li>
             <li class="ledger__item">
               <h3>{{services.2.name}}</h3>
               <p>{{services.2.blurb}}</p>
-              <p class="ledger__price"><span class="mono">{{proof.prices.2.from}}–{{proof.prices.2.to}}</span> {{proof.prices.2.note}} [[sample price]]</p>
-              [[quote {{services.2.short}} ledger__link | Get my plan]]
+              <p class="ledger__price"><span class="rng">{{proof.prices.2.from}}<span class="dash">–</span>{{proof.prices.2.to}}</span> {{proof.prices.2.note}} [[sample price]]</p>
             </li>
             <li class="ledger__item">
               <h3>{{services.4.name}}</h3>
               <p>{{services.4.blurb}}</p>
-              <p class="ledger__price"><span class="mono">{{proof.prices.3.from}}–{{proof.prices.3.to}}</span> {{proof.prices.3.note}} [[sample price]]</p>
-              [[quote {{services.4.short}} ledger__link | Get my plan]]
+              <p class="ledger__price"><span class="rng">{{proof.prices.3.from}}<span class="dash">–</span>{{proof.prices.3.to}}</span> {{proof.prices.3.note}} [[sample price]]</p>
             </li>
           </ul>
         </div>
@@ -174,18 +174,17 @@
             <span class="odo-digits">100000</span>
             <span class="odo-pill pill--wait">100,000 mi</span>
             <span class="odo-label">the long intervals</span>
+            [[quote {{services.3.short}} band-link | Get my plan]]
           </div>
           <ul class="ledger__list">
             <li class="ledger__item">
               <h3>{{services.3.name}}</h3>
               <p>{{services.3.blurb}}</p>
-              [[quote {{services.3.short}} ledger__link | Get my plan]]
             </li>
             <li class="ledger__item">
               <h3>{{services.5.name}}</h3>
               <p>{{services.5.blurb}}</p>
-              <p class="ledger__price"><span class="mono">{{proof.prices.4.from}}–{{proof.prices.4.to}}</span> {{proof.prices.4.note}} [[sample price]]</p>
-              [[quote {{services.5.short}} ledger__link | Get my plan]]
+              <p class="ledger__price"><span class="rng">{{proof.prices.4.from}}<span class="dash">–</span>{{proof.prices.4.to}}</span> {{proof.prices.4.note}} [[sample price]]</p>
             </li>
           </ul>
         </div>
@@ -197,42 +196,98 @@
   <section id="report" class="t-deep report" aria-labelledby="report-h2">
     <div class="container">
       <div class="report__head">
-        <p class="kicker" data-reveal>Readings, not guesses</p>
         <h2 id="report-h2" data-reveal>A sample report you can hold</h2>
         <p class="report__lede" data-reveal>{{proof.guarantee}} [[sample report]]</p>
+        <div class="odo-row odo-row--report" data-sw-signature="odometer-row">
+          <span class="odo-digits" data-report-odo aria-hidden="true">045000</span>
+          <span class="odo-pill pill--next">Report mileage</span>
+          <span class="odo-label" data-report-note>Check yours up top and every frame re-reads for it.</span>
+        </div>
       </div>
       <div class="report-grid" data-hook="sample-report" data-reveal-stagger>
         <article class="reading">
-          <div class="cluster" data-reveal="clip">
-            [[frame detail-1 cluster__frame | | alt="A new spark plug beside a worn one, the electrode gap compared"]]
+          <div class="inst inst--tread">
+            <svg viewBox="0 0 480 384" role="img" aria-label="Drawing: a tire tread cut in section, with a depth gauge pin down in the center groove reading 4/32 inch, under a dashed line for new tread at 10/32">
+              <line x1="24" x2="456" y1="120" y2="120" stroke="#f4f1eb" stroke-opacity=".45" stroke-width="2" stroke-dasharray="7 7"/>
+              <text x="26" y="106" class="svg-mono" fill="#f4f1eb" fill-opacity=".8">NEW 10/32</text>
+              <path d="M24 206 H96 V250 H130 V206 H214 V250 H248 V206 H332 V250 H366 V206 H456 V330 H24 Z" fill="#2b2f35"/>
+              <path d="M24 206 H96 V250 H130 V206 H214 V250 H248 V206 H332 V250 H366 V206 H456" fill="none" stroke="#f4f1eb" stroke-width="2"/>
+              <line x1="24" x2="456" y1="296" y2="296" stroke="#f4f1eb" stroke-opacity=".2" stroke-width="2" stroke-dasharray="3 9"/>
+              <line x1="24" x2="456" y1="312" y2="312" stroke="#f4f1eb" stroke-opacity=".2" stroke-width="2" stroke-dasharray="3 9"/>
+              <g data-scrub data-from-y="-40"><rect x="226" y="40" width="10" height="210" fill="#f4f1eb"/><rect x="236" y="120" width="30" height="5" fill="#e0703f"/></g>
+              <rect x="206" y="54" width="50" height="140" fill="#101215" fill-opacity=".55" stroke="#f4f1eb" stroke-width="2"/>
+              <g stroke="#f4f1eb" stroke-opacity=".75" stroke-width="2"><line x1="206" x2="218" y1="74" y2="74"/><line x1="206" x2="224" y1="94" y2="94"/><line x1="206" x2="218" y1="114" y2="114"/><line x1="206" x2="224" y1="134" y2="134"/><line x1="206" x2="218" y1="154" y2="154"/><line x1="206" x2="224" y1="174" y2="174"/></g>
+              <rect x="166" y="194" width="130" height="12" fill="#f4f1eb"/>
+              <line x1="262" x2="262" y1="210" y2="246" stroke="#e0703f" stroke-width="3"/>
+              <line x1="254" x2="270" y1="208" y2="208" stroke="#e0703f" stroke-width="3"/>
+              <line x1="254" x2="270" y1="248" y2="248" stroke="#e0703f" stroke-width="3"/>
+              <text x="296" y="178" class="svg-big" fill="#f4f1eb">4/32</text>
+            </svg>
             <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
-          </div>
-          <div class="reading__body">
-            <h3>Spark plugs</h3>
-            <p class="reading__val">Gap in spec</p>
-            <span class="status-pill status--ok">Not yet · due at 100k</span>
-          </div>
-        </article>
-        <article class="reading">
-          <div class="cluster" data-reveal="clip">
-            [[frame detail-3 cluster__frame | | alt="Tread depth gauge pressed into a tire groove"]]
-            <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+            <span class="plate-fx" aria-hidden="true"></span>
+            <span class="inst__fig" aria-hidden="true">FIG 01 / TREAD</span>
           </div>
           <div class="reading__body">
             <h3>Front tread</h3>
             <p class="reading__val">4/32 in</p>
-            <span class="status-pill status--watch">Rotate and watch</span>
+            <span class="status-pill status--now" data-verdict="tread">Due now: rotate</span>
           </div>
         </article>
         <article class="reading">
-          <div class="cluster" data-reveal="clip">
-            [[frame detail-4 cluster__frame | | alt="Brake fluid reservoir with a moisture test strip beside it"]]
+          <div class="inst">
+            <svg viewBox="0 0 400 300" role="img" aria-label="Drawing: a spark plug tip in profile with the electrode gap marked, above a feeler scale where the marker sits inside the spec band">
+              <polygon points="170,14 230,14 222,96 178,96" fill="none" stroke="#f4f1eb" stroke-width="2"/>
+              <rect x="192" y="96" width="16" height="58" fill="#f4f1eb"/>
+              <path d="M118 30 H146 V178 H230 V206 H118 Z" fill="#f4f1eb" fill-opacity=".85"/>
+              <line x1="252" x2="252" y1="156" y2="176" stroke="#e0703f" stroke-width="3"/>
+              <line x1="244" x2="260" y1="154" y2="154" stroke="#e0703f" stroke-width="3"/>
+              <line x1="244" x2="260" y1="178" y2="178" stroke="#e0703f" stroke-width="3"/>
+              <text x="272" y="174" class="svg-mono" fill="#f4f1eb">GAP</text>
+              <rect x="40" y="236" width="320" height="14" fill="#2b2f35"/>
+              <rect x="170" y="236" width="80" height="14" fill="#4da8cc" fill-opacity=".7"/>
+              <g stroke="#f4f1eb" stroke-opacity=".6" stroke-width="2"><line x1="40" x2="40" y1="230" y2="250"/><line x1="104" x2="104" y1="230" y2="250"/><line x1="170" x2="170" y1="230" y2="250"/><line x1="250" x2="250" y1="230" y2="250"/><line x1="296" x2="296" y1="230" y2="250"/><line x1="360" x2="360" y1="230" y2="250"/></g>
+              <text x="40" y="282" class="svg-mono" fill="#f4f1eb" fill-opacity=".8">TIGHT</text>
+              <text x="188" y="282" class="svg-mono" fill="#f4f1eb">SPEC</text>
+              <text x="316" y="282" class="svg-mono" fill="#f4f1eb" fill-opacity=".8">WIDE</text>
+              <polygon data-scrub data-from-x="-150" points="210,232 200,216 220,216" fill="#e0703f"/>
+            </svg>
             <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+            <span class="plate-fx" aria-hidden="true"></span>
+            <span class="inst__fig" aria-hidden="true">FIG 02 / PLUG GAP</span>
+          </div>
+          <div class="reading__body">
+            <h3>Spark plugs</h3>
+            <p class="reading__val">Gap in spec</p>
+            <span class="status-pill status--wait" data-verdict="plugs">Not yet: at 100k</span>
+          </div>
+        </article>
+        <article class="reading">
+          <div class="inst">
+            <svg viewBox="0 0 400 300" role="img" aria-label="Drawing: a brake fluid test strip whose pad matches the 1 percent patch on a four-step moisture scale, short of the 3 percent replace mark">
+              <g data-scrub data-from-x="120">
+                <rect x="40" y="44" width="250" height="22" fill="#f4f1eb"/>
+                <rect x="118" y="38" width="72" height="34" fill="#d8b562" stroke="#f4f1eb" stroke-width="2"/>
+              </g>
+              <line x1="154" x2="154" y1="80" y2="132" stroke="#e0703f" stroke-width="3" stroke-dasharray="5 5"/>
+              <rect x="38" y="140" width="76" height="70" fill="#efe6b8"/>
+              <rect x="118" y="140" width="72" height="70" fill="#d8b562"/>
+              <rect x="194" y="140" width="76" height="70" fill="#b97a2f"/>
+              <rect x="274" y="140" width="88" height="70" fill="#7a3a16"/>
+              <rect x="116" y="138" width="76" height="74" fill="none" stroke="#e0703f" stroke-width="3"/>
+              <text x="40" y="242" class="svg-mono" fill="#f4f1eb">0%</text>
+              <text x="120" y="242" class="svg-mono" fill="#f4f1eb">1%</text>
+              <text x="196" y="242" class="svg-mono" fill="#f4f1eb">2%</text>
+              <text x="276" y="242" class="svg-mono" fill="#f4f1eb">3%+</text>
+              <text x="276" y="270" class="svg-mono" fill="#f4f1eb" fill-opacity=".8">REPLACE</text>
+            </svg>
+            <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+            <span class="plate-fx" aria-hidden="true"></span>
+            <span class="inst__fig" aria-hidden="true">FIG 03 / FLUID</span>
           </div>
           <div class="reading__body">
             <h3>Brake fluid</h3>
-            <p class="reading__val">Moisture OK</p>
-            <span class="status-pill status--ok">Check again at 60k</span>
+            <p class="reading__val">Moisture 1%</p>
+            <span class="status-pill status--next" data-verdict="fluid">At 60k: test again</span>
           </div>
         </article>
       </div>
@@ -242,21 +297,21 @@
   <!-- 4. Oil (t-accent) -->
   <section id="oil" class="t-accent oil" aria-labelledby="oil-h2">
     <div class="container oil__grid">
-      <div class="oil__text" data-reveal>
+      <div class="oil__text">
         <h2 id="oil-h2">Conventional, blend or full synthetic</h2>
         <p>Your owner’s manual sets the spec. We match it, write the viscosity on your receipt, and stick the next change on the windshield by mileage, not by date.</p>
         <p class="oil__note">Ranges vary by make and driving. Your spec wins.</p>
       </div>
-      <div class="oil__table-wrap" data-reveal data-hook="oil-type-compare">
+      <div class="oil__table-wrap" data-hook="oil-type-compare">
         <table class="oil-table">
           <caption class="sr-only">Typical oil change intervals by oil type</caption>
           <thead>
             <tr><th scope="col">Type</th><th scope="col">Change interval</th><th scope="col">Suits</th></tr>
           </thead>
           <tbody>
-            <tr><td>Conventional</td><td class="mono">3,000–5,000 mi</td><td>Older engines, short trips</td></tr>
-            <tr><td>Synthetic blend</td><td class="mono">5,000–7,500 mi</td><td>Daily drivers, mixed use</td></tr>
-            <tr><td>Full synthetic</td><td class="mono">7,500–10,000 mi</td><td>Turbos, towing, desert heat</td></tr>
+            <tr><td>Conventional</td><td class="rng">3,000<span class="dash">–</span>5,000 mi</td><td>Older engines, short trips</td></tr>
+            <tr><td>Synthetic blend</td><td class="rng">5,000<span class="dash">–</span>7,500 mi</td><td>Daily drivers, mixed use</td></tr>
+            <tr><td>Full synthetic</td><td class="rng">7,500<span class="dash">–</span>10,000 mi</td><td>Turbos, towing, desert heat</td></tr>
           </tbody>
         </table>
       </div>
@@ -266,7 +321,7 @@
   <!-- 5. Self-check (t-light) -->
   <section id="check" class="t-light selfcheck" aria-labelledby="check-h2">
     <div class="container selfcheck__grid">
-      <div class="selfcheck__content" data-reveal>
+      <div class="selfcheck__content">
         <h2 id="check-h2">Tread depth and wipers, checked in your driveway</h2>
         <p>Run a quarter across three grooves. If the tread meets Washington’s head, you’re above 4/32. Lift each blade: if the rubber is cracked or streaks after one pass, swap it before the next storm.</p>
         <div class="tread-scale" data-hook="tread-wiper-check" role="img" aria-label="Tread depth scale: new at 10/32 inch, watch at 4/32, replace at 2/32">
@@ -278,9 +333,23 @@
         [[quote {{services.6.short}} btn-primary | Get my plan]]
       </div>
       <div class="selfcheck__visual">
-        <div class="cluster cluster--tall" data-reveal="clip">
-          [[frame story-4 cluster__frame | | alt="Tire pressure gauge held to a valve stem"]]
-          <span class="cluster__odo" aria-hidden="true"><span data-roll="000004">000004</span>/32 in</span>
+        <div class="inst inst--wiper">
+          <svg viewBox="0 0 400 480" role="img" aria-label="Drawing: two wiper blades in profile. The top blade has a straight new rubber edge. The bottom blade’s edge is split by sun cracks and marked for replacement">
+            <text x="40" y="96" class="svg-mono" fill="#f4f1eb">NEW EDGE</text>
+            <path d="M40 132 H360" stroke="#f4f1eb" stroke-width="6"/>
+            <g fill="#f4f1eb"><rect x="70" y="132" width="10" height="16"/><rect x="150" y="132" width="10" height="16"/><rect x="240" y="132" width="10" height="16"/><rect x="320" y="132" width="10" height="16"/></g>
+            <rect x="40" y="148" width="320" height="16" fill="#2b2f35" stroke="#f4f1eb" stroke-width="2"/>
+            <path d="M44 164 H356 L352 178 H48 Z" fill="#f4f1eb" fill-opacity=".85"/>
+            <text x="40" y="300" class="svg-mono" fill="#e0703f">CRACKED EDGE: REPLACE</text>
+            <path d="M40 336 H360" stroke="#f4f1eb" stroke-width="6"/>
+            <g fill="#f4f1eb"><rect x="70" y="336" width="10" height="16"/><rect x="150" y="336" width="10" height="16"/><rect x="240" y="336" width="10" height="16"/><rect x="320" y="336" width="10" height="16"/></g>
+            <rect x="40" y="352" width="320" height="16" fill="#2b2f35" stroke="#f4f1eb" stroke-width="2"/>
+            <path d="M44 368 H86 L90 378 L96 368 H150 L153 380 L160 368 H200 L204 376 L209 368 H262 L266 381 L272 368 H316 L320 377 L325 368 H356 L352 382 H48 Z" fill="#f4f1eb" fill-opacity=".85"/>
+            <g stroke="#e0703f" stroke-width="3" data-scrub data-from-scale="0"><line x1="90" x2="90" y1="352" y2="394"/><line x1="153" x2="153" y1="352" y2="396"/><line x1="204" x2="204" y1="352" y2="392"/><line x1="266" x2="266" y1="352" y2="397"/><line x1="320" x2="320" y1="352" y2="393"/></g>
+          </svg>
+          <span class="plate-fx" aria-hidden="true"></span>
+          <span class="inst__fig" aria-hidden="true">FIG 04 / WIPER EDGE</span>
+          <span class="cluster__odo" aria-hidden="true">Check every <span data-roll="005000">005000</span> mi</span>
         </div>
       </div>
     </div>
@@ -290,6 +359,7 @@
   <section class="break t-deep" aria-labelledby="break-h2">
     <div class="cluster cluster--break">
       [[frame break cluster__frame | | alt="Two-lane road through high desert north of town"]]
+      <span class="plate-fx" aria-hidden="true"></span>
     </div>
     <div class="break__inner container">
       <h2 id="break-h2" class="break__title" data-split="lines">Desert dust off this road ends up in your air filter.</h2>
@@ -297,49 +367,10 @@
     </div>
   </section>
 
-  <!-- 7. Wait or drop (t-mid) -->
-  <section id="planner" class="t-mid planner" aria-labelledby="plan-h2">
-    <div class="container planner__grid">
-      <div class="planner__text" data-reveal>
-        <h2 id="plan-h2">Wait for it or drop it off</h2>
-        <p>Pick the services. Tell us whether you’ll sit in the lounge or leave the keys. We set the bay time when we call.</p>
-      </div>
-      <div class="planner-card" data-reveal data-hook="wait-or-drop">
-        <label class="planner__label" for="plan-svc">Services</label>
-        <select id="plan-svc" class="planner__select">
-          <option value="">Choose a service</option>
-          <!-- each services -->
-          <option value="{{.short}}">{{.name}}</option>
-          <!-- /each -->
-        </select>
-        <div class="planner__result">
-          <span class="planner__time-label">Bay time</span>
-          <span class="planner__time-val">Confirmed when we call you back</span>
-        </div>
-        <fieldset class="planner__options">
-          <legend class="sr-only">Wait or drop</legend>
-          <label class="radio-card">
-            <input type="radio" name="plan-mode" value="wait" checked>
-            <span>Wait in the lounge</span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="plan-mode" value="drop">
-            <span>Drop at 7:30, pick up by noon</span>
-          </label>
-        </fieldset>
-        <div class="planner__actions">
-          <a class="btn btn-primary" href="#contact">Get my plan</a>
-          [[call btn-secondary]]
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- 8. Reviews (t-light): logbook, one lead entry + two -->
   <section id="reviews" class="t-light reviews" aria-labelledby="rev-h2">
     <div class="container">
       <div class="reviews__head">
-        <p class="kicker" data-reveal>From neighbors, with mileage</p>
         <h2 id="rev-h2" data-reveal>What drivers in {{biz.city}} are saying</h2>
         <p class="reviews__meta" data-reveal><span class="mono">{{proof.rating}}</span> from {{proof.reviewCount}} reviews [[sample reviews]]</p>
       </div>
@@ -375,7 +406,7 @@
   <!-- 9. ZIP + hours (t-deep) -->
   <section id="area" class="t-deep area" aria-labelledby="area-h2">
     <div class="container area__grid">
-      <div class="area__zip" data-reveal>
+      <div class="area__zip">
         <h2 id="area-h2">Check your ZIP before you drive in</h2>
         <p>We work on cars from {{biz.city}}, {{biz.areas|list}}.</p>
         <form class="zip-form" data-zip data-hook="zip" aria-label="ZIP code checker">
@@ -387,7 +418,7 @@
           <p class="zip-result" data-zip-result></p>
         </form>
       </div>
-      <div class="area__hours" data-reveal data-hook="open-now">
+      <div class="area__hours" data-hook="open-now">
         <h3>Shop hours</h3>
         <p class="open-now">{{hours|today}}</p>
         {{hours|table}}
@@ -399,24 +430,24 @@
   <!-- 10. Contact (t-light): split -->
   <section id="contact" class="t-light contact" aria-labelledby="contact-h2">
     <div class="container contact__grid">
-      <div class="contact__side" data-reveal>
-        <h2 id="contact-h2">Your plan in four short steps</h2>
-        <p>Mileage, services, wait or drop, then how to reach you. {{biz.short}} calls back to set a bay time.</p>
+      <div class="contact__side">
+        <h2 id="contact-h2">Wait for it or drop it off</h2>
+        <p>Your mileage carries over from the check up top. Tick what we should look at, say whether you’ll sit in the lounge or leave the keys, and {{biz.short}} calls back with the bay time.</p>
         <p class="contact__call">Rather talk now? [[tel]]</p>
         <div class="odo-row odo-row--contact" data-sw-signature="odometer-row" aria-hidden="true">
           <span class="odo-digits" data-contact-odo>045000</span>
-          <span class="odo-pill pill--next">Your plan</span>
+          <span class="odo-pill pill--next">Your reading</span>
         </div>
       </div>
-      <div class="contact__form" data-reveal>
+      <div class="contact__form">
         <form class="lead-form" data-lead data-hook="quote-form" aria-label="Plan request form">
           <div class="form-step" data-step data-step-title="Mileage">
-            <p class="step-label">1 of 4 · Mileage</p>
+            <p class="step-label"><span class="step-n">1/4</span> Mileage</p>
             <label for="f-mileage">Current odometer</label>
             <input id="f-mileage" name="mileage" type="text" inputmode="numeric" required>
           </div>
           <fieldset class="form-step" data-step data-step-title="Services">
-            <legend>2 of 4 · What should we look at?</legend>
+            <legend><span class="step-n">2/4</span> What should we look at?</legend>
             <div class="check-grid">
               <!-- each services -->
               <label class="checkbox-card">
@@ -427,7 +458,7 @@
             </div>
           </fieldset>
           <fieldset class="form-step" data-step data-step-title="Timing">
-            <legend>3 of 4 · Wait or drop</legend>
+            <legend><span class="step-n">3/4</span> Wait or drop</legend>
             <label class="radio-card">
               <input type="radio" name="timing" value="wait" checked>
               <span>Wait in the lounge</span>
@@ -438,7 +469,7 @@
             </label>
           </fieldset>
           <fieldset class="form-step" data-step data-step-title="Contact">
-            <legend>4 of 4 · How we reach you</legend>
+            <legend><span class="step-n">4/4</span> How we reach you</legend>
             <label for="f-name">Name</label>
             <input id="f-name" name="name" type="text" autocomplete="name" required>
             <label for="f-phone">Phone</label>
@@ -475,7 +506,7 @@
       </div>
     </div>
     <div class="footer__meta">
-      <p class="footer__brand">{{biz.name}} · {{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
+      <p class="footer__brand">{{biz.name}}, {{biz.tradeLabel}} in {{biz.city}}, {{biz.state}}</p>
       <p class="disclaimer">{{demo.disclaimer}}</p>
       [[credits]]
       <p class="copyright">© {{year}} {{biz.name}}</p>

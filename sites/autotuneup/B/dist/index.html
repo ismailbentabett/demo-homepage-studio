@@ -291,7 +291,7 @@ html.lenis, html.lenis body { height: auto; }
     --header-h: 64px;
     --gutter: 16px;
     --max-w: 1440px;
-    --radius: 2px;
+    --radius: 0px;
     --grade: saturate(.85) contrast(1.05) sepia(.08);
   }
 
@@ -618,9 +618,9 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* Reveal motion (only with sw-motion) */
-.sw-motion [data-reveal]:not([data-reveal="clip"]) { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
+.sw-motion [data-reveal]:not([data-reveal="clip"]) { opacity: 0; transform: translateY(14px); transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out); }
 .sw-motion [data-reveal]:not([data-reveal="clip"]).is-in { opacity: 1; transform: none; }
-.sw-motion [data-reveal-stagger] > * { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
+.sw-motion [data-reveal-stagger] > * { opacity: 0; transform: translateY(14px); transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out); }
 .sw-motion [data-reveal-stagger].is-in > * { opacity: 1; transform: none; }
 .sw-motion [data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: var(--stagger); }
 .sw-motion [data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: calc(var(--stagger) * 2); }
@@ -651,6 +651,140 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
   .reading .cluster, .cluster--tall { aspect-ratio: 16 / 10; max-height: none; }
   .reading .cluster::before, .cluster--tall::before { height: 88%; }
   .report-grid { gap: var(--s-6); }
+}
+
+/* Round 2: drawn instruments, readout type, square corners, phone re-cut */
+.proof-line { font-size: 1rem; font-weight: 500; color: var(--ink); }
+.proof-line:not(.proof-line--open) { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-5); }
+.proof-line .mono { font-weight: 500; }
+.est-sample { font-family: 'Karla', sans-serif; font-size: 0.9375rem; letter-spacing: 0; text-transform: none; color: #d6d8dc; }
+.rng { font-family: 'DM Mono', monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rng .dash { font-family: 'Karla', sans-serif; font-weight: 400; padding-inline: 0.18em; }
+.ledger__price .rng { font-size: var(--fs-0); color: var(--ink); }
+.step-n { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 0.8em; letter-spacing: 0.04em; margin-inline-end: var(--s-2); color: var(--signal); }
+
+.inst { position: relative; overflow: hidden; aspect-ratio: 4 / 3; background:
+    radial-gradient(ellipse 80% 70% at 50% 45%, rgba(77,168,204,.12), transparent 70%), var(--plate);
+  box-shadow: inset 0 0 0 2px #2b2f35; }
+.inst svg { position: absolute; inset: 6% 6% 16%; width: 88%; height: 78%; overflow: visible; }
+.inst--tread { aspect-ratio: 5 / 4; }
+.inst--wiper { aspect-ratio: 4 / 5; max-height: 78svh; margin-inline: auto; }
+.inst--wiper svg { inset: 4% 6% 12%; height: 84%; }
+.svg-mono { font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: 0.06em; }
+.svg-big { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 76px; }
+.status-pill { white-space: normal; }
+
+@media (max-width: 639px) {
+  .report-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-6) var(--s-4); }
+  .reading:first-child { grid-column: 1 / -1; }
+  .reading:not(:first-child) h3 { font-size: 1.375rem; }
+  .reading:not(:first-child) .reading__val { font-size: 1.0625rem; }
+  .reading:not(:first-child) .inst { aspect-ratio: 1 / 1; }
+  .reading:not(:first-child) .inst svg { inset: 6% 4% 26%; width: 92%; height: 68%; }
+  .reading:not(:first-child) .cluster__odo { left: var(--s-2); bottom: var(--s-2); padding: 3px 6px; font-size: 0.75rem; }
+  .inst--wiper { aspect-ratio: 5 / 4; }
+  .inst--wiper svg { inset: 2% 18% 14%; width: 64%; height: 84%; }
+}
+@media (min-width: 640px) and (max-width: 899px) {
+  .reading .inst { min-width: 0; }
+}
+@media (min-width: 900px) {
+  .reading:not(:first-child) .inst { aspect-ratio: 4 / 3; }
+}
+@media (forced-colors: active) { .inst { border: 1px solid CanvasText; } }
+.inst svg { inset: 17% 6% 6%; height: 77%; }
+.inst--wiper svg { inset: 12% 6% 6%; height: 82%; }
+.inst .cluster__odo { left: auto; right: var(--s-3); top: var(--s-3); bottom: auto; }
+@media (max-width: 639px) {
+  .reading:not(:first-child) .inst svg { inset: 24% 4% 4%; width: 92%; height: 72%; }
+  .reading:not(:first-child) .cluster__odo { left: auto; right: var(--s-2); top: var(--s-2); bottom: auto; }
+  .inst--wiper svg { inset: 12% 18% 4%; width: 64%; height: 84%; }
+}
+@media (min-width: 900px) {
+  .report-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); align-items: start; }
+  .reading:not(:first-child) { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; }
+}
+@media (max-width: 639px) { .reading:not(:first-child) .svg-mono { font-size: 24px; } }
+
+/* Round 3: hero re-cut (title + check on top, the instrument strip full width), odometer wheels,
+   one graded plate set (grid, grain, duotone, fig tags), verdict pills, one action per mileage band */
+.rng .dash { display: inline-block; width: 0.6em; height: 0.09em; margin-inline: 0.08em; letter-spacing: 0; line-height: 0; color: transparent; overflow: hidden; vertical-align: 0.32em; background: var(--ink); }
+@media (forced-colors: active) { .rng .dash { color: CanvasText; background: none; height: auto; line-height: inherit; vertical-align: baseline; } }
+
+.hero__grid { gap: var(--s-5); }
+.hero__title h1 { margin-block-start: 0; }
+.hero__content > :first-child { margin-block-start: 0; }
+.hero__panel { margin-block-start: var(--s-4); }
+.hero__readings .est-sample { margin-block-start: var(--s-4); }
+@media (min-width: 900px) {
+  .hero { min-height: calc(100svh - var(--header-h) - 36px); padding-block-end: var(--s-6); }
+  .hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-areas: "title panel" "content panel"; row-gap: var(--s-5); align-items: start; }
+  .hero__title { grid-area: title; align-self: end; }
+  .hero__content { grid-area: content; }
+  .hero__panel { grid-area: panel; margin-block-start: 0; align-self: center; }
+}
+@media (min-width: 1200px) {
+  .hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-areas: "title content" "panel panel"; column-gap: var(--s-8); row-gap: var(--s-6); align-items: end; }
+  .hero__title h1 { font-size: clamp(4rem, min(7.6vw, 12svh), 7.25rem); }
+  .hero__title, .hero__content { align-self: end; }
+  .hero .lead { max-width: 40ch; }
+  .hero__panel { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-6); align-items: center; padding: var(--s-5); }
+  .hero__readings .est-sample { margin-block-start: 0; }
+  .cluster--hero { aspect-ratio: 21 / 9; }
+  .cluster--hero::before { left: 79%; top: 60%; height: 112%; }
+  .cluster--hero::after { left: calc(79% - 1.5px); bottom: 40%; height: 45%; }
+  .cluster--hero .readout { left: 4%; bottom: 11%; translate: none; padding: 0.16em 0.4em; }
+  .cluster--hero .readout__digits { font-size: 7.6cqi; }
+  .cluster--hero .readout__label, .cluster--hero .readout__unit { font-size: max(0.875rem, 1.3cqi); }
+}
+
+/* Odometer wheels: built by app.js under motion; static digits otherwise */
+.wheels { display: inline-flex; }
+.wheel { display: inline-block; height: 1em; overflow: hidden; line-height: 1; margin-inline-end: 0.06em;
+  -webkit-mask: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%); mask: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%); }
+.wheel:last-child { margin-inline-end: 0; }
+.wheel__strip { display: block; will-change: transform; }
+.wheel__strip > span { display: block; height: 1em; }
+
+/* One graded plate set: graph grid + grain under the drawing, duotone over it, a fig tag and the odo tag */
+.inst { isolation: isolate; }
+.inst::before { content: ""; position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 115% 100% at 50% 45%, transparent 55%, rgba(8,9,11,.6) 100%),
+    repeating-linear-gradient(0deg, rgba(244,241,235,.028) 0 1px, transparent 1px 3px),
+    linear-gradient(rgba(244,241,235,.06) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(244,241,235,.06) 1px, transparent 1px) 0 0 / 24px 24px; }
+.inst svg { z-index: 1; }
+.plate-fx { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(150deg, #4da8cc 0%, #0f5f7f 45%, #b53d0f 100%); mix-blend-mode: soft-light; opacity: .75; }
+.cluster .plate-fx { z-index: 1; opacity: .6; }
+.cluster--break .plate-fx { opacity: .5; }
+.inst .cluster__odo { z-index: 3; }
+.inst__fig { position: absolute; z-index: 3; left: var(--s-3); top: var(--s-3); padding: 5px 0; font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #c9cbcf; }
+@media (max-width: 639px) { .reading:not(:first-child) .inst__fig { display: none; } }
+@media (forced-colors: active) { .plate-fx, .inst::before { display: none; } }
+
+/* Verdict pills re-read by the mileage check */
+.status--now { background: #f4f1eb; color: #a3370d; box-shadow: none; }
+.status--next { background: transparent; color: #4da8cc; box-shadow: inset 0 0 0 1.5px #4da8cc; }
+.status--wait { background: #3a3d42; color: #f4f1eb; box-shadow: none; }
+.sw-motion .status-pill.is-new, .sw-motion .odo-row.is-new { animation: reread 600ms var(--ease-out); }
+@keyframes reread { from { outline: 3px solid #e0703f; outline-offset: 4px; } to { outline: 3px solid transparent; outline-offset: 0; } }
+.odo-row--report { margin-block-start: var(--s-5); border-top: 3px solid #f4f1eb; }
+.odo-row--report .odo-digits { font-size: var(--fs-2); background: var(--plate); color: #fff; padding: 2px 10px; box-shadow: inset 0 0 0 1px rgba(244,241,235,.3); }
+.odo-row--report .odo-label { color: #d6d8dc; }
+
+/* Ledger: one action per mileage band, denser rows on the phone */
+.band-link { margin-inline-start: auto; display: none; align-items: center; min-height: 48px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 1.1875rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink); background: linear-gradient(var(--signal), var(--signal)) left calc(100% - 8px) / 100% 2px no-repeat; transition: color var(--dur-ui); }
+.band-link:hover { color: var(--signal); }
+@media (min-width: 640px) { .band-link { display: inline-flex; } }
+@media (max-width: 639px) {
+  .ledger__item { padding-block: var(--s-4); gap: var(--s-1); }
+  .ledger__item h3 { font-size: 1.5rem; }
+  .ledger__band + .ledger__band { margin-block-start: var(--s-6); }
+}
+@media (min-width: 900px) {
+  .ledger__item { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); }
+  .selfcheck__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-7); }
 }
 
 </style>
@@ -705,12 +839,13 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
 
 <main id="main">
 
-  <!-- 1. Hero (t-light): 7/5, giant live readout right -->
+  <!-- 1. Hero (t-light): title + check on top, the instrument strip full width under it (≥1200) -->
   <section id="hero" class="t-light hero" aria-labelledby="hero-h1">
     <div class="container hero__grid">
-      <div class="hero__content">
-        <p class="kicker">Car maintenance by mileage</p>
+      <div class="hero__title">
         <h1 id="hero-h1" data-split="lines">What’s due at your odometer in Reno</h1>
+      </div>
+      <div class="hero__content">
         <p class="lead">Type your mileage. We show what’s due now and what can wait, with the reading behind each call.</p>
         <form class="odo-form" data-hook="whats-due-estimator" data-odo-form aria-label="Mileage check">
           <label class="odo-form__label" for="odo-input">Current odometer</label>
@@ -723,39 +858,42 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
           </div>
         </form>
         <div class="hero__proof">
-          <p class="proof-line"><span data-open-now>Mon–Fri 7:30 am – 6 pm · Sat 8 am – 2 pm</span></p>
-          <p class="proof-line">Reno, Sparks, Sun Valley, Lemmon Valley, Verdi and Carson City · 4.8 from 296 reviews (Sample)</p>
+          <p class="proof-line proof-line--open"><span data-open-now>Mon–Fri 7:30 am – 6 pm · Sat 8 am – 2 pm</span></p>
+          <p class="proof-line"><span>Reno, Sparks and nearby towns</span> <span><b class="mono">4.8</b> from 296 reviews (Sample)</span></p>
         </div>
       </div>
 
       <div class="hero__panel t-deep" data-sw-signature="odometer-readout">
         <div class="cluster cluster--hero">
-          <figure class="frame cluster__frame" data-fallback="Placeholder for hero-B1"><img src="media/placeholder-hero-B1.webp" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-B1" data-slot="hero-B1" alt="Instrument cluster with the odometer lit at dusk"></figure>
+          <figure class="frame cluster__frame" data-fallback="Placeholder for hero-B1"><img src="media/placeholder-hero-B1.webp" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-B1" data-slot="hero-B1" alt=""></figure>
+          <span class="plate-fx" aria-hidden="true"></span>
           <div class="readout" aria-hidden="true">
             <span class="readout__label">ODO</span>
             <span class="readout__digits" data-readout>045000</span>
             <span class="readout__unit">mi</span>
           </div>
         </div>
-        <p class="est-sample" id="odo-result-label" data-odo-label>Sample: 45,000 mi</p>
+        <div class="hero__readings">
+        <p class="est-sample" id="odo-result-label" data-odo-label>Sample reading: 45,000 mi</p>
         <div class="est-results" aria-live="polite" data-odo-results>
           <div class="odo-row" data-sw-signature="odometer-row">
             <span class="odo-digits" data-odo-d="0">045000</span>
             <span class="odo-pill pill--now">Due now</span>
-            <span class="odo-label">Oil change · Rotation</span>
+            <span class="odo-label">Oil change and rotation</span>
           </div>
           <div class="odo-row" data-sw-signature="odometer-row">
             <span class="odo-digits" data-odo-d="1">060000</span>
             <span class="odo-pill pill--next" data-odo-p="1">At 60k</span>
-            <span class="odo-label" data-odo-l="1">Air filter · Cabin filter · Brake fluid</span>
+            <span class="odo-label" data-odo-l="1">Air filter, cabin filter, brake fluid</span>
           </div>
           <div class="odo-row" data-sw-signature="odometer-row">
             <span class="odo-digits" data-odo-d="2">100000</span>
             <span class="odo-pill pill--wait">Not yet</span>
-            <span class="odo-label">Spark plugs · Coolant</span>
+            <span class="odo-label">Spark plugs, coolant</span>
           </div>
         </div>
         <a href="#contact" class="panel-link" data-odo-go>Get my plan <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a>
+        </div>
       </div>
     </div>
   </section>
@@ -778,23 +916,21 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
             <span class="odo-digits">030000</span>
             <span class="odo-pill pill--now">30,000 mi</span>
             <span class="odo-label">and every oil change on the way</span>
+            <a class="btn band-link" href="#contact" data-service="Oil change">Get my plan</a>
           </div>
           <ul class="ledger__list">
             <li class="ledger__item">
               <h3>Oil change</h3>
               <p>The oil your car&#39;s spec calls for, a new filter, and the next mileage on a sticker.</p>
-              <p class="ledger__price"><span class="mono">$65–$95</span> most cars, filter included <span class="sample-tag">Sample price</span></p>
-              <a class="btn ledger__link" href="#contact" data-service="Oil change">Get my plan</a>
+              <p class="ledger__price"><span class="rng">$65<span class="dash">–</span>$95</span> most cars, filter included <span class="sample-tag">Sample price</span></p>
             </li>
             <li class="ledger__item">
               <h3>Tire rotation and tread check</h3>
               <p>Tires rotated, tread measured in 32nds at three spots, pressures set to the door sticker.</p>
-              <a class="btn ledger__link" href="#contact" data-service="Rotation &amp; tread">Get my plan</a>
             </li>
             <li class="ledger__item">
               <h3>Battery and wipers</h3>
               <p>Heat kills batteries here. A load test, and blades swapped before the sun cracks them.</p>
-              <a class="btn ledger__link" href="#contact" data-service="Battery &amp; wipers">Get my plan</a>
             </li>
           </ul>
         </div>
@@ -804,25 +940,23 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
             <span class="odo-digits">060000</span>
             <span class="odo-pill pill--next">60,000 mi</span>
             <span class="odo-label">filters and fluids, tested first</span>
+            <a class="btn band-link" href="#contact" data-service="Air filter">Get my plan</a>
           </div>
           <ul class="ledger__list">
             <li class="ledger__item">
               <h3>Engine air filter</h3>
               <p>Desert dust clogs them fast. We show you yours and replace it only when it&#39;s due.</p>
-              <p class="ledger__price"><span class="mono">$30–$60</span> part and install <span class="sample-tag">Sample price</span></p>
-              <a class="btn ledger__link" href="#contact" data-service="Air filter">Get my plan</a>
+              <p class="ledger__price"><span class="rng">$30<span class="dash">–</span>$60</span> part and install <span class="sample-tag">Sample price</span></p>
             </li>
             <li class="ledger__item">
               <h3>Cabin air filter</h3>
               <p>Pulled from behind the glove box and shown to you, dust, pollen and all.</p>
-              <p class="ledger__price"><span class="mono">$35–$70</span> part and install <span class="sample-tag">Sample price</span></p>
-              <a class="btn ledger__link" href="#contact" data-service="Cabin filter">Get my plan</a>
+              <p class="ledger__price"><span class="rng">$35<span class="dash">–</span>$70</span> part and install <span class="sample-tag">Sample price</span></p>
             </li>
             <li class="ledger__item">
               <h3>Brake fluid exchange</h3>
               <p>Moisture tested first. If the fluid is fine, we write the next check date and stop.</p>
-              <p class="ledger__price"><span class="mono">$90–$140</span> only if the moisture test calls for it <span class="sample-tag">Sample price</span></p>
-              <a class="btn ledger__link" href="#contact" data-service="Brake fluid">Get my plan</a>
+              <p class="ledger__price"><span class="rng">$90<span class="dash">–</span>$140</span> only if the moisture test calls for it <span class="sample-tag">Sample price</span></p>
             </li>
           </ul>
         </div>
@@ -832,18 +966,17 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
             <span class="odo-digits">100000</span>
             <span class="odo-pill pill--wait">100,000 mi</span>
             <span class="odo-label">the long intervals</span>
+            <a class="btn band-link" href="#contact" data-service="Tune-up">Get my plan</a>
           </div>
           <ul class="ledger__list">
             <li class="ledger__item">
               <h3>Spark plugs and tune-up</h3>
               <p>Plugs replaced at the interval in your manual, not before, with the old ones handed back.</p>
-              <a class="btn ledger__link" href="#contact" data-service="Tune-up">Get my plan</a>
             </li>
             <li class="ledger__item">
               <h3>Coolant exchange</h3>
               <p>Coolant tested for strength and age before the I-80 summer heat and the Donner Pass cold.</p>
-              <p class="ledger__price"><span class="mono">$120–$190</span> most cars and small SUVs <span class="sample-tag">Sample price</span></p>
-              <a class="btn ledger__link" href="#contact" data-service="Coolant">Get my plan</a>
+              <p class="ledger__price"><span class="rng">$120<span class="dash">–</span>$190</span> most cars and small SUVs <span class="sample-tag">Sample price</span></p>
             </li>
           </ul>
         </div>
@@ -855,42 +988,98 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
   <section id="report" class="t-deep report" aria-labelledby="report-h2">
     <div class="container">
       <div class="report__head">
-        <p class="kicker" data-reveal>Readings, not guesses</p>
         <h2 id="report-h2" data-reveal>A sample report you can hold</h2>
         <p class="report__lede" data-reveal>Anything we call due comes with the reading that shows it, and we tell you what can wait. <span class="sample-tag">Sample report</span></p>
+        <div class="odo-row odo-row--report" data-sw-signature="odometer-row">
+          <span class="odo-digits" data-report-odo aria-hidden="true">045000</span>
+          <span class="odo-pill pill--next">Report mileage</span>
+          <span class="odo-label" data-report-note>Check yours up top and every frame re-reads for it.</span>
+        </div>
       </div>
       <div class="report-grid" data-hook="sample-report" data-reveal-stagger>
         <article class="reading">
-          <div class="cluster" data-reveal="clip">
-            <figure class="frame cluster__frame" data-fallback="New spark plug beside a worn one, electrode gap difference visible."><img src="media/placeholder-parts-spark-plugs.webp" width="1170" height="780" loading="lazy" decoding="async" data-photo="parts-spark-plugs" data-slot="detail-1" alt="A new spark plug beside a worn one, the electrode gap compared"></figure>
+          <div class="inst inst--tread">
+            <svg viewBox="0 0 480 384" role="img" aria-label="Drawing: a tire tread cut in section, with a depth gauge pin down in the center groove reading 4/32 inch, under a dashed line for new tread at 10/32">
+              <line x1="24" x2="456" y1="120" y2="120" stroke="#f4f1eb" stroke-opacity=".45" stroke-width="2" stroke-dasharray="7 7"/>
+              <text x="26" y="106" class="svg-mono" fill="#f4f1eb" fill-opacity=".8">NEW 10/32</text>
+              <path d="M24 206 H96 V250 H130 V206 H214 V250 H248 V206 H332 V250 H366 V206 H456 V330 H24 Z" fill="#2b2f35"/>
+              <path d="M24 206 H96 V250 H130 V206 H214 V250 H248 V206 H332 V250 H366 V206 H456" fill="none" stroke="#f4f1eb" stroke-width="2"/>
+              <line x1="24" x2="456" y1="296" y2="296" stroke="#f4f1eb" stroke-opacity=".2" stroke-width="2" stroke-dasharray="3 9"/>
+              <line x1="24" x2="456" y1="312" y2="312" stroke="#f4f1eb" stroke-opacity=".2" stroke-width="2" stroke-dasharray="3 9"/>
+              <g data-scrub data-from-y="-40"><rect x="226" y="40" width="10" height="210" fill="#f4f1eb"/><rect x="236" y="120" width="30" height="5" fill="#e0703f"/></g>
+              <rect x="206" y="54" width="50" height="140" fill="#101215" fill-opacity=".55" stroke="#f4f1eb" stroke-width="2"/>
+              <g stroke="#f4f1eb" stroke-opacity=".75" stroke-width="2"><line x1="206" x2="218" y1="74" y2="74"/><line x1="206" x2="224" y1="94" y2="94"/><line x1="206" x2="218" y1="114" y2="114"/><line x1="206" x2="224" y1="134" y2="134"/><line x1="206" x2="218" y1="154" y2="154"/><line x1="206" x2="224" y1="174" y2="174"/></g>
+              <rect x="166" y="194" width="130" height="12" fill="#f4f1eb"/>
+              <line x1="262" x2="262" y1="210" y2="246" stroke="#e0703f" stroke-width="3"/>
+              <line x1="254" x2="270" y1="208" y2="208" stroke="#e0703f" stroke-width="3"/>
+              <line x1="254" x2="270" y1="248" y2="248" stroke="#e0703f" stroke-width="3"/>
+              <text x="296" y="178" class="svg-big" fill="#f4f1eb">4/32</text>
+            </svg>
             <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
-          </div>
-          <div class="reading__body">
-            <h3>Spark plugs</h3>
-            <p class="reading__val">Gap in spec</p>
-            <span class="status-pill status--ok">Not yet · due at 100k</span>
-          </div>
-        </article>
-        <article class="reading">
-          <div class="cluster" data-reveal="clip">
-            <figure class="frame cluster__frame" data-fallback="Tread depth gauge pressed into tire groove, numbers readable but generic."><img src="media/placeholder-tool-tread-gauge.webp" width="1170" height="780" loading="lazy" decoding="async" data-photo="tool-tread-gauge" data-slot="detail-3" alt="Tread depth gauge pressed into a tire groove"></figure>
-            <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+            <span class="plate-fx" aria-hidden="true"></span>
+            <span class="inst__fig" aria-hidden="true">FIG 01 / TREAD</span>
           </div>
           <div class="reading__body">
             <h3>Front tread</h3>
             <p class="reading__val">4/32 in</p>
-            <span class="status-pill status--watch">Rotate and watch</span>
+            <span class="status-pill status--now" data-verdict="tread">Due now: rotate</span>
           </div>
         </article>
         <article class="reading">
-          <div class="cluster" data-reveal="clip">
-            <figure class="frame cluster__frame" data-fallback="Placeholder for process-brake-fluid"><img src="media/placeholder-process-brake-fluid.webp" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-brake-fluid" data-slot="detail-4" alt="Brake fluid reservoir with a moisture test strip beside it"></figure>
+          <div class="inst">
+            <svg viewBox="0 0 400 300" role="img" aria-label="Drawing: a spark plug tip in profile with the electrode gap marked, above a feeler scale where the marker sits inside the spec band">
+              <polygon points="170,14 230,14 222,96 178,96" fill="none" stroke="#f4f1eb" stroke-width="2"/>
+              <rect x="192" y="96" width="16" height="58" fill="#f4f1eb"/>
+              <path d="M118 30 H146 V178 H230 V206 H118 Z" fill="#f4f1eb" fill-opacity=".85"/>
+              <line x1="252" x2="252" y1="156" y2="176" stroke="#e0703f" stroke-width="3"/>
+              <line x1="244" x2="260" y1="154" y2="154" stroke="#e0703f" stroke-width="3"/>
+              <line x1="244" x2="260" y1="178" y2="178" stroke="#e0703f" stroke-width="3"/>
+              <text x="272" y="174" class="svg-mono" fill="#f4f1eb">GAP</text>
+              <rect x="40" y="236" width="320" height="14" fill="#2b2f35"/>
+              <rect x="170" y="236" width="80" height="14" fill="#4da8cc" fill-opacity=".7"/>
+              <g stroke="#f4f1eb" stroke-opacity=".6" stroke-width="2"><line x1="40" x2="40" y1="230" y2="250"/><line x1="104" x2="104" y1="230" y2="250"/><line x1="170" x2="170" y1="230" y2="250"/><line x1="250" x2="250" y1="230" y2="250"/><line x1="296" x2="296" y1="230" y2="250"/><line x1="360" x2="360" y1="230" y2="250"/></g>
+              <text x="40" y="282" class="svg-mono" fill="#f4f1eb" fill-opacity=".8">TIGHT</text>
+              <text x="188" y="282" class="svg-mono" fill="#f4f1eb">SPEC</text>
+              <text x="316" y="282" class="svg-mono" fill="#f4f1eb" fill-opacity=".8">WIDE</text>
+              <polygon data-scrub data-from-x="-150" points="210,232 200,216 220,216" fill="#e0703f"/>
+            </svg>
             <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+            <span class="plate-fx" aria-hidden="true"></span>
+            <span class="inst__fig" aria-hidden="true">FIG 02 / PLUG GAP</span>
+          </div>
+          <div class="reading__body">
+            <h3>Spark plugs</h3>
+            <p class="reading__val">Gap in spec</p>
+            <span class="status-pill status--wait" data-verdict="plugs">Not yet: at 100k</span>
+          </div>
+        </article>
+        <article class="reading">
+          <div class="inst">
+            <svg viewBox="0 0 400 300" role="img" aria-label="Drawing: a brake fluid test strip whose pad matches the 1 percent patch on a four-step moisture scale, short of the 3 percent replace mark">
+              <g data-scrub data-from-x="120">
+                <rect x="40" y="44" width="250" height="22" fill="#f4f1eb"/>
+                <rect x="118" y="38" width="72" height="34" fill="#d8b562" stroke="#f4f1eb" stroke-width="2"/>
+              </g>
+              <line x1="154" x2="154" y1="80" y2="132" stroke="#e0703f" stroke-width="3" stroke-dasharray="5 5"/>
+              <rect x="38" y="140" width="76" height="70" fill="#efe6b8"/>
+              <rect x="118" y="140" width="72" height="70" fill="#d8b562"/>
+              <rect x="194" y="140" width="76" height="70" fill="#b97a2f"/>
+              <rect x="274" y="140" width="88" height="70" fill="#7a3a16"/>
+              <rect x="116" y="138" width="76" height="74" fill="none" stroke="#e0703f" stroke-width="3"/>
+              <text x="40" y="242" class="svg-mono" fill="#f4f1eb">0%</text>
+              <text x="120" y="242" class="svg-mono" fill="#f4f1eb">1%</text>
+              <text x="196" y="242" class="svg-mono" fill="#f4f1eb">2%</text>
+              <text x="276" y="242" class="svg-mono" fill="#f4f1eb">3%+</text>
+              <text x="276" y="270" class="svg-mono" fill="#f4f1eb" fill-opacity=".8">REPLACE</text>
+            </svg>
+            <span class="cluster__odo" aria-hidden="true"><span data-roll="045000">045000</span> mi</span>
+            <span class="plate-fx" aria-hidden="true"></span>
+            <span class="inst__fig" aria-hidden="true">FIG 03 / FLUID</span>
           </div>
           <div class="reading__body">
             <h3>Brake fluid</h3>
-            <p class="reading__val">Moisture OK</p>
-            <span class="status-pill status--ok">Check again at 60k</span>
+            <p class="reading__val">Moisture 1%</p>
+            <span class="status-pill status--next" data-verdict="fluid">At 60k: test again</span>
           </div>
         </article>
       </div>
@@ -900,21 +1089,21 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
   <!-- 4. Oil (t-accent) -->
   <section id="oil" class="t-accent oil" aria-labelledby="oil-h2">
     <div class="container oil__grid">
-      <div class="oil__text" data-reveal>
+      <div class="oil__text">
         <h2 id="oil-h2">Conventional, blend or full synthetic</h2>
         <p>Your owner’s manual sets the spec. We match it, write the viscosity on your receipt, and stick the next change on the windshield by mileage, not by date.</p>
         <p class="oil__note">Ranges vary by make and driving. Your spec wins.</p>
       </div>
-      <div class="oil__table-wrap" data-reveal data-hook="oil-type-compare">
+      <div class="oil__table-wrap" data-hook="oil-type-compare">
         <table class="oil-table">
           <caption class="sr-only">Typical oil change intervals by oil type</caption>
           <thead>
             <tr><th scope="col">Type</th><th scope="col">Change interval</th><th scope="col">Suits</th></tr>
           </thead>
           <tbody>
-            <tr><td>Conventional</td><td class="mono">3,000–5,000 mi</td><td>Older engines, short trips</td></tr>
-            <tr><td>Synthetic blend</td><td class="mono">5,000–7,500 mi</td><td>Daily drivers, mixed use</td></tr>
-            <tr><td>Full synthetic</td><td class="mono">7,500–10,000 mi</td><td>Turbos, towing, desert heat</td></tr>
+            <tr><td>Conventional</td><td class="rng">3,000<span class="dash">–</span>5,000 mi</td><td>Older engines, short trips</td></tr>
+            <tr><td>Synthetic blend</td><td class="rng">5,000<span class="dash">–</span>7,500 mi</td><td>Daily drivers, mixed use</td></tr>
+            <tr><td>Full synthetic</td><td class="rng">7,500<span class="dash">–</span>10,000 mi</td><td>Turbos, towing, desert heat</td></tr>
           </tbody>
         </table>
       </div>
@@ -924,7 +1113,7 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
   <!-- 5. Self-check (t-light) -->
   <section id="check" class="t-light selfcheck" aria-labelledby="check-h2">
     <div class="container selfcheck__grid">
-      <div class="selfcheck__content" data-reveal>
+      <div class="selfcheck__content">
         <h2 id="check-h2">Tread depth and wipers, checked in your driveway</h2>
         <p>Run a quarter across three grooves. If the tread meets Washington’s head, you’re above 4/32. Lift each blade: if the rubber is cracked or streaks after one pass, swap it before the next storm.</p>
         <div class="tread-scale" data-hook="tread-wiper-check" role="img" aria-label="Tread depth scale: new at 10/32 inch, watch at 4/32, replace at 2/32">
@@ -936,9 +1125,23 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
         <a class="btn btn-primary" href="#contact" data-service="Rotation &amp; tread">Get my plan</a>
       </div>
       <div class="selfcheck__visual">
-        <div class="cluster cluster--tall" data-reveal="clip">
-          <figure class="frame cluster__frame" data-fallback="Tire pressure gauge held to valve stem, dial face generic."><img src="media/placeholder-process-tire-pressure.webp" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-tire-pressure" data-slot="story-4" alt="Tire pressure gauge held to a valve stem"></figure>
-          <span class="cluster__odo" aria-hidden="true"><span data-roll="000004">000004</span>/32 in</span>
+        <div class="inst inst--wiper">
+          <svg viewBox="0 0 400 480" role="img" aria-label="Drawing: two wiper blades in profile. The top blade has a straight new rubber edge. The bottom blade’s edge is split by sun cracks and marked for replacement">
+            <text x="40" y="96" class="svg-mono" fill="#f4f1eb">NEW EDGE</text>
+            <path d="M40 132 H360" stroke="#f4f1eb" stroke-width="6"/>
+            <g fill="#f4f1eb"><rect x="70" y="132" width="10" height="16"/><rect x="150" y="132" width="10" height="16"/><rect x="240" y="132" width="10" height="16"/><rect x="320" y="132" width="10" height="16"/></g>
+            <rect x="40" y="148" width="320" height="16" fill="#2b2f35" stroke="#f4f1eb" stroke-width="2"/>
+            <path d="M44 164 H356 L352 178 H48 Z" fill="#f4f1eb" fill-opacity=".85"/>
+            <text x="40" y="300" class="svg-mono" fill="#e0703f">CRACKED EDGE: REPLACE</text>
+            <path d="M40 336 H360" stroke="#f4f1eb" stroke-width="6"/>
+            <g fill="#f4f1eb"><rect x="70" y="336" width="10" height="16"/><rect x="150" y="336" width="10" height="16"/><rect x="240" y="336" width="10" height="16"/><rect x="320" y="336" width="10" height="16"/></g>
+            <rect x="40" y="352" width="320" height="16" fill="#2b2f35" stroke="#f4f1eb" stroke-width="2"/>
+            <path d="M44 368 H86 L90 378 L96 368 H150 L153 380 L160 368 H200 L204 376 L209 368 H262 L266 381 L272 368 H316 L320 377 L325 368 H356 L352 382 H48 Z" fill="#f4f1eb" fill-opacity=".85"/>
+            <g stroke="#e0703f" stroke-width="3" data-scrub data-from-scale="0"><line x1="90" x2="90" y1="352" y2="394"/><line x1="153" x2="153" y1="352" y2="396"/><line x1="204" x2="204" y1="352" y2="392"/><line x1="266" x2="266" y1="352" y2="397"/><line x1="320" x2="320" y1="352" y2="393"/></g>
+          </svg>
+          <span class="plate-fx" aria-hidden="true"></span>
+          <span class="inst__fig" aria-hidden="true">FIG 04 / WIPER EDGE</span>
+          <span class="cluster__odo" aria-hidden="true">Check every <span data-roll="005000">005000</span> mi</span>
         </div>
       </div>
     </div>
@@ -948,6 +1151,7 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
   <section class="break t-deep" aria-labelledby="break-h2">
     <div class="cluster cluster--break">
       <figure class="frame cluster__frame" data-fallback="Placeholder for place-reno-desert"><img src="media/placeholder-place-reno-desert.webp" width="1170" height="780" loading="lazy" decoding="async" data-photo="place-reno-desert" data-slot="break" alt="Two-lane road through high desert north of town"></figure>
+      <span class="plate-fx" aria-hidden="true"></span>
     </div>
     <div class="break__inner container">
       <h2 id="break-h2" class="break__title" data-split="lines">Desert dust off this road ends up in your air filter.</h2>
@@ -955,63 +1159,10 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
     </div>
   </section>
 
-  <!-- 7. Wait or drop (t-mid) -->
-  <section id="planner" class="t-mid planner" aria-labelledby="plan-h2">
-    <div class="container planner__grid">
-      <div class="planner__text" data-reveal>
-        <h2 id="plan-h2">Wait for it or drop it off</h2>
-        <p>Pick the services. Tell us whether you’ll sit in the lounge or leave the keys. We set the bay time when we call.</p>
-      </div>
-      <div class="planner-card" data-reveal data-hook="wait-or-drop">
-        <label class="planner__label" for="plan-svc">Services</label>
-        <select id="plan-svc" class="planner__select">
-          <option value="">Choose a service</option>
-          
-          <option value="Oil change">Oil change</option>
-          
-          <option value="Air filter">Engine air filter</option>
-          
-          <option value="Cabin filter">Cabin air filter</option>
-          
-          <option value="Tune-up">Spark plugs and tune-up</option>
-          
-          <option value="Brake fluid">Brake fluid exchange</option>
-          
-          <option value="Coolant">Coolant exchange</option>
-          
-          <option value="Rotation &amp; tread">Tire rotation and tread check</option>
-          
-          <option value="Battery &amp; wipers">Battery and wipers</option>
-          
-        </select>
-        <div class="planner__result">
-          <span class="planner__time-label">Bay time</span>
-          <span class="planner__time-val">Confirmed when we call you back</span>
-        </div>
-        <fieldset class="planner__options">
-          <legend class="sr-only">Wait or drop</legend>
-          <label class="radio-card">
-            <input type="radio" name="plan-mode" value="wait" checked>
-            <span>Wait in the lounge</span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="plan-mode" value="drop">
-            <span>Drop at 7:30, pick up by noon</span>
-          </label>
-        </fieldset>
-        <div class="planner__actions">
-          <a class="btn btn-primary" href="#contact">Get my plan</a>
-          <a class="btn btn-call btn-secondary" href="tel:+17755550189"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (775) 555-0189</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- 8. Reviews (t-light): logbook, one lead entry + two -->
   <section id="reviews" class="t-light reviews" aria-labelledby="rev-h2">
     <div class="container">
       <div class="reviews__head">
-        <p class="kicker" data-reveal>From neighbors, with mileage</p>
         <h2 id="rev-h2" data-reveal>What drivers in Reno are saying</h2>
         <p class="reviews__meta" data-reveal><span class="mono">4.8</span> from 296 reviews <span class="sample-tag">Sample reviews</span></p>
       </div>
@@ -1047,7 +1198,7 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
   <!-- 9. ZIP + hours (t-deep) -->
   <section id="area" class="t-deep area" aria-labelledby="area-h2">
     <div class="container area__grid">
-      <div class="area__zip" data-reveal>
+      <div class="area__zip">
         <h2 id="area-h2">Check your ZIP before you drive in</h2>
         <p>We work on cars from Reno, Sparks, Sun Valley, Lemmon Valley, Verdi and Carson City.</p>
         <form class="zip-form" data-zip data-hook="zip" aria-label="ZIP code checker">
@@ -1059,7 +1210,7 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
           <p class="zip-result" data-zip-result></p>
         </form>
       </div>
-      <div class="area__hours" data-reveal data-hook="open-now">
+      <div class="area__hours" data-hook="open-now">
         <h3>Shop hours</h3>
         <p class="open-now"><span data-open-now>Mon–Fri 7:30 am – 6 pm · Sat 8 am – 2 pm</span></p>
         <dl class="hours"><div><dt>Mon</dt><dd>7:30 am – 6 pm</dd></div><div><dt>Tue</dt><dd>7:30 am – 6 pm</dd></div><div><dt>Wed</dt><dd>7:30 am – 6 pm</dd></div><div><dt>Thu</dt><dd>7:30 am – 6 pm</dd></div><div><dt>Fri</dt><dd>7:30 am – 6 pm</dd></div><div><dt>Sat</dt><dd>8 am – 2 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
@@ -1071,24 +1222,24 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
   <!-- 10. Contact (t-light): split -->
   <section id="contact" class="t-light contact" aria-labelledby="contact-h2">
     <div class="container contact__grid">
-      <div class="contact__side" data-reveal>
-        <h2 id="contact-h2">Your plan in four short steps</h2>
-        <p>Mileage, services, wait or drop, then how to reach you. Next Interval calls back to set a bay time.</p>
+      <div class="contact__side">
+        <h2 id="contact-h2">Wait for it or drop it off</h2>
+        <p>Your mileage carries over from the check up top. Tick what we should look at, say whether you’ll sit in the lounge or leave the keys, and Next Interval calls back with the bay time.</p>
         <p class="contact__call">Rather talk now? <a class="tel-plain" href="tel:+17755550189">(775) 555-0189</a></p>
         <div class="odo-row odo-row--contact" data-sw-signature="odometer-row" aria-hidden="true">
           <span class="odo-digits" data-contact-odo>045000</span>
-          <span class="odo-pill pill--next">Your plan</span>
+          <span class="odo-pill pill--next">Your reading</span>
         </div>
       </div>
-      <div class="contact__form" data-reveal>
+      <div class="contact__form">
         <form class="lead-form" data-lead data-hook="quote-form" aria-label="Plan request form">
           <div class="form-step" data-step data-step-title="Mileage">
-            <p class="step-label">1 of 4 · Mileage</p>
+            <p class="step-label"><span class="step-n">1/4</span> Mileage</p>
             <label for="f-mileage">Current odometer</label>
             <input id="f-mileage" name="mileage" type="text" inputmode="numeric" required>
           </div>
           <fieldset class="form-step" data-step data-step-title="Services">
-            <legend>2 of 4 · What should we look at?</legend>
+            <legend><span class="step-n">2/4</span> What should we look at?</legend>
             <div class="check-grid">
               
               <label class="checkbox-card">
@@ -1134,7 +1285,7 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
             </div>
           </fieldset>
           <fieldset class="form-step" data-step data-step-title="Timing">
-            <legend>3 of 4 · Wait or drop</legend>
+            <legend><span class="step-n">3/4</span> Wait or drop</legend>
             <label class="radio-card">
               <input type="radio" name="timing" value="wait" checked>
               <span>Wait in the lounge</span>
@@ -1145,7 +1296,7 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
             </label>
           </fieldset>
           <fieldset class="form-step" data-step data-step-title="Contact">
-            <legend>4 of 4 · How we reach you</legend>
+            <legend><span class="step-n">4/4</span> How we reach you</legend>
             <label for="f-name">Name</label>
             <input id="f-name" name="name" type="text" autocomplete="name" required>
             <label for="f-phone">Phone</label>
@@ -1182,7 +1333,7 @@ main .form-thankyou h3 { margin-block-end: var(--s-3); }
       </div>
     </div>
     <div class="footer__meta">
-      <p class="footer__brand">Next Interval Tune-Up · Car Maintenance by Mileage · Reno, NV</p>
+      <p class="footer__brand">Next Interval Tune-Up, Car Maintenance by Mileage in Reno, NV</p>
       <p class="disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
       <ul class="credits"></ul>
       <p class="copyright">© 2026 Next Interval Tune-Up</p>
