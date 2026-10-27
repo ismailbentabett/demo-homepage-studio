@@ -22,7 +22,6 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Twelve Mil Flooring","description":"Atlanta flooring with the specs shown: wear layer, thickness, slab moisture and sample prices per square foot. Compare floors, measure a room, then call.","telephone":"+14045550150","email":"hello@twelve-mil-flooring.example","areaServed":[{"@type":"City","name":"Atlanta"},{"@type":"City","name":"Decatur"},{"@type":"City","name":"Smyrna"},{"@type":"City","name":"Marietta"},{"@type":"City","name":"Sandy Springs"},{"@type":"City","name":"Brookhaven"},{"@type":"City","name":"Tucker"},{"@type":"City","name":"Dunwoody"},{"@type":"City","name":"Roswell"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"07:30","closes":"17:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday"],"opens":"07:30","closes":"16:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"09:00","closes":"12:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/archivo/archivo-100-900-normal.woff2" crossorigin>
-<link rel="preload" as="image" href="media/hands-sample.jpg" fetchpriority="high">
 <link rel="stylesheet" href="vendor/lenis.css">
 <style>
 @font-face{font-family:"Archivo";src:url("fonts/archivo/archivo-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
@@ -305,7 +304,7 @@ html.lenis, html.lenis body { height: auto; }
   /* Tone defaults (overridden by tone classes) */
   --bg: var(--c-paper);
   --ink: var(--c-ink);
-  --muted: var(--c-mid);
+  --muted: #5E5046;
   --rule: var(--c-rule-paper);
   --accent: var(--c-accent);
   --focus: var(--c-accent);
@@ -321,9 +320,9 @@ html.lenis, html.lenis body { height: auto; }
 .t-light {
   --bg: #F4EFE6;
   --ink: #1C1917;
-  --muted: #8C7B6E;
+  --muted: #5E5046;
   --rule: #D6CFC4;
-  --accent: #B85C38;
+  --accent: #9A4A2A;
   --focus: #B85C38;
   --btn-bg: #B85C38;
   --btn-ink: #FFFFFF;
@@ -332,9 +331,9 @@ html.lenis, html.lenis body { height: auto; }
 .t-paper {
   --bg: #FAF8F5;
   --ink: #1C1917;
-  --muted: #8C7B6E;
+  --muted: #5E5046;
   --rule: #E0DAD0;
-  --accent: #B85C38;
+  --accent: #9A4A2A;
   --focus: #B85C38;
   --btn-bg: #B85C38;
   --btn-ink: #FFFFFF;
@@ -354,7 +353,7 @@ html.lenis, html.lenis body { height: auto; }
 .t-deep {
   --bg: #3B2218;
   --ink: #F4EFE6;
-  --muted: #B8A898;
+  --muted: #CDBFB0;
   --rule: #5C3D2E;
   --accent: #D4A855;
   --focus: #D4A855;
@@ -363,7 +362,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 .t-accent {
-  --bg: #B85C38;
+  --bg: #A44F2E;
   --ink: #FFFFFF;
   --muted: #F4EFE6;
   --rule: #9A4A2A;
@@ -419,15 +418,6 @@ p { max-width: 72ch; margin-bottom: var(--s-4); }
   max-width: 60ch;
 }
 
-.kicker {
-  font-family: 'DM Mono', monospace;
-  font-size: var(--fs--1);
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: var(--s-3);
-}
-
 .section-lead {
   font-size: var(--fs-1);
   color: var(--muted);
@@ -475,23 +465,25 @@ video[poster] {
 
 .sample-tag {
   display: inline-block;
-  font-family: 'DM Mono', monospace;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
   font-size: var(--fs--1);
   background: var(--c-signal);
   color: var(--c-deep);
-  padding: 2px 10px;
-  border-radius: var(--radius-pill);
+  padding: 1px 8px;
+  border-radius: var(--radius);
   vertical-align: middle;
   line-height: 1.4;
 }
 
 .pill {
   display: inline-block;
-  font-family: 'DM Mono', monospace;
+  font-family: 'Karla', sans-serif;
   font-size: var(--fs--1);
   border: 1px solid var(--rule);
   padding: var(--s-1) var(--s-3);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 5px 100%, 0 calc(100% - 5px));
   margin: var(--s-1);
   color: var(--ink);
 }
@@ -598,6 +590,7 @@ video[poster] {
 /* ── Chip (signature primitive) ────────────────────── */
 .chip {
   position: relative;
+  color: var(--ink);
   background: var(--bg);
   border: 1.5px solid var(--rule);
   border-radius: var(--radius);
@@ -653,9 +646,15 @@ video[poster] {
   background: var(--accent);
   opacity: 0.6;
   transform-origin: left;
-  transform: scaleX(0);
   transition: transform var(--d-story) var(--ease-out);
 }
+
+.chip__cross-layer:nth-child(1) { background: var(--c-signal); width: 100%; }
+.chip__cross-layer:nth-child(2) { width: 86%; }
+.chip__cross-layer:nth-child(3) { background: var(--muted); width: 100%; }
+
+.sw-motion .chip[data-reveal]:not(.is-in) .chip__cross-layer,
+.sw-motion [data-reveal-stagger]:not(.is-in) .chip__cross-layer { transform: scaleX(0); }
 
 .sw-motion .chip.is-in .chip__cross-layer { transform: scaleX(1); }
 
@@ -664,45 +663,86 @@ video[poster] {
   font-size: var(--fs--1);
 }
 
-/* Hero chip variant */
-.chip--hero {
-  padding: var(--s-6) var(--s-6) var(--s-8);
+input[type="radio"], input[type="checkbox"], input[type="range"] { accent-color: var(--c-accent); }
+
+
+/* Services: floors are sample chips with a cut edge; prep & repair are spec rows */
+.services__head { display: grid; gap: var(--s-2); margin-bottom: var(--s-6); }
+.services__head .section-lead { margin-bottom: 0; }
+@media (min-width: 900px) {
+  .services__head { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: end; gap: var(--s-8); }
+  .services__head h2 { margin: 0; }
 }
 
-.chip--hero h3 { font-size: var(--fs-2); }
-
-/* Service chip variant */
-.chip--svc {
+.services__group {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: var(--s-4);
+  font-size: var(--fs-1);
+  margin: var(--s-7) 0 var(--s-4);
+}
+.services__group::after { content: ""; flex: 1; height: 1.5px; background: var(--ink); }
+.services__group:first-of-type { margin-top: 0; }
+
+.chip--svc { display: flex; flex-direction: column; }
+.chip--svc h4 { font-size: var(--fs-1); margin-bottom: var(--s-2); }
+.chip--svc .chip__cta { margin-top: auto; padding-top: var(--s-4); align-self: flex-start; }
+
+.chip--floor { background: var(--c-white); padding: var(--s-5) var(--s-5) var(--s-6); }
+.chip--floor h4 { font-size: var(--fs-2); letter-spacing: -0.02em; }
+.chip--floor > p { font-size: var(--fs-0); }
+
+.chip__section {
+  display: grid;
+  grid-template-rows: 1fr 1.2fr 3fr;
+  min-height: 132px;
+  margin-block: var(--s-5) var(--s-2);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 calc(100% - 10px));
 }
 
-/* Featured service variant: first card spans 2 cols + micro-diagram via CSS */
-.chip-grid > .chip--svc:first-child {
-  grid-column: span 1;
+.chip__band {
+  display: flex;
+  align-items: center;
+  padding-inline: var(--s-4);
+  font-family: 'DM Mono', monospace;
+  font-size: var(--fs--1);
+  line-height: 1.2;
+}
+.chip__band--a { background: #F6EBCB; color: var(--c-ink); border: 1.5px solid var(--c-signal); }
+.chip__band--mid { background: repeating-linear-gradient(90deg, var(--c-accent) 0 18px, #A35031 18px 22px); }
+.chip__band--b { background: repeating-linear-gradient(45deg, #E7DFD2 0 8px, #C4B8A8 8px 10px); color: var(--c-ink); }
+.chip--floor:nth-child(2) .chip__band--mid { background: repeating-linear-gradient(90deg, #C79A68 0 30px, #B9875A 30px 33px); }
+.chip--floor:nth-child(3) .chip__section { grid-template-rows: 1fr 4fr 0; }
+.chip--floor:nth-child(3) .chip__band--mid { background: repeating-linear-gradient(90deg, #D9B285 0 44px, #C79A68 44px 46px); }
+.chip--floor:nth-child(4) .chip__band--mid { background: repeating-linear-gradient(90deg, #E7DFD2 0 60px, #C4B8A8 60px 63px); }
+
+.spec-rows { display: grid; gap: 0 var(--s-6); }
+@media (min-width: 640px) { .spec-rows { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .spec-rows { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.spec-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 var(--s-4);
+  align-content: start;
+  padding-block: var(--s-4) var(--s-5);
+  border-top: 1.5px solid var(--rule);
+}
+.spec-row h4 { font-size: var(--fs-1); margin-bottom: var(--s-1); }
+.spec-row > p { grid-column: 1 / -1; margin-bottom: var(--s-2); color: var(--muted); font-size: var(--fs--1); }
+.spec-row__spec { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-4); font-family: 'DM Mono', monospace; color: var(--ink) !important; }
+.spec-row .chip__cta { grid-column: 1 / -1; justify-self: start; margin-top: var(--s-1); }
+
+/* Proof chip (rating) */
+.chip--proof {
+  padding: var(--s-3) var(--s-8) var(--s-3) var(--s-4);
+  background: var(--c-paper);
+  --ink: var(--c-ink);
+  color: var(--c-ink);
+  border-color: transparent;
 }
 
-@media (min-width: 640px) {
-  .chip-grid > .chip--svc:first-child { grid-column: span 2; }
-}
-
-.chip-grid > .chip--svc:first-child::after {
-  content: "";
-  display: block;
-  margin-top: var(--s-3);
-  height: 28px;
-  border-radius: var(--radius);
-  background: linear-gradient(to bottom,
-    var(--c-signal) 0%, var(--c-signal) 30%,
-    var(--c-accent) 33%, var(--c-accent) 63%,
-    var(--c-deep) 66%, var(--c-deep) 100%);
-  opacity: 0.7;
-}
-
-/* Chip-mask on break photo */
-.break__img {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 24px 100%, 0 calc(100% - 24px));
-}
+.chip--proof .chip__cross { bottom: 50%; transform: translateY(50%); width: 32px; height: 18px; right: var(--s-3); }
+.chip--proof .chip__cross-layer { height: 4px; }
 
 /* Review chip variant */
 .chip--review {
@@ -739,10 +779,7 @@ video[poster] {
   color: var(--ink);
 }
 
-.chip__service {
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-}
+.chip__service { color: var(--muted); }
 
 .chip__stars {
   color: var(--c-signal);
@@ -869,6 +906,7 @@ header[data-header].is-hidden { transform: translateY(-100%); }
   transition: transform var(--d-page) var(--ease-io);
 }
 
+[data-menu]:not(.is-open) { visibility: hidden; transition: transform var(--d-page) var(--ease-io), visibility 0s linear var(--d-page); }
 [data-menu].is-open { transform: translateX(0); }
 
 .menu__inner {
@@ -926,216 +964,233 @@ section {
   color: var(--ink);
 }
 
-/* Hero */
+/* Hero: one statement left, one tool right; the proof band peeks under it */
 .hero {
   min-height: calc(100svh - var(--header-h));
-  padding-top: var(--s-8);
-  padding-bottom: var(--s-9);
+  padding-top: var(--s-6);
+  padding-bottom: var(--s-8);
 }
 
-.hero__grid {
-  display: grid;
-  gap: var(--s-8);
-}
-
-@media (min-width: 900px) {
-  .hero__grid {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-}
+.hero__grid { display: grid; gap: var(--s-7); }
 
 .hero__copy h1 { margin-bottom: var(--s-4); }
-.hero__copy .lead { margin-bottom: var(--s-5); }
+.hero__copy .lead { margin-bottom: var(--s-4); max-width: 46ch; }
 
-/* Chip stack in hero */
-.chip-stack {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--s-4);
-  margin-bottom: var(--s-6);
-}
-
-@media (min-width: 640px) {
-  .chip-stack { gap: var(--s-5); }
-}
-
-/* Compare widget */
-.compare-widget {
-  background: var(--bg);
-  border: 1.5px solid var(--rule);
-  border-radius: var(--radius);
-  padding: var(--s-5);
-}
-
-.compare-widget fieldset {
-  border: none;
-  margin-bottom: var(--s-4);
-}
-
-.compare-widget legend {
-  font-family: 'DM Mono', monospace;
+.hero__proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1) var(--s-2);
   font-size: var(--fs--1);
   color: var(--muted);
+  margin-bottom: 0;
+}
+.hero__proof > span:nth-child(2) { color: var(--ink); font-weight: 700; }
+
+@media (min-width: 900px) {
+  .hero {
+    min-height: calc(100svh - var(--header-h) - 56px);
+    display: flex;
+    align-items: center;
+    padding-block: var(--s-6);
+  }
+  .hero > .container { width: 100%; }
+  .hero__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: var(--s-8); align-items: center; }
+  .hero h1 { font-size: clamp(3rem, 4.1vw + 0.4rem, 4.6rem); }
+}
+
+.hero__tool { outline: none; }
+
+/* Chip stack: the chip that fits is the answer */
+.chip-stack {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+}
+
+.chip--hero {
+  padding: var(--s-4) var(--s-4) var(--s-7);
+  min-width: 0;
+  transition: background var(--d-ui) var(--ease-out), border-color var(--d-ui) var(--ease-out), color var(--d-ui) var(--ease-out);
+}
+.chip--hero .chip__name { font-family: 'Archivo', sans-serif; font-size: var(--fs-1); letter-spacing: -0.02em; display: block; margin-bottom: 2px; }
+.chip--hero .chip__mil { margin-bottom: 0; }
+.chip--hero .chip__spec { flex-direction: column; gap: 2px; margin-top: var(--s-2); padding-top: var(--s-2); }
+.chip__fit { display: none; }
+
+.chip--hero.is-best {
+  --bg: #3B2218;
+  --ink: #F4EFE6;
+  --muted: #E7DFD2;
+  --rule: #5C3D2E;
+  --accent: #D4A855;
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--c-deep);
+  box-shadow: inset 4px 0 0 var(--c-signal);
+}
+.chip--hero.is-best .chip__name { color: var(--ink); }
+.chip--hero.is-best .chip__fit {
+  display: block;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs--1);
+  color: var(--c-signal);
+  margin-bottom: var(--s-1);
+}
+.chip--hero.is-best .chip__cross-layer { opacity: 1; }
+.sw-motion .chip--hero.is-flip { animation: fit-in var(--d-page) var(--ease-out); }
+@keyframes fit-in { from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%, 0 100%); } }
+
+@media (min-width: 640px) {
+  .chip--hero { padding: var(--s-4) var(--s-5) var(--s-7); }
+}
+
+/* Compare widget: sample tabs */
+.compare-widget { display: grid; gap: var(--s-3); }
+@media (min-width: 640px) {
+  .compare-widget { grid-template-columns: auto auto; justify-content: start; column-gap: var(--s-6); }
+  .compare-widget fieldset:first-child { grid-column: 1 / -1; }
+}
+
+.compare-widget fieldset { border: none; display: flex; flex-wrap: wrap; gap: var(--s-2); min-width: 0; }
+.compare-widget legend {
+  width: 100%;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs--1);
+  color: var(--ink);
   margin-bottom: var(--s-2);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .compare-widget label {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--s-2);
-  margin-right: var(--s-4);
-  margin-bottom: var(--s-2);
+  min-height: 44px;
+  padding: 0 var(--s-4);
   font-size: var(--fs--1);
+  border: 1.5px solid var(--rule);
+  background: var(--c-white);
   cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 6px 100%, 0 calc(100% - 6px));
 }
+.compare-widget label:has(input:checked) { border-color: var(--c-deep); background: var(--c-deep); color: var(--c-paper); }
+.compare-widget label:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: -4px; }
+.compare-widget input[type="radio"] { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
 
 .compare-result {
-  margin-top: var(--s-5);
-  padding: var(--s-4);
-  background: var(--bg);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  margin: var(--s-3) 0 0;
+  padding-left: var(--s-3);
+  border-left: 3px solid var(--c-signal);
   font-size: var(--fs--1);
-  min-height: 48px;
-}
-
-.compare-handoff {
-  margin-top: var(--s-4);
-  width: 100%;
+  color: var(--ink);
+  max-width: 60ch;
 }
 
 /* Proof bar */
-.proof-bar { padding-block: var(--s-5); }
+.proof-bar { padding-block: var(--s-4); }
 
 .proof-bar__rail {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-5);
-  justify-content: space-between;
+  gap: var(--s-3) var(--s-6);
   align-items: center;
   font-size: var(--fs--1);
-  font-family: 'DM Mono', monospace;
 }
 
-.proof-bar__item {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-}
-
-.proof-bar__item strong {
-  font-size: var(--fs-1);
-  color: var(--ink);
-}
+.proof-bar__item { display: flex; align-items: center; gap: var(--s-2); margin: 0; max-width: none; }
+.proof-bar__item strong { font-family: 'Archivo', sans-serif; font-size: var(--fs-1); color: var(--ink); }
+.proof-bar__guarantee { flex: 1 1 320px; color: var(--ink); }
 
 /* Services grid */
 .services { padding-block: var(--s-9); }
 
-.chip-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--s-5);
-}
+.chip-grid { display: grid; grid-template-columns: 1fr; gap: var(--s-4); }
+@media (min-width: 640px) { .chip-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .chip-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
-@media (min-width: 640px) {
-  .chip-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1200px) {
-  .chip-grid { grid-template-columns: repeat(4, 1fr); }
-}
-
-/* Cross-section story */
-.story-cross {
-  position: relative;
-  overflow: hidden;
-  padding-block: 0;
-}
+/* Cross-section story: copy left, the plank comes apart right */
+.story-cross { position: relative; overflow: hidden; padding-block: 0; }
 
 .story-cross__pin {
-  min-height: calc(3 * 55svh + 100svh);
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
   padding-block: var(--s-9);
 }
 
-.story-cross__stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--s-8);
-  text-align: center;
+.story-cross__stage { display: grid; gap: var(--s-7); align-items: center; }
+@media (min-width: 900px) {
+  .story-cross__stage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-9); }
 }
 
-.cross-diagram {
-  width: 280px;
-  height: 200px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-@media (min-width: 640px) {
-  .cross-diagram { width: 400px; height: 280px; gap: 8px; }
-}
-
-.cross-layer {
-  flex: 1;
-  background: var(--accent);
-  border-radius: var(--radius);
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding-left: var(--s-4);
-  transition: transform var(--d-story) var(--ease-out),
-              opacity var(--d-story) var(--ease-out);
-  opacity: 0.7;
-}
-
-.cross-layer--wear { background: var(--c-signal); }
-.cross-layer--print { background: var(--accent); }
-.cross-layer--core { background: var(--c-deep); border: 1px solid var(--rule); }
-
-.cross-label {
-  font-family: 'DM Mono', monospace;
-  font-size: var(--fs--1);
-  color: var(--c-paper);
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity var(--d-story) var(--ease-out);
-}
-
-.sw-motion .story-cross.is-in .cross-layer { opacity: 1; }
-.sw-motion .story-cross.is-in .cross-label { opacity: 1; }
-.sw-motion .story-cross.is-in .cross-layer--wear { transform: translateY(-20px); }
-.sw-motion .story-cross.is-in .cross-layer--core { transform: translateY(20px); }
+.story-cross__title { font-size: var(--fs-4); color: var(--c-paper); margin: 0 0 var(--s-6); }
 
 .story-cross__statements {
-  display: flex;
-  flex-direction: column;
+  list-style: none;
+  display: grid;
   gap: var(--s-4);
-  font-family: 'DM Mono', monospace;
-  font-size: var(--fs-0);
+  font-family: 'Karla', sans-serif;
+  font-size: var(--fs-1);
+  line-height: 1.4;
   color: var(--c-paper);
+  max-width: 34ch;
+}
+.story-cross__statements li { padding-left: var(--s-4); border-left: 3px solid var(--c-signal); }
+.story-cross__statements strong { font-family: 'Archivo', sans-serif; color: var(--c-signal); }
+
+.cross-diagram { display: grid; gap: var(--s-5); width: 100%; max-width: 560px; }
+.story-cross.is-scrubbed .cross-diagram { gap: 3px; }
+
+.cross-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 9.5rem;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.cross-layer { border-radius: var(--radius); }
+.cross-layer--wear { height: 26px; background: #F6EBCB; border: 2px solid var(--c-signal); }
+.cross-layer--print { height: 40px; background: repeating-linear-gradient(90deg, var(--c-accent) 0 26px, #A35031 26px 30px); }
+.cross-layer--core { height: 120px; background: repeating-linear-gradient(45deg, #6B4636 0 10px, #5C3D2E 10px 13px); border: 1px solid #8C6A55; clip-path: polygon(0 0, 100% 0, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
+
+.cross-label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs--1);
+  color: var(--c-paper);
+}
+.cross-lead { display: block; width: 24px; height: 2px; background: var(--c-signal); transform-origin: left; flex-shrink: 0; }
+
+@media (min-width: 640px) {
+  .sw-motion .story-cross { min-height: calc(3 * 55svh + 100svh); }
+  .sw-motion .story-cross__pin { height: 100svh; padding-block: var(--s-7); }
 }
 
 .story-cross__bg {
   position: absolute;
-  inset: 0;
-  z-index: -1;
+  inset: var(--s-6) var(--gutter);
+  z-index: 0;
   overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 48px 100%, 0 calc(100% - 48px));
 }
 
+/* Drawn oak grain, chip-masked */
 .story-cross__tex {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  opacity: 0.15;
+  opacity: .16;
+  background-image:
+    repeating-radial-gradient(ellipse 260px 520px at 30% 100%, transparent 0 16px, rgba(212,168,85,.6) 16px 18px),
+    repeating-radial-gradient(ellipse 200px 440px at 80% 100%, transparent 0 20px, rgba(212,168,85,.45) 20px 22px);
+  background-size: 1400px 100%;
+  background-repeat: repeat-x;
 }
 
 /* Moisture section */
@@ -1149,6 +1204,14 @@ section {
     grid-template-columns: 1fr 1fr;
     align-items: start;
   }
+  .moisture__frame { grid-column: 1 / -1; }
+}
+
+@media (min-width: 1200px) {
+  .moisture__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); column-gap: var(--s-9); row-gap: var(--s-6); }
+  .moisture__copy { grid-column: 1; grid-row: 1; }
+  .moisture__frame { grid-column: 1; grid-row: 2; justify-self: start; }
+  .moisture__tool { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: calc(var(--header-h) + var(--s-6)); }
 }
 
 .check-list {
@@ -1169,11 +1232,10 @@ section {
   content: '';
   position: absolute;
   left: 0;
-  top: 6px;
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid var(--accent);
-  border-radius: var(--radius);
+  top: 0.62em;
+  width: 18px;
+  height: 6px;
+  background: linear-gradient(var(--c-signal) 0 33%, var(--c-accent) 33% 66%, var(--c-mid) 66%);
 }
 
 .checklist-widget {
@@ -1183,27 +1245,35 @@ section {
   padding: var(--s-5);
 }
 
-.checklist-widget fieldset {
-  border: none;
-  margin-bottom: var(--s-4);
+.checklist-widget {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  background: var(--c-white);
 }
 
-.checklist-widget legend {
-  font-family: 'DM Mono', monospace;
-  font-size: var(--fs--1);
-  color: var(--muted);
-  margin-bottom: var(--s-2);
+.checklist-widget__title {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs-1);
+  color: var(--ink);
+  margin-bottom: var(--s-3);
 }
 
 .checklist-widget label {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: var(--s-2);
-  margin-right: var(--s-4);
-  margin-bottom: var(--s-2);
-  font-size: var(--fs--1);
+  gap: var(--s-3);
+  min-height: 48px;
+  padding-block: var(--s-2);
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--fs-0);
   cursor: pointer;
 }
+
+.checklist-widget input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--c-accent); flex-shrink: 0; }
+.checklist-widget label.is-checked { color: var(--accent); }
+.checklist-widget[data-checked="2"] .checklist-result,
+.checklist-widget[data-checked="3"] .checklist-result,
+.checklist-widget[data-checked="4"] .checklist-result { background: var(--c-deep); color: var(--c-paper); border-color: var(--c-deep); }
 
 .checklist-result {
   margin-top: var(--s-4);
@@ -1215,12 +1285,17 @@ section {
   min-height: 48px;
 }
 
-.moisture__frame figcaption {
-  font-size: var(--fs--1);
-  color: var(--muted);
-  margin-top: var(--s-3);
-  font-style: italic;
+/* Drawn frames: never a grey box. Every drawing is cut to the chip shape. */
+.drawn { margin: 0; }
+.drawn__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 24px 100%, 0 calc(100% - 24px));
 }
+
+.moisture__frame figcaption,
+.area__frame { max-width: 520px; width: 100%; justify-self: center; }
 
 .frame {
   border-radius: var(--radius);
@@ -1234,35 +1309,65 @@ section {
   object-fit: cover;
 }
 
-/* Break photo */
-.break {
-  padding: 0;
-}
+/* Break: one plank drawn edge on, full bleed, chip-cut */
+.break { padding: 0; }
 
 .break__fig {
   position: relative;
-  height: 50svh;
-  overflow: hidden;
+  margin: 0;
+  background: #EAE3D7;
 }
 
-.break__img {
+.break__svg {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 40%;
+  height: clamp(260px, 52svh, 600px);
 }
 
 .break__cap {
-  position: absolute;
-  bottom: var(--s-4);
-  left: var(--gutter);
-  font-size: var(--fs--1);
-  color: var(--c-paper);
-  background: rgba(28, 25, 23, 0.7);
-  padding: var(--s-2) var(--s-3);
-  border-radius: var(--radius);
-  max-width: 90%;
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-5) var(--gutter) var(--s-7);
+  max-width: calc(var(--max-w) + 2 * var(--gutter));
+  margin-inline: auto;
+  color: var(--c-ink);
 }
+
+.break__kicker {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs-3);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.break__legend {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-2) var(--s-6);
+  font-family: 'DM Mono', monospace;
+  font-size: var(--fs--1);
+}
+
+@media (min-width: 640px) { .break__legend { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) {
+  .break__cap { grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr); align-items: end; }
+  .break__legend { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.break__legend li { display: flex; align-items: center; gap: var(--s-3); padding-top: var(--s-2); border-top: 1.5px solid var(--c-ink); }
+.sw { display: inline-block; width: 28px; height: 12px; flex-shrink: 0; }
+.sw--wear { background: #F6EBCB; outline: 2px solid var(--c-signal); outline-offset: -2px; }
+.sw--print { background: var(--c-accent); }
+.sw--core { background: repeating-linear-gradient(45deg, #E7DFD2 0 4px, #C4B8A8 4px 6px); }
+.sw--pad { background: var(--c-mid); }
+
+.sw-motion .break__band { transform-box: fill-box; transform-origin: left; transition: transform 900ms var(--ease-out); }
+.sw-motion .break:not(.is-in) .break__band { transform: scaleX(0); }
+.sw-motion .break.is-in .break__band:nth-of-type(2) { transition-delay: 90ms; }
+.sw-motion .break.is-in .break__band:nth-of-type(3) { transition-delay: 180ms; }
+.sw-motion .break.is-in .break__band:nth-of-type(4) { transition-delay: 270ms; }
 
 /* Reviews */
 .reviews { padding-block: var(--s-9); }
@@ -1278,7 +1383,11 @@ section {
 }
 
 @media (min-width: 1200px) {
-  .review-grid { grid-template-columns: repeat(3, 1fr); }
+  .review-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* zig-zag: 2+1 / 1+2 / 1+2 so six quotes never read as one block */
+  .review-grid > :nth-child(1), .review-grid > :nth-child(4), .review-grid > :nth-child(6) { grid-column: span 2; }
+  .review-grid > :nth-child(1) blockquote p, .review-grid > :nth-child(4) blockquote p, .review-grid > :nth-child(6) blockquote p { font-size: var(--fs-1); max-width: 56ch; }
+  .review-grid > :nth-child(4) { --bg: #FAF8F5; }
 }
 
 /* Estimator */
@@ -1307,9 +1416,29 @@ section {
 }
 
 @media (min-width: 640px) {
-  .estimator-inputs { grid-template-columns: 1fr 1fr; }
-  .est-field--stairs { grid-column: span 2; }
+  .estimator-inputs { grid-template-columns: 1fr 1fr; align-items: end; }
 }
+
+.est-field input[type="range"] { height: 48px; padding: 0; border: 0; background: transparent; accent-color: var(--c-deep); }
+
+/* Plank sketch: the floor grows with the size slider */
+.est-sketch {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  height: 56px;
+  margin-bottom: var(--s-4);
+  --est: .5;
+}
+.est-sketch span {
+  background: repeating-linear-gradient(90deg, #D9B285 0 40px, #C79A68 40px 42px);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  transition: opacity var(--d-ui) var(--ease-out);
+}
+.est-sketch span:nth-child(n+4) { opacity: calc(min(1, max(.18, var(--est) * 2.2 - .4))); }
+.est-sketch span:nth-child(n+7) { opacity: calc(min(1, max(.18, var(--est) * 2.2 - 1.1))); }
+
+.estimator__actions { justify-content: flex-start; }
 
 .est-field {
   display: flex;
@@ -1318,7 +1447,8 @@ section {
 }
 
 .est-field span {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
   font-size: var(--fs--1);
   color: var(--muted);
 }
@@ -1337,7 +1467,9 @@ section {
 
 .estimator-result {
   padding: var(--s-5);
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--c-paper);
+  background: var(--c-deep);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%, 0 calc(100% - 12px));
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   font-family: 'DM Mono', monospace;
@@ -1376,7 +1508,8 @@ section {
 }
 
 .zip-field span {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
   font-size: var(--fs--1);
   color: var(--muted);
 }
@@ -1400,6 +1533,8 @@ section {
   min-height: 40px;
 }
 
+.zip-widget .zip-result { flex-basis: 100%; }
+
 .area__pills {
   display: flex;
   flex-wrap: wrap;
@@ -1408,25 +1543,33 @@ section {
 }
 
 .area__hours {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
   font-size: var(--fs--1);
   color: var(--muted);
 }
 
-.area__frame figcaption {
-  font-size: var(--fs--1);
-  color: var(--muted);
-  margin-top: var(--s-3);
-  font-style: italic;
-}
+.area__frame { max-width: 520px; width: 100%; justify-self: center; }
 
 /* Contact form */
 .contact { padding-block: var(--s-9); }
 
-.contact__wrap {
-  max-width: 640px;
-  margin-inline: auto;
+.contact__wrap { display: grid; gap: var(--s-7); }
+@media (min-width: 900px) {
+  .contact__wrap { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: var(--s-9); align-items: start; }
 }
+.contact__copy h2 { font-size: var(--fs-4); }
+.contact__next { list-style: none; counter-reset: nx; display: grid; gap: 0; margin-bottom: var(--s-6); }
+.contact__next li { counter-increment: nx; display: grid; grid-template-columns: 2.25rem 1fr; gap: var(--s-3); padding-block: var(--s-3); border-top: 1.5px solid var(--rule); }
+.contact__next li::before { content: counter(nx); font-family: 'Archivo', sans-serif; font-weight: 700; font-size: var(--fs-1); color: var(--accent); line-height: 1.2; }
+.contact__form {
+  background: var(--c-white);
+  border: 1.5px solid var(--rule);
+  padding: var(--s-5);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+}
+@media (min-width: 640px) { .contact__form { padding: var(--s-6) var(--s-7); } }
+.contact__form .lead-form { margin-top: 0; }
 
 .lead-form {
   margin-top: var(--s-7);
@@ -1446,7 +1589,8 @@ section {
 }
 
 .form-field span {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
   font-size: var(--fs--1);
   color: var(--muted);
 }
@@ -1496,6 +1640,21 @@ section {
   margin-top: var(--s-5);
 }
 
+.form-field--radio { border: 0; }
+.form-field--radio legend {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs--1);
+  color: var(--muted);
+  margin-bottom: var(--s-2);
+}
+.form-field--radio label { min-height: 48px; margin-right: var(--s-4); }
+
+.form-step + .form-step { margin-top: var(--s-6); }
+.sw-js .form-step + .form-step { margin-top: 0; }
+html:not(.sw-js) [data-back],
+html:not(.sw-js) [data-next] { display: none; }
+
 .form-thankyou {
   padding: var(--s-7);
   background: var(--bg);
@@ -1509,84 +1668,62 @@ section {
   margin-bottom: var(--s-3);
 }
 
-.contact__aside {
-  margin-top: var(--s-7);
-  padding-top: var(--s-5);
-  border-top: 1px solid var(--rule);
-  font-size: var(--fs--1);
-  color: var(--muted);
-  text-align: center;
+.contact__aside { padding-top: var(--s-4); border-top: 1.5px solid var(--ink); font-size: var(--fs-0); }
+.contact__aside p { margin-bottom: var(--s-2); }
+
+[hidden] { display: none !important; }
+.form-nav { flex-wrap: wrap; }
+.form-nav .btn { min-height: 48px; min-width: 112px; }
+[data-form-progress] { height: 4px; background: var(--rule); margin-bottom: var(--s-5); position: relative; }
+[data-form-progress]::after { content: ""; position: absolute; inset: 0; background: var(--c-signal); transform-origin: left; transform: scaleX(var(--progress, .25)); transition: transform var(--d-ui) var(--ease-out); }
+.field-error { color: #9A2A1A; font-size: var(--fs--1); font-weight: 700; margin: var(--s-1) 0 0; }
+.sw-zip-go, .sw-zip-call {
+  display: inline-flex; align-items: center; min-height: 44px; margin-top: var(--s-2); padding: 0 var(--s-4);
+  font-family: 'Archivo', sans-serif; font-weight: 600; font-size: var(--fs--1);
+  background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: var(--radius); cursor: pointer; text-decoration: none;
 }
+.sw-zip-msg { display: block; color: var(--ink); }
 
 .tel-plain {
   color: var(--accent);
   font-weight: 600;
 }
 
-/* Footer */
-.footer {
-  padding-block: var(--s-9);
-}
+/* Footer: the deep close of the sample board, one spec strip */
+.footer { background: var(--bg); color: var(--ink); padding-block: var(--s-8) var(--s-7); }
 
-.footer__grid {
+.footer__strip {
   display: grid;
-  gap: var(--s-7);
+  gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-5);
+  background: #4A2D21;
+  border-top: 3px solid var(--c-signal);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 16px 100%, 0 calc(100% - 16px));
 }
-
-@media (min-width: 640px) {
-  .footer__grid { grid-template-columns: repeat(2, 1fr); }
-}
-
 @media (min-width: 900px) {
-  .footer__grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .footer__strip { grid-template-columns: auto minmax(0, 1fr) auto; column-gap: var(--s-6); }
+  .footer__nav { grid-column: 1 / -1; }
+}
+@media (min-width: 1200px) {
+  .footer__strip { grid-template-columns: auto auto auto minmax(0, 1fr); }
+  .footer__nav { grid-column: auto; justify-content: flex-end; }
 }
 
-.footer__brand p {
-  font-size: var(--fs--1);
-  color: var(--muted);
-  margin-bottom: var(--s-1);
-}
+.footer p { margin: 0; color: var(--muted); font-size: var(--fs--1); }
+.footer__name { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: var(--fs-1) !important; color: var(--ink) !important; }
+.footer__lic { display: flex; align-items: center; gap: var(--s-2); }
+.chip--footer { background: var(--c-deep); border-color: var(--c-signal); }
 
-.footer__brand .chip--footer {
-  margin-bottom: var(--s-4);
-}
+.footer__nav { display: flex; flex-wrap: wrap; gap: 0 var(--s-5); }
+.footer__nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font-size: var(--fs--1); font-weight: 600; }
 
-.footer__nav {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-3);
-}
-
-.footer__nav a {
-  color: var(--muted);
-  font-size: var(--fs--1);
-  text-decoration: none;
-}
-
-.footer__nav a:hover { color: var(--ink); }
-
-.footer__legal p {
-  font-size: var(--fs--1);
-  color: var(--muted);
-  margin-bottom: var(--s-2);
-}
-
-.footer__credits {
-  font-size: var(--fs--1);
-  color: var(--muted);
-}
-
-.credits {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-1);
-}
-
-.credits li {
-  font-size: var(--fs--1);
-  color: var(--muted);
-}
+.footer__legal { display: grid; gap: var(--s-3); margin-top: var(--s-6); }
+@media (min-width: 900px) { .footer__legal { grid-template-columns: minmax(0, 2fr) auto minmax(0, 1fr); column-gap: var(--s-7); } }
+.footer__credits, .credits li { font-size: var(--fs--1); color: var(--muted); }
+.footer__credits a { color: var(--ink); }
+.credits { list-style: none; display: grid; gap: var(--s-1); }
+.footer .tel-plain { color: var(--c-signal); }
 
 /* ── Mobile bar ────────────────────────────────────── */
 .mobilebar {
@@ -1624,105 +1761,55 @@ section {
   border-color: var(--c-paper);
 }
 
-/* ── Reveal motion ─────────────────────────────────── */
-[data-reveal] {
+/* ── Reveal motion (hidden states live under .sw-motion only) ── */
+.sw-motion [data-reveal] {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity var(--d-page) var(--ease-out),
               transform var(--d-page) var(--ease-out);
 }
 
-[data-reveal="fade"] {
-  transform: none;
-  transition: opacity 0.8s ease;
-}
+.sw-motion [data-reveal="fade"] { transform: none; transition: opacity 0.8s ease; }
 
-[data-reveal="clip"] {
+.sw-motion [data-reveal="band"] { opacity: 1; transform: none; }
+
+.sw-motion [data-reveal="clip"] {
   clip-path: inset(0 0 100% 0);
   opacity: 1;
   transform: none;
   transition: clip-path var(--d-page) var(--ease-out);
 }
 
-[data-reveal="scale"] {
-  transform: scale(0.92);
+.sw-motion [data-reveal="scale"] {
+  transform: scale(0.96);
   transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-[data-reveal-stagger] > * {
+.sw-motion [data-reveal-stagger] > * {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity var(--d-page) var(--ease-out),
-              transform var(--d-page) var(--ease-out);
+              transform var(--d-page) var(--ease-out),
+              clip-path var(--d-page) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * var(--d-stagger));
 }
 
-.sw-motion [data-reveal].is-in {
-  opacity: 1;
-  transform: translateY(0);
-}
+.sw-motion [data-reveal].is-in { opacity: 1; transform: none; }
+.sw-motion [data-reveal="clip"].is-in { clip-path: inset(0); }
+.sw-motion [data-reveal-stagger].is-in > * { opacity: 1; transform: none; }
+.sw-motion [data-reveal-stagger].is-in > [data-reveal="clip"] { clip-path: inset(0); }
 
-.sw-motion [data-reveal="clip"].is-in {
-  clip-path: inset(0);
-}
-
-.sw-motion [data-reveal-stagger].is-in > * {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(1) { transition-delay: 0ms; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: var(--d-stagger); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: calc(var(--d-stagger) * 2); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(4) { transition-delay: calc(var(--d-stagger) * 3); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(5) { transition-delay: calc(var(--d-stagger) * 4); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(6) { transition-delay: calc(var(--d-stagger) * 5); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(7) { transition-delay: calc(var(--d-stagger) * 6); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(8) { transition-delay: calc(var(--d-stagger) * 7); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(9) { transition-delay: calc(var(--d-stagger) * 8); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(10) { transition-delay: calc(var(--d-stagger) * 9); }
-
-/* Reduced motion: everything visible immediately */
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal],
-  [data-reveal="fade"],
-  [data-reveal="clip"],
-  [data-reveal="scale"],
-  [data-reveal-stagger] > * {
-    opacity: 1;
-    transform: none;
-    clip-path: none;
-    transition: none;
-  }
-
-  .chip__cross-layer {
-    transform: scaleX(1);
-    transition: none;
-  }
-
-  .cross-layer {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .cross-label { opacity: 1; transition: none; }
-}
-
-/* No JS: everything visible */
-html:not(.sw-js) [data-reveal],
-html:not(.sw-js) [data-reveal="fade"],
-html:not(.sw-js) [data-reveal="clip"],
-html:not(.sw-js) [data-reveal="scale"],
-html:not(.sw-js) [data-reveal-stagger] > * {
-  opacity: 1;
-  transform: none;
-  clip-path: none;
+  *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 
 /* ── Body padding for mobile bar ───────────────────── */
 @media (max-width: 899px) {
   body { padding-bottom: 80px; }
 }
+h1, h2, h3, .break__kicker { text-wrap: balance; }
+p, li, figcaption { text-wrap: pretty; }
+
 </style>
 </head>
 <body>
@@ -1774,7 +1861,7 @@ html:not(.sw-js) [data-reveal-stagger] > * {
       <a href="#estimator">Square-foot estimator</a>
       <a href="#reviews">Sample reviews</a>
       <a href="#area">Service area</a>
-      <a href="#contact">Get a number</a>
+      <a href="#contact">Price my floor</a>
     </div>
     <div class="menu__foot">
       <a class="tel-plain" href="tel:+14045550150">(404) 555-0150</a>
@@ -1784,21 +1871,42 @@ html:not(.sw-js) [data-reveal-stagger] > * {
 </nav>
 
 <main>
-  <!-- 1. Hero -->
+  <!-- 1. Hero: one statement, one tool -->
   <section id="hero" class="hero t-paper">
     <div class="container hero__grid">
-      <div class="hero__copy" data-reveal>
-        <p class="kicker">Flooring · Atlanta, GA</p>
-        <h1>See the spec before you choose</h1>
-        <p class="lead">Wear layer on every quote. Slab moisture tested. Sample prices per square foot.</p>
+      <div class="hero__copy">
+        <h1>Atlanta flooring with the wear layer on the quote</h1>
+        <p class="lead">Every quote lists the wear layer, the core and your slab's moisture reading, so three quotes finally line up side by side.</p>
+        <p class="hero__proof"><span class="sample-tag">Sample</span> <span>4.8 from 231 reviews</span> <span class="hero__dot" aria-hidden="true">·</span> <span data-open-now><span data-open-now>Mon–Thu 7:30 am – 5 pm · Fri 7:30 am – 4 pm · Sat 9 am – noon</span></span></p>
         <div class="btn-row">
           <a class="btn btn-primary" href="#compare">Compare floors</a>
           <a class="btn btn-call btn-secondary" href="tel:+14045550150"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (404) 555-0150</span></a>
         </div>
       </div>
-      <div class="hero__tool" data-hook="compare" id="compare">
-        <div class="chip-stack" data-sw-signature data-reveal-stagger>
-          <div class="chip chip--hero">
+      <div class="hero__tool" id="compare" data-hook="compare" tabindex="-1">
+        <div class="compare-widget">
+          <fieldset>
+            <legend>Which room</legend>
+            <label><input type="radio" name="room" value="kitchen" checked> Kitchen</label>
+            <label><input type="radio" name="room" value="bath"> Bath</label>
+            <label><input type="radio" name="room" value="basement"> Basement</label>
+            <label><input type="radio" name="room" value="bedroom"> Bedroom</label>
+            <label><input type="radio" name="room" value="living"> Living</label>
+          </fieldset>
+          <fieldset>
+            <legend>Pets in the house</legend>
+            <label><input type="radio" name="pets" value="yes" checked> Yes</label>
+            <label><input type="radio" name="pets" value="no"> No</label>
+          </fieldset>
+          <fieldset>
+            <legend>What the floor sits on</legend>
+            <label><input type="radio" name="slab" value="slab" checked> Slab</label>
+            <label><input type="radio" name="slab" value="crawl"> Crawlspace</label>
+          </fieldset>
+        </div>
+        <div class="chip-stack" data-sw-signature>
+          <div class="chip chip--hero is-best" data-fit="lvp">
+            <span class="chip__fit">Fits your room</span>
             <strong class="chip__name">LVP</strong>
             <p class="chip__mil">12 mil wear</p>
             <div class="chip__spec">
@@ -1811,8 +1919,9 @@ html:not(.sw-js) [data-reveal-stagger] > * {
               <div class="chip__cross-layer"></div>
             </div>
           </div>
-          <div class="chip chip--hero">
-            <span class="chip__title">Engineered</span>
+          <div class="chip chip--hero" data-fit="eng">
+            <span class="chip__fit">Fits your room</span>
+            <strong class="chip__name">Engineered</strong>
             <p class="chip__mil">4 mm top</p>
             <div class="chip__spec">
               <span>Ply core</span>
@@ -1824,7 +1933,8 @@ html:not(.sw-js) [data-reveal-stagger] > * {
               <div class="chip__cross-layer"></div>
             </div>
           </div>
-          <div class="chip chip--hero">
+          <div class="chip chip--hero" data-fit="oak">
+            <span class="chip__fit">Fits your room</span>
             <strong class="chip__name">Solid oak</strong>
             <p class="chip__mil">¾″ thick</p>
             <div class="chip__spec">
@@ -1837,7 +1947,8 @@ html:not(.sw-js) [data-reveal-stagger] > * {
               <div class="chip__cross-layer"></div>
             </div>
           </div>
-          <div class="chip chip--hero">
+          <div class="chip chip--hero" data-fit="tile">
+            <span class="chip__fit">Fits your room</span>
             <strong class="chip__name">Tile</strong>
             <p class="chip__mil">Membrane</p>
             <div class="chip__spec">
@@ -1851,235 +1962,158 @@ html:not(.sw-js) [data-reveal-stagger] > * {
             </div>
           </div>
         </div>
-        <div class="compare-widget">
-          <fieldset>
-            <legend>Room type</legend>
-            <label><input type="radio" name="room" value="kitchen" checked> Kitchen</label>
-            <label><input type="radio" name="room" value="bath"> Bath</label>
-            <label><input type="radio" name="room" value="basement"> Basement</label>
-            <label><input type="radio" name="room" value="bedroom"> Bedroom</label>
-            <label><input type="radio" name="room" value="living"> Living</label>
-          </fieldset>
-          <fieldset>
-            <legend>Pets?</legend>
-            <label><input type="radio" name="pets" value="yes" checked> Yes</label>
-            <label><input type="radio" name="pets" value="no"> No</label>
-          </fieldset>
-          <fieldset>
-            <legend>Subfloor</legend>
-            <label><input type="radio" name="slab" value="slab" checked> Slab</label>
-            <label><input type="radio" name="slab" value="crawl"> Crawlspace</label>
-          </fieldset>
-          <button class="btn btn-primary" type="button" data-compare-run>See best fit</button>
-        </div>
-        <div class="compare-result" data-compare-output aria-live="polite"></div>
-        <a class="btn btn-secondary compare-handoff" href="#contact" data-service="Samples at your house">See samples at your house</a>
+        <p class="compare-result" data-compare-output aria-live="polite">Kitchen on a slab with pets → LVP: a rigid core lies flat on a slab, and the wear layer takes claws.</p>
       </div>
     </div>
   </section>
 
-  <!-- 2. Proof Line Bar -->
-  <section class="proof-bar t-mid">
-    <div class="container proof-bar__rail" data-reveal="fade">
-      <div class="proof-bar__item">
-        <span class="sample-tag">Sample rating</span>
-        <strong>4.8</strong>
-        <span>(231 reviews)</span>
+  <!-- 2. Proof bar (peeks under the hero) -->
+  <section class="proof-bar t-mid" aria-label="Why people call us">
+    <div class="container proof-bar__rail">
+      <div class="proof-bar__item chip chip--proof">
+        <strong>12 years</strong>
+        <span>laying floors around Atlanta</span>
+        <span class="chip__cross" aria-hidden="true"><span class="chip__cross-layer"></span><span class="chip__cross-layer"></span><span class="chip__cross-layer"></span></span>
       </div>
-      <div class="proof-bar__item">
-        <span>Atlanta + Decatur, Smyrna, Marietta</span>
-      </div>
-      <div class="proof-bar__item">
-        <span data-open-now><span data-open-now>Mon–Thu 7:30 am – 5 pm · Fri 7:30 am – 4 pm · Sat 9 am – noon</span></span>
-      </div>
+      <p class="proof-bar__item proof-bar__guarantee">If a plank or tile we laid lifts, gaps or cracks in 2 years, we replace it and pay the labor.</p>
+      <p class="proof-bar__item">Decatur, Smyrna, Marietta and the towns around them</p>
     </div>
   </section>
 
-  <!-- 3. Sample Cards Grid -->
+  <!-- 3. Services: floors (sample chips with a cut edge) + prep & repair (spec rows) -->
   <section id="services" class="services t-light">
     <div class="container">
-      <h2 data-reveal>Flooring services, spec-first</h2>
-      <p class="section-lead" data-reveal>Every card shows what goes in the floor, not just what it looks like.</p>
-      <div class="chip-grid" data-reveal-stagger>
+      <div class="services__head">
+        <h2 data-reveal>Every floor we lay, with what goes under it</h2>
+        <p class="section-lead" data-reveal>Each sample shows its layers, not just its colour.</p>
+      </div>
+      <h3 class="services__group">Floors</h3>
+      <div class="chip-grid chip-grid--floors" data-reveal-stagger>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Luxury vinyl plank</h3>
+        <article class="chip chip--svc chip--floor" data-reveal="clip">
+          <h4>Luxury vinyl plank</h4>
           <p>Waterproof plank with the wear layer printed on your quote, so you know what you are buying.</p>
-          <div class="chip__spec">
-            <span>Wear layer on quote</span>
-            <span>SPC or WPC core</span>
+          <div class="chip__section" aria-hidden="true">
+            <span class="chip__band chip__band--a">Wear layer on quote</span>
+            <span class="chip__band chip__band--mid"></span>
+            <span class="chip__band chip__band--b">SPC or WPC core</span>
           </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Vinyl plank">Price it →</a>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Vinyl plank">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Engineered hardwood</h3>
+        <article class="chip chip--svc chip--floor" data-reveal="clip">
+          <h4>Engineered hardwood</h4>
           <p>Real wood top layer over a stable core, glued or floated over slabs and upstairs alike.</p>
-          <div class="chip__spec">
-            <span>Veneer thickness listed</span>
-            <span>Ply or HDF core</span>
+          <div class="chip__section" aria-hidden="true">
+            <span class="chip__band chip__band--a">Veneer thickness listed</span>
+            <span class="chip__band chip__band--mid"></span>
+            <span class="chip__band chip__band--b">Ply or HDF core</span>
           </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Engineered wood">Price it →</a>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Engineered wood">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Solid hardwood</h3>
+        <article class="chip chip--svc chip--floor" data-reveal="clip">
+          <h4>Solid hardwood</h4>
           <p>Nail-down solid oak for wood subfloors, sanded and finished in place.</p>
-          <div class="chip__spec">
-            <span>Species + grade</span>
-            <span>Nail-down only</span>
+          <div class="chip__section" aria-hidden="true">
+            <span class="chip__band chip__band--a">Species + grade</span>
+            <span class="chip__band chip__band--mid"></span>
+            <span class="chip__band chip__band--b">Nail-down only</span>
           </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Solid hardwood">Price it →</a>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Solid hardwood">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Tile &amp; stone floors</h3>
+        <article class="chip chip--svc chip--floor" data-reveal="clip">
+          <h4>Tile &amp; stone floors</h4>
           <p>Porcelain and stone set flat over a membrane in kitchens, baths and mudrooms.</p>
-          <div class="chip__spec">
-            <span>Membrane included</span>
-            <span>Flat-set method</span>
+          <div class="chip__section" aria-hidden="true">
+            <span class="chip__band chip__band--a">Membrane included</span>
+            <span class="chip__band chip__band--mid"></span>
+            <span class="chip__band chip__band--b">Flat-set method</span>
           </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Tile">Price it →</a>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Tile">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Slab moisture testing</h3>
+      </div>
+      <h3 class="services__group">Prep, repair and stairs</h3>
+      <div class="spec-rows" data-reveal-stagger>
+        
+        <article class="spec-row">
+          <h4>Slab moisture testing</h4>
           <p>We read the moisture in your slab before any floor goes down, and show you the number.</p>
-          <div class="chip__spec">
-            <span>RH probe reading</span>
-            <span>Result on quote</span>
-          </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Moisture test">Price it →</a>
+          <p class="spec-row__spec"><span>RH probe reading</span> <span>Result on quote</span></p>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Moisture test">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Floor leveling</h3>
+        <article class="spec-row">
+          <h4>Floor leveling</h4>
           <p>Dips and humps ground or filled so long planks lie flat and do not click or bounce.</p>
-          <div class="chip__spec">
-            <span>Grind or fill</span>
-            <span>Flat within tolerance</span>
-          </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Leveling">Price it →</a>
+          <p class="spec-row__spec"><span>Grind or fill</span> <span>Flat within tolerance</span></p>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Leveling">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Carpet for bedrooms</h3>
+        <article class="spec-row">
+          <h4>Carpet for bedrooms</h4>
           <p>Bedroom and stair carpet with the pad weight listed, stretched tight with seams out of the walkway.</p>
-          <div class="chip__spec">
-            <span>Pad weight listed</span>
-            <span>Seams out of walkway</span>
-          </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Carpet">Price it →</a>
+          <p class="spec-row__spec"><span>Pad weight listed</span> <span>Seams out of walkway</span></p>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Carpet">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Hardwood refinishing</h3>
+        <article class="spec-row">
+          <h4>Hardwood refinishing</h4>
           <p>Scratched or gray hardwood sanded to bare wood and refinished in the color you pick.</p>
-          <div class="chip__spec">
-            <span>Sand to bare wood</span>
-            <span>Color you pick</span>
-          </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Refinishing">Price it →</a>
+          <p class="spec-row__spec"><span>Sand to bare wood</span> <span>Color you pick</span></p>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Refinishing">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Stairs</h3>
+        <article class="spec-row">
+          <h4>Stairs</h4>
           <p>Treads, risers and nosings in wood or vinyl to match the floor at the top of the stairs.</p>
-          <div class="chip__spec">
-            <span>Tread + riser</span>
-            <span>Match top floor</span>
-          </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Stairs">Price it →</a>
+          <p class="spec-row__spec"><span>Tread + riser</span> <span>Match top floor</span></p>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Stairs">Price this floor</a>
         </article>
         
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>Samples at your house</h3>
+        <article class="spec-row">
+          <h4>Samples at your house</h4>
           <p>We bring the samples to your rooms and lay them in your own light before you choose.</p>
-          <div class="chip__spec">
-            <span>Brought to you</span>
-            <span>In your own light</span>
-          </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="Samples">Price it →</a>
+          <p class="spec-row__spec"><span>Brought to you</span> <span>In your own light</span></p>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="Samples">Price this floor</a>
         </article>
         
       </div>
     </div>
   </section>
 
-  <!-- 4. Cross-Section Story -->
-  <section class="story-cross t-deep" data-sw-signature>
+  <!-- 4. Cross-section story: the plank comes apart, one layer per line -->
+  <section class="story-cross t-deep" data-sw-signature aria-labelledby="story-title">
     <div class="story-cross__pin">
       <div class="container story-cross__stage">
-        <div class="cross-diagram" aria-label="Floor plank cross-section showing three layers">
-          <div class="cross-layer cross-layer--wear" data-cross-label="Wear layer: scratch resistance">
-            <span class="cross-label">Wear (mil)</span>
-          </div>
-          <div class="cross-layer cross-layer--print" data-cross-label="Print layer: grain realism">
-            <span class="cross-label">Print</span>
-          </div>
-          <div class="cross-layer cross-layer--core" data-cross-label="Rigid core: lies flat on slab">
-            <span class="cross-label">Core (SPC/WPC)</span>
-          </div>
+        <div class="story-cross__copy">
+          <h2 class="story-cross__title" id="story-title">What the mil number buys</h2>
+          <ol class="story-cross__statements">
+            <li data-cross-step="0"><strong>Wear layer.</strong> A 12 mil wear layer takes dog claws.</li>
+            <li data-cross-step="1"><strong>Print film.</strong> Printed grain reads real at arm's length.</li>
+            <li data-cross-step="2"><strong>Rigid core.</strong> It lies flat on Atlanta slabs.</li>
+          </ol>
         </div>
-        <div class="story-cross__statements" data-reveal>
-          <p>12 mil survives dogs.</p>
-          <p>Printed grain reads real at arm's length.</p>
-          <p>Rigid core lies flat on Atlanta slabs.</p>
+        <div class="cross-diagram" role="img" aria-label="One plank cut edge on: a clear wear layer on top, the printed grain film, then a thick rigid core.">
+          <div class="cross-row" data-cross-step="0">
+            <div class="cross-layer cross-layer--wear"></div>
+            <span class="cross-label"><i class="cross-lead"></i>Wear · 12 mil</span>
+          </div>
+          <div class="cross-row" data-cross-step="1">
+            <div class="cross-layer cross-layer--print"></div>
+            <span class="cross-label"><i class="cross-lead"></i>Print film</span>
+          </div>
+          <div class="cross-row" data-cross-step="2">
+            <div class="cross-layer cross-layer--core"></div>
+            <span class="cross-label"><i class="cross-lead"></i>SPC core</span>
+          </div>
         </div>
       </div>
     </div>
     <div class="story-cross__bg" aria-hidden="true">
-      <img src="media/detail-grain-whiteoak.jpg" alt="Placeholder for detail-grain-whiteoak" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-grain-whiteoak" data-slot="story-1" class="story-cross__tex">
+      <div class="story-cross__tex"></div>
     </div>
   </section>
 
@@ -2097,45 +2131,86 @@ html:not(.sw-js) [data-reveal-stagger] > * {
         <a class="btn btn-primary" href="#contact" data-service="Moisture test">Book a moisture test</a>
       </div>
       <div class="moisture__tool" data-hook="checklist" data-reveal>
-        <div class="checklist-widget">
-          <fieldset>
-            <legend>Slab age</legend>
-            <label><input type="radio" name="slab-age" value="new" checked> Under 5 years</label>
-            <label><input type="radio" name="slab-age" value="old"> Over 5 years</label>
-          </fieldset>
-          <fieldset>
-            <legend>Ground-floor room?</legend>
-            <label><input type="radio" name="ground" value="yes" checked> Yes</label>
-            <label><input type="radio" name="ground" value="no"> No</label>
-          </fieldset>
-          <fieldset>
-            <legend>Past water issue?</legend>
-            <label><input type="radio" name="water" value="yes"> Yes</label>
-            <label><input type="radio" name="water" value="no" checked> No</label>
-          </fieldset>
-          <button class="btn btn-primary" type="button" data-checklist-run>Check my slab</button>
-          <div class="checklist-result" data-checklist-output aria-live="polite"></div>
+        <div class="checklist-widget" data-checklist data-checklist-results="0:Tick what is true for your room.|1:One flag: we probe the slab before anything goes down.|2:{n} of {total} flags: plan for a vapour barrier on the quote.|3:{n} of {total} flags: read the slab first, then pick the floor.">
+          <p class="checklist-widget__title">Slab check: tick what is true for your room</p>
+          <label><input type="checkbox" name="slab-new"> Slab poured in the last five years</label>
+          <label><input type="checkbox" name="slab-grade"> Room sits on grade or below it</label>
+          <label><input type="checkbox" name="slab-water"> Water has come in before</label>
+          <label><input type="checkbox" name="slab-damp"> Floor feels damp or smells musty</label>
+          <p class="checklist-result" data-checklist-result>Tick what is true for your room.</p>
         </div>
       </div>
-      <div class="moisture__frame" data-reveal="clip">
-        <figure class="frame" data-fallback="Placeholder for process-moisture"><img src="media/process-moisture.jpg" alt="Placeholder for process-moisture" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-moisture" data-slot="process-moisture" loading="lazy"></figure>
-        <figcaption>Moisture probe reading on concrete slab surface.</figcaption>
-      </div>
+      <figure class="moisture__frame drawn" data-reveal="clip">
+        <svg class="drawn__svg" viewBox="0 0 560 380" role="img" aria-label="Drawing: a relative-humidity probe set into a hole in a concrete slab, wired to a meter above the floor.">
+          <rect width="560" height="380" fill="#F4EFE6"/>
+          <g fill="none" stroke="#B85C38" stroke-width="2" stroke-linecap="round" opacity=".55">
+            <path d="M120 196c-8-14 8-22 0-36s8-22 0-36"/>
+            <path d="M190 196c-8-14 8-22 0-36s8-22 0-36"/>
+            <path d="M420 196c-8-14 8-22 0-36s8-22 0-36"/>
+            <path d="M490 196c-8-14 8-22 0-36s8-22 0-36"/>
+          </g>
+          <rect x="0" y="200" width="560" height="120" fill="#D6CFC4"/>
+          <g fill="#B4A898">
+            <circle cx="40" cy="236" r="5"/><circle cx="92" cy="282" r="7"/><circle cx="150" cy="248" r="4"/><circle cx="214" cy="296" r="6"/>
+            <circle cx="336" cy="240" r="5"/><circle cx="388" cy="290" r="7"/><circle cx="452" cy="250" r="4"/><circle cx="514" cy="292" r="6"/>
+          </g>
+          <rect x="0" y="320" width="560" height="60" fill="#8C7B6E"/>
+          <g stroke="#6F6155" stroke-width="2"><path d="M0 340h560M0 360h560"/></g>
+          <rect x="262" y="200" width="36" height="58" fill="#3B2218"/>
+          <rect x="270" y="200" width="20" height="54" fill="#D4A855"/>
+          <path d="M280 200V120c0-30 20-40 50-40h40" fill="none" stroke="#3B2218" stroke-width="3"/>
+          <rect x="370" y="40" width="150" height="96" rx="2" fill="#3B2218"/>
+          <rect x="384" y="54" width="122" height="48" fill="#F4EFE6"/>
+          <text x="396" y="86" font-family="DM Mono, monospace" font-size="22" fill="#3B2218">RH</text>
+          <g fill="#B85C38"><rect x="446" y="70" width="10" height="20"/><rect x="460" y="64" width="10" height="26"/><rect x="474" y="58" width="10" height="32" opacity=".35"/><rect x="488" y="58" width="10" height="32" opacity=".35"/></g>
+          <circle cx="400" cy="118" r="6" fill="#D4A855"/><circle cx="420" cy="118" r="6" fill="#8C7B6E"/>
+          <g stroke="#1C1917" stroke-width="1.5" fill="none"><path d="M308 258h46M308 200h46"/><path d="M346 200v58"/></g>
+          <text x="362" y="234" font-family="DM Mono, monospace" font-size="15" fill="#1C1917">probe depth</text>
+        </svg>
+        <figcaption>Drawing: an RH probe set in the slab, the meter reads it above the floor. Your number goes on the quote.</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- 6. Break Photo -->
-  <section class="break t-light">
-    <figure class="break__fig">
-      <img src="media/hands-sample.jpg" alt="Installer hands holding reclaimed heart pine sample board against finished floor" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hands-sample" data-slot="break" class="break__img">
-      <figcaption class="break__cap">Hand holding LVP sample against finished floor, edges and wear layer visible.</figcaption>
+  <!-- 6. Break: one plank, drawn edge on -->
+  <section class="break t-light" aria-label="One plank, edge on" data-reveal="band">
+    <figure class="break__fig drawn">
+      <svg class="break__svg" viewBox="0 0 1440 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="g-oak" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#D9B285"/><stop offset=".55" stop-color="#C79A68"/><stop offset="1" stop-color="#B9875A"/>
+          </linearGradient>
+          <pattern id="p-core" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="14" height="14" fill="#E7DFD2"/><path d="M0 0v14" stroke="#C4B8A8" stroke-width="3"/>
+          </pattern>
+        </defs>
+        <rect width="1440" height="560" fill="#EAE3D7"/>
+        <polygon points="140,90 1400,90 1300,380 40,380" fill="url(#g-oak)"/>
+        <path class="break__grain" d="M40 100 Q137 94 234 97 Q323 99 412 100 Q502 104 592 104 Q680 105 767 102 Q837 100 906 98 Q994 96 1082 94 Q1161 109 1240 106 Q1304 104 1369 100 Q1385 103 1400 102 M40 122 Q136 119 233 121 Q326 117 420 120 Q492 119 563 121 Q661 126 758 123 Q854 114 949 116 Q1031 122 1114 123 Q1181 124 1249 128 Q1324 122 1398 120 Q1399 119 1400 123 M40 136 Q111 134 183 135 Q256 138 329 137 Q399 142 468 142 Q562 140 657 138 Q738 138 818 137 Q916 137 1013 135 Q1084 136 1154 138 Q1227 138 1300 135 Q1350 134 1400 131 M40 151 Q116 142 193 147 Q292 149 392 148 Q458 152 524 151 Q589 161 655 157 Q750 161 846 157 Q936 143 1027 148 Q1097 141 1167 146 Q1251 150 1336 148 Q1368 151 1400 154 M40 173 Q109 175 179 172 Q244 168 308 173 Q405 179 501 175 Q562 176 623 179 Q722 176 821 174 Q891 167 962 169 Q1044 170 1127 167 Q1215 176 1303 176 Q1352 172 1400 168 M40 186 Q128 187 215 191 Q310 196 406 191 Q504 189 602 189 Q672 193 742 189 Q818 181 894 182 Q989 185 1085 187 Q1170 187 1254 189 Q1327 182 1400 185 M40 204 Q139 212 239 211 Q334 207 429 210 Q514 199 600 199 Q683 212 765 208 Q844 199 923 199 Q990 206 1057 206 Q1139 207 1222 204 Q1296 203 1371 207 Q1385 201 1400 204 M40 223 Q112 221 183 220 Q260 220 338 217 Q431 233 523 229 Q611 225 698 230 Q788 227 879 225 Q975 213 1071 217 Q1134 214 1197 218 Q1258 229 1318 225 Q1359 215 1400 218 M40 240 Q110 244 179 239 Q256 245 333 242 Q409 234 485 239 Q554 249 623 244 Q690 246 756 246 Q821 237 885 236 Q952 232 1019 234 Q1105 241 1191 241 Q1291 233 1390 234 Q1395 228 1400 233 M40 255 Q104 256 167 252 Q258 259 350 259 Q444 265 538 262 Q624 255 711 256 Q787 255 863 255 Q946 260 1029 259 Q1114 263 1199 259 Q1293 262 1387 262 Q1394 267 1400 262 M40 272 Q103 274 166 270 Q255 280 343 275 Q434 265 526 268 Q618 271 710 267 Q802 276 894 274 Q975 275 1057 271 Q1139 275 1222 277 Q1309 270 1397 271 Q1398 271 1400 273 M40 292 Q133 292 226 290 Q321 285 416 287 Q513 282 610 285 Q686 288 761 286 Q857 285 953 288 Q1051 292 1149 295 Q1214 289 1278 294 Q1339 296 1400 294 M40 305 Q113 312 187 308 Q268 309 350 306 Q438 309 527 308 Q591 300 655 298 Q724 303 793 306 Q861 308 930 306 Q1023 305 1115 301 Q1178 307 1240 307 Q1320 310 1400 307 M40 322 Q137 325 234 322 Q311 330 388 327 Q477 331 566 327 Q633 321 701 325 Q766 332 831 328 Q893 313 955 316 Q1053 331 1151 327 Q1222 313 1293 317 Q1346 319 1400 322 M40 340 Q119 332 198 336 Q260 336 322 334 Q401 347 479 344 Q560 342 640 343 Q725 349 809 346 Q908 344 1006 343 Q1098 331 1191 335 Q1280 341 1369 342 Q1384 338 1400 338 M40 356 Q103 348 165 350 Q239 353 313 352 Q378 344 443 349 Q536 356 630 361 Q721 352 811 353 Q908 355 1004 360 Q1104 353 1203 352 Q1280 346 1358 349 Q1379 357 1400 359" fill="none" stroke="#3B2218" stroke-opacity=".22" stroke-width="2" clip-path="url(#c-face)"/>
+        <clipPath id="c-face"><polygon points="140,90 1400,90 1300,380 40,380"/></clipPath>
+        <rect class="break__band" x="40" y="380" width="1260" height="10" fill="#F6EBCB" stroke="#D4A855" stroke-width="2"/>
+        <rect class="break__band" x="40" y="390" width="1260" height="14" fill="#B85C38"/>
+        <rect class="break__band" x="40" y="404" width="1260" height="70" fill="url(#p-core)"/>
+        <rect class="break__band" x="40" y="474" width="1260" height="22" fill="#8C7B6E"/>
+        <polygon points="1300,380 1400,90 1400,206 1300,496" fill="#3B2218" opacity=".18"/>
+        <g stroke="#1C1917" stroke-width="2"><path d="M1320 380h60M1320 496h60M1350 380v116"/></g>
+      </svg>
+      <figcaption class="break__cap">
+        <span class="break__kicker">One plank, edge on</span>
+        <ol class="break__legend">
+          <li><i class="sw sw--wear"></i>Wear layer · 12 mil</li>
+          <li><i class="sw sw--print"></i>Print film · the grain you see</li>
+          <li><i class="sw sw--core"></i>SPC core · lies flat</li>
+          <li><i class="sw sw--pad"></i>Attached pad · quieter steps</li>
+        </ol>
+      </figcaption>
     </figure>
   </section>
 
   <!-- 7. Reviews -->
   <section id="reviews" class="reviews t-mid">
     <div class="container">
-      <h2 data-reveal>What homeowners are saying</h2>
+      <h2 data-reveal>What people noticed after the floor went down</h2>
       <p class="section-lead" data-reveal><span class="sample-tag">Sample reviews</span> from Atlanta area residents.</p>
       <div class="review-grid" data-reveal-stagger>
         
@@ -2242,40 +2317,41 @@ html:not(.sw-js) [data-reveal-stagger] > * {
   <!-- 8. Square-Foot Estimator -->
   <section id="estimator" class="estimator t-accent">
     <div class="container estimator__wrap">
-      <h2 data-reveal>Get a sample number in seconds</h2>
+      <h2 data-reveal>Square feet in, sample price out</h2>
       <p class="section-lead" data-reveal><span class="sample-tag">Sample pricing</span> based on Atlanta-area jobs.</p>
-      <div class="estimator-widget" data-hook="estimator" data-reveal="scale">
+      <div class="estimator-widget" data-hook="estimator" data-estimator data-reveal="scale">
         <div class="estimator-inputs">
-          <label class="est-field">
-            <span>Service</span>
-            <select data-est-service>
+          <label class="est-field" for="est-item">
+            <span>Floor or job</span>
+            <select id="est-item" data-est-item>
               
-              <option value="1">Luxury vinyl plank, installed</option>
+              <option value="Luxury vinyl plank, installed">Luxury vinyl plank, installed</option>
               
-              <option value="2">Engineered hardwood, installed</option>
+              <option value="Engineered hardwood, installed">Engineered hardwood, installed</option>
               
-              <option value="3">Tile floor, installed</option>
+              <option value="Tile floor, installed">Tile floor, installed</option>
               
-              <option value="4">Floor leveling</option>
+              <option value="Floor leveling">Floor leveling</option>
               
-              <option value="5">Carpet with pad</option>
+              <option value="Carpet with pad">Carpet with pad</option>
               
-              <option value="6">Hardwood refinishing</option>
+              <option value="Hardwood refinishing">Hardwood refinishing</option>
               
             </select>
           </label>
-          <label class="est-field">
-            <span>Square feet</span>
-            <input type="number" min="50" step="10" value="300" data-est-sqft>
+          <label class="est-field" for="est-size">
+            <span>Room size · small to whole floor</span>
+            <input id="est-size" type="range" min="0" max="100" value="50" data-est-size>
           </label>
-          <label class="est-field est-field--stairs">
-            <span>Stairs (if any)</span>
-            <input type="number" min="0" max="30" step="1" value="0" data-est-stairs>
-          </label>
-          <button class="btn btn-primary" type="button" data-est-run>Calculate</button>
         </div>
-        <div class="estimator-result" data-est-output aria-live="polite"></div>
-        <a class="btn btn-secondary" href="#contact" data-est-handoff>Send these numbers</a>
+        <div class="est-sketch" data-est-sketch aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <p class="estimator-result" data-est-out aria-live="polite">Luxury vinyl plank, installed: $4 to $8 per sq ft <span class="sample-tag">Sample price</span></p>
+        <div class="btn-row estimator__actions">
+          <a class="btn btn-primary" href="#contact" data-service="Vinyl plank">Price my floor</a>
+          <button class="btn btn-secondary" type="button" data-est-print>Print this price</button>
+        </div>
       </div>
     </div>
   </section>
@@ -2284,16 +2360,16 @@ html:not(.sw-js) [data-reveal-stagger] > * {
   <section id="area" class="area t-deep">
     <div class="container area__grid">
       <div class="area__copy" data-reveal>
-        <h2>We serve Atlanta and eight surrounding cities</h2>
-        <p class="lead">Enter your ZIP to confirm coverage and see if we can help.</p>
-        <div class="zip-widget" data-hook="zip">
-          <label class="zip-field">
+        <h2>Atlanta and the towns around it</h2>
+        <p class="lead">Type your ZIP and we'll tell you straight whether we cover it.</p>
+        <form class="zip-widget" data-hook="zip" data-zip data-zip-yes="{zip} is on our route. Call {phone} or compare floors above." data-zip-no="{zip} is outside our usual area. Call {phone} and ask anyway.">
+          <label class="zip-field" for="zip-in">
             <span>ZIP code</span>
-            <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Your ZIP" data-zip-input autocomplete="postal-code">
+            <input id="zip-in" name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="Your ZIP" autocomplete="postal-code">
           </label>
-          <button class="btn btn-primary" type="button" data-zip-run>Check</button>
-          <div class="zip-result" data-zip-output aria-live="polite"></div>
-        </div>
+          <button class="btn btn-primary" type="submit">Check my ZIP</button>
+          <p class="zip-result" data-zip-result aria-live="polite"></p>
+        </form>
         <div class="area__pills" data-reveal>
           
           <span class="pill">Decatur</span>
@@ -2316,20 +2392,40 @@ html:not(.sw-js) [data-reveal-stagger] > * {
         </div>
         <p class="area__hours"><span data-open-now>Mon–Thu 7:30 am – 5 pm · Fri 7:30 am – 4 pm · Sat 9 am – noon</span></p>
       </div>
-      <div class="area__frame" data-reveal="clip">
-        <figure class="frame" data-fallback="Placeholder for home-atlanta"><img src="media/home-atlanta.jpg" alt="Placeholder for home-atlanta" width="1170" height="780" loading="lazy" decoding="async" data-photo="home-atlanta" data-slot="service-area" loading="lazy"></figure>
-        <figcaption>Atlanta ranch house with lawn, typical service area home.</figcaption>
-      </div>
+      <figure class="area__frame drawn" data-reveal="clip">
+        <svg class="drawn__svg area__map" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+          <rect width="400" height="400" fill="#4A2D21"/>
+          <g fill="none" stroke="#8C6A55" stroke-width="1.5" stroke-dasharray="4 6"><circle cx="200" cy="200" r="80"/><circle cx="200" cy="200" r="150"/></g>
+          <path d="M200 200L200 58M200 200L300 98M200 200L336 196M200 200L292 300M200 200L200 342M200 200L108 300M200 200L64 196M200 200L100 98" stroke="#D4A855" stroke-opacity=".35" stroke-width="1.5"/>
+          <g fill="#D4A855"><circle cx="200" cy="58" r="6"/><circle cx="300" cy="98" r="6"/><circle cx="336" cy="196" r="6"/><circle cx="292" cy="300" r="6"/><circle cx="200" cy="342" r="6"/><circle cx="108" cy="300" r="6"/><circle cx="64" cy="196" r="6"/><circle cx="100" cy="98" r="6"/></g>
+          <g font-family="Karla, sans-serif" font-size="15" fill="#F4EFE6" text-anchor="middle"><text x="200" y="82">Decatur</text><text x="300" y="122">Smyrna</text><text x="336" y="220">Marietta</text><text x="292" y="326">Sandy Springs</text><text x="200" y="368">Brookhaven</text><text x="108" y="326">Tucker</text><text x="64" y="220">Dunwoody</text><text x="100" y="122">Roswell</text></g>
+          <polygon points="150,178 250,178 250,222 160,222 150,212" fill="#B85C38"/>
+          <text x="200" y="206" font-family="Archivo, sans-serif" font-weight="700" font-size="17" fill="#FFFFFF" text-anchor="middle">Atlanta</text>
+        </svg>
+        <figcaption>Route sketch, not to scale: home base in the middle, the eight cities we drive to around it.</figcaption>
+      </figure>
     </div>
   </section>
 
   <!-- 10. Contact Form -->
   <section id="contact" class="contact t-paper">
     <div class="container contact__wrap">
-      <h2 data-reveal>Get a number for your project</h2>
-      <p class="section-lead" data-reveal>We will call you back to set up a visit. No obligation.</p>
+      <div class="contact__copy" data-reveal>
+        <h2>Price my floor</h2>
+        <p class="section-lead">We call you back to set a visit, then bring samples to your rooms.</p>
+        <ol class="contact__next">
+          <li>You tell us the room and what it sits on.</li>
+          <li>We read the slab and measure on the visit.</li>
+          <li>Your quote lists the wear layer, core and reading.</li>
+        </ol>
+        <div class="contact__aside">
+          <p>Prefer to talk? <a class="tel-plain" href="tel:+14045550150">(404) 555-0150</a></p>
+          <p data-open-now><span data-open-now>Mon–Thu 7:30 am – 5 pm · Fri 7:30 am – 4 pm · Sat 9 am – noon</span></p>
+        </div>
+      </div>
+      <div class="contact__form">
       <form class="lead-form" data-lead data-reveal>
-        <div class="form-step" data-step="1">
+        <div class="form-step" data-step data-step-title="Service">
           <h3>Step 1 · Service</h3>
           <label class="form-field">
             <span>Which service?</span>
@@ -2358,11 +2454,8 @@ html:not(.sw-js) [data-reveal-stagger] > * {
               
             </select>
           </label>
-          <div class="form-nav">
-            <button class="btn btn-primary" type="button" data-form-next>Next</button>
-          </div>
         </div>
-        <div class="form-step" data-step="2" hidden>
+        <div class="form-step" data-step data-step-title="Rooms & size">
           <h3>Step 2 · Rooms & size</h3>
           <label class="form-field">
             <span>Approximate square feet</span>
@@ -2372,12 +2465,8 @@ html:not(.sw-js) [data-reveal-stagger] > * {
             <span>Number of rooms</span>
             <input type="number" name="rooms" min="1" max="30" step="1">
           </label>
-          <div class="form-nav">
-            <button class="btn btn-text" type="button" data-form-back>Back</button>
-            <button class="btn btn-primary" type="button" data-form-next>Next</button>
-          </div>
         </div>
-        <div class="form-step" data-step="3" hidden>
+        <div class="form-step" data-step data-step-title="Current floor & water">
           <h3>Step 3 · Current floor & water</h3>
           <label class="form-field">
             <span>Current floor type</span>
@@ -2390,17 +2479,13 @@ html:not(.sw-js) [data-reveal-stagger] > * {
               <option value="slab">Bare slab</option>
             </select>
           </label>
-          <label class="form-field form-field--radio">
-            <span>Any past water issues?</span>
+          <fieldset class="form-field form-field--radio">
+            <legend>Any past water issues?</legend>
             <label><input type="radio" name="water" value="no" checked> No</label>
             <label><input type="radio" name="water" value="yes"> Yes</label>
-          </label>
-          <div class="form-nav">
-            <button class="btn btn-text" type="button" data-form-back>Back</button>
-            <button class="btn btn-primary" type="button" data-form-next>Next</button>
-          </div>
+          </fieldset>
         </div>
-        <div class="form-step" data-step="4" hidden>
+        <div class="form-step" data-step data-step-title="Timing & contact">
           <h3>Step 4 · Timing & contact</h3>
           <label class="form-field">
             <span>When do you want this done?</span>
@@ -2428,56 +2513,55 @@ html:not(.sw-js) [data-reveal-stagger] > * {
             <input type="text" name="website2" tabindex="-1" autocomplete="off">
           </label>
           <input type="hidden" name="t" data-form-trap>
-          <div class="form-nav">
-            <button class="btn btn-text" type="button" data-form-back>Back</button>
-            <button class="btn btn-primary" type="submit">Send request</button>
-          </div>
         </div>
-        <div class="form-thankyou" data-form-thankyou hidden>
-          <h3>Thanks, {name}.</h3>
-          <p>In your version this goes straight to your phone and inbox. We will call you back to set up a visit.</p>
+        <div class="form-nav" data-form-nav>
+          <button class="btn btn-secondary" type="button" data-back>Back</button>
+          <button class="btn btn-primary" type="button" data-next>Next</button>
+          <button class="btn btn-primary" type="submit" data-submit>Price my floor</button>
         </div>
+
       </form>
-      <aside class="contact__aside" data-reveal="fade">
-        <p>Prefer to talk? <a class="tel-plain" href="tel:+14045550150">(404) 555-0150</a></p>
-        <p><span data-open-now>Mon–Thu 7:30 am – 5 pm · Fri 7:30 am – 4 pm · Sat 9 am – noon</span></p>
-      </aside>
+      <div class="form-thankyou" data-thanks-box hidden>
+        <h3>Thanks, {name}.</h3>
+        <p>This is a demo, nothing was sent. On the real site this goes to Twelve Mil.</p>
+      </div>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="footer t-deep" data-sw-signature>
-  <div class="container footer__grid">
-    <div class="footer__brand">
+  <div class="container">
+    <div class="footer__strip">
       <span class="chip chip--footer">
         <span class="chip__initials">TM</span>
-        <span class="chip__cross" aria-hidden="true"><span class="chip__cross-layer"></span></span>
+        <span class="chip__cross" aria-hidden="true"><span class="chip__cross-layer"></span><span class="chip__cross-layer"></span><span class="chip__cross-layer"></span></span>
       </span>
-      <p>Twelve Mil Flooring</p>
-      <p>Atlanta, GA</p>
+      <div class="footer__id">
+        <p class="footer__name">Twelve Mil Flooring</p>
+        <p>Atlanta, GA · <a class="tel-plain" href="tel:+14045550150">(404) 555-0150</a></p>
+      </div>
+      <p class="footer__lic">Licence SAMPLE-GA-24917 <span class="sample-tag">Sample</span></p>
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="#services">Services</a>
+        <a href="#compare">Compare floors</a>
+        <a href="#estimator">Estimator</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#area">Area</a>
+        <a href="#contact">Price my floor</a>
+      </nav>
     </div>
-    <nav class="footer__nav" aria-label="Footer">
-      <a href="#services">Services</a>
-      <a href="#compare">Compare</a>
-      <a href="#estimator">Estimator</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#area">Area</a>
-      <a href="#contact">Quote form</a>
-    </nav>
     <div class="footer__legal">
-      <p>Licence # SAMPLE-GA-24917 <span class="sample-tag">Sample</span></p>
       <p>Sample website by Site Sledge. Business details are illustrative.</p>
-      <p>&copy; 2026 Twelve Mil Flooring. All rights reserved.</p>
-    </div>
-    <div class="footer__credits">
-      <ul class="credits"><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li></ul>
+      <p>&copy; 2026 Twelve Mil Flooring</p>
+      <div class="footer__credits"><ul class="credits"></ul></div>
     </div>
   </div>
 </footer>
 
 <div class="mobilebar" data-mobilebar>
   <a class="btn btn-primary mobilebar__call" href="tel:+14045550150"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> Call</a>
-  <a class="btn btn-secondary mobilebar__quote" href="#compare">Compare</a>
+  <a class="btn btn-secondary mobilebar__quote" href="#compare">Compare floors</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Twelve Mil Flooring","short":"Twelve Mil","phone":"(404) 555-0150","phoneE164":"+14045550150","sms":true,"email":"hello@twelve-mil-flooring.example","city":"Atlanta","state":"GA","timezone":"America/New_York","areas":["Decatur","Smyrna","Marietta","Sandy Springs","Brookhaven","Tucker","Dunwoody","Roswell"],"zips":["30306","30307","30309","30305","30316","30318","30319","30030","30080","30060","30062","30328","30084","30338","30075"],"hours":{"mon":["07:30","17:00"],"tue":["07:30","17:00"],"wed":["07:30","17:00"],"thu":["07:30","17:00"],"fri":["07:30","16:00"],"sat":["09:00","12:00"],"sun":null},"emergency":false},"services":[{"name":"Luxury vinyl plank","short":"Vinyl plank"},{"name":"Engineered hardwood","short":"Engineered wood"},{"name":"Solid hardwood","short":"Solid hardwood"},{"name":"Tile & stone floors","short":"Tile"},{"name":"Slab moisture testing","short":"Moisture test"},{"name":"Floor leveling","short":"Leveling"},{"name":"Carpet for bedrooms","short":"Carpet"},{"name":"Hardwood refinishing","short":"Refinishing"},{"name":"Stairs","short":"Stairs"},{"name":"Samples at your house","short":"Samples"}],"proof":{"label":"Sample","prices":[{"item":"Luxury vinyl plank, installed","from":"$4","to":"$8","unit":"per sq ft","note":"wear layer on the quote"},{"item":"Engineered hardwood, installed","from":"$8","to":"$14","unit":"per sq ft"},{"item":"Tile floor, installed","from":"$11","to":"$22","unit":"per sq ft","note":"membrane included"},{"item":"Floor leveling","from":"$2","to":"$5","unit":"per sq ft","note":"only where it is needed"},{"item":"Carpet with pad","from":"$3","to":"$7","unit":"per sq ft"},{"item":"Hardwood refinishing","from":"$3","to":"$6","unit":"per sq ft"}]},"hours":{"mon":["07:30","17:00"],"tue":["07:30","17:00"],"wed":["07:30","17:00"],"thu":["07:30","17:00"],"fri":["07:30","16:00"],"sat":["09:00","12:00"],"sun":null},"timezone":"America/New_York","zips":["30306","30307","30309","30305","30316","30318","30319","30030","30080","30060","30062","30328","30084","30338","30075"],"areas":["Decatur","Smyrna","Marietta","Sandy Springs","Brookhaven","Tucker","Dunwoody","Roswell"],"phone":"(404) 555-0150","phoneE164":"+14045550150"}</script>
 <script defer src="vendor/gsap.min.js"></script>

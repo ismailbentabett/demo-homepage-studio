@@ -486,184 +486,6 @@ SW.mod('lenis', function (SW) {
 });
 
 ;
-/* kit: split */
-/* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
-   Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
-     words: .sw-word > .sw-word-in           (--i = word index)
-     lines: same markup, --i = line index    (recomputed on resize and after the fonts load)
-     chars: .sw-word > .sw-char              (--i = char index)
-   The element gets .is-in when it scrolls into view (at once under reduced motion). */
-SW.mod('split', function (SW) {
-  var els = SW.$$('[data-split]');
-  if (!els.length) return;
-
-  function piece(cls, text) {
-    var s = document.createElement('span');
-    s.className = cls;
-    s.textContent = text;
-    return s;
-  }
-  function splitText(textNode, mode) {
-    var frag = document.createDocumentFragment();
-    textNode.nodeValue.split(/(\s+)/).forEach(function (token) {
-      if (!token) return;
-      if (/^\s+$/.test(token)) { frag.appendChild(document.createTextNode(' ')); return; }
-      var word = document.createElement('span');
-      word.className = 'sw-word';
-      if (mode === 'chars') Array.from(token).forEach(function (ch) { word.appendChild(piece('sw-char', ch)); });
-      else word.appendChild(piece('sw-word-in', token));
-      frag.appendChild(word);
-    });
-    textNode.parentNode.replaceChild(frag, textNode);
-  }
-  function walk(node, mode) {
-    Array.prototype.slice.call(node.childNodes).forEach(function (child) {
-      if (child.nodeType === 3) splitText(child, mode);
-      else if (child.nodeType === 1 && !/^(BR|SVG|IMG|PICTURE)$/i.test(child.tagName)) walk(child, mode);
-    });
-  }
-  function numberLines(el) {
-    var top = null, line = -1;
-    SW.$$('.sw-word', el).forEach(function (w) {
-      var t = w.offsetTop;
-      if (top === null || Math.abs(t - top) > 2) { line++; top = t; }
-      w.style.setProperty('--i', line);
-    });
-    el.style.setProperty('--lines', line + 1);
-  }
-
-  els.forEach(function (el) {
-    if (el.hasAttribute('data-split-done')) return;
-    var mode = el.getAttribute('data-split') || 'words';
-    var text = el.textContent.replace(/\s+/g, ' ').trim();
-    if (!text) return;
-    var visual = document.createElement('span');
-    visual.className = 'sw-split';
-    visual.setAttribute('aria-hidden', 'true');
-    while (el.firstChild) visual.appendChild(el.firstChild);
-    walk(visual, mode);
-    el.appendChild(piece('sr-only', text));
-    el.appendChild(visual);
-    el.setAttribute('data-split-done', '');
-
-    if (mode === 'lines') {
-      numberLines(visual);
-      var timer;
-      window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(function () { numberLines(visual); }, 150); });
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { numberLines(visual); });
-    } else {
-      SW.$$(mode === 'chars' ? '.sw-char' : '.sw-word', visual).forEach(function (p, i) { p.style.setProperty('--i', i); });
-    }
-
-    if (SW.reduced) el.classList.add('is-in');
-    else SW.inView(el, function () { el.classList.add('is-in'); }, { rootMargin: '0px 0px -10% 0px' });
-  });
-  window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('is-in'); }); });
-});
-
-;
-/* kit: counters */
-/* counters: <span data-count="143">143 reviews</span> counts the first number in the text up from 0 once in view.
-   Write the final value in the HTML too (it is what shows without JS). Decimals follow the data-count value ("4.9").
-   data-count-duration in ms (default 1200). Screen readers get the final text; the moving copy is aria-hidden.
-   Static (final value) under reduced motion. */
-SW.mod('counters', function (SW) {
-  SW.$$('[data-count]').forEach(function (el) {
-    if (el.querySelector('.sw-count-num')) return;
-    var raw = el.getAttribute('data-count');
-    var target = parseFloat(String(raw).replace(/[^0-9.\-]/g, ''));
-    if (isNaN(target)) return;
-    var decimals = (String(raw).split('.')[1] || '').replace(/\D/g, '').length;
-    var fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-    var text = el.textContent;
-    var m = text.match(/\d[\d,]*(\.\d+)?/);
-    var before = m ? text.slice(0, m.index) : '';
-    var after = m ? text.slice(m.index + m[0].length) : text;
-    var finalText = fmt.format(target);
-
-    el.textContent = '';
-    var sr = document.createElement('span');
-    sr.className = 'sr-only';
-    sr.textContent = (before + finalText + after).trim();
-    var visual = document.createElement('span');
-    visual.setAttribute('aria-hidden', 'true');
-    var num = document.createElement('span');
-    num.className = 'sw-count-num';
-    visual.appendChild(document.createTextNode(before));
-    visual.appendChild(num);
-    visual.appendChild(document.createTextNode(after));
-    el.appendChild(sr);
-    el.appendChild(visual);
-
-    if (SW.reduced) { num.textContent = finalText; el.classList.add('is-counted'); return; }
-    num.textContent = fmt.format(0);
-    var duration = parseInt(el.getAttribute('data-count-duration'), 10) || 1200;
-    SW.inView(el, function () {
-      var t0 = performance.now();
-      function frame(now) {
-        var k = Math.min(1, (now - t0) / duration);
-        var eased = 1 - Math.pow(1 - k, 3);
-        num.textContent = fmt.format(target * eased);
-        if (k < 1) requestAnimationFrame(frame);
-        else { num.textContent = finalText; el.classList.add('is-counted'); }
-      }
-      requestAnimationFrame(frame);
-    }, { threshold: 0.4 });
-    window.addEventListener('beforeprint', function () { num.textContent = finalText; });
-  });
-});
-
-;
-/* kit: video */
-/* video: <video data-video data-src="media/x.mp4" poster muted loop playsinline preload="none"> inside a figure
-   with a <button data-vid-btn aria-pressed="false">Pause background video</button> (the [[video]] macro writes both).
-   Loads data-src when it comes near the screen, plays muted, pauses off-screen and in a hidden tab.
-   The button keeps its label; aria-pressed="true" means paused. The figure gets data-state="playing|paused".
-   Under reduced motion nothing autoplays (the poster shows, the button starts pressed; a click plays). */
-SW.mod('video', function (SW) {
-  SW.$$('video[data-video]').forEach(function (v) {
-    var fig = v.closest('figure') || v.parentElement;
-    var btn = fig ? SW.$('[data-vid-btn]', fig) : null;
-    v.muted = true;
-    v.setAttribute('muted', '');
-    v.playsInline = true;
-    var userPaused = SW.reduced;
-    var near = false;
-
-    function load() {
-      if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; }
-    }
-    function play() {
-      load();
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { reflect(); });
-    }
-    function reflect() {
-      var playing = !v.paused && !v.ended;
-      if (btn) btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-      if (fig) fig.setAttribute('data-state', playing ? 'playing' : 'paused');
-    }
-    function sync() {
-      if (near && !userPaused && !document.hidden) play();
-      else if (!v.paused) v.pause();
-    }
-    v.addEventListener('play', reflect);
-    v.addEventListener('playing', reflect);
-    v.addEventListener('pause', reflect);
-    if (btn) {
-      btn.type = 'button';
-      btn.addEventListener('click', function () {
-        if (v.paused) { userPaused = false; play(); } else { userPaused = true; v.pause(); }
-        v.toggleAttribute('data-user-paused', userPaused);
-      });
-    }
-    SW.inView(v, function (inside) { near = inside; sync(); }, { once: false, rootMargin: '150px' });
-    document.addEventListener('visibilitychange', sync);
-    reflect();
-  });
-});
-
-;
 /* kit: zip */
 /* zip: "Do you serve my area?" checker against facts biz.zips.
    <form data-zip>
@@ -975,54 +797,30 @@ SW.mod('form', function (SW) {
 });
 
 ;
-/* kit: faq */
-/* faq: <div data-accordion> with <details><summary>Question</summary><div>Answer</div></details> items.
-   Native details/summary does the keyboard and ARIA work (works without JS); this adds a height animation
-   on the answer (the first element after <summary>). data-accordion="single" keeps only one open.
-   The <details> gets .is-opening / .is-closing while it moves. Under reduced motion the native toggle is left alone. */
-SW.mod('faq', function (SW) {
-  SW.$$('[data-accordion]').forEach(function (group) {
-    var single = group.getAttribute('data-accordion') === 'single';
-    var items = SW.$$('details', group);
-
-    function body(d) { return d.querySelector(':scope > summary ~ *'); }
-    function animate(d, open) {
-      var el = body(d);
-      if (d._swAnim) { d._swAnim.cancel(); d._swAnim = null; }
-      if (SW.reduced || !el || !el.animate) { d.open = open; return; }
-      if (open) d.open = true;
-      var h = el.scrollHeight;
-      d.classList.toggle('is-opening', open);
-      d.classList.toggle('is-closing', !open);
-      el.style.overflow = 'hidden';
-      var anim = el.animate(
-        { height: open ? ['0px', h + 'px'] : [h + 'px', '0px'], opacity: open ? [0, 1] : [1, 0] },
-        { duration: open ? 280 : 200, easing: 'cubic-bezier(.23,1,.32,1)' }
-      );
-      d._swAnim = anim;
-      anim.onfinish = function () {
-        d._swAnim = null;
-        if (!open) d.open = false;
-        el.style.overflow = '';
-        d.classList.remove('is-opening', 'is-closing');
-      };
-    }
-
-    items.forEach(function (d) {
-      var summary = d.querySelector('summary');
-      if (!summary) return;
-      summary.addEventListener('click', function (e) {
-        if (SW.reduced) return; // native toggle
-        e.preventDefault();
-        var opening = !d.open || d.classList.contains('is-closing');
-        if (opening && single) items.forEach(function (o) { if (o !== d && o.open) animate(o, false); });
-        animate(d, opening);
-      });
-      d.addEventListener('toggle', function () {
-        if (single && d.open) items.forEach(function (o) { if (o !== d && o.open && !o._swAnim) o.open = false; });
-      });
+/* kit: prefill */
+/* prefill: any link or button with data-service="Leak repair" (outside the lead form) fills the form's
+   "service" field, scrolls to #contact and focuses that field. The [[quote]] macro writes these links
+   (href="#contact" so they still work without JS). The value can be a service name or its short name. */
+SW.mod('prefill', function (SW) {
+  // capture phase: runs before the smooth-scroll anchor handler
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var t = e.target.closest ? e.target.closest('[data-service]') : null;
+    if (!t || t.closest('form[data-lead]')) return;
+    var form = SW.$('form[data-lead]');
+    if (!form) return; // plain anchor behaviour
+    e.preventDefault();
+    var want = (t.getAttribute('data-service') || '').trim().toLowerCase();
+    var services = SW.fact('services') || [];
+    var hit = services.find(function (s) {
+      return String(s.name || '').toLowerCase() === want || String(s.short || '').toLowerCase() === want;
     });
-  });
+    var name = hit ? hit.name : t.getAttribute('data-service');
+    SW.prefillForm(name ? { service: name } : {}, { focus: 'service' });
+    if (t.getAttribute('href') && t.getAttribute('href').charAt(0) === '#') {
+      try { history.pushState(null, '', t.getAttribute('href')); } catch (err) { /* file:// */ }
+    }
+  }, true);
 });
 
 ;
@@ -1115,81 +913,6 @@ SW.mod('opennow', function (SW) {
   }
   render();
   setInterval(render, 60000);
-});
-
-;
-/* kit: compare */
-/* compare: before/after slider.
-   <div data-compare data-compare-labels="Before|After" data-compare-start="50">
-     <img src="after.webp" alt="...">                       (bottom layer, the "after")
-     <div data-compare-top><img src="before.webp" alt="..."></div>   (clipped to --pos by base.css)
-     <button data-compare-handle></button>                  (optional; created when missing)
-   </div>
-   Sets --pos (0%..100%) on the box. The handle is a role="slider" with aria-valuetext "Before 40%, After 60%".
-   Keys: arrows 1 (Shift 10), PageUp/PageDown 10, Home/End. Drag anywhere on the box (pointer capture). */
-SW.mod('compare', function (SW) {
-  SW.$$('[data-compare]').forEach(function (box) {
-    var labels = (box.getAttribute('data-compare-labels') || 'Before|After').split('|');
-    var a = (labels[0] || 'Before').trim(), b = (labels[1] || 'After').trim();
-    var handle = SW.$('[data-compare-handle]', box);
-    if (!handle) {
-      handle = document.createElement('button');
-      handle.type = 'button';
-      handle.setAttribute('data-compare-handle', '');
-      handle.className = 'sw-compare-handle';
-      box.appendChild(handle);
-    }
-    handle.setAttribute('role', 'slider');
-    handle.setAttribute('tabindex', '0');
-    handle.setAttribute('aria-valuemin', '0');
-    handle.setAttribute('aria-valuemax', '100');
-    handle.setAttribute('aria-orientation', 'horizontal');
-    if (!handle.hasAttribute('aria-label')) handle.setAttribute('aria-label', a + ' and ' + b + ' comparison');
-    box.setAttribute('data-compare-ready', '');
-
-    var pos = 50;
-    function set(p) {
-      pos = Math.round(Math.max(0, Math.min(100, p)) * 10) / 10;
-      box.style.setProperty('--pos', pos + '%');
-      var shown = Math.round(pos);
-      handle.setAttribute('aria-valuenow', String(shown));
-      handle.setAttribute('aria-valuetext', a + ' ' + shown + '%, ' + b + ' ' + (100 - shown) + '%');
-    }
-    set(parseFloat(box.getAttribute('data-compare-start')) || 50);
-
-    handle.addEventListener('keydown', function (e) {
-      var step = e.shiftKey ? 10 : 1, next = null;
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') next = pos - step;
-      else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') next = pos + step;
-      else if (e.key === 'PageDown') next = pos - 10;
-      else if (e.key === 'PageUp') next = pos + 10;
-      else if (e.key === 'Home') next = 0;
-      else if (e.key === 'End') next = 100;
-      if (next === null) return;
-      e.preventDefault();
-      set(next);
-    });
-
-    var dragging = false;
-    function fromEvent(e) {
-      var r = box.getBoundingClientRect();
-      set(((e.clientX - r.left) / r.width) * 100);
-    }
-    box.addEventListener('pointerdown', function (e) {
-      if (e.button !== 0) return;
-      dragging = true;
-      box.classList.add('is-dragging');
-      try { box.setPointerCapture(e.pointerId); } catch (err) { /* old browsers */ }
-      fromEvent(e);
-      handle.focus({ preventScroll: true });
-      e.preventDefault();
-    });
-    box.addEventListener('pointermove', function (e) { if (dragging) fromEvent(e); });
-    function end() { dragging = false; box.classList.remove('is-dragging'); }
-    box.addEventListener('pointerup', end);
-    box.addEventListener('pointercancel', end);
-    box.addEventListener('dragstart', function (e) { e.preventDefault(); });
-  });
 });
 
 ;
@@ -1334,104 +1057,97 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* flooring-B — Sample Chip Cross-Section signature + scroll stories */
+/* flooring-B: sample-chip signature. The fit tool works in every mode; motion only under sw-motion. */
 (function () {
   if (typeof SW === 'undefined') return;
+  var motion = function () { return !SW.reduced && document.documentElement.classList.contains('sw-motion'); };
 
-  /* ── Hero chip stack entrance ─────────────────────── */
-  SW.mod('hero-chips', function () {
-    var stack = document.querySelector('.chip-stack[data-sw-signature]');
-    if (!stack) return;
-
-    if (!SW.reduced && document.documentElement.classList.contains('sw-motion')) {
-      var chips = stack.querySelectorAll('.chip--hero');
-      chips.forEach(function (chip, i) {
-        chip.style.opacity = '0';
-        chip.style.transform = 'translateY(24px)';
-        chip.style.clipPath = 'inset(0 0 100% 0)';
-        chip.style.transition = 'opacity 500ms cubic-bezier(.23,1,.32,1), transform 500ms cubic-bezier(.23,1,.32,1), clip-path 500ms cubic-bezier(.23,1,.32,1)';
-        chip.style.transitionDelay = (i * 60) + 'ms';
-      });
-
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          chips.forEach(function (chip) {
-            chip.style.opacity = '1';
-            chip.style.transform = 'translateY(0)';
-            chip.style.clipPath = 'inset(0)';
-          });
-        });
-      });
+  /* ── Hero: the chip that fits IS the answer (no second result chip) ── */
+  SW.mod('fit', function () {
+    var tool = document.querySelector('[data-hook="compare"]');
+    if (!tool) return;
+    var out = tool.querySelector('[data-compare-output]');
+    var chips = tool.querySelectorAll('[data-fit]');
+    if (!out || !chips.length) return;
+    var ROOM = { kitchen: 'Kitchen', bath: 'Bath', basement: 'Basement', bedroom: 'Bedroom', living: 'Living room' };
+    var NAME = { lvp: 'LVP', eng: 'Engineered', oak: 'Solid oak', tile: 'Tile' };
+    function val(name) { var el = tool.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; }
+    function pick(room, pets, slab) {
+      if (room === 'bath') return ['tile', 'water sits on bath floors, and porcelain over a membrane does not care.'];
+      if (room === 'basement') return ['lvp', 'below grade only a waterproof rigid core is safe. We probe the slab first.'];
+      if (room === 'kitchen') return pets === 'yes'
+        ? ['lvp', 'a rigid core lies flat on a slab, and the wear layer takes claws.']
+        : ['tile', 'spills and chair legs all day, and porcelain shrugs both off.'];
+      if (pets === 'yes') return ['lvp', 'claws scratch wood, and a 12 mil wear layer is built for them.'];
+      if (slab === 'slab') return ['eng', 'solid oak cannot be nailed to concrete. Engineered floats or glues over a barrier.'];
+      return ['oak', 'a wood subfloor takes nails, and solid oak can be sanded again for decades.'];
     }
-  });
-
-  /* ── Cross-section peel story (pinned, 640px+) ───── */
-  SW.mod('cross-peel', function () {
-    var section = document.querySelector('.story-cross');
-    if (!section || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-
-    var mm = gsap.matchMedia();
-    mm.add('(min-width: 640px)', function () {
-      var layers = section.querySelectorAll('.cross-layer');
-      var labels = section.querySelectorAll('.cross-label');
-      var statements = section.querySelectorAll('.story-cross__statements p');
-
-      var tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.story-cross__pin',
-          start: 'top top',
-          end: 'bottom bottom',
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true
+    function render() {
+      var room = val('room'), pets = val('pets'), slab = val('slab');
+      var r = pick(room, pets, slab);
+      var where = (ROOM[room] || 'Room') + (slab === 'slab' ? ' on a slab' : ' over a crawlspace') + (pets === 'yes' ? ' with pets' : '');
+      chips.forEach(function (ch) {
+        var on = ch.getAttribute('data-fit') === r[0];
+        ch.classList.toggle('is-best', on);
+        if (on && motion()) {
+          ch.classList.remove('is-flip');
+          void ch.offsetWidth;
+          ch.classList.add('is-flip');
         }
       });
-
-      // Layers separate
-      tl.to('.cross-layer--wear', { y: -40, duration: 1, ease: 'power2.out' }, 0);
-      tl.to('.cross-layer--core', { y: 40, duration: 1, ease: 'power2.out' }, 0);
-
-      // Labels draw in
-      labels.forEach(function (label, i) {
-        tl.to(label, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.3 + (i * 0.15));
-      });
-
-      // Statements appear
-      statements.forEach(function (stmt, i) {
-        tl.from(stmt, { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' }, 0.6 + (i * 0.2));
-      });
-    });
+      out.textContent = where + ' → ' + NAME[r[0]] + ': ' + r[1];
+    }
+    tool.addEventListener('change', function (e) { if (e.target.matches('input[type="radio"]')) render(); });
+    render();
   });
 
-  /* ── Estimator spec counter dial ──────────────────── */
-  SW.mod('est-dial', function () {
-    var output = document.querySelector('[data-est-output]');
-    if (!output) return;
+  /* ── Hero chip entrance (≤ 0.5 s, never touches the h1) ── */
+  SW.mod('hero-chips', function () {
+    if (!motion() || typeof gsap === 'undefined') return;
+    gsap.from('.chip-stack .chip--hero', { y: 18, opacity: 0, duration: 0.45, stagger: 0.06, ease: 'power3.out', clearProps: 'all' });
+  });
 
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
+  /* ── Story: the plank comes apart one layer per line (pinned ≥ 640px) ── */
+  SW.mod('cross-peel', function () {
+    var section = document.querySelector('.story-cross');
+    if (!section || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined' || !motion()) return;
+    var rows = section.querySelectorAll('.cross-row');
+    var lines = section.querySelectorAll('.story-cross__statements li');
 
-    var observer = new MutationObserver(function () {
-      var nums = output.querySelectorAll('[data-count]');
-      nums.forEach(function (el) {
-        if (el.dataset.dialed) return;
-        el.dataset.dialed = '1';
-        var target = parseInt(el.dataset.count, 10);
-        if (isNaN(target)) return;
-        var obj = { val: 0 };
-        gsap.to(obj, {
-          val: target,
-          duration: 0.8,
-          ease: 'power2.out',
-          onUpdate: function () {
-            el.textContent = Math.round(obj.val);
-          }
+    ScrollTrigger.matchMedia({
+      '(min-width: 640px)': function () {
+        section.classList.add('is-scrubbed');
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end: 'bottom bottom',
+          pin: section.querySelector('.story-cross__pin'),
+          pinSpacing: false,
+          invalidateOnRefresh: true
         });
-      });
+        // the peel starts while the band scrolls in, so the first pinned frame already shows layer one
+        var tl = gsap.timeline({
+          defaults: { ease: 'power2.inOut' },
+          scrollTrigger: { trigger: section, start: 'top 55%', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true }
+        });
+        tl.set(rows, { y: 0 }, 0)
+          .set(section.querySelectorAll('.cross-lead'), { scaleX: 0 }, 0)
+          .set(section.querySelectorAll('.cross-label'), { opacity: 0, x: -12 }, 0)
+          .set(lines, { opacity: 0.55 }, 0);
+        var lift = [-64, 0, 64];
+        rows.forEach(function (row, i) {
+          var at = i * 1.1;
+          tl.to(row, { y: lift[i], duration: 0.8 }, at)
+            .to(row.querySelector('.cross-lead'), { scaleX: 1, duration: 0.4 }, at + 0.3)
+            .to(row.querySelector('.cross-label'), { opacity: 1, x: 0, duration: 0.4 }, at + 0.5)
+            .to(lines[i], { opacity: 1, duration: 0.4 }, at + 0.3);
+          if (i > 0) tl.to(lines[i - 1], { opacity: 0.8, duration: 0.4 }, at + 0.3);
+        });
+        tl.to(lines, { opacity: 1, duration: 0.6 }, '+=0.2');
+        return function () { section.classList.remove('is-scrubbed'); };
+      }
     });
-
-    observer.observe(output, { childList: true, subtree: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   });
-
 })();
+

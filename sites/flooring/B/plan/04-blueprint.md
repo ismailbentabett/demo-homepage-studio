@@ -1,5 +1,9 @@
 # Blueprint — flooring-B (Twelve Mil Flooring)
 
+## Round 4 (fix + elevate)
+- Rebased on the src critique-4 actually scored (drawn treatments, kit-wired tools), not the photo-macro round 3. Elevate moves: (1) the hero is split into a statement on the left and the fit tool on the right, and the chip that fits ("Fits your room") is the answer, with no second result chip; (2) the story got a real scrubbed verb: the plank comes apart one layer per statement, the peel starts before the pin, and it's pinned at 640px and wider only.
+- Fixes: muted text darkened to #5E5046 on the light tones and #CDBFB0 on deep, accent text #9A4A2A, the t-accent band #A44F2E (all at least 4.5:1). Footer now paints dark (a deep strip with a signal edge). Tracked-caps labels cut (Karla sentence-case). The form uses kit [data-form-nav] Back/Next/Submit at 48px. ZIP go and call at 44px. Copy-4 strings applied. Moisture tool sticky at 1200px and wider. Story texture seam fixed.
+
 ## Round 3 (fix + elevate)
 - Photo: every placeholder frame is now a chip-cut drawing (moisture probe in slab, plank edge-on break with a 4-layer legend, route map from area tokens, chip-masked oak grain behind the story). No grey boxes, no broken jpgs.
 - Layout: service chips run standard · standard · detail. Chips 1 and 6 are two-column spec callouts with an inline drawn cross-section, and chip 6 is dark. Every chip has a "Sample No." index.

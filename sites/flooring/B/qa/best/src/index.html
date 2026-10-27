@@ -46,7 +46,7 @@
       <a href="#estimator">Square-foot estimator</a>
       <a href="#reviews">Sample reviews</a>
       <a href="#area">Service area</a>
-      <a href="#contact">Get a number</a>
+      <a href="#contact">Price my floor</a>
     </div>
     <div class="menu__foot">
       [[tel]]
@@ -56,21 +56,42 @@
 </nav>
 
 <main>
-  <!-- 1. Hero -->
+  <!-- 1. Hero: one statement, one tool -->
   <section id="hero" class="hero t-paper">
     <div class="container hero__grid">
-      <div class="hero__copy" data-reveal>
-        <p class="kicker">{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
-        <h1>See the spec before you choose</h1>
-        <p class="lead">Wear layer on every quote. Slab moisture tested. Sample prices per square foot.</p>
+      <div class="hero__copy">
+        <h1>{{biz.city}} flooring with the wear layer on the quote</h1>
+        <p class="lead">Every quote lists the wear layer, the core and your slab's moisture reading, so three quotes finally line up side by side.</p>
+        <p class="hero__proof"><span class="sample-tag">Sample</span> <span>{{proof.rating}} from {{proof.reviewCount}} reviews</span> <span class="hero__dot" aria-hidden="true">·</span> <span data-open-now>{{hours|today}}</span></p>
         <div class="btn-row">
           <a class="btn btn-primary" href="#compare">Compare floors</a>
           [[call btn-secondary]]
         </div>
       </div>
-      <div class="hero__tool" data-hook="compare" id="compare">
-        <div class="chip-stack" data-sw-signature data-reveal-stagger>
-          <div class="chip chip--hero">
+      <div class="hero__tool" id="compare" data-hook="compare" tabindex="-1">
+        <div class="compare-widget">
+          <fieldset>
+            <legend>Which room</legend>
+            <label><input type="radio" name="room" value="kitchen" checked> Kitchen</label>
+            <label><input type="radio" name="room" value="bath"> Bath</label>
+            <label><input type="radio" name="room" value="basement"> Basement</label>
+            <label><input type="radio" name="room" value="bedroom"> Bedroom</label>
+            <label><input type="radio" name="room" value="living"> Living</label>
+          </fieldset>
+          <fieldset>
+            <legend>Pets in the house</legend>
+            <label><input type="radio" name="pets" value="yes" checked> Yes</label>
+            <label><input type="radio" name="pets" value="no"> No</label>
+          </fieldset>
+          <fieldset>
+            <legend>What the floor sits on</legend>
+            <label><input type="radio" name="slab" value="slab" checked> Slab</label>
+            <label><input type="radio" name="slab" value="crawl"> Crawlspace</label>
+          </fieldset>
+        </div>
+        <div class="chip-stack" data-sw-signature>
+          <div class="chip chip--hero is-best" data-fit="lvp">
+            <span class="chip__fit">Fits your room</span>
             <strong class="chip__name">LVP</strong>
             <p class="chip__mil">12 mil wear</p>
             <div class="chip__spec">
@@ -83,8 +104,9 @@
               <div class="chip__cross-layer"></div>
             </div>
           </div>
-          <div class="chip chip--hero">
-            <span class="chip__title">Engineered</span>
+          <div class="chip chip--hero" data-fit="eng">
+            <span class="chip__fit">Fits your room</span>
+            <strong class="chip__name">Engineered</strong>
             <p class="chip__mil">4 mm top</p>
             <div class="chip__spec">
               <span>Ply core</span>
@@ -96,7 +118,8 @@
               <div class="chip__cross-layer"></div>
             </div>
           </div>
-          <div class="chip chip--hero">
+          <div class="chip chip--hero" data-fit="oak">
+            <span class="chip__fit">Fits your room</span>
             <strong class="chip__name">Solid oak</strong>
             <p class="chip__mil">¾″ thick</p>
             <div class="chip__spec">
@@ -109,7 +132,8 @@
               <div class="chip__cross-layer"></div>
             </div>
           </div>
-          <div class="chip chip--hero">
+          <div class="chip chip--hero" data-fit="tile">
+            <span class="chip__fit">Fits your room</span>
             <strong class="chip__name">Tile</strong>
             <p class="chip__mil">Membrane</p>
             <div class="chip__spec">
@@ -123,100 +147,90 @@
             </div>
           </div>
         </div>
-        <div class="compare-widget">
-          <fieldset>
-            <legend>Room type</legend>
-            <label><input type="radio" name="room" value="kitchen" checked> Kitchen</label>
-            <label><input type="radio" name="room" value="bath"> Bath</label>
-            <label><input type="radio" name="room" value="basement"> Basement</label>
-            <label><input type="radio" name="room" value="bedroom"> Bedroom</label>
-            <label><input type="radio" name="room" value="living"> Living</label>
-          </fieldset>
-          <fieldset>
-            <legend>Pets?</legend>
-            <label><input type="radio" name="pets" value="yes" checked> Yes</label>
-            <label><input type="radio" name="pets" value="no"> No</label>
-          </fieldset>
-          <fieldset>
-            <legend>Subfloor</legend>
-            <label><input type="radio" name="slab" value="slab" checked> Slab</label>
-            <label><input type="radio" name="slab" value="crawl"> Crawlspace</label>
-          </fieldset>
-          <button class="btn btn-primary" type="button" data-compare-run>See best fit</button>
-        </div>
-        <div class="compare-result" data-compare-output aria-live="polite"></div>
-        <a class="btn btn-secondary compare-handoff" href="#contact" data-service="Samples at your house">See samples at your house</a>
+        <p class="compare-result" data-compare-output aria-live="polite">Kitchen on a slab with pets → LVP: a rigid core lies flat on a slab, and the wear layer takes claws.</p>
       </div>
     </div>
   </section>
 
-  <!-- 2. Proof Line Bar -->
-  <section class="proof-bar t-mid">
-    <div class="container proof-bar__rail" data-reveal="fade">
-      <div class="proof-bar__item">
-        <span class="sample-tag">Sample rating</span>
-        <strong>{{proof.rating}}</strong>
-        <span>({{proof.reviewCount}} reviews)</span>
+  <!-- 2. Proof bar (peeks under the hero) -->
+  <section class="proof-bar t-mid" aria-label="Why people call us">
+    <div class="container proof-bar__rail">
+      <div class="proof-bar__item chip chip--proof">
+        <strong>{{proof.years}} years</strong>
+        <span>laying floors around {{biz.city}}</span>
+        <span class="chip__cross" aria-hidden="true"><span class="chip__cross-layer"></span><span class="chip__cross-layer"></span><span class="chip__cross-layer"></span></span>
       </div>
-      <div class="proof-bar__item">
-        <span>{{biz.city}} + {{biz.areas.0}}, {{biz.areas.1}}, {{biz.areas.2}}</span>
-      </div>
-      <div class="proof-bar__item">
-        <span data-open-now>{{hours|today}}</span>
-      </div>
+      <p class="proof-bar__item proof-bar__guarantee">{{proof.guarantee}}</p>
+      <p class="proof-bar__item">{{biz.areas.0}}, {{biz.areas.1}}, {{biz.areas.2}} and the towns around them</p>
     </div>
   </section>
 
-  <!-- 3. Sample Cards Grid -->
+  <!-- 3. Services: floors (sample chips with a cut edge) + prep & repair (spec rows) -->
   <section id="services" class="services t-light">
     <div class="container">
-      <h2 data-reveal>Flooring services, spec-first</h2>
-      <p class="section-lead" data-reveal>Every card shows what goes in the floor, not just what it looks like.</p>
-      <div class="chip-grid" data-reveal-stagger>
-        <!-- each services -->
-        <article class="chip chip--svc" data-reveal="clip">
-          <h3>{{.name}}</h3>
+      <div class="services__head">
+        <h2 data-reveal>Every floor we lay, with what goes under it</h2>
+        <p class="section-lead" data-reveal>Each sample shows its layers, not just its colour.</p>
+      </div>
+      <h3 class="services__group">Floors</h3>
+      <div class="chip-grid chip-grid--floors" data-reveal-stagger>
+        <!-- each services 0:4 -->
+        <article class="chip chip--svc chip--floor" data-reveal="clip">
+          <h4>{{.name}}</h4>
           <p>{{.blurb}}</p>
-          <div class="chip__spec">
-            <span>{{.specA}}</span>
-            <span>{{.specB}}</span>
+          <div class="chip__section" aria-hidden="true">
+            <span class="chip__band chip__band--a">{{.specA}}</span>
+            <span class="chip__band chip__band--mid"></span>
+            <span class="chip__band chip__band--b">{{.specB}}</span>
           </div>
-          <div class="chip__cross" aria-hidden="true">
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-            <div class="chip__cross-layer"></div>
-          </div>
-          <a class="btn btn-text chip__cta" href="#estimator" data-service="{{.short}}">Price it →</a>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="{{.short}}">Price this floor</a>
+        </article>
+        <!-- /each -->
+      </div>
+      <h3 class="services__group">Prep, repair and stairs</h3>
+      <div class="spec-rows" data-reveal-stagger>
+        <!-- each services 4:10 -->
+        <article class="spec-row">
+          <h4>{{.name}}</h4>
+          <p>{{.blurb}}</p>
+          <p class="spec-row__spec"><span>{{.specA}}</span> <span>{{.specB}}</span></p>
+          <a class="btn btn-text chip__cta" href="#contact" data-service="{{.short}}">Price this floor</a>
         </article>
         <!-- /each -->
       </div>
     </div>
   </section>
 
-  <!-- 4. Cross-Section Story -->
-  <section class="story-cross t-deep" data-sw-signature>
+  <!-- 4. Cross-section story: the plank comes apart, one layer per line -->
+  <section class="story-cross t-deep" data-sw-signature aria-labelledby="story-title">
     <div class="story-cross__pin">
       <div class="container story-cross__stage">
-        <div class="cross-diagram" aria-label="Floor plank cross-section showing three layers">
-          <div class="cross-layer cross-layer--wear" data-cross-label="Wear layer: scratch resistance">
-            <span class="cross-label">Wear (mil)</span>
-          </div>
-          <div class="cross-layer cross-layer--print" data-cross-label="Print layer: grain realism">
-            <span class="cross-label">Print</span>
-          </div>
-          <div class="cross-layer cross-layer--core" data-cross-label="Rigid core: lies flat on slab">
-            <span class="cross-label">Core (SPC/WPC)</span>
-          </div>
+        <div class="story-cross__copy">
+          <h2 class="story-cross__title" id="story-title">What the mil number buys</h2>
+          <ol class="story-cross__statements">
+            <li data-cross-step="0"><strong>Wear layer.</strong> A 12 mil wear layer takes dog claws.</li>
+            <li data-cross-step="1"><strong>Print film.</strong> Printed grain reads real at arm's length.</li>
+            <li data-cross-step="2"><strong>Rigid core.</strong> It lies flat on {{biz.city}} slabs.</li>
+          </ol>
         </div>
-        <div class="story-cross__statements" data-reveal>
-          <p>12 mil survives dogs.</p>
-          <p>Printed grain reads real at arm's length.</p>
-          <p>Rigid core lies flat on {{biz.city}} slabs.</p>
+        <div class="cross-diagram" role="img" aria-label="One plank cut edge on: a clear wear layer on top, the printed grain film, then a thick rigid core.">
+          <div class="cross-row" data-cross-step="0">
+            <div class="cross-layer cross-layer--wear"></div>
+            <span class="cross-label"><i class="cross-lead"></i>Wear · 12 mil</span>
+          </div>
+          <div class="cross-row" data-cross-step="1">
+            <div class="cross-layer cross-layer--print"></div>
+            <span class="cross-label"><i class="cross-lead"></i>Print film</span>
+          </div>
+          <div class="cross-row" data-cross-step="2">
+            <div class="cross-layer cross-layer--core"></div>
+            <span class="cross-label"><i class="cross-lead"></i>SPC core</span>
+          </div>
         </div>
       </div>
     </div>
     <div class="story-cross__bg" aria-hidden="true">
-      [[img story-1 | class="story-cross__tex" ]]
+      <div class="story-cross__tex"></div>
     </div>
   </section>
 
@@ -234,45 +248,86 @@
         <a class="btn btn-primary" href="#contact" data-service="Moisture test">Book a moisture test</a>
       </div>
       <div class="moisture__tool" data-hook="checklist" data-reveal>
-        <div class="checklist-widget">
-          <fieldset>
-            <legend>Slab age</legend>
-            <label><input type="radio" name="slab-age" value="new" checked> Under 5 years</label>
-            <label><input type="radio" name="slab-age" value="old"> Over 5 years</label>
-          </fieldset>
-          <fieldset>
-            <legend>Ground-floor room?</legend>
-            <label><input type="radio" name="ground" value="yes" checked> Yes</label>
-            <label><input type="radio" name="ground" value="no"> No</label>
-          </fieldset>
-          <fieldset>
-            <legend>Past water issue?</legend>
-            <label><input type="radio" name="water" value="yes"> Yes</label>
-            <label><input type="radio" name="water" value="no" checked> No</label>
-          </fieldset>
-          <button class="btn btn-primary" type="button" data-checklist-run>Check my slab</button>
-          <div class="checklist-result" data-checklist-output aria-live="polite"></div>
+        <div class="checklist-widget" data-checklist data-checklist-results="0:Tick what is true for your room.|1:One flag: we probe the slab before anything goes down.|2:{n} of {total} flags: plan for a vapour barrier on the quote.|3:{n} of {total} flags: read the slab first, then pick the floor.">
+          <p class="checklist-widget__title">Slab check: tick what is true for your room</p>
+          <label><input type="checkbox" name="slab-new"> Slab poured in the last five years</label>
+          <label><input type="checkbox" name="slab-grade"> Room sits on grade or below it</label>
+          <label><input type="checkbox" name="slab-water"> Water has come in before</label>
+          <label><input type="checkbox" name="slab-damp"> Floor feels damp or smells musty</label>
+          <p class="checklist-result" data-checklist-result>Tick what is true for your room.</p>
         </div>
       </div>
-      <div class="moisture__frame" data-reveal="clip">
-        [[frame process-moisture | | loading="lazy"]]
-        <figcaption>Moisture probe reading on concrete slab surface.</figcaption>
-      </div>
+      <figure class="moisture__frame drawn" data-reveal="clip">
+        <svg class="drawn__svg" viewBox="0 0 560 380" role="img" aria-label="Drawing: a relative-humidity probe set into a hole in a concrete slab, wired to a meter above the floor.">
+          <rect width="560" height="380" fill="#F4EFE6"/>
+          <g fill="none" stroke="#B85C38" stroke-width="2" stroke-linecap="round" opacity=".55">
+            <path d="M120 196c-8-14 8-22 0-36s8-22 0-36"/>
+            <path d="M190 196c-8-14 8-22 0-36s8-22 0-36"/>
+            <path d="M420 196c-8-14 8-22 0-36s8-22 0-36"/>
+            <path d="M490 196c-8-14 8-22 0-36s8-22 0-36"/>
+          </g>
+          <rect x="0" y="200" width="560" height="120" fill="#D6CFC4"/>
+          <g fill="#B4A898">
+            <circle cx="40" cy="236" r="5"/><circle cx="92" cy="282" r="7"/><circle cx="150" cy="248" r="4"/><circle cx="214" cy="296" r="6"/>
+            <circle cx="336" cy="240" r="5"/><circle cx="388" cy="290" r="7"/><circle cx="452" cy="250" r="4"/><circle cx="514" cy="292" r="6"/>
+          </g>
+          <rect x="0" y="320" width="560" height="60" fill="#8C7B6E"/>
+          <g stroke="#6F6155" stroke-width="2"><path d="M0 340h560M0 360h560"/></g>
+          <rect x="262" y="200" width="36" height="58" fill="#3B2218"/>
+          <rect x="270" y="200" width="20" height="54" fill="#D4A855"/>
+          <path d="M280 200V120c0-30 20-40 50-40h40" fill="none" stroke="#3B2218" stroke-width="3"/>
+          <rect x="370" y="40" width="150" height="96" rx="2" fill="#3B2218"/>
+          <rect x="384" y="54" width="122" height="48" fill="#F4EFE6"/>
+          <text x="396" y="86" font-family="DM Mono, monospace" font-size="22" fill="#3B2218">RH</text>
+          <g fill="#B85C38"><rect x="446" y="70" width="10" height="20"/><rect x="460" y="64" width="10" height="26"/><rect x="474" y="58" width="10" height="32" opacity=".35"/><rect x="488" y="58" width="10" height="32" opacity=".35"/></g>
+          <circle cx="400" cy="118" r="6" fill="#D4A855"/><circle cx="420" cy="118" r="6" fill="#8C7B6E"/>
+          <g stroke="#1C1917" stroke-width="1.5" fill="none"><path d="M308 258h46M308 200h46"/><path d="M346 200v58"/></g>
+          <text x="362" y="234" font-family="DM Mono, monospace" font-size="15" fill="#1C1917">probe depth</text>
+        </svg>
+        <figcaption>Drawing: an RH probe set in the slab, the meter reads it above the floor. Your number goes on the quote.</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- 6. Break Photo -->
-  <section class="break t-light">
-    <figure class="break__fig">
-      [[img break | class="break__img" eager]]
-      <figcaption class="break__cap">Hand holding LVP sample against finished floor, edges and wear layer visible.</figcaption>
+  <!-- 6. Break: one plank, drawn edge on -->
+  <section class="break t-light" aria-label="One plank, edge on" data-reveal="band">
+    <figure class="break__fig drawn">
+      <svg class="break__svg" viewBox="0 0 1440 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="g-oak" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#D9B285"/><stop offset=".55" stop-color="#C79A68"/><stop offset="1" stop-color="#B9875A"/>
+          </linearGradient>
+          <pattern id="p-core" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="14" height="14" fill="#E7DFD2"/><path d="M0 0v14" stroke="#C4B8A8" stroke-width="3"/>
+          </pattern>
+        </defs>
+        <rect width="1440" height="560" fill="#EAE3D7"/>
+        <polygon points="140,90 1400,90 1300,380 40,380" fill="url(#g-oak)"/>
+        <path class="break__grain" d="M40 100 Q137 94 234 97 Q323 99 412 100 Q502 104 592 104 Q680 105 767 102 Q837 100 906 98 Q994 96 1082 94 Q1161 109 1240 106 Q1304 104 1369 100 Q1385 103 1400 102 M40 122 Q136 119 233 121 Q326 117 420 120 Q492 119 563 121 Q661 126 758 123 Q854 114 949 116 Q1031 122 1114 123 Q1181 124 1249 128 Q1324 122 1398 120 Q1399 119 1400 123 M40 136 Q111 134 183 135 Q256 138 329 137 Q399 142 468 142 Q562 140 657 138 Q738 138 818 137 Q916 137 1013 135 Q1084 136 1154 138 Q1227 138 1300 135 Q1350 134 1400 131 M40 151 Q116 142 193 147 Q292 149 392 148 Q458 152 524 151 Q589 161 655 157 Q750 161 846 157 Q936 143 1027 148 Q1097 141 1167 146 Q1251 150 1336 148 Q1368 151 1400 154 M40 173 Q109 175 179 172 Q244 168 308 173 Q405 179 501 175 Q562 176 623 179 Q722 176 821 174 Q891 167 962 169 Q1044 170 1127 167 Q1215 176 1303 176 Q1352 172 1400 168 M40 186 Q128 187 215 191 Q310 196 406 191 Q504 189 602 189 Q672 193 742 189 Q818 181 894 182 Q989 185 1085 187 Q1170 187 1254 189 Q1327 182 1400 185 M40 204 Q139 212 239 211 Q334 207 429 210 Q514 199 600 199 Q683 212 765 208 Q844 199 923 199 Q990 206 1057 206 Q1139 207 1222 204 Q1296 203 1371 207 Q1385 201 1400 204 M40 223 Q112 221 183 220 Q260 220 338 217 Q431 233 523 229 Q611 225 698 230 Q788 227 879 225 Q975 213 1071 217 Q1134 214 1197 218 Q1258 229 1318 225 Q1359 215 1400 218 M40 240 Q110 244 179 239 Q256 245 333 242 Q409 234 485 239 Q554 249 623 244 Q690 246 756 246 Q821 237 885 236 Q952 232 1019 234 Q1105 241 1191 241 Q1291 233 1390 234 Q1395 228 1400 233 M40 255 Q104 256 167 252 Q258 259 350 259 Q444 265 538 262 Q624 255 711 256 Q787 255 863 255 Q946 260 1029 259 Q1114 263 1199 259 Q1293 262 1387 262 Q1394 267 1400 262 M40 272 Q103 274 166 270 Q255 280 343 275 Q434 265 526 268 Q618 271 710 267 Q802 276 894 274 Q975 275 1057 271 Q1139 275 1222 277 Q1309 270 1397 271 Q1398 271 1400 273 M40 292 Q133 292 226 290 Q321 285 416 287 Q513 282 610 285 Q686 288 761 286 Q857 285 953 288 Q1051 292 1149 295 Q1214 289 1278 294 Q1339 296 1400 294 M40 305 Q113 312 187 308 Q268 309 350 306 Q438 309 527 308 Q591 300 655 298 Q724 303 793 306 Q861 308 930 306 Q1023 305 1115 301 Q1178 307 1240 307 Q1320 310 1400 307 M40 322 Q137 325 234 322 Q311 330 388 327 Q477 331 566 327 Q633 321 701 325 Q766 332 831 328 Q893 313 955 316 Q1053 331 1151 327 Q1222 313 1293 317 Q1346 319 1400 322 M40 340 Q119 332 198 336 Q260 336 322 334 Q401 347 479 344 Q560 342 640 343 Q725 349 809 346 Q908 344 1006 343 Q1098 331 1191 335 Q1280 341 1369 342 Q1384 338 1400 338 M40 356 Q103 348 165 350 Q239 353 313 352 Q378 344 443 349 Q536 356 630 361 Q721 352 811 353 Q908 355 1004 360 Q1104 353 1203 352 Q1280 346 1358 349 Q1379 357 1400 359" fill="none" stroke="#3B2218" stroke-opacity=".22" stroke-width="2" clip-path="url(#c-face)"/>
+        <clipPath id="c-face"><polygon points="140,90 1400,90 1300,380 40,380"/></clipPath>
+        <rect class="break__band" x="40" y="380" width="1260" height="10" fill="#F6EBCB" stroke="#D4A855" stroke-width="2"/>
+        <rect class="break__band" x="40" y="390" width="1260" height="14" fill="#B85C38"/>
+        <rect class="break__band" x="40" y="404" width="1260" height="70" fill="url(#p-core)"/>
+        <rect class="break__band" x="40" y="474" width="1260" height="22" fill="#8C7B6E"/>
+        <polygon points="1300,380 1400,90 1400,206 1300,496" fill="#3B2218" opacity=".18"/>
+        <g stroke="#1C1917" stroke-width="2"><path d="M1320 380h60M1320 496h60M1350 380v116"/></g>
+      </svg>
+      <figcaption class="break__cap">
+        <span class="break__kicker">One plank, edge on</span>
+        <ol class="break__legend">
+          <li><i class="sw sw--wear"></i>Wear layer · 12 mil</li>
+          <li><i class="sw sw--print"></i>Print film · the grain you see</li>
+          <li><i class="sw sw--core"></i>SPC core · lies flat</li>
+          <li><i class="sw sw--pad"></i>Attached pad · quieter steps</li>
+        </ol>
+      </figcaption>
     </figure>
   </section>
 
   <!-- 7. Reviews -->
   <section id="reviews" class="reviews t-mid">
     <div class="container">
-      <h2 data-reveal>What homeowners are saying</h2>
+      <h2 data-reveal>What people noticed after the floor went down</h2>
       <p class="section-lead" data-reveal><span class="sample-tag">Sample reviews</span> from {{biz.city}} area residents.</p>
       <div class="review-grid" data-reveal-stagger>
         <!-- each proof.reviews 0:6 -->
@@ -299,30 +354,31 @@
   <!-- 8. Square-Foot Estimator -->
   <section id="estimator" class="estimator t-accent">
     <div class="container estimator__wrap">
-      <h2 data-reveal>Get a sample number in seconds</h2>
+      <h2 data-reveal>Square feet in, sample price out</h2>
       <p class="section-lead" data-reveal><span class="sample-tag">Sample pricing</span> based on {{biz.city}}-area jobs.</p>
-      <div class="estimator-widget" data-hook="estimator" data-reveal="scale">
+      <div class="estimator-widget" data-hook="estimator" data-estimator data-reveal="scale">
         <div class="estimator-inputs">
-          <label class="est-field">
-            <span>Service</span>
-            <select data-est-service>
+          <label class="est-field" for="est-item">
+            <span>Floor or job</span>
+            <select id="est-item" data-est-item>
               <!-- each proof.prices -->
-              <option value="{{#}}">{{.item}}</option>
+              <option value="{{.item}}">{{.item}}</option>
               <!-- /each -->
             </select>
           </label>
-          <label class="est-field">
-            <span>Square feet</span>
-            <input type="number" min="50" step="10" value="300" data-est-sqft>
+          <label class="est-field" for="est-size">
+            <span>Room size · small to whole floor</span>
+            <input id="est-size" type="range" min="0" max="100" value="50" data-est-size>
           </label>
-          <label class="est-field est-field--stairs">
-            <span>Stairs (if any)</span>
-            <input type="number" min="0" max="30" step="1" value="0" data-est-stairs>
-          </label>
-          <button class="btn btn-primary" type="button" data-est-run>Calculate</button>
         </div>
-        <div class="estimator-result" data-est-output aria-live="polite"></div>
-        <a class="btn btn-secondary" href="#contact" data-est-handoff>Send these numbers</a>
+        <div class="est-sketch" data-est-sketch aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <p class="estimator-result" data-est-out aria-live="polite">{{proof.prices.0.item}}: {{proof.prices.0.from}} to {{proof.prices.0.to}} {{proof.prices.0.unit}} [[sample price]]</p>
+        <div class="btn-row estimator__actions">
+          <a class="btn btn-primary" href="#contact" data-service="{{services.0.short}}">Price my floor</a>
+          <button class="btn btn-secondary" type="button" data-est-print>Print this price</button>
+        </div>
       </div>
     </div>
   </section>
@@ -331,16 +387,16 @@
   <section id="area" class="area t-deep">
     <div class="container area__grid">
       <div class="area__copy" data-reveal>
-        <h2>We serve {{biz.city}} and eight surrounding cities</h2>
-        <p class="lead">Enter your ZIP to confirm coverage and see if we can help.</p>
-        <div class="zip-widget" data-hook="zip">
-          <label class="zip-field">
+        <h2>{{biz.city}} and the towns around it</h2>
+        <p class="lead">Type your ZIP and we'll tell you straight whether we cover it.</p>
+        <form class="zip-widget" data-hook="zip" data-zip data-zip-yes="{zip} is on our route. Call {phone} or compare floors above." data-zip-no="{zip} is outside our usual area. Call {phone} and ask anyway.">
+          <label class="zip-field" for="zip-in">
             <span>ZIP code</span>
-            <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Your ZIP" data-zip-input autocomplete="postal-code">
+            <input id="zip-in" name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="Your ZIP" autocomplete="postal-code">
           </label>
-          <button class="btn btn-primary" type="button" data-zip-run>Check</button>
-          <div class="zip-result" data-zip-output aria-live="polite"></div>
-        </div>
+          <button class="btn btn-primary" type="submit">Check my ZIP</button>
+          <p class="zip-result" data-zip-result aria-live="polite"></p>
+        </form>
         <div class="area__pills" data-reveal>
           <!-- each biz.areas -->
           <span class="pill">{{.}}</span>
@@ -349,20 +405,40 @@
         </div>
         <p class="area__hours">{{hours|today}}</p>
       </div>
-      <div class="area__frame" data-reveal="clip">
-        [[frame service-area | | loading="lazy"]]
-        <figcaption>{{biz.city}} ranch house with lawn, typical service area home.</figcaption>
-      </div>
+      <figure class="area__frame drawn" data-reveal="clip">
+        <svg class="drawn__svg area__map" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+          <rect width="400" height="400" fill="#4A2D21"/>
+          <g fill="none" stroke="#8C6A55" stroke-width="1.5" stroke-dasharray="4 6"><circle cx="200" cy="200" r="80"/><circle cx="200" cy="200" r="150"/></g>
+          <path d="M200 200L200 58M200 200L300 98M200 200L336 196M200 200L292 300M200 200L200 342M200 200L108 300M200 200L64 196M200 200L100 98" stroke="#D4A855" stroke-opacity=".35" stroke-width="1.5"/>
+          <g fill="#D4A855"><circle cx="200" cy="58" r="6"/><circle cx="300" cy="98" r="6"/><circle cx="336" cy="196" r="6"/><circle cx="292" cy="300" r="6"/><circle cx="200" cy="342" r="6"/><circle cx="108" cy="300" r="6"/><circle cx="64" cy="196" r="6"/><circle cx="100" cy="98" r="6"/></g>
+          <g font-family="Karla, sans-serif" font-size="15" fill="#F4EFE6" text-anchor="middle"><text x="200" y="82">{{biz.areas.0}}</text><text x="300" y="122">{{biz.areas.1}}</text><text x="336" y="220">{{biz.areas.2}}</text><text x="292" y="326">{{biz.areas.3}}</text><text x="200" y="368">{{biz.areas.4}}</text><text x="108" y="326">{{biz.areas.5}}</text><text x="64" y="220">{{biz.areas.6}}</text><text x="100" y="122">{{biz.areas.7}}</text></g>
+          <polygon points="150,178 250,178 250,222 160,222 150,212" fill="#B85C38"/>
+          <text x="200" y="206" font-family="Archivo, sans-serif" font-weight="700" font-size="17" fill="#FFFFFF" text-anchor="middle">{{biz.city}}</text>
+        </svg>
+        <figcaption>Route sketch, not to scale: home base in the middle, the eight cities we drive to around it.</figcaption>
+      </figure>
     </div>
   </section>
 
   <!-- 10. Contact Form -->
   <section id="contact" class="contact t-paper">
     <div class="container contact__wrap">
-      <h2 data-reveal>Get a number for your project</h2>
-      <p class="section-lead" data-reveal>We will call you back to set up a visit. No obligation.</p>
+      <div class="contact__copy" data-reveal>
+        <h2>Price my floor</h2>
+        <p class="section-lead">We call you back to set a visit, then bring samples to your rooms.</p>
+        <ol class="contact__next">
+          <li>You tell us the room and what it sits on.</li>
+          <li>We read the slab and measure on the visit.</li>
+          <li>Your quote lists the wear layer, core and reading.</li>
+        </ol>
+        <div class="contact__aside">
+          <p>Prefer to talk? [[tel]]</p>
+          <p data-open-now>{{hours|today}}</p>
+        </div>
+      </div>
+      <div class="contact__form">
       <form class="lead-form" data-lead data-reveal>
-        <div class="form-step" data-step="1">
+        <div class="form-step" data-step data-step-title="Service">
           <h3>Step 1 · Service</h3>
           <label class="form-field">
             <span>Which service?</span>
@@ -373,11 +449,8 @@
               <!-- /each -->
             </select>
           </label>
-          <div class="form-nav">
-            <button class="btn btn-primary" type="button" data-form-next>Next</button>
-          </div>
         </div>
-        <div class="form-step" data-step="2" hidden>
+        <div class="form-step" data-step data-step-title="Rooms & size">
           <h3>Step 2 · Rooms & size</h3>
           <label class="form-field">
             <span>Approximate square feet</span>
@@ -387,12 +460,8 @@
             <span>Number of rooms</span>
             <input type="number" name="rooms" min="1" max="30" step="1">
           </label>
-          <div class="form-nav">
-            <button class="btn btn-text" type="button" data-form-back>Back</button>
-            <button class="btn btn-primary" type="button" data-form-next>Next</button>
-          </div>
         </div>
-        <div class="form-step" data-step="3" hidden>
+        <div class="form-step" data-step data-step-title="Current floor & water">
           <h3>Step 3 · Current floor & water</h3>
           <label class="form-field">
             <span>Current floor type</span>
@@ -405,17 +474,13 @@
               <option value="slab">Bare slab</option>
             </select>
           </label>
-          <label class="form-field form-field--radio">
-            <span>Any past water issues?</span>
+          <fieldset class="form-field form-field--radio">
+            <legend>Any past water issues?</legend>
             <label><input type="radio" name="water" value="no" checked> No</label>
             <label><input type="radio" name="water" value="yes"> Yes</label>
-          </label>
-          <div class="form-nav">
-            <button class="btn btn-text" type="button" data-form-back>Back</button>
-            <button class="btn btn-primary" type="button" data-form-next>Next</button>
-          </div>
+          </fieldset>
         </div>
-        <div class="form-step" data-step="4" hidden>
+        <div class="form-step" data-step data-step-title="Timing & contact">
           <h3>Step 4 · Timing & contact</h3>
           <label class="form-field">
             <span>When do you want this done?</span>
@@ -443,54 +508,53 @@
             <input type="text" name="website2" tabindex="-1" autocomplete="off">
           </label>
           <input type="hidden" name="t" data-form-trap>
-          <div class="form-nav">
-            <button class="btn btn-text" type="button" data-form-back>Back</button>
-            <button class="btn btn-primary" type="submit">Send request</button>
-          </div>
         </div>
-        <div class="form-thankyou" data-form-thankyou hidden>
-          <h3>Thanks, {name}.</h3>
-          <p>In your version this goes straight to your phone and inbox. We will call you back to set up a visit.</p>
+        <div class="form-nav" data-form-nav>
+          <button class="btn btn-secondary" type="button" data-back>Back</button>
+          <button class="btn btn-primary" type="button" data-next>Next</button>
+          <button class="btn btn-primary" type="submit" data-submit>Price my floor</button>
         </div>
+
       </form>
-      <aside class="contact__aside" data-reveal="fade">
-        <p>Prefer to talk? [[tel]]</p>
-        <p>{{hours|today}}</p>
-      </aside>
+      <div class="form-thankyou" data-thanks-box hidden>
+        <h3>Thanks, {name}.</h3>
+        <p>This is a demo, nothing was sent. On the real site this goes to {{biz.short}}.</p>
+      </div>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="footer t-deep" data-sw-signature>
-  <div class="container footer__grid">
-    <div class="footer__brand">
+  <div class="container">
+    <div class="footer__strip">
       <span class="chip chip--footer">
         <span class="chip__initials">{{biz.initials}}</span>
-        <span class="chip__cross" aria-hidden="true"><span class="chip__cross-layer"></span></span>
+        <span class="chip__cross" aria-hidden="true"><span class="chip__cross-layer"></span><span class="chip__cross-layer"></span><span class="chip__cross-layer"></span></span>
       </span>
-      <p>{{biz.name}}</p>
-      <p>{{biz.city}}, {{biz.state}}</p>
+      <div class="footer__id">
+        <p class="footer__name">{{biz.name}}</p>
+        <p>{{biz.city}}, {{biz.state}} · [[tel]]</p>
+      </div>
+      <p class="footer__lic">Licence {{proof.license}} <span class="sample-tag">Sample</span></p>
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="#services">Services</a>
+        <a href="#compare">Compare floors</a>
+        <a href="#estimator">Estimator</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#area">Area</a>
+        <a href="#contact">Price my floor</a>
+      </nav>
     </div>
-    <nav class="footer__nav" aria-label="Footer">
-      <a href="#services">Services</a>
-      <a href="#compare">Compare</a>
-      <a href="#estimator">Estimator</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#area">Area</a>
-      <a href="#contact">Quote form</a>
-    </nav>
     <div class="footer__legal">
-      <p>Licence # {{proof.license}} <span class="sample-tag">Sample</span></p>
       <p>{{demo.disclaimer}}</p>
-      <p>&copy; {{year}} {{biz.name}}. All rights reserved.</p>
-    </div>
-    <div class="footer__credits">
-      [[credits]]
+      <p>&copy; {{year}} {{biz.name}}</p>
+      <div class="footer__credits">[[credits]]</div>
     </div>
   </div>
 </footer>
 
 <div class="mobilebar" data-mobilebar>
   <a class="btn btn-primary mobilebar__call" href="tel:{{biz.phoneE164}}">[[i phone]] Call</a>
-  <a class="btn btn-secondary mobilebar__quote" href="#compare">Compare</a>
+  <a class="btn btn-secondary mobilebar__quote" href="#compare">Compare floors</a>
 </div>
