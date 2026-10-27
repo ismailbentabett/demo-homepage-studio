@@ -1,0 +1,102 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 7.5,
+      "notes": "dist/index.html: h1 'Hail & Storm Roofing in Oklahoma City' (7 words, trade+city). Lead '19 years serving Edmond, Norman and Moore'. Primary 'Get my number', secondary call btn. Phone in header. No screenshots to verify fold or next-band peek; scored conservatively from markup."
+    },
+    "distinctiveness": {
+      "score": 8.0,
+      "notes": "Month Ring Almanac signature referenced on hero, 5 season bands, reviews, footer (8 sections) via data-sw-signature. Season-band structure unique vs siblings. Palette and type pair differ from roofer-A/B. Cannot verify visual rendering without screenshots (-1.0 conservative)."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "EB Garamond display, Source Sans 3 body, DM Mono accent. Fluid clamp scale. Body >=16px. Month tags uppercase mono. Prices tabular-nums. En-dash ranges correct. No orphans in markup. Measure/rag unverified without screenshots."
+    },
+    "layout": {
+      "score": 7.0,
+      "notes": "Static blocker: t-deep (season-apr-jun line 1027) touches t-dark (break line 1057) — two dark sections adjacent (-1.0). Layout families: stacked-headline-strip, split, stack, break, grid, rail, list, mosaic, stack-form (>=3 families). Rhythm violation caps score."
+    },
+    "photo": {
+      "score": 8.0,
+      "notes": "8 images with descriptive alt text, no faces/logos. Consistent CSS filter applied. Credits generic ('Photo by unknown on Pexels'). Grade consistency and crops unverified without screenshots."
+    },
+    "copy": {
+      "score": 7.0,
+      "notes": "Static blockers: 'APR' flagged as financial term (lines 1030, 1276), 'Best' superlative (line 1092), 'before and after' (line 1203). Primary action inconsistent: 'Get my number' / 'Price it' / 'Send request' (-0.5). Sample labels present. Voice uses trade nouns correctly."
+    },
+    "mobile": {
+      "score": 8.0,
+      "notes": "Mobilebar fixed bottom, hidden >=900px. Tap targets 48px min-height. Breakpoints at 640/900/1024/1200/1440. Rail wraps at 640. No screenshots to verify horizontal scroll or pinned elements; scored from CSS structure."
+    },
+    "a11y": {
+      "score": 8.0,
+      "notes": "Skip link, 3px focus outline, reduced-motion safety net, forced-colors borders, honeypot hidden, aria-live on ZIP/checklist results. Logo href='#' is dead link (static blocker). Reduced-motion content visibility unverified without screenshots."
+    },
+    "motion": {
+      "score": 7.5,
+      "notes": "Kit provides reveal, clip, stagger, compare slider with ARIA. Lenis + GSAP loaded. Month-ring rotation described but unverified. Same fade-up pattern may apply uniformly (-1.0 potential, unconfirmed). Intro timing unverifiable without screenshots."
+    },
+    "wow": {
+      "score": 7.5,
+      "notes": "Storm-check checklist (5 items, verdict output) and compare slider (architectural vs Class 4) tied to almanac concept. Checklist result is plain <p>; compare output is inline text. Tool output design unverified without screenshots."
+    },
+    "polish": {
+      "score": 8.0,
+      "notes": "SVG favicon, apple-touch-icon, OG 1200x630, JSON-LD RoofingContractor, theme-color, print stylesheet, lazy images with dimensions, hero preload, consistent 3px radius. Generic photo credits. Forced-colors/print rendering unverified."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html lines 1030, 1276",
+      "problem": "'APR' flagged as banned financial term; context is month abbreviation",
+      "fix": "Change month tag text to 'Apr' or 'APRIL' or coordinate exemption with static check"
+    },
+    {
+      "where": "dist/index.html line 1092",
+      "problem": "'Best weather for a full replacement' uses banned superlative",
+      "fix": "Rewrite to 'Ideal weather for a full replacement' or 'Build-season weather'"
+    },
+    {
+      "where": "dist/index.html line 1203",
+      "problem": "'A walk-through before and after storm season' triggers before/after ban",
+      "fix": "Rewrite to 'Pre- and post-storm roof check' or 'ahead of and following storm season'"
+    },
+    {
+      "where": "src/index.html line 61",
+      "problem": "Literal 'Oklahoma City' typed instead of token",
+      "fix": "Replace with {{biz.city}} token"
+    },
+    {
+      "where": "src/index.html line 62",
+      "problem": "Literal 'Edmond' typed instead of token",
+      "fix": "Replace with appropriate {{biz.areas}} token"
+    },
+    {
+      "where": "dist/index.html lines 1027+1057",
+      "problem": "t-deep (season-apr-jun) immediately followed by t-dark (break) — two dark sections touch",
+      "fix": "Insert t-light or t-paper separator band, or change break to t-paper"
+    },
+    {
+      "where": "dist/index.html line 954",
+      "problem": "Logo link href='#' goes nowhere",
+      "fix": "Change to href='#hero' or remove link"
+    },
+    {
+      "where": "dist/index.html lines 1000, 1156, 1396",
+      "problem": "Primary action named three ways: 'Get my number', 'Price it', 'Send request'",
+      "fix": "Standardize to one name across all CTAs"
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Break the t-deep/t-dark adjacency by inserting a t-paper breath band between season-apr-jun and the break photo, using the month-ring signature as a horizontal divider within that band to thread the signature into a seventh location."
+    },
+    {
+      "category": "copy",
+      "move": "After resolving banned-word blockers, unify the primary action name and rewrite every section headline to answer one homeowner question from brief section 1 in the homeowner's own words, moving copy from compliance to conviction."
+    }
+  ],
+  "verdictHint": "FIX"
+}
