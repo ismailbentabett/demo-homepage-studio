@@ -12,6 +12,13 @@
     <path class="mg-line" d="M156.5,18.6 L213.3,58.1 L270.1,89.8 L308,107.4"/>
     <path class="mg-axis" d="M24,12 L24,188 L308,188"/>
   </symbol>
+  <symbol id="tr-base" viewBox="0 0 400 150">
+    <rect class="tr-band" x="36" y="64" width="352" height="40"/>
+    <path class="tr-grid" d="M124,14 V124 M212,14 V124 M300,14 V124"/>
+    <path class="tr-axis" d="M36,14 V124 H388"/>
+    <text class="tr-t" x="36" y="142">12 am</text><text class="tr-t" x="124" y="142">6 am</text><text class="tr-t" x="212" y="142">noon</text><text class="tr-t" x="300" y="142">6 pm</text>
+    <text class="tr-t tr-bl" x="42" y="99">comfort band</text>
+  </symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
@@ -65,10 +72,17 @@
 
       <div class="hero-copy">
         <p class="lead">Two numbers from your thermostat tell us whether your AC is cooling the air or drying it. Try yours.</p>
-        <p class="proof-line"><span>{{proof.rating}} ★ from {{proof.reviewCount}} reviews</span> [[sample rating]] <span class="pl-hours">[[i clock]]{{hours|today}}</span></p>
-        <div class="cta-row">
-          [[call btn-primary]]
-          <a class="btn btn-ghost" href="#contact" data-service="Humidity check">Book a check</a>
+        <p class="readout" data-state="damp" data-dew-readout>
+          <span class="ro-label">Your dew point</span>
+          <span class="ro-num"><span data-dew-dp-big>64</span><span class="ro-unit">°F</span></span>
+          <span class="ro-verdict" data-dew-verdict>Damp. Over 60 feels sticky at any temperature.</span>
+        </p>
+        <div class="hero-foot">
+          <p class="proof-line"><span>{{proof.rating}} ★ from {{proof.reviewCount}} reviews</span> [[sample rating]] <span class="pl-hours">[[i clock]]{{hours|today}}</span></p>
+          <div class="cta-row">
+            [[call btn-primary]]
+            <a class="btn btn-ghost" href="#contact" data-service="Humidity check" data-carry-reading>Book a check</a>
+          </div>
         </div>
       </div>
 
@@ -78,7 +92,7 @@
           <p class="inst-status" data-dew-status data-state="damp" aria-live="polite">Damp: dew point over 60</p>
         </div>
         <div class="chart chart-hero">
-          [[frame hero chart-photo | | eager]]
+          [[frame hero chart-photo | aria-hidden="true" | eager alt=""]]
           <svg class="wb-chart" viewBox="0 0 320 210" role="img" aria-labelledby="chart-hero-t">
             <title id="chart-hero-t">Comfort chart: indoor temperature across, humidity up. The shaded band is where a house feels comfortable. Your dot sits above it.</title>
             <g class="wb-grid">
@@ -123,7 +137,7 @@
           </div>
         </div>
         <p class="inst-note">Sample reading. Drag both dials to match your thermostat.</p>
-        <a href="#contact" class="btn btn-primary btn-block" data-service="Humidity check" data-carry-reading>Book a check with this reading</a>
+        <a href="#contact" class="btn btn-primary btn-block" data-service="Humidity check" data-carry-reading>Book a check with this reading<span class="btn-read" data-dew-btn>DP 64°F</span></a>
       </div>
 
     </div>
@@ -145,27 +159,31 @@
             <g class="wb-dot is-in" data-story-dot transform="translate(137.6 117.6)"><circle class="wb-halo" r="13"/><circle class="wb-core" r="6"/></g>
             <g class="wb-ticks"><text x="24" y="203">60°</text><text x="118.7" y="203">70°</text><text x="213.3" y="203">80°</text><text x="296" y="203">90°F</text></g>
           </svg>
-          <p class="story-readout"><span data-story-readout>72°F · 48% RH · DP 51</span></p>
+          <div class="story-readout" data-story-ro data-state="ok">
+            <p class="sro-label" data-story-label>Reading 3 of 3: A dehumidifier on the return</p>
+            <p class="sro-big"><span class="sro-k">Dew point</span><span class="sro-num" data-story-dp>51°F</span></p>
+            <p class="sro-read" data-story-readout>72°F · 48% RH · DP 51</p>
+          </div>
         </div>
       </div>
       <ol class="story-steps">
-        <li class="step" data-story-step="0" data-x="137.6" data-y="49.7" data-read="72°F · 75% RH · DP 64">
+        <li class="step" data-story-step="0" data-dp="64" data-label="Reading 1 of 3: 72 on the wall, 64 in the air" data-x="137.6" data-y="49.7" data-read="72°F · 75% RH · DP 64">
           <h3>72 on the wall, 64 in the air</h3>
           <p>The thermostat is happy. The dew point is 64, so sheets feel clammy and the closet smells musty. Turning it down makes the house colder, not drier.</p>
           <p class="chip-row">[[sample reading]]</p>
-          <div class="step-photo st-wet" data-reveal="clip">[[frame story-1 step-frame]]<span class="burn" aria-hidden="true">72°F · 75% RH · DP 64</span></div>
+          <div class="step-plate st-wet" data-reveal="clip"><svg class="trace" viewBox="0 0 400 150" role="img" aria-label="Sample 24-hour trace: the thermostat holds 72 all day while indoor humidity stays near 75 percent, above the comfort band."><use href="#tr-base"/><path class="tr-temp" d="M36,112 H388"/><path class="tr-rh" d="M36,36 C80,30 110,40 150,34 S220,30 260,36 S340,32 388,34"/><text class="tr-n tr-n-rh" x="384" y="26" text-anchor="end">humidity 75%</text><text class="tr-n" x="384" y="106" text-anchor="end">thermostat 72°F</text></svg><span class="burn" aria-hidden="true">72°F · 75% RH · DP 64</span></div>
         </li>
-        <li class="step" data-story-step="1" data-x="175.5" data-y="57.3" data-read="76°F · 72% RH · DP 66">
+        <li class="step" data-story-step="1" data-dp="66" data-label="Reading 2 of 3: A bigger unit made it worse" data-x="175.5" data-y="57.3" data-read="76°F · 72% RH · DP 66">
           <h3>A bigger unit made it worse</h3>
           <p>An oversized system hits the set point in minutes and shuts off before the coil can pull water out. Cold blasts, damp rooms, a higher bill.</p>
           <p class="chip-row">[[sample reading]]</p>
-          <div class="step-photo st-wet" data-reveal="clip">[[frame story-2 step-frame]]<span class="burn" aria-hidden="true">76°F · 72% RH · DP 66</span></div>
+          <div class="step-plate st-wet" data-reveal="clip"><svg class="trace" viewBox="0 0 400 150" role="img" aria-label="Sample 24-hour trace: an oversized unit cycles on and off all day; humidity never drops into the comfort band."><use href="#tr-base"/><path class="tr-temp" d="M36,112 L60,118 L68,108 L92,118 L100,108 L124,118 L132,108 L156,118 L164,108 L188,118 L196,108 L220,118 L228,108 L252,118 L260,108 L284,118 L292,108 L316,118 L324,108 L348,118 L356,108 L380,118 L388,108"/><path class="tr-rh" d="M36,42 C90,36 120,46 170,40 S260,36 300,42 S360,38 388,40"/><text class="tr-n tr-n-rh" x="384" y="32" text-anchor="end">humidity 72%</text><text class="tr-n" x="384" y="102" text-anchor="end">on, off, on, off</text></svg><span class="burn" aria-hidden="true">76°F · 72% RH · DP 66</span></div>
         </li>
-        <li class="step" data-story-step="2" data-x="137.6" data-y="117.6" data-read="72°F · 48% RH · DP 51">
+        <li class="step" data-story-step="2" data-dp="51" data-label="Reading 3 of 3: A dehumidifier on the return" data-x="137.6" data-y="117.6" data-read="72°F · 48% RH · DP 51">
           <h3>A dehumidifier on the return</h3>
           <p>The water comes out at the duct, not at the thermostat. Same 72 on the wall, dew point 51: inside the band, and the musty smell is gone.</p>
           <p class="chip-row">[[sample reading]]</p>
-          <div class="step-photo st-dry" data-reveal="clip">[[frame story-3 step-frame]]<span class="burn" aria-hidden="true">72°F · 48% RH · DP 51</span></div>
+          <div class="step-plate st-dry" data-reveal="clip"><svg class="trace" viewBox="0 0 400 150" role="img" aria-label="Sample 24-hour trace: after a dehumidifier goes on the return, humidity falls from 75 to 48 percent and stays inside the comfort band."><use href="#tr-base"/><path class="tr-mark" d="M150,14 V124"/><path class="tr-temp" d="M36,112 H388"/><path class="tr-rh" d="M36,34 C70,30 110,38 150,36 C180,40 190,86 220,88 S300,84 330,88 S370,86 388,88"/><text class="tr-n tr-n-mark" x="156" y="24">dehumidifier on</text><text class="tr-n tr-n-rh" x="384" y="80" text-anchor="end">humidity 48%</text><text class="tr-n" x="384" y="106" text-anchor="end">thermostat 72°F</text></svg><span class="burn" aria-hidden="true">72°F · 48% RH · DP 51</span></div>
         </li>
       </ol>
     </div>
@@ -193,8 +211,21 @@
   </section>
 
   <!-- 5 BREAK -->
-  <figure class="break">
-    <div class="break-photo" data-reveal="clip">[[frame break break-frame]]</div>
+  <figure class="break" data-reveal>
+    <div class="break-draw" aria-hidden="true"><svg class="coil" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <defs>
+        <linearGradient id="coil-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E4E49"/><stop offset="1" stop-color="#1F3935"/></linearGradient>
+        <pattern id="coil-fins" width="7" height="320" patternUnits="userSpaceOnUse"><path d="M3.5,0 V320" stroke="rgba(244,241,236,.13)" stroke-width="1"/></pattern>
+        <pattern id="coil-frost" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M9,4 V14 M4,9 H14 M5.5,5.5 L12.5,12.5 M12.5,5.5 L5.5,12.5" stroke="rgba(255,255,255,.55)" stroke-width="1"/></pattern>
+        <linearGradient id="coil-scrim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1B2F2C" stop-opacity=".7"/><stop offset=".6" stop-color="#1B2F2C" stop-opacity="0"/></linearGradient>
+        <linearGradient id="coil-ice" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9F2F0" stop-opacity=".55"/><stop offset="1" stop-color="#F4F8F7" stop-opacity=".92"/></linearGradient>
+        <symbol id="coil-tube" overflow="visible"><circle r="15" fill="#1B2F2C" stroke="#B4744F" stroke-width="3"/><circle r="6" fill="none" stroke="#D29A76" stroke-width="1.5"/></symbol>
+      </defs>
+      <rect width="1440" height="320" fill="url(#coil-bg)"/>
+      <rect width="1440" height="320" fill="url(#coil-fins)"/>
+      <rect width="1440" height="320" fill="url(#coil-scrim)"/><g class="coil-tubes"><use href="#coil-tube" x="1104" y="56"/><use href="#coil-tube" x="1200" y="56"/><use href="#coil-tube" x="1296" y="56"/><use href="#coil-tube" x="1392" y="56"/><use href="#coil-tube" x="1152" y="128"/><use href="#coil-tube" x="1248" y="128"/><use href="#coil-tube" x="1344" y="128"/><use href="#coil-tube" x="48" y="200"/><use href="#coil-tube" x="144" y="200"/><use href="#coil-tube" x="240" y="200"/><use href="#coil-tube" x="336" y="200"/><use href="#coil-tube" x="432" y="200"/><use href="#coil-tube" x="528" y="200"/><use href="#coil-tube" x="624" y="200"/><use href="#coil-tube" x="720" y="200"/><use href="#coil-tube" x="816" y="200"/><use href="#coil-tube" x="912" y="200"/><use href="#coil-tube" x="1008" y="200"/><use href="#coil-tube" x="1104" y="200"/><use href="#coil-tube" x="1200" y="200"/><use href="#coil-tube" x="1296" y="200"/><use href="#coil-tube" x="1392" y="200"/><use href="#coil-tube" x="96" y="272"/><use href="#coil-tube" x="192" y="272"/><use href="#coil-tube" x="288" y="272"/><use href="#coil-tube" x="384" y="272"/><use href="#coil-tube" x="480" y="272"/><use href="#coil-tube" x="576" y="272"/><use href="#coil-tube" x="672" y="272"/><use href="#coil-tube" x="768" y="272"/><use href="#coil-tube" x="864" y="272"/><use href="#coil-tube" x="960" y="272"/><use href="#coil-tube" x="1056" y="272"/><use href="#coil-tube" x="1152" y="272"/><use href="#coil-tube" x="1248" y="272"/><use href="#coil-tube" x="1344" y="272"/></g>
+      <g class="coil-ice"><g transform="translate(0 40)"><path d="M0,320 V150 C60,140 110,168 170,150 S280,120 340,146 S450,170 520,150 S640,128 700,160 S820,186 880,170 S1000,200 1060,196 S1180,220 1240,222 S1360,236 1440,238 V320 Z" fill="url(#coil-ice)"/><path d="M0,320 V150 C60,140 110,168 170,150 S280,120 340,146 S450,170 520,150 S640,128 700,160 S820,186 880,170 S1000,200 1060,196 S1180,220 1240,222 S1360,236 1440,238 V320 Z" fill="url(#coil-frost)"/></g></g>
+    </svg></div>
     <figcaption class="container">Ice on the coil: the water it pulled from the air, frozen by weak airflow.</figcaption>
   </figure>
 
@@ -203,14 +234,14 @@
     <div class="container sorter-inner">
       <h2 id="sorter-h2">Repair it or replace it?</h2>
       <p class="sorter-lead">Tick what is true for your system. The line below tells you which way it leans.</p>
-      <div class="checklist" data-checklist data-checklist-results="0:Tick what is true for your system.|1:One sign: a repair is usually still the smart money.|3:{n} of {total}: price both. We will put repair and replace side by side.|5:{n} of {total}: plan a replacement, sized with a room-by-room load calculation.">
+      <div class="checklist" data-checklist data-checklist-results="0:|1:{n} of {total} ticked. A repair is usually still the smart money.|3:{n} of {total}: price both. We will put repair and replace side by side.|5:{n} of {total}: plan a replacement, sized with a room-by-room load calculation.">
         <label class="tick"><input type="checkbox"><span>It runs all afternoon and rooms still feel damp</span></label>
         <label class="tick"><input type="checkbox"><span>The same part has failed more than once</span></label>
         <label class="tick"><input type="checkbox"><span>Upstairs never catches up with downstairs</span></label>
         <label class="tick"><input type="checkbox"><span>It uses the old refrigerant that is no longer made</span></label>
         <label class="tick"><input type="checkbox"><span>The repair quote made you wince</span></label>
         <label class="tick"><input type="checkbox"><span>Someone already told you it is “just old”</span></label>
-        <p class="tick-result" data-checklist-result>Tick what is true for your system.</p>
+        <p class="tick-result" data-checklist-result></p>
       </div>
       <a href="#contact" class="btn btn-primary" data-service="AC repair">Book a second-opinion check</a>
     </div>
@@ -261,7 +292,15 @@
           <input id="zip-in" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5">
           <button type="submit" class="btn btn-primary">Check my ZIP</button>
         </div>
-        <p class="zip-result" data-zip-result></p>
+        <div class="zip-out">
+          <svg class="zip-map" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+            <circle class="zm-ring" cx="60" cy="60" r="44"/><circle class="zm-ring zm-ring2" cx="60" cy="60" r="24"/>
+            <path class="zm-cross" d="M60,8 V112 M8,60 H112"/>
+            <circle class="zm-home" cx="60" cy="60" r="4"/>
+            <g class="zm-dot" data-zip-dot><circle class="zm-halo" r="10"/><circle class="zm-core" r="5"/></g>
+          </svg>
+          <p class="zip-result" data-zip-result></p>
+        </div>
         <p class="zip-hours">[[i clock]]{{hours|today}}</p>
       </form>
     </div>
@@ -302,6 +341,11 @@
           <li><span>3</span>You get the chart and the options, priced.</li>
         </ol>
         <p class="contact-call">Rather talk now? [[tel]]</p>
+      </div>
+      <div class="form-wrap">
+      <div class="form-reading" data-state="damp" data-form-reading>
+        <svg class="fr-chart wb-chart" viewBox="0 0 320 200" aria-hidden="true" focusable="false"><use href="#wb-mini"/><g class="wb-dot" data-fr-dot transform="translate(137.6 49.7)"><circle class="wb-halo" r="18"/><circle class="wb-core" r="9"/></g></svg>
+        <p class="fr-text"><span class="fr-k">Your reading</span> <span class="fr-v" data-fr-text>72°F · 75% RH · DP 64 (Damp)</span> <a class="fr-change" href="#hero">change</a></p>
       </div>
       <form class="lead-form" data-lead novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to {{biz.short}}.">
         <fieldset data-step>
@@ -348,6 +392,7 @@
         <button type="submit" class="btn btn-primary btn-block">Book my check</button>
         <p class="form-micro">We'll call you back to set up a visit.</p>
       </form>
+      </div>
     </div>
   </section>
 

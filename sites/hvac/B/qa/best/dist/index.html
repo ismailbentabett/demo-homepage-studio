@@ -304,7 +304,7 @@ img { filter: var(--grade); }
 :focus-visible { outline: 3px solid var(--focus, var(--accent)); outline-offset: 3px; }
 .container { width: 100%; max-width: 1312px; margin-inline: auto; padding-inline: var(--s-4); }
 @media (min-width: 640px) { .container { padding-inline: var(--s-6); } }
-.kicker { font-family: var(--mono); font-size: var(--fs--1); font-weight: 500; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: var(--s-3); }
+.kicker { font-family: var(--text); font-size: 15px; font-weight: 600; letter-spacing: 0; color: var(--ink-t); opacity: .7; margin-bottom: var(--s-3); }
 .kicker-plain { font-family: var(--text); font-size: var(--fs-1); font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--ink-t); }
 .tel-plain { display: inline-block; padding-block: 12px; margin-block: -12px; font-variant-numeric: tabular-nums; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 
@@ -312,7 +312,7 @@ img { filter: var(--grade); }
 .frame { position: relative; overflow: hidden; border-radius: var(--radius); margin: 0;
   background: linear-gradient(160deg, #2F5852 0%, #1B2F2C 55%, #3B3A36 100%); }
 .frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.frame.is-broken::after, .frame:has(img[src*="placeholder-"])::after { content: attr(data-fallback); position: absolute; z-index: 3; inset: auto var(--s-4) var(--s-3); color: rgba(244,241,236,.9); font: 500 var(--fs--1)/1.35 var(--mono); max-width: 34ch; }
+.frame.is-broken::after { content: attr(data-fallback); position: absolute; z-index: 3; inset: auto var(--s-4) var(--s-3); color: rgba(244,241,236,.9); font: 500 var(--fs--1)/1.35 var(--mono); max-width: 34ch; }
 /* a stub file (no real photo yet) is never shown: the frame is a graded chart-paper plate captioned with the shot it stands for */
 .frame img[src*="placeholder-"] { opacity: 0; }
 .frame:has(img[src*="placeholder-"]) { background:
@@ -334,7 +334,7 @@ img { filter: var(--grade); }
   .btn-ghost:hover { background: var(--ink-t); color: var(--bg); }
 }
 
-.sample-tag { display: inline-block; font-family: var(--mono); font-size: var(--fs--1); font-weight: 500; text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; padding: 1px 6px; border: var(--hair) solid var(--rule); border-radius: var(--radius); color: var(--muted); vertical-align: middle; white-space: nowrap; }
+.sample-tag { display: inline-block; font-family: var(--mono); font-size: var(--fs--1); font-weight: 400; letter-spacing: 0; line-height: 1.4; padding: 1px 6px; border: var(--hair) solid var(--rule); border-radius: var(--radius); color: var(--muted); vertical-align: middle; white-space: nowrap; }
 .chip { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: var(--fs--1); font-weight: 500; font-variant-numeric: tabular-nums; padding: 3px 8px; border-radius: var(--radius); border: var(--hair) solid var(--rule); white-space: nowrap; }
 .chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
 .chip-out { color: #F2B4A5; border-color: rgba(242,180,165,.5); }
@@ -408,10 +408,18 @@ img { filter: var(--grade); }
 .pl-hours { display: inline-flex; align-items: center; gap: 6px; }
 .pl-hours .i, .zip-hours .i { width: 15px; height: 15px; flex: none; }
 .cta-row { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.readout { display: none; }
+.ro-label { display: block; font-family: var(--text); font-size: 15px; font-weight: 600; color: var(--muted); }
+.ro-num { display: block; font-family: var(--display); font-weight: 900; font-size: clamp(4rem, 2rem + 3.6vw, 6rem); line-height: .9; letter-spacing: -0.04em; color: var(--signal); font-variant-numeric: tabular-nums; transition: color var(--dur-ui) var(--ease-out); }
+.ro-unit { font-size: .42em; font-weight: 700; letter-spacing: 0; margin-left: .06em; vertical-align: 1em; }
+.readout[data-state="ok"] .ro-num { color: var(--accent); }
+.readout[data-state="dry"] .ro-num, .readout[data-state="off"] .ro-num { color: var(--ink); }
+.ro-verdict { display: block; margin-top: var(--s-2); font-size: var(--fs-0); font-weight: 500; max-width: 26ch; }
 
 .instrument { background: var(--card); border: var(--hair) solid var(--rule); border-radius: var(--radius); padding: var(--s-4); display: grid; gap: var(--s-3); align-content: start; }
 .inst-top { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
-.inst-title { font-family: var(--mono); font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.inst-title { font-family: var(--text); font-size: 15px; font-weight: 600; color: var(--muted); }
+.btn-read { margin-left: var(--s-2); padding: 2px 8px; border: var(--hair) solid currentColor; border-radius: var(--radius); font-family: var(--mono); font-weight: 500; font-size: var(--fs--1); font-variant-numeric: tabular-nums; }
 .inst-status { font-family: var(--mono); font-size: var(--fs--1); font-weight: 500; padding: 3px 8px; border-radius: var(--radius); background: var(--signal); color: var(--paper); }
 .inst-status[data-state="ok"] { background: var(--accent); }
 .inst-status[data-state="dry"], .inst-status[data-state="off"] { background: var(--ink); }
@@ -429,15 +437,16 @@ img { filter: var(--grade); }
 .chart-photo { position: absolute; inset: 0; z-index: 0; background: none !important; opacity: .18; pointer-events: none; }
 .chart-photo::after { content: none !important; }
 .chart-photo img { filter: grayscale(1) contrast(1.1); mix-blend-mode: multiply; }
-.break figcaption { font-family: var(--mono); font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-2); }
 
 @media (min-width: 900px) {
   .hero { padding-top: calc(var(--header-h) + var(--s-6)); padding-bottom: var(--s-6); display: flex; }
   .hero > .container { align-self: center; }
   .hero-grid { grid-template-columns: minmax(0, .72fr) minmax(0, 1.6fr); grid-template-areas: "head head" "copy inst"; column-gap: var(--s-7); row-gap: var(--s-5); align-items: stretch; }
   .hero h1 { font-size: clamp(2.4rem, min(5.3vw, 8svh), 4.6rem); }
-  .hero-copy { display: flex; flex-direction: column; }
-  .hero-copy .proof-line { margin-top: auto; }
+  .hero-copy { display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-4); padding-top: var(--s-4); border-top: 2px solid var(--ink); }
+  .readout { display: block; padding-block: var(--s-3); border-block: var(--hair) solid var(--rule); }
+  .hero-copy .lead { margin-bottom: 0; }
+  .hero-copy .proof-line { margin-bottom: var(--s-3); }
   .hero-copy .cta-row { flex-direction: column; }
   .hero-copy .btn { width: 100%; }
   .instrument { padding: var(--s-5); }
@@ -465,22 +474,40 @@ img { filter: var(--grade); }
 .step p { color: var(--muted); }
 .step h3 + p { color: var(--ink-t); opacity: .9; }
 .chip-row { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
-.step-photo { position: relative; margin-top: var(--s-2); }
-.step-frame { aspect-ratio: 16 / 10; }
-/* the photo is part of the instrument: out-of-band frames sit under a wet teal grade with beads; the in-band frame dries out as it lands */
-.step-photo::before, .step-frame::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; transition: opacity 1.4s var(--ease-out) .5s; }
-.step-frame::before { background: linear-gradient(160deg, #4F9C8F 0%, #1F4A44 100%); mix-blend-mode: multiply; }
-.step-photo::before { background: radial-gradient(circle, rgba(244,241,236,.34) 0 1.6px, transparent 2.6px) 0 0 / 22px 26px, radial-gradient(circle, rgba(244,241,236,.2) 0 1px, transparent 1.9px) 11px 13px / 22px 26px; }
-.st-dry::before, .st-dry .step-frame::before { opacity: 0; }
-.sw-motion .st-dry:not(.is-in)::before, .sw-motion .st-dry:not(.is-in) .step-frame::before { opacity: 1; transition: none; }
-.st-dry .frame:has(img[src*="placeholder-"]) { background:
-  repeating-linear-gradient(0deg, rgba(14,92,82,.12) 0 1px, transparent 1px 32px),
-  repeating-linear-gradient(90deg, rgba(14,92,82,.12) 0 1px, transparent 1px 32px),
-  linear-gradient(160deg, #E4EEEA 0%, #BFD9D1 100%); }
-.st-dry .frame:has(img[src*="placeholder-"])::after { color: var(--deep); }
+.step-plate { position: relative; margin-top: var(--s-2); padding: var(--s-7) var(--s-4) var(--s-3); border-radius: var(--radius); overflow: hidden; background: linear-gradient(160deg, #2F5852 0%, #22403B 100%); border: var(--hair) solid #3F6A63; }
+/* the plate is part of the instrument: out-of-band traces sit under a wet teal grade with beads; the in-band plate dries out as it lands */
+.step-plate::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; transition: opacity 1.4s var(--ease-out) .5s;
+  background: radial-gradient(circle, rgba(244,241,236,.2) 0 1.6px, transparent 2.6px) 0 0 / 22px 26px, radial-gradient(circle, rgba(244,241,236,.1) 0 1px, transparent 1.9px) 11px 13px / 22px 26px, linear-gradient(160deg, rgba(79,156,143,.4), rgba(31,74,68,.6)); }
+.step-plate.st-dry { background: linear-gradient(160deg, #E9F1EE 0%, #C9E0D8 100%); border-color: #C9E0D8; }
+.st-dry::before { opacity: 0; }
+.sw-motion .st-dry:not(.is-in)::before { opacity: 1; transition: none; }
+.trace { position: relative; z-index: 1; display: block; width: 100%; height: auto; overflow: visible; }
+/* the base (axes, band, times) lives in a <use> symbol: only custom properties reach it */
+.step-plate { --tr-band: rgba(110,190,172,.2); --tr-grid: rgba(244,241,236,.14); --tr-axis: rgba(244,241,236,.45); --tr-ink: #D3DDDA; --tr-bl: #9FD6C9; }
+.step-plate.st-dry { --tr-band: rgba(14,92,82,.16); --tr-grid: rgba(27,47,44,.12); --tr-axis: rgba(27,47,44,.5); --tr-ink: #33473F; --tr-bl: var(--accent); }
+.tr-band { fill: var(--tr-band); }
+.tr-grid { stroke: var(--tr-grid); stroke-width: 1; fill: none; }
+.tr-axis { stroke: var(--tr-axis); stroke-width: 1.2; fill: none; }
+.tr-t, .tr-n { font-family: var(--mono); font-size: 11px; fill: var(--tr-ink); }
+.tr-bl { fill: var(--tr-bl); }
+.tr-rh { fill: none; stroke: #F2B4A5; stroke-width: 3; stroke-linecap: round; }
+.tr-temp { fill: none; stroke: rgba(244,241,236,.6); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.tr-n-rh { fill: #F6C4B7; font-weight: 500; }
+.tr-mark { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 2 3; fill: none; }
+.st-dry .tr-n-mark, .st-dry .tr-n-rh { fill: var(--accent); }
+.st-dry .tr-rh { stroke: var(--accent); }
+.st-dry .tr-temp { stroke: rgba(27,47,44,.5); }
+.sw-motion .step-plate .tr-rh { stroke-dasharray: 520; stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s var(--ease-io) .2s; }
+.sw-motion .step-plate:not(.is-in) .tr-rh { stroke-dashoffset: 520; }
 .burn { position: absolute; z-index: 3; top: var(--s-3); left: var(--s-3); font-family: var(--mono); font-size: var(--fs--1); font-weight: 500; font-variant-numeric: tabular-nums; padding: 3px 8px; border-radius: var(--radius); background: var(--signal); color: var(--paper); }
 .st-dry .burn { background: var(--accent); }
-.story-readout { margin-top: var(--s-3); font-family: var(--mono); font-size: var(--fs-0); color: var(--hl); font-variant-numeric: tabular-nums; }
+.story-readout { margin-top: var(--s-5); padding-top: var(--s-4); border-top: var(--hair) solid var(--rule); font-variant-numeric: tabular-nums; }
+.sro-label { font-family: var(--text); font-size: var(--fs-1); font-weight: 600; color: var(--ink-t); }
+.sro-big { display: flex; align-items: baseline; gap: var(--s-4); margin-top: var(--s-2); }
+.sro-k { font-family: var(--text); font-size: 15px; font-weight: 600; color: var(--muted); }
+.sro-num { font-family: var(--mono); font-weight: 500; font-size: clamp(3.5rem, 2rem + 3vw, 5rem); line-height: 1; letter-spacing: -0.04em; color: #F2B4A5; transition: color var(--dur-ui) var(--ease-out); }
+.story-readout[data-state="ok"] .sro-num { color: #6EBEAC; }
+.sro-read { margin-top: var(--s-2); font-family: var(--mono); font-size: var(--fs-0); color: var(--muted); }
 @media (min-width: 900px) {
   .story { padding: var(--s-9) 0; }
   .story-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); column-gap: var(--s-8); grid-template-areas: "intro intro" "chart steps"; }
@@ -489,21 +516,22 @@ img { filter: var(--grade); }
   .story-chart-inner { position: sticky; top: calc(var(--header-h) + var(--s-6)); }
   .story-steps { grid-area: steps; gap: 0; }
   .step { min-height: 62svh; align-content: center; padding-block: var(--s-6); }
-  .step-frame { aspect-ratio: 2 / 1; }
+  .step-plate { padding: var(--s-7) var(--s-5) var(--s-4); }
 }
 .story-trail { fill: none; stroke: #F2B4A5; stroke-width: 1.4; stroke-dasharray: 3 4; opacity: .7; }
 .wb-ghost circle { fill: none; stroke: var(--axis); stroke-width: 1; }
 
 /* ---------- 5 break (between paper services and the tan sorter) ---------- */
 .break { margin: 0; background: var(--paper); position: relative; }
-.break-photo { position: relative; }
-.break-frame { aspect-ratio: 4 / 3; border-radius: 0; }
-.break-frame::after { content: none !important; }
-.break-photo::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle, rgba(244,241,236,.26) 0 1.4px, transparent 2.4px) 0 0 / 26px 30px, linear-gradient(0deg, rgba(27,47,44,.85) 0%, rgba(27,47,44,0) 60%); }
+.break-draw { position: relative; height: 200px; overflow: hidden; background: #1F3935; }
+.coil { display: block; width: 100%; height: 100%; }
+.coil-ice { transform-box: view-box; transform-origin: 50% 100%; }
+.sw-motion .break .coil-ice { transition: transform 1.6s var(--ease-out) .2s, opacity 1s var(--ease-out) .2s; }
+.sw-motion .break:not(.is-in) .coil-ice { transform: translateY(35%); opacity: 0; }
 .break figcaption { padding-top: var(--s-3); padding-bottom: var(--s-3); font-family: var(--display); font-weight: 700; font-size: var(--fs-2); line-height: 1.2; color: var(--ink); text-wrap: balance; }
 @media (min-width: 640px) {
-  .break-frame { aspect-ratio: 21 / 8; }
-  .break figcaption { position: absolute; z-index: 3; left: 0; right: 0; bottom: var(--s-6); margin: 0 auto; color: var(--paper); font-size: var(--fs-3); max-width: 1312px; }
+  .break-draw { height: 320px; }
+  .break figcaption { position: absolute; z-index: 3; left: 0; right: 0; top: var(--s-6); margin: 0 auto; padding-right: 30%; color: var(--paper); font-size: var(--fs-3); max-width: 1312px; text-shadow: 0 1px 12px rgba(27,47,44,.6); }
 }
 
 /* ---------- 4 services ---------- */
@@ -559,6 +587,7 @@ img { filter: var(--grade); }
 .tick input { width: 22px; height: 22px; flex: none; accent-color: var(--accent); }
 .tick:has(input:checked) { background: var(--paper); border-color: var(--ink); }
 .tick-result { grid-column: 1 / -1; margin-top: var(--s-3); padding: var(--s-4); font-family: var(--display); font-weight: 700; font-size: var(--fs-2); line-height: 1.25; border-left: 4px solid var(--accent); background: rgba(244,241,236,.55); max-width: none; }
+.tick-result:empty { display: none; }
 @media (min-width: 640px) { .checklist { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 900px) { .sorter { padding: var(--s-9) 0; } }
 
@@ -598,6 +627,17 @@ img { filter: var(--grade); }
 .zip-box label { font-family: var(--mono); font-size: var(--fs--1); color: var(--muted); }
 .zip-row { display: flex; gap: var(--s-2); }
 .zip-row input { flex: 1; min-width: 0; }
+.zip-out { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--s-4); align-items: center; }
+.zip-map { width: 72px; height: 72px; overflow: visible; }
+.zm-ring { fill: rgba(14,92,82,.08); stroke: var(--accent); stroke-width: 1.5; }
+.zm-ring2 { fill: rgba(14,92,82,.1); stroke-dasharray: 3 3; }
+.zm-cross { stroke: var(--rule); stroke-width: 1; }
+.zm-home { fill: var(--ink); }
+.zm-dot { opacity: 0; transition: opacity var(--dur-ui) var(--ease-out); }
+.zm-core { fill: var(--accent); stroke: var(--card); stroke-width: 2; }
+.zm-halo { fill: var(--accent); opacity: .2; }
+[data-zip-state="yes"] .zm-dot, [data-zip-state="no"] .zm-dot { opacity: 1; }
+[data-zip-state="no"] .zm-core, [data-zip-state="no"] .zm-halo { fill: var(--signal); }
 .zip-result { font-weight: 600; min-height: 1.5em; }
 .zip-result .btn, .zip-result a { margin-top: var(--s-2); }
 .zip-hours { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: var(--fs--1); color: var(--muted); }
@@ -617,7 +657,7 @@ textarea { resize: vertical; }
 .price-head p { color: var(--muted); }
 .t-accent .sample-tag { color: var(--paper); border-color: rgba(244,241,236,.6); }
 .est { display: grid; gap: var(--s-2); padding: var(--s-4); border: var(--hair) solid var(--rule); border-radius: var(--radius); margin-bottom: var(--s-6); background: rgba(27,47,44,.25); }
-.est label { font-family: var(--mono); font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.est label { font-family: var(--text); font-size: 15px; font-weight: 600; color: var(--muted); }
 .est-out { font-family: var(--display); font-weight: 700; font-size: var(--fs-2); line-height: 1.3; max-width: none; }
 .est-out .sw-est-note { font-family: var(--text); font-weight: 400; font-size: var(--fs-0); color: var(--muted); }
 .price-table { width: 100%; border-collapse: collapse; }
@@ -635,7 +675,7 @@ textarea { resize: vertical; }
   .price-head h2 { font-size: clamp(2.5rem, 1.5rem + 3vw, 4.5rem); }
   .est { grid-template-columns: auto minmax(0, 360px) minmax(0, 1fr); }
   .price-table thead { display: table-header-group; }
-  .price-table thead tr th { font-family: var(--mono); font-size: var(--fs--1); font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); text-align: left; }
+  .price-table thead tr th { font-family: var(--text); font-size: 15px; font-weight: 600; color: var(--muted); text-align: left; padding-bottom: var(--s-2); }
   .price-table tr { grid-template-columns: minmax(0, 1fr) minmax(0, .7fr) minmax(0, 1fr); align-items: baseline; }
   .pt-range { text-align: left; font-size: var(--fs-2); }
   .pt-note { grid-column: auto; }
@@ -652,6 +692,16 @@ textarea { resize: vertical; }
 .next-steps li { display: flex; gap: var(--s-3); align-items: baseline; font-size: var(--fs-1); }
 .next-steps span { font-family: var(--mono); font-size: var(--fs--1); color: var(--accent); border: var(--hair) solid var(--rule); border-radius: 50%; width: 26px; height: 26px; display: inline-grid; place-items: center; flex: none; }
 .contact-call { font-weight: 600; }
+.form-wrap { display: grid; min-width: 0; }
+.form-reading { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--s-4); align-items: center; padding: var(--s-3) var(--s-4); background: var(--deep); color: var(--paper); border-radius: var(--radius) var(--radius) 0 0; --band: rgba(110,190,172,.22); --line: rgba(244,241,236,.22); --axis: rgba(244,241,236,.45); }
+.fr-chart { width: 64px; }
+.form-reading .wb-dot .wb-core { stroke: var(--deep); }
+.form-reading .wb-dot.is-in .wb-core, .form-reading .wb-dot.is-in .wb-halo { fill: #6EBEAC; }
+.fr-text { display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; font-variant-numeric: tabular-nums; max-width: none; }
+.fr-k { font-size: 15px; font-weight: 600; color: #C9C4BB; }
+.fr-v { font-family: var(--mono); font-weight: 500; font-size: var(--fs-0); }
+.fr-change { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--fs-0); font-weight: 600; text-underline-offset: 3px; color: #8FCDBF; }
+.form-wrap .lead-form { border-top: 0; border-radius: 0 0 var(--radius) var(--radius); }
 .lead-form { background: var(--card); border: var(--hair) solid var(--rule); border-radius: var(--radius); padding: var(--s-5); display: grid; gap: var(--s-3); }
 .lead-form fieldset { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: var(--s-2); }
 .lead-form legend { font-family: var(--display); font-weight: 700; font-size: var(--fs-2); margin-bottom: var(--s-3); padding: 0; }
@@ -683,7 +733,7 @@ textarea { resize: vertical; }
 .foot-badge { width: 120px; height: auto; margin-bottom: var(--s-3); }
 .badge-dot { fill: #6EBEAC; stroke: var(--deep); stroke-width: 3; }
 .foot-name { font-family: var(--display); font-weight: 900; font-size: var(--fs-2); letter-spacing: -0.02em; }
-.foot-h { font-family: var(--mono); font-size: var(--fs--1); font-weight: 500; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: var(--s-3); }
+.foot-h { font-family: var(--text); font-size: 15px; font-weight: 600; letter-spacing: 0; color: var(--muted); margin-bottom: var(--s-3); }
 .foot-contact p { margin-bottom: var(--s-3); }
 .hours { display: grid; gap: 4px; margin: 0; font-family: var(--mono); font-size: var(--fs--1); font-variant-numeric: tabular-nums; }
 .hours > div { display: flex; justify-content: space-between; gap: var(--s-4); max-width: 240px; padding: 2px 0; }
@@ -709,7 +759,7 @@ textarea { resize: vertical; }
 
 /* ---------- print ---------- */
 @media print {
-  .site-header, .mobilebar, .site-menu, .break, .chart-photo, .step-photo, .lead-form, .zip-box, .checklist, .est, .story-chart { display: none !important; }
+  .site-header, .mobilebar, .site-menu, .break, .chart-photo, .step-plate, .form-reading, .lead-form, .zip-box, .checklist, .est, .story-chart { display: none !important; }
   body, .t-deep, .t-accent, .t-mid { background: #fff !important; color: #000 !important; }
   .hero { min-height: 0; padding-top: 0; }
 }
@@ -737,6 +787,13 @@ textarea { resize: vertical; }
     <path class="mg-line" d="M61.9,19.9 L118.7,60.7 L175.5,93.2 L232.3,119.1 L308,145.9"/>
     <path class="mg-line" d="M156.5,18.6 L213.3,58.1 L270.1,89.8 L308,107.4"/>
     <path class="mg-axis" d="M24,12 L24,188 L308,188"/>
+  </symbol>
+  <symbol id="tr-base" viewBox="0 0 400 150">
+    <rect class="tr-band" x="36" y="64" width="352" height="40"/>
+    <path class="tr-grid" d="M124,14 V124 M212,14 V124 M300,14 V124"/>
+    <path class="tr-axis" d="M36,14 V124 H388"/>
+    <text class="tr-t" x="36" y="142">12 am</text><text class="tr-t" x="124" y="142">6 am</text><text class="tr-t" x="212" y="142">noon</text><text class="tr-t" x="300" y="142">6 pm</text>
+    <text class="tr-t tr-bl" x="42" y="99">comfort band</text>
   </symbol>
 </svg>
 
@@ -791,10 +848,17 @@ textarea { resize: vertical; }
 
       <div class="hero-copy">
         <p class="lead">Two numbers from your thermostat tell us whether your AC is cooling the air or drying it. Try yours.</p>
-        <p class="proof-line"><span>4.8 ★ from 276 reviews</span> <span class="sample-tag">Sample rating</span> <span class="pl-hours"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span data-open-now>Mon–Fri 7 am – 6 pm · Sat 8 am – 3 pm</span></span></p>
-        <div class="cta-row">
-          <a class="btn btn-call btn-primary" href="tel:+17135550105"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (713) 555-0105</span></a>
-          <a class="btn btn-ghost" href="#contact" data-service="Humidity check">Book a check</a>
+        <p class="readout" data-state="damp" data-dew-readout>
+          <span class="ro-label">Your dew point</span>
+          <span class="ro-num"><span data-dew-dp-big>64</span><span class="ro-unit">°F</span></span>
+          <span class="ro-verdict" data-dew-verdict>Damp. Over 60 feels sticky at any temperature.</span>
+        </p>
+        <div class="hero-foot">
+          <p class="proof-line"><span>4.8 ★ from 276 reviews</span> <span class="sample-tag">Sample rating</span> <span class="pl-hours"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span data-open-now>Mon–Fri 7 am – 6 pm · Sat 8 am – 3 pm</span></span></p>
+          <div class="cta-row">
+            <a class="btn btn-call btn-primary" href="tel:+17135550105"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (713) 555-0105</span></a>
+            <a class="btn btn-ghost" href="#contact" data-service="Humidity check" data-carry-reading>Book a check</a>
+          </div>
         </div>
       </div>
 
@@ -804,7 +868,7 @@ textarea { resize: vertical; }
           <p class="inst-status" data-dew-status data-state="damp" aria-live="polite">Damp: dew point over 60</p>
         </div>
         <div class="chart chart-hero">
-          <figure class="frame chart-photo" data-fallback="Refrigerant gauges reading suction pressure on a split system"><img src="media/placeholder-process-gauges.jpg" alt="Refrigerant gauges reading suction pressure on a split system" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="process-gauges" data-slot="hero"></figure>
+          <figure class="frame chart-photo" data-fallback="Refrigerant gauges reading suction pressure on a split system" aria-hidden="true"><img src="media/placeholder-process-gauges.jpg" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="process-gauges" data-slot="hero" alt=""></figure>
           <svg class="wb-chart" viewBox="0 0 320 210" role="img" aria-labelledby="chart-hero-t">
             <title id="chart-hero-t">Comfort chart: indoor temperature across, humidity up. The shaded band is where a house feels comfortable. Your dot sits above it.</title>
             <g class="wb-grid">
@@ -849,7 +913,7 @@ textarea { resize: vertical; }
           </div>
         </div>
         <p class="inst-note">Sample reading. Drag both dials to match your thermostat.</p>
-        <a href="#contact" class="btn btn-primary btn-block" data-service="Humidity check" data-carry-reading>Book a check with this reading</a>
+        <a href="#contact" class="btn btn-primary btn-block" data-service="Humidity check" data-carry-reading>Book a check with this reading<span class="btn-read" data-dew-btn>DP 64°F</span></a>
       </div>
 
     </div>
@@ -871,27 +935,31 @@ textarea { resize: vertical; }
             <g class="wb-dot is-in" data-story-dot transform="translate(137.6 117.6)"><circle class="wb-halo" r="13"/><circle class="wb-core" r="6"/></g>
             <g class="wb-ticks"><text x="24" y="203">60°</text><text x="118.7" y="203">70°</text><text x="213.3" y="203">80°</text><text x="296" y="203">90°F</text></g>
           </svg>
-          <p class="story-readout"><span data-story-readout>72°F · 48% RH · DP 51</span></p>
+          <div class="story-readout" data-story-ro data-state="ok">
+            <p class="sro-label" data-story-label>Reading 3 of 3: A dehumidifier on the return</p>
+            <p class="sro-big"><span class="sro-k">Dew point</span><span class="sro-num" data-story-dp>51°F</span></p>
+            <p class="sro-read" data-story-readout>72°F · 48% RH · DP 51</p>
+          </div>
         </div>
       </div>
       <ol class="story-steps">
-        <li class="step" data-story-step="0" data-x="137.6" data-y="49.7" data-read="72°F · 75% RH · DP 64">
+        <li class="step" data-story-step="0" data-dp="64" data-label="Reading 1 of 3: 72 on the wall, 64 in the air" data-x="137.6" data-y="49.7" data-read="72°F · 75% RH · DP 64">
           <h3>72 on the wall, 64 in the air</h3>
           <p>The thermostat is happy. The dew point is 64, so sheets feel clammy and the closet smells musty. Turning it down makes the house colder, not drier.</p>
           <p class="chip-row"><span class="sample-tag">Sample reading</span></p>
-          <div class="step-photo st-wet" data-reveal="clip"><figure class="frame step-frame" data-fallback="Multimeter testing run capacitor microfarads"><img src="media/placeholder-process-multimeter.jpg" alt="Multimeter testing run capacitor microfarads" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-multimeter" data-slot="story-1"></figure><span class="burn" aria-hidden="true">72°F · 75% RH · DP 64</span></div>
+          <div class="step-plate st-wet" data-reveal="clip"><svg class="trace" viewBox="0 0 400 150" role="img" aria-label="Sample 24-hour trace: the thermostat holds 72 all day while indoor humidity stays near 75 percent, above the comfort band."><use href="#tr-base"/><path class="tr-temp" d="M36,112 H388"/><path class="tr-rh" d="M36,36 C80,30 110,40 150,34 S220,30 260,36 S340,32 388,34"/><text class="tr-n tr-n-rh" x="384" y="26" text-anchor="end">humidity 75%</text><text class="tr-n" x="384" y="106" text-anchor="end">thermostat 72°F</text></svg><span class="burn" aria-hidden="true">72°F · 75% RH · DP 64</span></div>
         </li>
-        <li class="step" data-story-step="1" data-x="175.5" data-y="57.3" data-read="76°F · 72% RH · DP 66">
+        <li class="step" data-story-step="1" data-dp="66" data-label="Reading 2 of 3: A bigger unit made it worse" data-x="175.5" data-y="57.3" data-read="76°F · 72% RH · DP 66">
           <h3>A bigger unit made it worse</h3>
           <p>An oversized system hits the set point in minutes and shuts off before the coil can pull water out. Cold blasts, damp rooms, a higher bill.</p>
           <p class="chip-row"><span class="sample-tag">Sample reading</span></p>
-          <div class="step-photo st-wet" data-reveal="clip"><figure class="frame step-frame" data-fallback="Condensate drain line with added cleanout"><img src="media/placeholder-process-drain-line.jpg" alt="Condensate drain line with added cleanout" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-drain-line" data-slot="story-2"></figure><span class="burn" aria-hidden="true">76°F · 72% RH · DP 66</span></div>
+          <div class="step-plate st-wet" data-reveal="clip"><svg class="trace" viewBox="0 0 400 150" role="img" aria-label="Sample 24-hour trace: an oversized unit cycles on and off all day; humidity never drops into the comfort band."><use href="#tr-base"/><path class="tr-temp" d="M36,112 L60,118 L68,108 L92,118 L100,108 L124,118 L132,108 L156,118 L164,108 L188,118 L196,108 L220,118 L228,108 L252,118 L260,108 L284,118 L292,108 L316,118 L324,108 L348,118 L356,108 L380,118 L388,108"/><path class="tr-rh" d="M36,42 C90,36 120,46 170,40 S260,36 300,42 S360,38 388,40"/><text class="tr-n tr-n-rh" x="384" y="32" text-anchor="end">humidity 72%</text><text class="tr-n" x="384" y="102" text-anchor="end">on, off, on, off</text></svg><span class="burn" aria-hidden="true">76°F · 72% RH · DP 66</span></div>
         </li>
-        <li class="step" data-story-step="2" data-x="137.6" data-y="117.6" data-read="72°F · 48% RH · DP 51">
+        <li class="step" data-story-step="2" data-dp="51" data-label="Reading 3 of 3: A dehumidifier on the return" data-x="137.6" data-y="117.6" data-read="72°F · 48% RH · DP 51">
           <h3>A dehumidifier on the return</h3>
           <p>The water comes out at the duct, not at the thermostat. Same 72 on the wall, dew point 51: inside the band, and the musty smell is gone.</p>
           <p class="chip-row"><span class="sample-tag">Sample reading</span></p>
-          <div class="step-photo st-dry" data-reveal="clip"><figure class="frame step-frame" data-fallback="Condenser coil rinse after dust season"><img src="media/placeholder-process-coil-rinse.jpg" alt="Condenser coil rinse after dust season" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-coil-rinse" data-slot="story-3"></figure><span class="burn" aria-hidden="true">72°F · 48% RH · DP 51</span></div>
+          <div class="step-plate st-dry" data-reveal="clip"><svg class="trace" viewBox="0 0 400 150" role="img" aria-label="Sample 24-hour trace: after a dehumidifier goes on the return, humidity falls from 75 to 48 percent and stays inside the comfort band."><use href="#tr-base"/><path class="tr-mark" d="M150,14 V124"/><path class="tr-temp" d="M36,112 H388"/><path class="tr-rh" d="M36,34 C70,30 110,38 150,36 C180,40 190,86 220,88 S300,84 330,88 S370,86 388,88"/><text class="tr-n tr-n-mark" x="156" y="24">dehumidifier on</text><text class="tr-n tr-n-rh" x="384" y="80" text-anchor="end">humidity 48%</text><text class="tr-n" x="384" y="106" text-anchor="end">thermostat 72°F</text></svg><span class="burn" aria-hidden="true">72°F · 48% RH · DP 51</span></div>
         </li>
       </ol>
     </div>
@@ -975,8 +1043,21 @@ textarea { resize: vertical; }
   </section>
 
   <!-- 5 BREAK -->
-  <figure class="break">
-    <div class="break-photo" data-reveal="clip"><figure class="frame break-frame" data-fallback="Frozen evaporator coil from low airflow"><img src="media/placeholder-problem-frozen-lines.jpg" alt="Frozen evaporator coil from low airflow" width="1170" height="780" loading="lazy" decoding="async" data-photo="problem-frozen-lines" data-slot="break"></figure></div>
+  <figure class="break" data-reveal>
+    <div class="break-draw" aria-hidden="true"><svg class="coil" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <defs>
+        <linearGradient id="coil-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E4E49"/><stop offset="1" stop-color="#1F3935"/></linearGradient>
+        <pattern id="coil-fins" width="7" height="320" patternUnits="userSpaceOnUse"><path d="M3.5,0 V320" stroke="rgba(244,241,236,.13)" stroke-width="1"/></pattern>
+        <pattern id="coil-frost" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M9,4 V14 M4,9 H14 M5.5,5.5 L12.5,12.5 M12.5,5.5 L5.5,12.5" stroke="rgba(255,255,255,.55)" stroke-width="1"/></pattern>
+        <linearGradient id="coil-scrim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1B2F2C" stop-opacity=".7"/><stop offset=".6" stop-color="#1B2F2C" stop-opacity="0"/></linearGradient>
+        <linearGradient id="coil-ice" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9F2F0" stop-opacity=".55"/><stop offset="1" stop-color="#F4F8F7" stop-opacity=".92"/></linearGradient>
+        <symbol id="coil-tube" overflow="visible"><circle r="15" fill="#1B2F2C" stroke="#B4744F" stroke-width="3"/><circle r="6" fill="none" stroke="#D29A76" stroke-width="1.5"/></symbol>
+      </defs>
+      <rect width="1440" height="320" fill="url(#coil-bg)"/>
+      <rect width="1440" height="320" fill="url(#coil-fins)"/>
+      <rect width="1440" height="320" fill="url(#coil-scrim)"/><g class="coil-tubes"><use href="#coil-tube" x="1104" y="56"/><use href="#coil-tube" x="1200" y="56"/><use href="#coil-tube" x="1296" y="56"/><use href="#coil-tube" x="1392" y="56"/><use href="#coil-tube" x="1152" y="128"/><use href="#coil-tube" x="1248" y="128"/><use href="#coil-tube" x="1344" y="128"/><use href="#coil-tube" x="48" y="200"/><use href="#coil-tube" x="144" y="200"/><use href="#coil-tube" x="240" y="200"/><use href="#coil-tube" x="336" y="200"/><use href="#coil-tube" x="432" y="200"/><use href="#coil-tube" x="528" y="200"/><use href="#coil-tube" x="624" y="200"/><use href="#coil-tube" x="720" y="200"/><use href="#coil-tube" x="816" y="200"/><use href="#coil-tube" x="912" y="200"/><use href="#coil-tube" x="1008" y="200"/><use href="#coil-tube" x="1104" y="200"/><use href="#coil-tube" x="1200" y="200"/><use href="#coil-tube" x="1296" y="200"/><use href="#coil-tube" x="1392" y="200"/><use href="#coil-tube" x="96" y="272"/><use href="#coil-tube" x="192" y="272"/><use href="#coil-tube" x="288" y="272"/><use href="#coil-tube" x="384" y="272"/><use href="#coil-tube" x="480" y="272"/><use href="#coil-tube" x="576" y="272"/><use href="#coil-tube" x="672" y="272"/><use href="#coil-tube" x="768" y="272"/><use href="#coil-tube" x="864" y="272"/><use href="#coil-tube" x="960" y="272"/><use href="#coil-tube" x="1056" y="272"/><use href="#coil-tube" x="1152" y="272"/><use href="#coil-tube" x="1248" y="272"/><use href="#coil-tube" x="1344" y="272"/></g>
+      <g class="coil-ice"><g transform="translate(0 40)"><path d="M0,320 V150 C60,140 110,168 170,150 S280,120 340,146 S450,170 520,150 S640,128 700,160 S820,186 880,170 S1000,200 1060,196 S1180,220 1240,222 S1360,236 1440,238 V320 Z" fill="url(#coil-ice)"/><path d="M0,320 V150 C60,140 110,168 170,150 S280,120 340,146 S450,170 520,150 S640,128 700,160 S820,186 880,170 S1000,200 1060,196 S1180,220 1240,222 S1360,236 1440,238 V320 Z" fill="url(#coil-frost)"/></g></g>
+    </svg></div>
     <figcaption class="container">Ice on the coil: the water it pulled from the air, frozen by weak airflow.</figcaption>
   </figure>
 
@@ -985,14 +1066,14 @@ textarea { resize: vertical; }
     <div class="container sorter-inner">
       <h2 id="sorter-h2">Repair it or replace it?</h2>
       <p class="sorter-lead">Tick what is true for your system. The line below tells you which way it leans.</p>
-      <div class="checklist" data-checklist data-checklist-results="0:Tick what is true for your system.|1:One sign: a repair is usually still the smart money.|3:{n} of {total}: price both. We will put repair and replace side by side.|5:{n} of {total}: plan a replacement, sized with a room-by-room load calculation.">
+      <div class="checklist" data-checklist data-checklist-results="0:|1:{n} of {total} ticked. A repair is usually still the smart money.|3:{n} of {total}: price both. We will put repair and replace side by side.|5:{n} of {total}: plan a replacement, sized with a room-by-room load calculation.">
         <label class="tick"><input type="checkbox"><span>It runs all afternoon and rooms still feel damp</span></label>
         <label class="tick"><input type="checkbox"><span>The same part has failed more than once</span></label>
         <label class="tick"><input type="checkbox"><span>Upstairs never catches up with downstairs</span></label>
         <label class="tick"><input type="checkbox"><span>It uses the old refrigerant that is no longer made</span></label>
         <label class="tick"><input type="checkbox"><span>The repair quote made you wince</span></label>
         <label class="tick"><input type="checkbox"><span>Someone already told you it is “just old”</span></label>
-        <p class="tick-result" data-checklist-result>Tick what is true for your system.</p>
+        <p class="tick-result" data-checklist-result></p>
       </div>
       <a href="#contact" class="btn btn-primary" data-service="AC repair">Book a second-opinion check</a>
     </div>
@@ -1073,7 +1154,15 @@ textarea { resize: vertical; }
           <input id="zip-in" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5">
           <button type="submit" class="btn btn-primary">Check my ZIP</button>
         </div>
-        <p class="zip-result" data-zip-result></p>
+        <div class="zip-out">
+          <svg class="zip-map" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+            <circle class="zm-ring" cx="60" cy="60" r="44"/><circle class="zm-ring zm-ring2" cx="60" cy="60" r="24"/>
+            <path class="zm-cross" d="M60,8 V112 M8,60 H112"/>
+            <circle class="zm-home" cx="60" cy="60" r="4"/>
+            <g class="zm-dot" data-zip-dot><circle class="zm-halo" r="10"/><circle class="zm-core" r="5"/></g>
+          </svg>
+          <p class="zip-result" data-zip-result></p>
+        </div>
         <p class="zip-hours"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span data-open-now>Mon–Fri 7 am – 6 pm · Sat 8 am – 3 pm</span></p>
       </form>
     </div>
@@ -1122,6 +1211,11 @@ textarea { resize: vertical; }
           <li><span>3</span>You get the chart and the options, priced.</li>
         </ol>
         <p class="contact-call">Rather talk now? <a class="tel-plain" href="tel:+17135550105">(713) 555-0105</a></p>
+      </div>
+      <div class="form-wrap">
+      <div class="form-reading" data-state="damp" data-form-reading>
+        <svg class="fr-chart wb-chart" viewBox="0 0 320 200" aria-hidden="true" focusable="false"><use href="#wb-mini"/><g class="wb-dot" data-fr-dot transform="translate(137.6 49.7)"><circle class="wb-halo" r="18"/><circle class="wb-core" r="9"/></g></svg>
+        <p class="fr-text"><span class="fr-k">Your reading</span> <span class="fr-v" data-fr-text>72°F · 75% RH · DP 64 (Damp)</span> <a class="fr-change" href="#hero">change</a></p>
       </div>
       <form class="lead-form" data-lead novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to Wetbulb.">
         <fieldset data-step>
@@ -1184,6 +1278,7 @@ textarea { resize: vertical; }
         <button type="submit" class="btn btn-primary btn-block">Book my check</button>
         <p class="form-micro">We'll call you back to set up a visit.</p>
       </form>
+      </div>
     </div>
   </section>
 
