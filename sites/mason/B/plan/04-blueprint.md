@@ -1,5 +1,8 @@
 # Blueprint — mason-B (Flemish Bond Masonry)
 
+## Round 2
+- Re-cut the hero and photo language: placeholder slots became drawn test panels (Flemish bond, marble step, A/B/C patches, joint, Formstone), graded by role (warm proof tiles, cool survey frames with corner marks). Motion now has roles: the hero panels are laid course by course, the elevation survey is a pinned story on desktop that lights zones 1-6 in turn (on phone and with reduced motion, a full always-visible report list), stats count up, service pairs lay header-then-stretcher, and tool panels clip in. The mortar match recolours every live wall on the page. Kit hooks (estimator, zip, form, checklist) were rewired, the lintel price error was removed, and lenis and hotspots were dropped.
+
 ## Round 1
 - **Layout elevate:** Services grid now alternates stretcher service tiles with header price-range tiles in Flemish-bond rhythm, breaking the flat auto-fill monotony. Price tiles use `svc-price` class with mono range + sample tag.
 - **Photo elevate:** Added consistent duotone frame treatment (`::after` overlay with mix-blend-mode multiply on `.bond-tile img`) to unify placeholder visual language.
