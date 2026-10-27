@@ -1,0 +1,77 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "dist/index.html: h1 'Tuckpointing & brick repair for St. Louis soft brick' (8 words), trade+city+outcome clear; phone in header and hero CTA; proof line with Sample tag present. Deducted -0.5 for h1 potentially wrapping 3 lines at 1440 via clamp(2.6rem…5.25rem) and -0.5 because .hero-map min-height calc(100svh - header-h) can equal exactly one screen, risking no peek. No screenshots to confirm intro timing or reduced-motion readability."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "dist/index.html: makers-mark stamp signature recurs in hero, neighborhood tool, story header, all 9 service cards, chimney tool, reviews, timing tool, footer (>4 sections including hero/footer). Bespoke SVG neighbourhood map in hero is non-template. Deducted -0.5 for 9 identical svc-card tiles reading as template repetition and -0.5 because stamp motif lacks a second layout family that reinterprets it structurally."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "dist/index.html: fluid clamp scale, body >=16px via --fs-0, Young Serif display with -0.03em tracking and 0.92 line-height, DM Mono accent for kickers/stamps/stats, tabular-nums on counters, lead max-width 64ch. Three families allowed (mono is accent). Cannot verify rag/orphan control or scale-contrast moment without screenshots; DOM shows competence but not 9-anchor execution."
+    },
+    "layout": {
+      "score": 8.0,
+      "notes": "dist/index.html: 10 sections alternating paper/mid/paper/mid/paper/mid/accent/paper/deep/mid tones; varied shapes (hero-map, split, story-stack, svc-grid, break, proof-rail, tool-duo, contact-stack, footer-list); full-bleed break band. Deducted -0.5 for uniform 3x3 services grid with no density variation, -0.5 for six identical story-frame blocks repeating same shape, -0.5 for flat rhythm in middle run despite tone alternation."
+    },
+    "photo": {
+      "score": 7.0,
+      "notes": "dist/index.html: all imgs have descriptive alt, width/height, lazy+async, consistent CSS filter grade. Placeholder mode acknowledged. Deducted -1.0 from 8 anchor because every src is placeholder-*.webp with no real art direction or crop sequence, -0.5 because break img alt reads 'Placeholder for hero-C3' leaking build artefact, -0.5 because ten photo credits say 'Photo by unknown on Pexels' with bare <a> tags (no href)."
+    },
+    "copy": {
+      "score": 9.0,
+      "notes": "dist/index.html: specific trade nouns (rake, lime putty, concave joint, corbelled cornice, jack arches, spalled soft salmon brick); homeowner questions per section; consistent 'Price it' primary action across hero/services/tools/mobilebar; Sample labels on rating/reviews/pricing; microcopy under form ('This demo does not send anything'); no banned phrases or tricolons; headlines <=8 words."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "dist/index.html CSS: .mobilebar fixed bottom hidden >=900px; hero stacks single-col <900px; services 1->2->3 col; splits stack; buttons/inputs min-height 48px; no horizontal scroll triggers. Deducted -0.5 because cannot confirm mobile bar hides on scroll-down or over form without screenshots."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "dist/index.html: skip-link, focus-visible 3px solid accent offset 3px, all inputs labeled, aria-live on tool outputs, aria-expanded on menu, aria-labelledby on sections, sr-only headings, reduced-motion forces opacity:1/no transform, forced-colors borders, honeypot hidden. Deducted -0.5 because data-split='lines' on h1 has no sr-only static fallback visible in DOM; risk of per-line announcement."
+    },
+    "motion": {
+      "score": 8.0,
+      "notes": "dist/index.html: reveal-fade/clip/stagger variants, story clip-path wipe via data-story, counter animation via data-count, marquee infra, reduced-motion kills durations, Lenis loaded. Deducted -0.5 for potential same-reveal monotony in story-stack (single dur-story for all 6 frames), -0.5 for no visible micro-interactions on controls in CSS alone, -0.5 because cannot confirm varied easing or role-specific entrances without screenshots."
+    },
+    "wow": {
+      "score": 8.0,
+      "notes": "dist/index.html: neighbourhood brick finder (data-filter) tied to thesis with styled output container and aria-live; chimney rebuild-vs-repair checklist gives sample range. Deducted -0.5 because cannot confirm tool output is designed in signature language without screenshots, -0.5 because two tools may read as separate moments rather than connected pair at 10-anchor level."
+    },
+    "polish": {
+      "score": 8.0,
+      "notes": "dist/index.html: SVG favicon + apple-touch-icon, OG/Twitter meta with dimensions, theme-color, JSON-LD HomeAndConstructionBusiness, print stylesheet isolates estimator, lazy imgs with w/h, forced-colors handled, consistent 2px radius, no transition:all. Deducted -0.5 for ten bare <a> in credits (static warning), -0.5 for break img alt 'Placeholder for hero-C3' leaking build artefact."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html line 751",
+      "problem": "Break image alt text reads 'Placeholder for hero-C3', exposing build artefact to assistive tech.",
+      "fix": "Replace alt with 'Corbelled cornice on a Tower Grove flat, late afternoon' matching the visible caption."
+    },
+    {
+      "where": "dist/index.html line 986",
+      "problem": "Ten <a> tags in .credits have no href, failing static check and misleading screen readers.",
+      "fix": "Add valid Pexels URLs from niche media manifest or convert to plain <span> elements."
+    },
+    {
+      "where": "dist/index.html line 550",
+      "problem": "data-split='lines' on h1 has no sr-only static fallback; heading may be announced per-line.",
+      "fix": "Add a visually-hidden span with full headline text and mark split container aria-hidden so heading announces once."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Replace uniform 3x3 services grid with masonry-style arrangement where first three services occupy dense left column with stacked stamps as dividers and remaining six flow into lighter right column, turning signature stamp from decoration into structural organiser."
+    },
+    {
+      "category": "motion",
+      "move": "Tie neighbourhood brick finder output reveal to same clip-path wipe as story stack and add press-scale micro-interaction (scale .97 on active) to every .btn and .check-row so signature motion appears in both editorial and tool moments."
+    }
+  ],
+  "verdictHint": "FIX"
+}

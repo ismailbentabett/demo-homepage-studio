@@ -1,0 +1,8 @@
+# Strategy — mason-C (Kilnside Masonry, St. Louis)
+
+1. **One job.** A St. Louis homeowner with soft-brick spalling or a flagged chimney lands, sees their neighborhood named, and calls or prices it within 10 seconds.
+2. **Homeowner first 5s.** H1: "Tuckpointing & brick repair for St. Louis soft brick" + kicker naming Soulard / Lafayette Square / The Hill; primary CTA [[call]]; secondary [[quote tuckpointing]]; proof line "{{proof.years}} years on city brick · Sample".
+3. **Contractor first 5s.** A stylized neighborhood map colored by brick type is the hero; nobody else in town shows local clay knowledge as the entry point. This becomes the signature.
+4. **Objections → section.** Wrong mortar → Mortar Softness Check + Lime Story; color mismatch → Mortar Match tool + test-panel photo; rebuild vs repair → Repoint-or-Rebuild tool; money pit → sample price ranges + estimator; power-wash fear → Gentle Cleaning note in process; hard cement damage → Spalling detail + brick replacement service.
+5. **Conversion paths.** Primary: sticky mobile bar [[call]] + hero [[call]]; Secondary: [[quote *]] CTAs prefill the multi-step form; Tool → form hand-off via data-service on every tool output CTA; phone always one thumb-reach away on 390 via mobilebar.
+6. **Not this.** A does step-by-step process joints; B does proof/tools grid with Baltimore rowhouse mosaic. C avoids: (a) process-diagram dividers, (b) Flemish-bond card grids, (c) dark soot-charcoal palette. C leads with place, not procedure or numbers.
