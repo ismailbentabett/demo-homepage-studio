@@ -1,5 +1,8 @@
 # Blueprint — flooring-C (Heart & Tide Floor Co.)
 
+## Round 2
+Round 2: the placeholder photos are now drawn treatments (a hero crawlspace cross-section with a tide staff, heart-pine strip/fill/finish boards, a perspective floor break, stairs). The CUPPING type-mask fills with water as the checklist is ticked (photo elevate). The house-age guide gives a live tide-line reading of typical floor height (distinctiveness elevate). Also: tone tokens fixed, the form and ZIP made kit-compliant, the owner's name removed from the CTA, and tones re-ordered (water-damage is now paper, the break moved before services) so no two dark bands touch. The 320px overflow from the break plane is fixed with scaleX and clip.
+
 ## Section sequence
 
 | # | ID | Tone | Padding | Signature reading | Content hook | Job |

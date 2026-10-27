@@ -1,144 +1,86 @@
-/* flooring-C app.js — Tide Line Gauge signature + scroll stories */
+/* flooring-C app.js: house age guide (always on) + Tide Line Gauge motion (motion mode only) */
 (function () {
   if (!window.SW) return;
 
-  /* ── House Age Guide tool logic ─────────────────────── */
+  /* ── House age guide: year → likely floor, typical height above grade, live tide reading ── */
   SW.mod('house-age-guide', function () {
-    var slider = document.querySelector('[data-year-input]');
-    var output = document.querySelector('[data-year-output]');
-    var result = document.querySelector('[data-age-result]');
-    if (!slider || !output || !result) return;
-
+    var box = document.querySelector('[data-house-age]');
+    if (!box) return;
+    var slider = box.querySelector('[data-year-input]');
+    var output = box.querySelector('[data-year-output]');
+    var floor = box.querySelector('[data-age-floor]');
+    var advice = box.querySelector('[data-age-advice]');
+    var swatch = box.querySelector('.swatch');
+    var reading = box.querySelector('[data-age-reading]');
+    var readingText = box.querySelector('[data-age-reading-text]');
+    var cta = box.querySelector('[data-age-cta]');
+    var section = document.getElementById('house-age-guide');
+    var ERAS = [
+      { max: 1919, era: 'pine', ft: '3.0', svc: 'Heart pine', floor: 'Likely: heart pine or old-growth oak',
+        advice: 'Sand gently: these boards are thin from a century of sanding. Expect paint at the edges and gaps worth filling with reclaimed slivers.' },
+      { max: 1959, era: 'oak', ft: '2.0', svc: 'Refinishing', floor: 'Likely: oak strip on joists',
+        advice: 'Can be sanded and refinished. Look for pet stains and water rings near outside walls.' },
+      { max: 1989, era: 'ply', ft: '1.5', svc: 'Engineered wood', floor: 'Likely: plywood under carpet or vinyl',
+        advice: 'Engineered hardwood or waterproof plank both suit it. We read the crawlspace before choosing.' },
+      { max: 9999, era: 'slab', ft: '0.5', svc: 'Waterproof plank', floor: 'Likely: concrete slab under carpet or tile',
+        advice: 'Close to the ground and to high water. Waterproof plank or tile, after a moisture test on the slab.' }
+    ];
+    var last = null;
     function update() {
       var year = parseInt(slider.value, 10);
       output.textContent = year;
-      var floorType, advice;
-      if (year < 1920) {
-        floorType = 'Likely: Heart pine or old-growth oak';
-        advice = 'Can be sanded gently. Check for painted-over boards and nail-set issues. Reclaimed sliver gap fill recommended.';
-      } else if (year < 1960) {
-        floorType = 'Likely: Oak strip flooring';
-        advice = 'Can be sanded and refinished. Check for pet stains and water rings near exterior walls.';
-      } else if (year < 1990) {
-        floorType = 'Likely: Plywood subfloor or early engineered';
-        advice = 'May have vinyl or carpet over plywood. Engineered hardwood or waterproof plank are good options.';
-      } else {
-        floorType = 'Likely: Slab-on-grade with carpet or tile';
-        advice = 'Engineered hardwood or waterproof plank work well on slab. Moisture test first.';
-      }
-      result.innerHTML = '<p class="house-age__floor-type">' + floorType + '</p><p class="house-age__advice">' + advice + '</p>';
+      var e = ERAS.filter(function (x) { return year <= x.max; })[0];
+      slider.setAttribute('aria-valuetext', year + ', ' + e.floor.replace('Likely: ', 'likely ') + ', typical floor ' + e.ft + ' ft above grade');
+      if (e === last) return;
+      last = e;
+      floor.textContent = e.floor;
+      advice.textContent = e.advice;
+      swatch.setAttribute('data-era', e.era);
+      var txt = 'Typical floor · ' + e.ft + ' ft above grade';
+      reading.setAttribute('data-tide-reading', txt);
+      reading.style.setProperty('--h', e.ft);
+      if (readingText) readingText.textContent = 'Typical floor height: ' + e.ft + ' ft above grade';
+      if (section) section.style.setProperty('--age-ft', e.ft);
+      if (cta) cta.setAttribute('data-service', e.svc);
     }
-
     slider.addEventListener('input', update);
     update();
   });
 
-  /* ── Signature + Scroll Stories (GSAP) ──────────────── */
+  /* ── Motion: only with JS + motion allowed ── */
   if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
 
-  document.fonts.ready.then(function () {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
+  /* Intro (≤ 1.2 s): h1 lines rise inside their masks, the grain drifts, the tide comes up the gauge */
+  var lines = document.querySelectorAll('.hero__line > span');
+  if (lines.length) gsap.from(lines, { yPercent: 105, duration: 0.7, stagger: 0.07, ease: 'power3.out', delay: 0.05, clearProps: 'transform' });
+  var mask = document.querySelector('.hero__mask');
+  if (mask) gsap.fromTo(mask, { backgroundPosition: '0px -20px, 0 0, 0 0' }, { backgroundPosition: '0px 0px, 0 0, 0 0', duration: 1.2, ease: 'power2.out' });
+  var water = document.querySelector('.xsec__water');
+  if (water) gsap.from(water, { y: 96, duration: 1.1, ease: 'power2.out', delay: 0.1 });
+  var mark = document.querySelector('.xsec__mark');
+  if (mark) gsap.from(mark, { y: 96, duration: 1.1, ease: 'power2.out', delay: 0.1 });
 
-    /* Intro: hero mask grain drift + headline stagger */
-    var mask = document.querySelector('.hero__mask');
-    if (mask) {
-      gsap.fromTo(mask, { backgroundPosition: '50% 40%' }, {
-        backgroundPosition: '50% 45%',
-        duration: 1.2,
-        ease: 'power2.out',
-        delay: 0.2
-      });
-    }
-
-    var h1Lines = document.querySelectorAll('[data-split="lines"] > *');
-    if (h1Lines.length) {
-      gsap.from(h1Lines, {
-        yPercent: 100,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.07,
-        ease: 'cubic-bezier(.2,.7,.1,1)',
-        delay: 0.1
-      });
-    }
-
-    /* Scroll Story 1: Tide Rise (pinned cross-section) — desktop only */
-    ScrollTrigger.matchMedia({
-      '(min-width: 640px)': function () {
-        var track = document.querySelector('[data-scroll-story="tide-rise"]');
-        if (!track) return;
-        var steps = track.querySelectorAll('.story__step');
-        if (!steps.length) return;
-
-        var tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: track,
-            start: 'top top',
-            end: '+=' + (steps.length * 55) + 'svh',
-            pin: true,
-            scrub: 0.8,
-            invalidateOnRefresh: true
-          }
-        });
-
-        steps.forEach(function (step, i) {
-          var text = step.querySelector('.story__text');
-          var media = step.querySelector('.story__media');
-          var tideLine = step.querySelector('.tide-line');
-
-          if (i > 0) {
-            tl.fromTo(step, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, i);
-          }
-          if (text) {
-            tl.fromTo(text, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out' }, i + 0.2);
-          }
-          if (media) {
-            tl.fromTo(media, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0)', duration: 0.9, ease: 'power2.inOut' }, i + 0.3);
-          }
-          if (tideLine) {
-            tl.fromTo(tideLine, { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: 0.6, ease: 'power2.out' }, i + 0.5);
-          }
-        });
-      }
-    });
-
-    /* Scroll Story 2: Board lace-in unclip at stairs-detail */
-    var stairsFrame = document.querySelector('#stairs-detail .frame');
-    if (stairsFrame) {
-      gsap.fromTo(stairsFrame,
-        { clipPath: 'inset(0 0 100% 0)' },
-        {
-          clipPath: 'inset(0)',
-          duration: 0.9,
-          ease: 'power2.inOut',
-          scrollTrigger: {
-            trigger: '#stairs-detail',
-            start: 'top 75%',
-            toggleActions: 'play none none reverse'
-          }
-        }
-      );
-    }
-
-    /* Tide line reveals across all sections */
-    var tideLines = document.querySelectorAll('.tide-line[data-sw-signature]');
-    tideLines.forEach(function (line) {
-      gsap.fromTo(line,
-        { scaleX: 0, transformOrigin: 'left center' },
-        {
-          scaleX: 1,
-          duration: 0.7,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: line,
-            start: 'top 90%',
-            toggleActions: 'play none none reverse'
-          }
-        }
-      );
-    });
-
-    ScrollTrigger.refresh();
+  /* Tide lines draw in from the left as each section arrives */
+  gsap.utils.toArray('.tide-line[data-sw-signature]').forEach(function (line) {
+    if (line.closest('.hero')) return;
+    gsap.from(line, { scaleX: 0, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: line, start: 'top 92%', once: true } });
   });
+
+  ScrollTrigger.matchMedia({
+    /* Story: the tide staff fills as the three passes go by (sticky rail, no pin, scrubbed) */
+    '(min-width: 900px)': function () {
+      var body = document.querySelector('[data-scroll-story="tide-rise"]');
+      if (!body) return;
+      body.style.setProperty('--sw-p', 0.06);
+      ScrollTrigger.create({
+        trigger: body, start: 'top 65%', end: 'bottom 70%', scrub: true,
+        onUpdate: function (self) { body.style.setProperty('--sw-p', (0.06 + self.progress * 0.94).toFixed(3)); }
+      });
+      return function () { body.style.removeProperty('--sw-p'); };
+    }
+  });
+
+  document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
 })();
