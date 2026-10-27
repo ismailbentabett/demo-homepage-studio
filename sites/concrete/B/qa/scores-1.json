@@ -1,0 +1,68 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 8.0,
+      "notes": "dist/index.html lines 380-391: hero uses min-height calc(100svh - header-h) with grid layout; h1 uses fs-h1 clamp(3.5rem to 7rem). Cannot verify fold position or next-band peek without screenshots (qa/screens/ missing per render-check.json). Phone visible in header (line 362) and mobile bar (line 1122). Score capped at 8.0 due to inability to verify visual execution of type-mask hero promised in concept."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "dist/index.html: spec-rail signature appears in hero (line 387), story (data-sw-signature line ~400+), reviews (line 941), footer (line 1099). Dim-line primitive defined lines 342-344. Oswald + Outfit + DM Mono trio is unique per concept. Cannot verify sibling differentiation without screenshots; score reflects structural presence of signature system across 4+ sections."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 28-31: Oswald display, Outfit text, DM Mono accent. Fluid scale lines 271-277. Body fs-1 clamp(1rem to 1.125rem) meets 16px floor. Measure max-width 65ch (line 302). Kicker class for mono labels (line 311). Cannot verify orphan control, tracking values, or curly quotes without visual inspection. Solid typographic foundation visible in CSS."
+    },
+    "layout": {
+      "score": 8.0,
+      "notes": "dist/index.html: 12 sections with alternating tones (t-deep, t-paper, t-mid, t-accent). Grid layouts vary (hero 1.2fr/0.8fr line 389, trust auto-fit line 394, story 1fr line 398). Cannot verify rhythm, density map, or whether two dark bands touch without screenshots. Section count and tone alternation suggest good structure but visual confirmation missing."
+    },
+    "photo": {
+      "score": 7.0,
+      "notes": "dist/index.html line 25: placeholder-hero-B1.webp referenced. Lines 1116: eight 'Photo by unknown on Pexels' credits with empty href (static.json warnings). Placeholder images expected per task brief, but credit links are broken (<a> without href). Filter applied line 347 (saturate .8, contrast 1.1, sepia .12) suggests consistent grading. Cannot verify crop ratios, object-position, or whether photos match Mesa region without screenshots. Score reflects placeholder penalty and broken credits."
+    },
+    "copy": {
+      "score": 9.0,
+      "notes": "dist/index.html: h1 'Concrete Driveways, RV Pads & Patios in Mesa, AZ' (title line 6) states trade + city. Reviews lines 950-971 include specific measurements ('Six inches, rebar every 16', '4:45 in the morning in July'). Sample tags present (line 946, 1115). No banned phrases detected. Voice matches concept's three sample sentences. Multi-step form uses action-specific labels ('Send spec' line 1081)."
+    },
+    "mobile": {
+      "score": 8.0,
+      "notes": "dist/index.html: responsive breakpoints at 899px (line 365) and 900px (line 388). Mobile bar with call/SMS buttons (lines 1121-1124) has min-height 48px (line 323). Header hides nav below 899px, shows menu button. Cannot verify tap targets, horizontal scroll, or pinned behavior without screenshots. Structural mobile support present but visual verification impossible."
+    },
+    "a11y": {
+      "score": 8.0,
+      "notes": "dist/index.html: skip-link (line 315), focus-visible outline 3px (line 307), sr-only class (line 314). Reduced motion handled via sw-motion gate (lines 93-106, 230-235). JS-off fallbacks: compare shows grid (line 142), hotspots hidden (line 169), carousel static (lines 152-154). Form inputs have labels (lines 1066-1076). Cannot verify reduced-motion screenshot content or axe results without render.json. Foundation solid but unverified."
+    },
+    "motion": {
+      "score": 8.0,
+      "notes": "dist/index.html: reveal system (lines 93-106), split text (lines 109-121), rotator (lines 124-129), marquee (lines 145-155). Motion tokens defined (lines 56-65). Hero num clip-path animation (lines 384-385). Multiple hooks beyond plain reveals: clip, scale, stagger, split. Cannot verify timing, easing, or whether intro blocks reading without screenshots. Code structure supports varied motion but execution unverified."
+    },
+    "wow": {
+      "score": 8.0,
+      "notes": "dist/index.html: spec rail accumulates choices from tools and reviews, expands into quote form (concept thesis). Estimator, tabs, zip checker present. Tool outputs tied to signature system. Cannot verify whether the wow moment lands visually or whether tool output is designed in signature language without screenshots. Concept promises connected moments but visual proof missing."
+    },
+    "polish": {
+      "score": 8.0,
+      "notes": "dist/index.html: SVG favicon (line 20), apple-touch-icon (line 21), OG image 1200x630 (lines 13-15), theme-color (line 9), JSON-LD GeneralContractor (line 22). Print stylesheet for estimator (lines 244-253). Consistent border-radius 2px (lines 323, 334, 340, 346). Forced colors handled (lines 238-241, 308). Lazy loading with width/height not verified. Solid polish details in markup."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html line 1116, ul.credits",
+      "problem": "Eight photo credit links have empty href attribute (<a>Pexels</a>), flagged as warnings in static.json",
+      "fix": "Add proper href to each credit link pointing to the actual Pexels photo URL, or remove the <a> tag if URL is unknown and use plain text"
+    }
+  ],
+  "elevate": [
+    {
+      "category": "firstScreen",
+      "move": "Verify type-mask hero executes within 1.2s and next band peeks 40-120px; if mask delays reading, reduce clip-path duration or show static fallback earlier"
+    },
+    {
+      "category": "photo",
+      "fix": "Replace placeholder images with approved niche media from niches/concrete/media/manifest.json; ensure all photos are Mesa-appropriate desert concrete work, not generic stock"
+    }
+  ],
+  "verdictHint": "FIX",
+  "weighted": 8.17
+}
