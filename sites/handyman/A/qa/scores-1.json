@@ -1,0 +1,67 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "dist/index.html: h1 '8:00 to 12:00. Your list, done.' is 6 words, states outcome but not trade+city in the headline itself (trade+city only in kicker above). Phone visible in header and hero CTA. Next band (how-it-works) likely peeks. Deduction: h1 does not name trade or city (-0.5 per RUBRIC 3.1 'headline is a slogan with no trade or no place'). No screenshots available to verify fold or animation timing."
+    },
+    "distinctiveness": {
+      "score": 9,
+      "notes": "Time Card Punch signature present in hero (time-rail with 08:00 stamp), services (09:00), reviews (11:40), and footer (12:00 punch-out) per dist/index.html lines 580-582, 713-715, 844-846, 1021-1023. Signature organizes information (timestamps mark section progression). Three layout families: split hero+steps, checklist planner, price table. Palette (Buff Card + Punch Red) and type trio (Space Grotesk/Work Sans/DM Mono) are consistent. Cannot verify sibling distinctiveness without screenshots of B/C."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "Space Grotesk display, Work Sans body, DM Mono accent per concept.json. Fluid scale with clamp(). Body >= 16px (fs-1 clamps to 1rem-1.125rem). Measure constrained to 65ch for p, 55ch for lead. Tabular numerals on prices (DM Mono). Deductions: no evidence of curly quotes or en-dash ranges in copy (straight hyphens in '8:00 to 12:00'); kicker labels appear multiple times (hero kicker, proof-line) which may trigger '3+ tiny tracked caps' rule. No screenshots to confirm orphan control."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "Sections alternate tones: paper (hero) -> light (how-it-works) -> deep (planner) -> paper (services) -> accent (pricing) -> paper (break) -> deep (reviews) -> light (area) -> paper (contact) -> deep (footer). Good rhythm. Layout families: split, grid, table, full-bleed break. Deduction: services section uses a uniform 3-column grid of 9 identical svc-cards which reads as template-like; two dark bands (planner t-deep and reviews t-deep) are separated by paper/accent/paper/break so no touch. No screenshots to verify spacing or asymmetric moves."
+    },
+    "photo": {
+      "score": 7,
+      "notes": "All images are placeholders with alt text 'Placeholder for [token]' per dist/index.html lines 594-601, 636, 838, 911. No actual photography to judge grade, crop, or consistency. Placeholder integration is functional (frame component with aspect-ratio, fallback styling). Score reflects absence of real media; per instructions, placeholder penalty is noted but not heavy. MustFix: alt text says 'Placeholder for...' which is developer-facing, not visitor-facing description."
+    },
+    "copy": {
+      "score": 8.5,
+      "notes": "Voice is plain and specific: 'Four hours from 8:00 to 12:00', 'patch, sand and paint to match', 'two-hour minimum'. Sample labels present on pricing (line 796-828) and reviews (lines 855, 867, 879). No banned phrases detected. Deductions: primary action naming inconsistent - 'Book a half-day' in hero (line 588), 'Price it' on service cards (lines 724-772), 'Get my number' in pricing (line 832), 'Send my list' in form (line 1004). Four different names for the primary action violates RUBRIC 3.6 'Two different names for the primary action' deduction (-0.5)."
+    },
+    "mobile": {
+      "score": 8,
+      "notes": "Mobile bar present with call and book CTAs (lines 1042-1045), hides on scroll via .is-hidden class. Tap targets min-height 48px on buttons and radio-cards. Responsive breakpoints at 640px, 900px, 1200px. Time-rail reflows to horizontal row under 900px (line 412-416). Deduction: cannot verify 390x844 composition without screenshots; mobile bar may cover footer credits or form submit button. Floor is 8, score meets floor but cannot confirm 9 anchor without visual evidence."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "Skip link present (line 543). Focus styles defined with 3px outline and offset (line 506). All form inputs have labels. ARIA live regions on zip checker and checklist result. Reduced motion media query disables animations (lines 519-522). Forced colors handled (lines 524-528). Heading order: h1 -> h2 -> h3, no skips detected. Deduction: cannot verify reduced-motion screenshot shows all content; rotator aria-hidden status unknown without JS execution. Meets floor 8."
+    },
+    "motion": {
+      "score": 8,
+      "notes": "Reveal system with fade, clip, scale variants (CSS lines 91-104). Split text animation on h1 (data-split='lines'). Marquee with pause on hover/focus capability. Timestamp pills animate on scroll per concept.json. Deductions: fewer than 3 distinct hooks beyond plain reveals visible in markup (reveal, split, marquee are the three; timestamp ink-in depends on JS not verifiable). Same reveal pattern (translateY + opacity) applied to most sections via data-reveal. Cannot verify intro timing or skippability without screenshots."
+    },
+    "wow": {
+      "score": 8,
+      "notes": "Half-day planner checklist (lines 646-707) is a functional tool tied to the thesis: pick items, get feedback on fit, book that list. Output is dynamic result text plus pre-filled service on book button. Tied to concept. Deduction: tool output is a text line ('checklist__result') rather than a designed artifact in the signature language; not clearly a 'printable sheet' or visual output. Generic moment risk avoided."
+    },
+    "polish": {
+      "score": 8,
+      "notes": "SVG favicon and apple-touch-icon present (lines 20-21). OG image 1200x630 declared (lines 13-15). Theme-color set (line 9). JSON-LD with HomeAndConstructionBusiness type (line 22). Consistent 2px border-radius throughout. Print stylesheet for estimator (lines 242-251). Deductions: static.json shows 11 warnings for <a> without href in credits (Pexels links); mixed signal between placeholder alt text and professional polish. No console errors visible but credit links are broken."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html lines 594-601, 636, 838, 911",
+      "problem": "Alt text reads 'Placeholder for fix-drywall-patch' etc., which is developer-facing token leakage, not a visitor-facing description of what the frame shows.",
+      "fix": "Replace each alt attribute with a descriptive phrase matching the slot's intent, e.g. 'Hand patching a drywall hole before sanding' for fix-drywall-patch. Use facts.json service blurbs as source."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "photo",
+      "move": "Once real media arrives, apply a single warm-neutral grade (sepia 0.06, saturate 0.85 already in CSS) consistently and use object-position to place hands/tools on thirds; add one signature-treated frame (e.g., time-stamp overlay on the break photo) so photography participates in the Time Card Punch system rather than sitting beside it."
+    },
+    {
+      "category": "copy",
+      "move": "Unify the primary action to one verb phrase across hero, service cards, pricing, and form submit — recommend 'Book a visit' since it matches the section id and the homeowner's mental model; retire 'Price it' and 'Get my number' so the CTA language is singular and ownable."
+    }
+  ],
+  "verdictHint": "FIX"
+}
