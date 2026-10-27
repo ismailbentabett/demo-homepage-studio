@@ -1,5 +1,8 @@
 # Blueprint — general-B (Open Ledger Builders)
 
+## Round 3
+The qa/last source was round 2, so I rebuilt the round-3 work from its screenshots. Elevate (layout): services became a 3-column numbered ledger, reviews became margin-ledger entries, and #contact is now the form beside a live draft cost sheet. Elevate (polish): the footer is the dark closing Total row that the running ledger bar lands in, the shadows are gone, and Lenis and smooth-scroll are removed so the reveals and draws fire. Fixes: kit form nav with a labelled Next of 44px or more, a dark footer that passes 4.5:1, "verified" removed, an h1 of 3 lines at 1440, drawings instead of photo frames, and copy-3 applied.
+
 ## Section list
 
 | # | ID | Tone | Layout | Purpose | Content (tokens) | Media | Hooks | Entrance |

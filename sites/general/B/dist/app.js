@@ -447,45 +447,6 @@ SW.mod('mobilebar', function (SW) {
 });
 
 ;
-/* kit: lenis */
-/* lenis: smooth scrolling when <html data-smooth> is set, window.Lenis is loaded and motion is allowed.
-   lerp .1, wheelMultiplier 1, driven by the GSAP ticker (and synced to ScrollTrigger) when GSAP is loaded.
-   Sets SW.lenis. Same-page anchor links scroll through Lenis and focus their target. */
-SW.mod('lenis', function (SW) {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-smooth') || SW.reduced || typeof window.Lenis !== 'function') return;
-  var lenis = new window.Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    // never hijack scrolling inside an open dialog or an element that scrolls itself
-    prevent: function (node) { return !!(node && node.closest && node.closest('[data-lenis-prevent], dialog[open]')); },
-  });
-  SW.lenis = lenis;
-
-  if (window.gsap && window.gsap.ticker) {
-    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
-    window.gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-    window.gsap.ticker.lagSmoothing(0);
-  } else {
-    var raf = function (time) { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var hash = a.getAttribute('href');
-    if (hash.length < 2) return;
-    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) return;
-    e.preventDefault();
-    SW.scrollTo(target);
-    if (history.pushState) history.pushState(null, '', hash);
-  });
-});
-
-;
 /* kit: split */
 /* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
    Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
@@ -559,56 +520,6 @@ SW.mod('split', function (SW) {
     else SW.inView(el, function () { el.classList.add('is-in'); }, { rootMargin: '0px 0px -10% 0px' });
   });
   window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('is-in'); }); });
-});
-
-;
-/* kit: video */
-/* video: <video data-video data-src="media/x.mp4" poster muted loop playsinline preload="none"> inside a figure
-   with a <button data-vid-btn aria-pressed="false">Pause background video</button> (the [[video]] macro writes both).
-   Loads data-src when it comes near the screen, plays muted, pauses off-screen and in a hidden tab.
-   The button keeps its label; aria-pressed="true" means paused. The figure gets data-state="playing|paused".
-   Under reduced motion nothing autoplays (the poster shows, the button starts pressed; a click plays). */
-SW.mod('video', function (SW) {
-  SW.$$('video[data-video]').forEach(function (v) {
-    var fig = v.closest('figure') || v.parentElement;
-    var btn = fig ? SW.$('[data-vid-btn]', fig) : null;
-    v.muted = true;
-    v.setAttribute('muted', '');
-    v.playsInline = true;
-    var userPaused = SW.reduced;
-    var near = false;
-
-    function load() {
-      if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; }
-    }
-    function play() {
-      load();
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { reflect(); });
-    }
-    function reflect() {
-      var playing = !v.paused && !v.ended;
-      if (btn) btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-      if (fig) fig.setAttribute('data-state', playing ? 'playing' : 'paused');
-    }
-    function sync() {
-      if (near && !userPaused && !document.hidden) play();
-      else if (!v.paused) v.pause();
-    }
-    v.addEventListener('play', reflect);
-    v.addEventListener('playing', reflect);
-    v.addEventListener('pause', reflect);
-    if (btn) {
-      btn.type = 'button';
-      btn.addEventListener('click', function () {
-        if (v.paused) { userPaused = false; play(); } else { userPaused = true; v.pause(); }
-        v.toggleAttribute('data-user-paused', userPaused);
-      });
-    }
-    SW.inView(v, function (inside) { near = inside; sync(); }, { once: false, rootMargin: '150px' });
-    document.addEventListener('visibilitychange', sync);
-    reflect();
-  });
 });
 
 ;
@@ -1278,113 +1189,166 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* general-B — Open Ledger signature + scroll stories */
+/* general-B · Open Ledger: the cost sheet, filled in as you go */
 (function () {
   if (typeof SW === 'undefined') return;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  /* Guard: only run when motion is allowed */
+  function ready(fn) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(fn, 0); });
+    else setTimeout(fn, 0);
+  }
+
+  /* ---------- 1. Estimator: trade split per project (sample shares, no dollars) ---------- */
+  var SPLITS = [
+    ['Framing & insulation', 22, 'Electrical & HVAC', 18, 'Drywall & paint', 24, 'Flooring & trim', 16],
+    ['Cabinets & counters', 34, 'Electrical & plumbing', 18, 'Demo, framing & drywall', 14, 'Flooring, tile & paint', 14],
+    ['Waterproofing & tile', 30, 'Plumbing & fixtures', 26, 'Demo & framing', 12, 'Electrical & venting', 12],
+    ['Footings & foundation', 20, 'Framing & roof', 28, 'Mechanicals', 16, 'Finishes', 16],
+    ['Foundation cut', 30, 'Window & well', 30, 'Drain & backfill', 14, 'Interior finish', 6]
+  ];
+  function estimator() {
+    var sel = $('[data-est-item]');
+    var lines = $('[data-est-lines]');
+    if (!sel || !lines) return;
+    function paint() {
+      var s = SPLITS[sel.selectedIndex] || SPLITS[0];
+      for (var i = 0; i < 4; i++) {
+        var l = $('[data-l="' + i + '"]', lines), p = $('[data-p="' + i + '"]', lines);
+        if (l) l.textContent = s[i * 2];
+        if (p) {
+          p.textContent = s[i * 2 + 1] + '%';
+          p.parentElement.style.setProperty('--w', (s[i * 2 + 1] / 100).toFixed(2));
+        }
+      }
+    }
+    sel.addEventListener('change', paint);
+    paint();
+  }
+
+  /* ---------- 2. Contact: the draft cost sheet fills in line by line ---------- */
+  function draftSheet() {
+    var form = $('form[data-lead]');
+    if (!form) return;
+    function val(name) {
+      var f = $$('[name="' + name + '"]', form);
+      if (!f.length) return '';
+      if (f[0].type === 'radio') {
+        var c = f.filter(function (x) { return x.checked; })[0];
+        if (!c) return '';
+        var lab = c.closest('label');
+        return lab ? lab.textContent.trim() : c.value;
+      }
+      return (f[0].value || '').trim();
+    }
+    function paint() {
+      $$('[data-sum]').forEach(function (out) {
+        var v = val(out.getAttribute('data-sum'));
+        var next = v || 'Not picked yet';
+        if (out.textContent !== next) {
+          out.textContent = next;
+          out.classList.toggle('is-set', !!v);
+        }
+      });
+    }
+    form.addEventListener('change', paint);
+    form.addEventListener('input', paint);
+    form.addEventListener('sw:prefill', function () { setTimeout(paint, 0); });
+    paint();
+
+    /* Next button says where it goes */
+    var next = $('[data-next]', form);
+    var labels = ['Next: describe the job', 'Next: when to call', 'Next: your contact', 'Next'];
+    if (next && 'MutationObserver' in window) {
+      new MutationObserver(function () {
+        var n = parseInt(form.getAttribute('data-step-current'), 10) || 1;
+        next.textContent = labels[n - 1] || 'Next';
+      }).observe(form, { attributes: true, attributeFilter: ['data-step-current'] });
+    }
+  }
+
+  /* ---------- 3. ZIP: check as soon as 5 digits are typed ---------- */
+  function zipAuto() {
+    var box = $('[data-zip]');
+    if (!box) return;
+    var input = $('input', box), btn = $('button', box);
+    if (!input || !btn) return;
+    input.addEventListener('input', function () {
+      if (input.value.replace(/\D/g, '').length === 5) btn.click();
+    });
+  }
+
+  ready(function () { estimator(); draftSheet(); zipAuto(); });
+
+  /* ================= Motion (only with motion allowed) ================= */
   if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-
-  /* Wait for GSAP + ScrollTrigger */
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
   gsap.registerPlugin(ScrollTrigger);
 
-  /* Refresh after fonts load so measurements are accurate */
-  document.fonts.ready.then(function () {
-    ScrollTrigger.refresh();
-  });
-
-  /* ── Running total bar (desktop only) ── */
-  var progressEl = document.createElement('div');
-  progressEl.className = 'ledger-progress';
-  progressEl.setAttribute('aria-hidden', 'true');
-  document.body.prepend(progressEl);
-
-  var sections = document.querySelectorAll('[data-ledger-pct]');
-  var totalPct = 0;
-
-  sections.forEach(function (sec) {
-    var pct = parseFloat(sec.getAttribute('data-ledger-pct')) || 0;
-    totalPct += pct;
+  ready(function () {
+    /* Running total: a bar that climbs with the page and lands in the footer TOTAL */
+    var bar = document.createElement('div');
+    bar.className = 'ledger-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+    var totalEl = $('[data-total]');
+    var fill = $('.footer__total-fill');
+    var footer = $('.footer');
 
     ScrollTrigger.create({
-      trigger: sec,
-      start: 'top center',
-      end: 'bottom center',
-      matchMedia: '(min-width: 640px)',
-      onEnter: function () { updateBar(totalPct); },
-      onEnterBack: function () { updateBar(totalPct); },
-      onLeave: function () { updateBar(Math.min(totalPct + pct, 100)); },
-      onLeaveBack: function () { updateBar(Math.max(totalPct - pct, 0)); }
+      start: 0,
+      end: 'max',
+      onUpdate: function (self) { bar.style.setProperty('--ledger-p', self.progress.toFixed(4)); }
     });
+    if (fill && footer && totalEl) {
+      /* the climb lands: the bar hands over to the footer TOTAL, which lights up once */
+      gsap.timeline({ scrollTrigger: { trigger: footer, start: 'top 85%', once: true } })
+        .to(bar, { opacity: 0, duration: 0.3 })
+        .fromTo(fill, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: 'power3.inOut', immediateRender: false }, 0)
+        .fromTo(totalEl, { color: '#F6F3ED' }, { color: '#E07A63', duration: 0.6, immediateRender: false }, 0.6);
+    }
+
+    /* Hero: the cost sheet bars rule themselves in (h1 is never delayed) */
+    var heroBars = $$('#hero .sheet__bar');
+    if (heroBars.length) {
+      gsap.from(heroBars, { scaleX: 0, duration: 0.7, stagger: 0.07, ease: 'power3.out', delay: 0.25 });
+    }
+
+    /* Estimator bars re-rule when the project changes */
+    var sel = $('[data-est-item]');
+    if (sel) sel.addEventListener('change', function () {
+      gsap.fromTo('#budget-tool .sheet__bar', { scaleX: 0 }, { scaleX: 1, duration: 0.5, stagger: 0.05, ease: 'power3.out' });
+    });
+
+    /* Drawings: lines are drawn the way a sheet is ruled */
+    function drawIn(svg, scrub) { /* scrub kept for reference; all draws play once */
+      var parts = $$('path, circle', svg).filter(function (p) {
+        return p.hasAttribute('pathLength') && !p.classList.contains('dash');
+      });
+      if (!parts.length) return;
+      gsap.set(parts, { strokeDasharray: 1, strokeDashoffset: 1 });
+      var tl = gsap.timeline({
+        scrollTrigger: scrub
+          ? { trigger: svg, start: 'top 85%', end: 'center 45%', scrub: 0.6 }
+          : { trigger: svg, start: 'top 85%', once: true }
+      });
+      tl.to(parts, { strokeDashoffset: 0, duration: scrub ? 1 : 0.9, stagger: scrub ? 0.08 : 0.06, ease: 'power2.inOut' });
+      var dots = $$('.red-dot', svg);
+      if (dots.length) tl.from(dots, { scale: 0, transformOrigin: 'center', duration: 0.3, stagger: 0.1 }, '>-0.2');
+    }
+    $$('.house__draw').forEach(function (s) { drawIn(s, false); });
+    $$('.stage__draw, .permit__sheet .draw, .egress__fig .draw').forEach(function (s) { drawIn(s, false); });
+
+    /* Services: line numbers tick in as each row enters */
+    $$('.svc-row').forEach(function (row) {
+      gsap.from(row, {
+        y: 16, opacity: 0, duration: 0.6, ease: 'power3.out',
+        scrollTrigger: { trigger: row, start: 'top 92%', once: true }
+      });
+    });
+
+    document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   });
-
-  function updateBar(val) {
-    document.documentElement.style.setProperty('--ledger-total', Math.min(val, 100) + '%');
-  }
-
-  /* ── Hero ledger lines draw-in (intro ≤1.2s) ── */
-  var heroRows = document.querySelectorAll('.ledger-sample__row');
-  if (heroRows.length) {
-    gsap.from(heroRows, {
-      scaleX: 0,
-      transformOrigin: 'left center',
-      duration: 0.6,
-      stagger: 0.08,
-      ease: 'power3.out',
-      delay: 0.2
-    });
-  }
-
-  /* ── Services stagger clip + counter tick ── */
-  var svcRows = document.querySelectorAll('.ledger-row');
-  if (svcRows.length) {
-    ScrollTrigger.batch(svcRows, {
-      start: 'top 85%',
-      matchMedia: '(min-width: 640px)',
-      onEnter: function (batch) {
-        gsap.from(batch, {
-          y: 32,
-          opacity: 0,
-          duration: 0.7,
-          stagger: 0.06,
-          ease: 'power3.out'
-        });
-        /* Counter-driven number tick on pct column */
-        batch.forEach(function (row) {
-          var pctEl = row.querySelector('[data-count]');
-          if (!pctEl) return;
-          var target = parseFloat(row.getAttribute('data-ledger-pct')) || 0;
-          var obj = { val: 0 };
-          gsap.to(obj, {
-            val: target,
-            duration: 1.2,
-            ease: 'power2.out',
-            onUpdate: function () {
-              pctEl.textContent = Math.round(obj.val) + '%';
-            }
-          });
-        });
-      }
-    });
-  }
-
-  /* ── Proof reviews stagger rise ── */
-  var reviewItems = document.querySelectorAll('.ledger-review');
-  if (reviewItems.length) {
-    ScrollTrigger.batch(reviewItems, {
-      start: 'top 85%',
-      onEnter: function (batch) {
-        gsap.from(batch, {
-          y: 24,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.06,
-          ease: 'power3.out'
-        });
-      }
-    });
-  }
-
 })();
+
