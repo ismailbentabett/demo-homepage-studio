@@ -21,3 +21,13 @@ Rejected, left as stubs (nothing honest and on-topic in the pool):
 - process-tearoff: Navy worker face to camera, portrait with grey padding.
 - problem-curled-shingles, tool-chalkline: no candidates.
 - Also rejected: finished-roofline oc00176933153 (house number "21"), oc00114279963 (sign); decking oc00070244671/245100 ("United Rentals", housewrap brand print); prairie oc00051937123 (© watermark).
+
+## 2026-10-27 — placeholder replacement pass (Wikimedia pool)
+- hero-B2 <- oc00059941514: low-angle asphalt shingle granules, dark wall above leaves text room.
+- problem-curled-shingles <- oc00058215307: shingle course visibly lifting at its edge, real residential roof.
+- problem-missing-shingles <- oc00076097525: worn-through patch in roll roofing; honest "failed surface", not literally a missing shingle.
+- process-tearoff <- oc00105796422: crew on bare roof boards mid re-roof (NPS stone house); generator logo blurred, unreadable.
+- finished-roofline (upgrade) <- oc00105644445: same house, new cedar roof done; replaces the mid-construction frame.
+- SKIPPED (nothing honest in pool): material-pipe-boot (blueprints, satellite, a tile chimney flashing), problem-ceiling-stain (ornate domed ceilings, cave), tool-chalkline (protest, sculpture), weather-ice-branches (no pool).
+- Kept (no better candidate): hands-pointing-damage, process-decking, process-cleanup, process-ridge (gull frame still weak).
+- Rejected: oc00176430936/927 (credit names a real roofing company), oc00054820729 (military, face to camera).
