@@ -301,7 +301,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* Tones */
 .t-paper { --bg: var(--paper); --ink: #1b2631; --muted: #4a5568; --rule: #c9bfb0; --accent: #c9a24d; --focus: #c9a24d; --btn-bg: #8b3a3a; --btn-fg: #fff; background: var(--bg); color: var(--ink); }
 .t-deep { --bg: var(--deep); --ink: #f4efe6; --muted: #b0bec5; --rule: #3d5060; --accent: #c9a24d; --focus: #c9a24d; --btn-bg: #f4efe6; --btn-fg: #1b2631; background: var(--bg); color: var(--ink); }
-.t-accent { --bg: var(--accent); --ink: #1b2631; --muted: #3d3222; --rule: #a8873a; --accent: #1b2631; --focus: #1b2631; --btn-bg: #1b2631; --btn-fg: #f4efe6; background: var(--bg); color: var(--ink); }
+.t-accent { --bg: #c9a24d; --ink: #1b2631; --muted: #3d3222; --rule: #a8873a; --accent: #1b2631; --focus: #1b2631; --btn-bg: #1b2631; --btn-fg: #f4efe6; background: var(--bg); color: var(--ink); }
 .t-mid { --bg: var(--mid); --ink: #1b2631; --muted: #4a5568; --rule: #c9bfb0; --accent: #8b3a3a; --focus: #8b3a3a; --btn-bg: #8b3a3a; --btn-fg: #fff; background: var(--bg); color: var(--ink); }
 
 /* Buttons */
@@ -310,6 +310,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .btn:active { transform: scale(0.97); }
 .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--rule); }
 .btn-sm { min-height: 40px; padding: 0 var(--s-4); font-size: var(--fs--1); }
+.btn svg { width: 18px; height: 18px; flex: none; }
 .btn-icon { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: transparent; border: none; cursor: pointer; }
 .btn-icon svg { width: 24px; height: 24px; }
 
@@ -342,26 +343,31 @@ textarea { resize: vertical; }
 .cut-rule::before, .cut-rule::after { content: ''; position: absolute; top: 50%; height: 8px; width: 1px; background: var(--rule); }
 .cut-rule::before { left: 0; }
 .cut-rule::after { right: 0; }
-.cut-rule__label { position: relative; z-index: 1; padding: 0 var(--s-4); background: var(--bg); font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); white-space: nowrap; }
-.cut-rule__kerf { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--rule); transform: scaleX(var(--sw-p, 0)); transform-origin: left; transition: transform 100ms linear; }
+.cut-rule__label { position: relative; z-index: 1; padding: 0 var(--s-4); background: var(--bg); font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); max-width: calc(100% - 24px); text-align: center; text-wrap: balance; }
+.cut-rule__kerf { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--rule); transform: scaleX(1); transform-origin: left; }
+.sw-motion.sw-kerf .cut-rule__kerf { transform: scaleX(var(--sw-p, 0)); }
+#hero > .cut-rule { margin-block: var(--s-6) 0; }
 .cut-rule--sm { margin-block: var(--s-3); padding: var(--s-3) 0; }
 .cut-rule--sm .cut-rule__label { font-size: 11px; }
 .cut-rule--footer { margin-top: var(--s-8); border-top: 1px solid var(--rule); }
 
 /* Hero */
-.hero { min-height: calc(100svh - var(--header-h)); padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-8); display: flex; flex-direction: column; justify-content: center; }
+.section.hero { min-height: calc(100svh - var(--header-h)); padding-top: calc(var(--header-h) + var(--s-7)); padding-bottom: var(--s-5); display: flex; flex-direction: column; justify-content: center; }
 .hero__grid { display: grid; gap: var(--s-6); }
 .kicker { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: var(--s-3); }
 .hero h1 { font-family: 'Young Serif', serif; font-size: var(--fs-h1); line-height: 0.92; letter-spacing: -0.02em; text-wrap: balance; margin-bottom: var(--s-5); }
 .hero .lead { font-size: var(--fs-1); font-weight: 450; line-height: 1.55; max-width: 60ch; margin-bottom: var(--s-6); }
+@media (max-width: 639px) { .header__actions .btn-call { width: 48px; min-height: 48px; padding: 0; justify-content: center; } .header__actions .btn-call span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } }
+@media (min-width: 1100px) { .hero__text { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); column-gap: var(--s-8); align-items: end; } .hero__text .kicker { grid-column: 1 / -1; } .hero__text h1 { margin-bottom: 0; } .hero__side { padding-bottom: var(--s-2); } .hero__side .lead { margin-bottom: var(--s-5); } .hero__side .hero__ctas { margin-bottom: var(--s-5); } }
 .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-6); }
 .proof-line { font-family: 'DM Mono', monospace; font-size: var(--fs--1); color: var(--muted); display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
 .sample-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; line-height: 1; padding: 4px 10px; border-radius: 999px; background: var(--accent); color: var(--ink); text-transform: uppercase; letter-spacing: 0.05em; vertical-align: middle; }
 
 /* Filmstrip */
-.filmstrip { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-block: var(--s-6); margin-inline: calc(-1 * var(--s-4)); padding-inline: var(--s-4); }
-@media (min-width: 640px) { .filmstrip { margin-inline: calc(-1 * var(--s-6)); padding-inline: var(--s-6); } }
-.filmstrip__track { display: flex; gap: var(--s-4); width: max-content; }
+.filmstrip { padding-block: var(--s-5) 0; }
+.filmstrip__track { scroll-padding-inline: var(--s-4); padding-inline: var(--s-4); }
+@media (min-width: 640px) { .filmstrip__track { scroll-padding-inline: var(--s-6); padding-inline: var(--s-6); } }
+.filmstrip__track { display: flex; gap: var(--s-4); overflow-x: auto; scroll-snap-type: x mandatory; }
 .filmstrip__frame { flex: 0 0 280px; scroll-snap-align: start; }
 @media (min-width: 640px) { .filmstrip__frame { flex: 0 0 360px; } }
 .filmstrip__frame img { aspect-ratio: 3/2; object-fit: cover; width: 100%; filter: saturate(0.85) contrast(1.05) sepia(0.08) brightness(0.98); }
@@ -371,7 +377,7 @@ textarea { resize: vertical; }
 /* Sections generic */
 .section { padding-block: var(--s-8); }
 @media (min-width: 900px) { .section { padding-block: var(--s-9); } }
-.section__head { margin-bottom: var(--s-7); max-width: 720px; }
+.section__head { margin-bottom: var(--s-7); max-width: 760px; }
 .section__head h2 { font-family: 'Young Serif', serif; font-size: var(--fs-3); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: var(--s-3); text-wrap: balance; }
 .section__head .lead { font-size: var(--fs-1); font-weight: 450; line-height: 1.55; color: var(--muted); }
 
@@ -418,11 +424,14 @@ textarea { resize: vertical; }
 
 /* Porch Safety */
 .porch-safety .tool-split { align-items: center; }
+@media (min-width: 900px) { .porch-safety .tool-split { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); } .porch-safety .tool-split > .plate { grid-column: 1 / -1; max-width: none; aspect-ratio: 21 / 9; } }
+@media (min-width: 1200px) { .porch-safety .tool-split { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, .75fr); } .porch-safety .tool-split > .plate { grid-column: auto; aspect-ratio: 3 / 4; } }
 .porch-safety .frame img { aspect-ratio: 3/4; object-fit: cover; filter: saturate(0.85) contrast(1.05) sepia(0.08) brightness(0.98); }
 
 /* Services List */
 .svc-list { display: flex; flex-direction: column; gap: var(--s-4); }
 .svc-row { display: grid; grid-template-columns: auto 1fr auto; gap: var(--s-4); align-items: start; padding: var(--s-5) 0; border-bottom: 1px solid var(--rule); }
+@media (max-width: 639px) { .svc-row { grid-template-columns: auto 1fr; } .svc-row > .btn { grid-column: 2; justify-self: start; } }
 .svc-row__num { font-family: 'DM Mono', monospace; font-size: var(--fs--1); color: var(--accent); padding-top: 4px; }
 .svc-row__body h3 { font-family: 'Young Serif', serif; font-size: var(--fs-1); margin-bottom: var(--s-2); }
 .svc-row__body p { font-size: var(--fs-0); color: var(--muted); max-width: 60ch; }
@@ -461,21 +470,26 @@ textarea { resize: vertical; }
 .contact__intro .lead { font-size: var(--fs-1); font-weight: 450; margin-bottom: var(--s-5); max-width: 50ch; }
 .contact__direct { font-family: 'DM Mono', monospace; font-size: var(--fs--1); color: var(--muted); }
 .lead-form { padding: var(--s-6); border: 1px solid var(--rule); }
-.lead-step { display: none; }
-.lead-step.is-active { display: block; }
+.lead-step { border: 0; padding: 0; min-width: 0; margin-bottom: var(--s-5); }
+.lead-step[hidden] { display: none; }
 .lead-step__title { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-5); color: var(--accent); }
 .lead-field { display: flex; flex-direction: column; gap: var(--s-2); margin-bottom: var(--s-5); }
 .lead-field__label { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.05em; }
-.lead-field--hidden { position: absolute; opacity: 0; pointer-events: none; }
-.lead-step__nav { display: flex; gap: var(--s-3); margin-top: var(--s-5); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.lead-form__nav { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-2); }
+.lead-form__nav .btn { min-height: 48px; min-width: 112px; justify-content: center; }
+html:not(.sw-js) .lead-form__nav [data-back], html:not(.sw-js) .lead-form__nav [data-next] { display: none; }
+.lead-form__progress { position: relative; height: 3px; margin-bottom: var(--s-5); background: var(--rule); }
+.lead-form__progress span { position: absolute; inset: 0 auto 0 0; width: calc(var(--progress, 1) * 100%); background: var(--accent); transition: width 300ms var(--ease-out); }
+[data-form-status]:empty { display: none; }
+[data-form-status] { margin-top: var(--s-3); font-size: var(--fs--1); }
+.field-error { margin-top: var(--s-1); font-size: var(--fs--1); color: #f2b8a8; }
 .lead-step__hint { font-size: var(--fs--1); color: var(--muted); margin-bottom: var(--s-4); font-style: italic; }
 .lead-form__micro { margin-top: var(--s-4); font-size: var(--fs--1); color: var(--muted); }
 .lead-form__thanks { padding: var(--s-6); text-align: center; }
 .lead-form__thanks h3 { font-family: 'Young Serif', serif; font-size: var(--fs-2); margin-bottom: var(--s-3); }
 
 /* Footer */
-.footer { padding-block: var(--s-7); border-top: 1px solid var(--rule); font-size: var(--fs--1); color: var(--muted); }
-.footer__inner { display: flex; flex-direction: column; gap: var(--s-3); }
 .footer__disclaimer { font-style: italic; }
 .credits { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); font-size: 11px; }
 
@@ -486,24 +500,205 @@ textarea { resize: vertical; }
 .mobilebar__inner .btn { flex: 1; justify-content: center; }
 @media (min-width: 900px) { .mobilebar { display: none; } }
 
-/* Motion & Reveal */
-.sw-motion [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); }
-.sw-motion [data-reveal].is-in { opacity: 1; transform: translateY(0); }
-.sw-motion [data-reveal="clip"] { clip-path: inset(0 0 100% 0); transition: clip-path 600ms var(--ease-io); }
-.sw-motion [data-reveal="clip"].is-in { clip-path: inset(0); }
-.sw-motion [data-reveal-stagger] > * { opacity: 0; transform: translateY(24px); transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); }
-.sw-motion [data-reveal-stagger].is-in > * { opacity: 1; transform: translateY(0); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(1) { transition-delay: 0ms; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: 60ms; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: 120ms; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(4) { transition-delay: 180ms; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(5) { transition-delay: 240ms; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(6) { transition-delay: 300ms; }
 
-/* H1 Line Mask */
-.sw-motion [data-split="lines"] > * { display: block; overflow: clip; }
-.sw-motion [data-split="lines"] > * > * { display: block; transform: translateY(100%); transition: transform 700ms cubic-bezier(.2,.7,.1,1); }
-.sw-motion [data-split="lines"].is-split > * > * { transform: translateY(0); }
+/* ---------- Drawn plates: every photo slot carries a shop drawing (teal + cream duotone) ---------- */
+.plate { --pl-bg: #ebe2d1; --pl-ln: #1b2631; --pl-dim: #8b3a3a; --pl-wash: rgba(201,162,77,.38); position: relative; margin: 0; overflow: hidden; aspect-ratio: 3 / 2; background: var(--pl-bg); }
+.plate--deep, .t-deep .plate { --pl-bg: #20384a; --pl-ln: #f4efe6; --pl-dim: #c9a24d; --pl-wash: rgba(201,162,77,.3); }
+.plate--tall { aspect-ratio: 3 / 4; }
+.plate--sq { aspect-ratio: 1 / 1; }
+.plate > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; color: transparent; filter: saturate(.85) contrast(1.05) sepia(.08); }
+.plate__draw { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; padding: 6% 7% 16%;
+  background-color: var(--pl-bg);
+  background-image: linear-gradient(color-mix(in srgb, var(--pl-ln) 7%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--pl-ln) 7%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px; background-position: -1px -1px;
+  fill: none; stroke: var(--pl-ln); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; color: var(--pl-ln); }
+.plate.has-photo .plate__draw { display: none; }
+.plate .frame-fallback { display: none !important; }
+.plate.is-broken > img { visibility: hidden; }
+symbol .g { stroke-width: 1.1; opacity: .55; }
+symbol .dl { stroke: var(--pl-dim); stroke-width: 1.3; }
+symbol .dt { fill: var(--pl-dim); stroke: none; font-family: 'DM Mono', monospace; font-size: var(--dt-fs, 11px); letter-spacing: .06em; }
+symbol .k { stroke: var(--pl-dim); stroke-width: 2; stroke-dasharray: 5 4; }
+symbol .f { fill: var(--pl-ln); }
+symbol .wash { fill: var(--pl-wash); stroke: none; }
+symbol .hatch { stroke: var(--pl-dim); stroke-width: 1.2; opacity: .8; }
+symbol .mk { fill: var(--pl-bg); stroke: var(--pl-dim); stroke-width: 1.3; }
+symbol .leaf { stroke: var(--pl-dim); fill: var(--pl-wash); stroke-width: 1.2; }
+.plate__cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; gap: var(--s-3); align-items: baseline; padding: var(--s-3) var(--s-4); font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.35; letter-spacing: .02em; color: var(--pl-ln); border-top: 1px solid color-mix(in srgb, var(--pl-ln) 22%, transparent); background: var(--pl-bg); }
+.plate__no { flex: none; color: var(--pl-dim); font-weight: 500; }
+/* filmstrip plates: caption stays under the frame */
+.filmstrip__frame.plate { overflow: visible; aspect-ratio: auto; background: none; }
+.filmstrip__frame.plate > .plate__draw { position: relative; inset: auto; display: block; aspect-ratio: 3 / 2; height: auto; padding: 6% 7% 8%; outline: 1px solid var(--rule); outline-offset: -1px; }
+.filmstrip__frame.plate > img { position: absolute; top: 0; left: 0; height: auto; aspect-ratio: 3 / 2; }
+.filmstrip__frame:first-child > .plate__draw { --pl-bg: #20384a; --pl-ln: #f4efe6; --pl-dim: #c9a24d; }
+.filmstrip__track { padding-bottom: var(--s-2); }
+.filmstrip__track:focus-visible { outline-offset: -3px; }
+/* break plate: wide elevation, fixed height */
+.break .plate--wide { aspect-ratio: auto; height: clamp(320px, 52vw, 620px); }
+.break .plate--wide .plate__draw { padding: 4% 4% 10%; }
+.break .plate__cap { max-width: none; margin: 0; padding-inline: var(--s-4); }
+@media (min-width: 640px) { .break .plate__cap { padding-inline: var(--s-6); } }
+.porch-safety .plate, .area .plate { max-width: 460px; width: 100%; justify-self: center; }
+.proof__stats .plate { margin-top: var(--s-5); }
+.card .plate { margin-bottom: var(--s-4); }
+
+/* ---------- Scarf-joint story (rot repair) ---------- */
+.story-rot__media { align-content: start; }
+.story-rot__copy .plate { margin-top: var(--s-6); max-width: 480px; }
+@media (min-width: 900px) { .story-rot__copy .plate { aspect-ratio: 5 / 2; } .story-rot__copy .plate .plate__draw { padding: 3% 6% 18%; } .story-rot__grid { align-items: center; } }
+.scarf { margin: 0; border: 1px solid var(--rule); background: #20384a; }
+.scarf__svg { width: 100%; height: auto; }
+.sc-grid { stroke: rgba(244,239,230,.07); stroke-width: 1; fill: none; }
+.sc-line { fill: none; stroke: #f4efe6; stroke-width: 2; stroke-linejoin: round; }
+.sc-oak { fill: rgba(201,162,77,.22); stroke: #c9a24d; }
+.sc-g { fill: none; stroke: #f4efe6; stroke-width: 1; opacity: .45; }
+.sc-hatch { stroke: #d98a78; stroke-width: 1.4; }
+.sc-cut { fill: none; stroke: #d98a78; stroke-width: 2.5; stroke-dasharray: 6 5; }
+.sc-prime { fill: none; stroke: #c9a24d; stroke-width: 1.5; stroke-dasharray: 2 4; }
+.sc-t { fill: #f4efe6; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .08em; }
+.sc-t--r { fill: #c9a24d; }
+.sc-rot { opacity: 0; }
+.scarf__steps { display: grid; padding: 0; margin: 0; border-top: 1px solid var(--rule); }
+.scarf__steps li { display: flex; gap: var(--s-3); padding: var(--s-3) var(--s-4); font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--rule); transition: color 200ms, background-color 200ms; }
+.scarf__steps li:last-child { border-bottom: 0; }
+.scarf__steps li span { color: var(--accent); }
+.scarf__steps li.is-on { color: var(--ink); background: rgba(201,162,77,.12); }
+@media (min-width: 640px) { .scarf__steps { grid-template-columns: repeat(3, 1fr); } .scarf__steps li { border-bottom: 0; border-right: 1px solid var(--rule); } .scarf__steps li:last-child { border-right: 0; } }
+
+/* ---------- Checklist meter: a kerf that lengthens with every tick ---------- */
+.tool-split__note { font-size: var(--fs-0); max-width: 46ch; color: var(--muted); }
+.checklist { padding: var(--s-5); border: 1px solid var(--rule); background: color-mix(in srgb, var(--bg) 70%, #fff 30%); }
+.t-accent .checklist { background: rgba(244,239,230,.35); }
+.checklist__option { min-height: 48px; border-bottom: 1px dashed var(--rule); }
+.checklist__option.is-checked { font-weight: 600; }
+.checklist__meter { position: relative; height: 14px; margin-top: var(--s-4); border-inline: 1px solid var(--ink); }
+.checklist__meter::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: color-mix(in srgb, var(--ink) 25%, transparent); }
+.checklist__kerf { position: absolute; left: 0; top: 50%; height: 3px; margin-top: -1px; width: var(--checked-pct, 0%); background: var(--signal); transition: width 300ms var(--ease-out); }
+.checklist__result { margin-top: var(--s-3); padding: var(--s-4); border-left: 3px solid var(--signal); background: rgba(27,38,49,.06); font-size: var(--fs-0); font-weight: 500; min-height: 48px; }
+
+/* ---------- Estimator ticket: the price draws itself like a cut line ---------- */
+.est-ticket { margin-bottom: var(--s-4); border: 1px solid var(--rule); }
+.est-ticket__rule { position: relative; display: flex; padding: var(--s-3) var(--s-4); border-bottom: 1px dashed var(--rule); }
+.est-ticket__lbl { position: relative; z-index: 1; padding-right: var(--s-3); background: var(--bg); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .08em; color: var(--accent); }
+.est-ticket__kerf { position: absolute; left: var(--s-4); right: var(--s-4); top: 50%; height: 2px; background: var(--accent); transform-origin: left; }
+.est-ticket__kerf::after { content: ''; position: absolute; right: 0; top: -5px; width: 1px; height: 12px; background: var(--accent); }
+.estimator__output { margin: 0; padding: var(--s-4); background: none; font-family: 'DM Mono', monospace; font-size: var(--fs--1); line-height: 1.5; min-height: 96px; }
+.estimator__output .sw-est-range { display: block; font-family: 'Young Serif', serif; font-size: var(--fs-2); line-height: 1.2; letter-spacing: -.01em; margin-bottom: var(--s-2); text-wrap: balance; }
+.estimator__output .sw-est-note { color: var(--muted); }
+.sw-motion .est-ticket.is-cutting .est-ticket__kerf { animation: kerf-draw 420ms var(--ease-io) both; }
+.sw-motion .est-ticket.is-cutting .sw-est-range { animation: price-in 520ms 300ms var(--ease-out) both; }
+@keyframes kerf-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes price-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* ---------- Card hover: kerf grows under the cut label ---------- */
+@media (hover: hover) {
+  .sw-motion.sw-kerf .card--trim .cut-rule__kerf { transition: transform 400ms var(--ease-out); }
+  .sw-motion.sw-kerf .card--trim:hover .cut-rule__kerf { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .est-ticket.is-cutting .est-ticket__kerf, .est-ticket.is-cutting .sw-est-range { animation: none; }
+}
+
+/* ---------- Round 4: cut heads — a big display-face cut number against a small mono spec ---------- */
+[hidden] { display: none !important; }
+.nw { white-space: nowrap; }
+.cut-head { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--s-4); align-items: end; margin-bottom: var(--s-5); }
+.cut-head__n { grid-row: 1 / span 2; font-family: 'Young Serif', serif; font-size: clamp(4rem, 3rem + 5vw, 8.5rem); line-height: .78; letter-spacing: -.05em; color: var(--accent); font-variant-numeric: lining-nums; }
+.t-paper .cut-head__n, .t-mid .cut-head__n { color: var(--signal); }
+.t-accent .cut-head__n { color: var(--ink); }
+.cut-head__spec { align-self: end; padding-bottom: var(--s-2); margin: 0 0 var(--s-2); border-bottom: 1px solid var(--rule); font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .02em; color: var(--muted); }
+.cut-head h2, .section__head .cut-head h2, .story-rot__copy .cut-head h2, .tool-split__intro .cut-head h2, .contact__intro .cut-head h2 { grid-column: 2; margin: 0; font-family: 'Young Serif', serif; font-size: var(--fs-4); line-height: 1.05; letter-spacing: -.02em; text-wrap: balance; }
+@media (min-width: 1200px) { .cut-head h2, .section__head .cut-head h2, .story-rot__copy .cut-head h2, .tool-split__intro .cut-head h2, .contact__intro .cut-head h2 { font-size: 2.6rem; } }
+@media (max-width: 389px) { .cut-head { column-gap: var(--s-3); } .cut-head__n { font-size: 3.4rem; } }
+
+/* bands that open on a cut rule do not stack section padding on top of it */
+.story-rot, .services, .proof, .contact { padding-top: var(--s-5); }
+.section > .cut-rule:first-child { margin-top: 0; }
+
+/* story plate: the rot drawing fills its strip instead of floating in it */
+.plate--strip, .story-rot__copy .plate.plate--strip { aspect-ratio: 2 / 1; }
+.plate--strip .plate__draw, .story-rot__copy .plate.plate--strip .plate__draw { padding: 8px 8px 52px; --dt-fs: 13px; }
+
+/* services: open list on desktop, accordion on phones (JS closes rows under 640) */
+.svc-list { gap: 0; border-top: 1px solid var(--rule); }
+.svc-row { display: block; padding: 0; }
+.svc-row__d { border: 0; }
+.svc-row__sum { display: grid; grid-template-columns: 3ch minmax(0, 1fr) auto; gap: var(--s-4); align-items: baseline; min-height: 56px; padding-block: var(--s-4) var(--s-2); list-style: none; cursor: pointer; }
+.svc-row__sum::-webkit-details-marker { display: none; }
+.svc-row__sum h3 { font-family: 'Young Serif', serif; font-size: var(--fs-2); line-height: 1.2; font-weight: 400; }
+.svc-row__sum .i { width: 20px; height: 20px; align-self: center; transition: transform 200ms var(--ease-out); }
+.svc-row__d[open] .svc-row__sum .i { transform: rotate(180deg); }
+.svc-row__body { display: grid; gap: var(--s-3); padding: 0 0 var(--s-5) calc(3ch + var(--s-4)); }
+.svc-row__body p { font-size: var(--fs-0); color: var(--muted); max-width: 62ch; }
+.svc-row__body .btn { justify-self: start; }
+@media (min-width: 640px) {
+  .svc-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-7); }
+  .svc-row { border-bottom: 1px solid var(--rule); }
+  .svc-row__sum { cursor: default; }
+  .svc-row__sum .i { display: none; }
+}
+@media (max-width: 639px) { .svc-row { border-bottom: 1px solid var(--rule); } }
+@media (min-width: 1200px) { .svc-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* proof: tighter top, the rating set big in the display face */
+.proof__head { margin-bottom: var(--s-6); }
+.proof__rating { font-size: clamp(4rem, 3rem + 4vw, 7rem); line-height: .85; letter-spacing: -.04em; color: var(--accent); }
+.proof__of { font-size: .4em; color: var(--ink); letter-spacing: 0; }
+.proof { padding-bottom: calc(var(--s-6) + 72px); }
+.proof { position: relative; z-index: 1; }
+@media (min-width: 900px) { .proof .guarantee { padding-right: calc(52% + var(--s-6)); } }
+@media (min-width: 900px) { .proof { padding-bottom: 128px; } }
+
+/* the one off-grid moment: the finished scarf plate straddles the navy/paper seam */
+.area { padding-top: 0; }
+.area__seam { position: relative; z-index: 2; margin-top: -72px; }
+.plate--seam { aspect-ratio: 2 / 1; width: min(100%, 620px); margin-left: auto; box-shadow: 0 0 0 1px var(--rule), 14px 14px 0 rgba(27,38,49,.12); --pl-bg: #ebe2d1; }
+.plate--seam .plate__draw { padding: 8px 8px 52px; --dt-fs: 13px; }
+@media (min-width: 900px) { .area__seam { margin-top: -150px; } .plate--seam { width: min(52%, 660px); margin-right: 8%; transform: rotate(-1.2deg); } }
+.area .cut-rule { margin-top: var(--s-5); }
+.area__grid { align-items: start; }
+@media (min-width: 900px) { .area__grid { grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); } .area .plate--tall { max-width: 420px; justify-self: end; } }
+.area__hours { margin-top: var(--s-6); padding-top: var(--s-4); border-top: 1px solid var(--rule); }
+.area__hours .open-now { margin: 0 0 var(--s-3); }
+.hours { display: grid; margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--ink); max-width: 360px; }
+.hours > div { display: flex; justify-content: space-between; gap: var(--s-6); padding-block: 4px; border-bottom: 1px dotted var(--rule); }
+.hours dt, .hours dd { margin: 0; }
+.hours dt { color: var(--muted); }
+.zip-check__row .btn { min-height: 48px; }
+
+/* break: the porch elevation keeps a readable crop on phones */
+@media (max-width: 639px) { .break .plate--wide { height: 340px; } .break .plate--wide .plate__draw { padding: 12px 8px 64px; --dt-fs: 13px; } }
+
+/* contact */
+.contact__form { min-width: 0; }
+.lead-form textarea, .lead-form select, .lead-form .input { background: rgba(244,239,230,.04); }
+.lead-form__thanks { border: 1px solid var(--rule); }
+
+/* ---------- Footer: paper, the page's cut labels gathered into one finished cut list ---------- */
+.footer { padding-block: 0 calc(var(--s-7) + 72px); font-size: var(--fs--1); color: var(--muted); border-top: 6px solid var(--deep); }
+@media (min-width: 900px) { .footer { padding-bottom: var(--s-7); } }
+.footer .cut-rule--footer { margin: 0 0 var(--s-6); border-top: 0; }
+.footer__grid { display: grid; gap: var(--s-7); }
+@media (min-width: 900px) { .footer__grid { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: start; } }
+.cutlist__title { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-4); font-family: 'Young Serif', serif; font-weight: 400; font-size: var(--fs-3); color: var(--ink); }
+.cutlist__big { font-size: clamp(3.2rem, 2.6rem + 3vw, 5.5rem); line-height: .8; letter-spacing: -.05em; color: var(--signal); }
+.cutlist__rows { border-top: 2px solid var(--ink); }
+.cutlist__rows a { display: grid; grid-template-columns: 3ch minmax(0, 1fr); column-gap: var(--s-4); align-items: baseline; min-height: 44px; padding-block: var(--s-2); border-bottom: 1px dashed var(--rule); color: var(--ink); }
+.cutlist__rows a:hover .cutlist__piece { text-decoration: underline; text-underline-offset: 3px; }
+.cutlist__n { font-family: 'Young Serif', serif; font-size: var(--fs-2); color: var(--signal); }
+.cutlist__piece { font-family: 'Source Serif 4', serif; font-size: var(--fs-0); font-weight: 600; }
+.cutlist__spec { grid-column: 2; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted); }
+@media (min-width: 640px) { .cutlist__rows a { grid-template-columns: 3ch minmax(0, 1fr) auto; } .cutlist__spec { grid-column: 3; text-align: right; } }
+.cutlist__total { display: flex; justify-content: space-between; gap: var(--s-4); padding-top: var(--s-3); border-top: 2px solid var(--ink); font-family: 'DM Mono', monospace; font-size: 13px; color: var(--ink); text-transform: uppercase; letter-spacing: .06em; }
+.footer__card { padding: var(--s-6); border: 1px solid var(--rule); background: var(--mid); color: var(--ink); display: grid; gap: var(--s-3); justify-items: start; }
+.footer__name { font-family: 'Young Serif', serif; font-size: var(--fs-3); line-height: 1.1; }
+.footer__tel .tel-plain { font-family: 'DM Mono', monospace; font-size: var(--fs-1); text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 44px; }
+.footer__line { font-size: var(--fs-0); color: var(--muted); }
+.footer__fine { display: grid; gap: var(--s-2); margin-top: var(--s-7); padding-top: var(--s-4); border-top: 1px solid var(--rule); }
+.footer__disclaimer { font-style: italic; }
+
+/* cut-head number: stamped in once the heading arrives (motion only; JS-off and reduced show it at once) */
+.cut-head__n { display: inline-block; }
 
 /* Forced Colors */
 @media (forced-colors: active) {
@@ -528,6 +723,24 @@ textarea { resize: vertical; }
   <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <!-- Drawn plates: shop-drawing stand-ins for every photo slot (orthographic, one line weight system) -->
+  <symbol id="d-board" viewBox="0 0 300 200"><rect x="20" y="96" width="260" height="46"/><path class="g" d="M24 108 C90 102 150 114 276 106 M24 120 C80 126 170 112 276 122 M24 132 C110 128 190 138 276 132"/></symbol>
+  <symbol id="d-mark" viewBox="0 0 300 200"><use href="#d-board"/><path class="dl" d="M20 70 H178 M20 62 V78 M178 62 V78"/><text class="dt" x="99" y="60" text-anchor="middle">14¾</text><path class="k" d="M178 92 V146"/><path d="M168 30 L200 92 L194 95 L162 33 Z"/><path class="f" d="M194 95 L200 92 L198 100 Z"/></symbol>
+  <symbol id="d-measure" viewBox="0 0 300 200"><use href="#d-board"/><rect x="26" y="40" width="52" height="52" rx="8"/><circle cx="52" cy="66" r="10"/><rect x="78" y="74" width="190" height="14"/><path class="g" d="M98 74 v6 M118 74 v10 M138 74 v6 M158 74 v10 M178 74 v6 M198 74 v10 M218 74 v6 M238 74 v10 M258 74 v6"/><path d="M268 74 h8 v26 h-8"/><path class="dl" d="M78 170 H276 M78 162 V178 M276 162 V178"/><text class="dt" x="177" y="164" text-anchor="middle">SILL END · 7½</text></symbol>
+  <symbol id="d-square" viewBox="0 0 300 200"><use href="#d-board"/><rect x="96" y="62" width="74" height="18"/><circle cx="112" cy="71" r="2.5" class="f"/><circle cx="152" cy="71" r="2.5" class="f"/><rect x="170" y="62" width="12" height="96"/><path class="k" d="M168 96 V142"/><path class="dl" d="M196 150 l14 0 M196 142 v16"/><text class="dt" x="214" y="176">90°</text><path class="dl" d="M182 168 a14 14 0 0 1 14 -14"/></symbol>
+  <symbol id="d-saw" viewBox="0 0 300 200"><use href="#d-board"/><path d="M162 98 L292 40 L292 8 L176 58 Z"/><path class="g" d="M166 96 l6 -6 l2 4 l6 -6 l2 4 l6 -6 l2 4 l6 -6 l2 4 l6 -6 l2 4 l6 -6 l2 4 l6 -6 l2 4 l6 -6 l2 4 l6 -6 l2 4 l6 -6"/><rect class="f" x="160" y="96" width="5" height="16"/><path class="g" d="M150 150 h2 M144 156 h2 M156 158 h2 M168 152 h2 M140 148 h2"/></symbol>
+  <symbol id="d-chisel" viewBox="0 0 300 200"><path d="M20 96 H140 V118 H196 V96 H280 V142 H20 Z"/><path class="g" d="M24 128 C80 124 170 136 276 128 M200 108 C230 104 250 112 276 106 M24 108 C60 104 100 112 136 106"/><path d="M137 26 h12 v62 l-6 10 l-6 -10 Z"/><rect x="133" y="2" width="20" height="26" rx="4"/><path class="dl" d="M140 160 H196 M140 152 V168 M196 152 V168"/><text class="dt" x="168" y="186" text-anchor="middle">SHOULDER</text><path class="g" d="M160 112 c6 -10 16 -8 14 2 c-2 6 -10 4 -8 -2"/></symbol>
+  <symbol id="d-dryfit" viewBox="0 0 300 200"><path d="M20 90 H176 L128 140 H20 Z"/><path d="M186 90 H280 V140 H138 Z"/><path class="g" d="M24 104 C70 100 120 110 160 104 M24 124 C60 128 100 120 136 126 M200 104 C230 100 250 108 276 104 M170 124 C210 128 240 120 276 126"/><path class="dl" d="M150 64 L172 64 M164 58 l8 6 l-8 6 M214 64 L192 64 M200 58 l-8 6 l8 6"/><text class="dt" x="182" y="48" text-anchor="middle">DRY FIT · NO GLUE</text><path class="k" d="M181 90 L133 140"/></symbol>
+  <symbol id="d-paint" viewBox="0 0 300 200"><use href="#d-board"/><rect class="wash" x="20" y="96" width="150" height="46"/><path class="k" d="M150 96 V142"/><path d="M180 70 L250 14 L262 28 L192 84 Z"/><path d="M170 78 l10 -8 l12 14 l-10 8 Z"/><path d="M160 86 l10 -8 l12 14 l-12 6 Z" class="f"/><text class="dt" x="20" y="170">PRIMED · ALL SIX SIDES</text></symbol>
+  <symbol id="d-rot" viewBox="0 0 300 200"><path d="M20 70 H262 L280 80 V108 H20 Z"/><path d="M40 108 V150 M260 108 V150"/><path class="hatch" d="M190 72 l14 34 M204 72 l14 34 M218 72 l14 34 M232 72 l14 34 M246 72 l14 34 M260 74 l12 30 M176 72 l14 34"/><path class="k" d="M170 58 V122"/><text class="dt" x="170" y="50" text-anchor="middle">CUT BACK TO SOUND</text><path class="g" d="M24 84 C80 80 120 90 166 84 M24 98 C70 102 120 94 166 100"/><path class="dl" d="M174 136 H280 M174 128 V144 M280 128 V144"/><text class="dt" x="227" y="164" text-anchor="middle">SOFT · 9 IN</text></symbol>
+  <symbol id="d-sill" viewBox="0 0 300 200"><path d="M20 70 H262 L280 80 V108 H20 Z"/><path class="f wash" d="M150 70 H262 L280 80 V108 H126 Z"/><path class="k" d="M150 70 L126 108"/><path class="g" d="M24 84 C70 80 100 90 140 84 M24 98 C60 102 100 94 132 100 M170 86 C210 82 240 90 276 86 M150 98 C200 102 240 96 276 100"/><path class="dl" d="M126 130 H280 M126 122 V138 M280 122 V138"/><text class="dt" x="203" y="156" text-anchor="middle">DUTCHMAN · 2½ × 7 × 38</text><text class="dt" x="70" y="56" text-anchor="middle">ORIGINAL</text><text class="dt" x="214" y="56" text-anchor="middle">NEW OAK</text></symbol>
+  <symbol id="d-casing" viewBox="0 0 300 200"><path d="M50 150 H250 V128 C236 128 230 116 220 112 C206 106 204 92 190 92 H140 C126 92 122 80 108 76 C92 72 80 70 70 70 H50 Z"/><path class="dl" d="M50 172 H250 M50 164 V180 M250 164 V180 M270 70 V150 M262 70 H278 M262 150 H278"/><text class="dt" x="150" y="194" text-anchor="middle">3¼</text><text class="dt" x="276" y="114">¾</text><path class="hatch" d="M60 150 l20 -20 M84 150 l30 -30 M114 150 l30 -30 M144 150 l30 -30 M174 150 l30 -30 M204 150 l30 -30"/></symbol>
+  <symbol id="d-sash" viewBox="0 0 300 200"><path d="M70 40 H190 V90 H230 V120 L210 130 H190 V170 H70 Z"/><path d="M190 120 H230 M210 130 L230 120"/><rect class="wash" x="190" y="96" width="80" height="6"/><path class="hatch" d="M80 160 l20 -20 M100 160 l30 -30 M130 160 l30 -30 M160 160 l30 -30 M80 120 l40 -40 M110 120 l40 -40 M140 120 l40 -40"/><path class="dl" d="M70 24 H190 M70 16 V32 M190 16 V32"/><text class="dt" x="130" y="12" text-anchor="middle">1¾</text><text class="dt" x="236" y="150">PUTTY BED</text></symbol>
+  <symbol id="d-door" viewBox="0 0 300 200"><rect x="100" y="14" width="100" height="176"/><rect x="112" y="26" width="34" height="68"/><rect x="154" y="26" width="34" height="68"/><rect x="112" y="104" width="34" height="74"/><rect x="154" y="104" width="34" height="74"/><rect class="f wash" x="154" y="104" width="34" height="74"/><circle cx="192" cy="100" r="3"/><path class="dl" d="M214 104 V178 M206 104 H222 M206 178 H222"/><text class="dt" x="226" y="146">NEW PANEL</text></symbol>
+  <symbol id="d-plane" viewBox="0 0 300 300"><rect x="20" y="190" width="260" height="40"/><path class="g" d="M24 204 C90 198 160 210 276 202 M24 218 C100 222 180 212 276 220"/><path d="M60 188 V160 L90 148 H190 L230 160 V188 Z"/><path d="M110 148 C110 120 140 110 150 120 C160 130 150 148 150 148"/><path d="M190 148 C196 124 214 116 222 126 C228 134 220 150 214 158"/><path d="M60 188 C40 170 34 140 52 132 C68 126 70 150 56 154"/><path class="dl" d="M20 260 H280 M20 252 V268 M280 252 V268"/><text class="dt" x="150" y="286" text-anchor="middle">FLUSH TO THE OLD FACE</text></symbol>
+  <symbol id="d-house" viewBox="0 0 600 240"><path d="M150 230 V110 L230 50 L310 110 V230"/><path d="M310 230 V130 H470 V230"/><path d="M296 130 L390 76 L484 130"/><path d="M150 230 H470"/><rect x="200" y="130" width="22" height="40"/><rect x="238" y="130" width="22" height="40"/><path d="M220 96 a10 10 0 0 1 20 0 v14 h-20 Z"/><path d="M310 166 H470 M310 174 H470"/><path d="M326 174 V230 M364 174 V230 M402 174 V230 M440 174 V230"/><path class="g" d="M334 200 V230 M342 200 V230 M350 200 V230 M374 200 V230 M382 200 V230 M390 200 V230 M412 200 V230 M420 200 V230 M428 200 V230"/><path d="M310 200 H470"/><rect x="370" y="96" width="40" height="26"/><path class="hatch" d="M440 166 V174 M450 166 V174 M460 166 V174"/><path class="dl" d="M326 236 V200 M440 236 V200"/><circle class="mk" cx="326" cy="216" r="9"/><circle class="mk" cx="440" cy="190" r="9"/><text class="dt" x="326" y="219" text-anchor="middle">1</text><text class="dt" x="440" y="193" text-anchor="middle">2</text><path class="g" d="M20 230 H580"/><text class="dt" x="490" y="202">1 POST BASE</text><text class="dt" x="490" y="222">2 RAIL CAP</text></symbol>
+  <symbol id="d-porch" viewBox="0 0 300 400"><rect x="60" y="40" width="36" height="300"/><rect x="52" y="24" width="52" height="16"/><rect x="52" y="340" width="52" height="16"/><path d="M96 180 H270 M96 196 H270 M96 300 H270 M96 314 H270"/><path d="M118 196 V300 M140 196 V300 M162 196 V300 M184 196 V300 M206 196 V300 M228 196 V300 M250 196 V300"/><path class="hatch" d="M60 330 l36 -24 M60 316 l36 -24 M60 344 l26 -18"/><path class="k" d="M40 290 H116"/><text class="dt" x="122" y="362">SPLICE LINE · SOUND ABOVE</text><path class="dl" d="M24 290 V356 M16 290 H32 M16 356 H32"/><path d="M20 370 H290"/></symbol>
+  <symbol id="d-steps" viewBox="0 0 300 400"><path d="M30 360 V300 H90 V240 H150 V180 H210 V120 H270 V360 Z"/><path d="M24 300 H96 M84 240 H156 M144 180 H216 M204 120 H276"/><path class="f wash" d="M84 240 H156 V246 H84 Z"/><path class="dl" d="M90 260 V300 M82 260 H98 M82 300 H98"/><text class="dt" x="102" y="286">7½ RISE</text><path class="dl" d="M90 226 H150 M90 218 V234 M150 218 V234"/><text class="dt" x="98" y="212">10¼ RUN</text><path class="leaf" d="M50 286 c6 -8 14 -4 10 4 c-4 6 -12 4 -10 -4 M170 166 c6 -8 14 -4 10 4 c-4 6 -12 4 -10 -4 M226 106 c6 -8 14 -4 10 4 c-4 6 -12 4 -10 -4"/><text class="dt" x="30" y="390">TREAD REPLACED · STRINGER KEPT</text></symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
@@ -562,7 +775,7 @@ textarea { resize: vertical; }
       <li><a href="#services">All services</a></li>
       <li><a href="#proof">Sample prices</a></li>
       <li><a href="#area">Service area</a></li>
-      <li><a href="#contact">Get a number</a></li>
+      <li><a href="#contact">Price a repair</a></li>
       <li><a class="tel-plain" href="tel:+12075550167">(207) 555-0167</a></li>
     </ul>
   </div>
@@ -570,18 +783,20 @@ textarea { resize: vertical; }
 
 <main id="main">
 
-  <!-- 1. HERO -->
+  <!-- 00. HERO -->
   <section id="hero" class="section hero t-paper">
     <div class="container hero__grid">
       <div class="hero__text">
-        <p class="kicker">Maine · rot repair · matched trim · built-ins</p>
+        <p class="kicker">Rot repair and matched trim · Maine</p>
         <h1 data-split="lines">Old-house carpentry in Portland</h1>
+        <div class="hero__side">
         <p class="lead">Soft wood cut out to sound stock, new oak spliced in, primed on all six sides before it goes back.</p>
         <div class="hero__ctas">
           <a class="btn btn-call" href="tel:+12075550167"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (207) 555-0167</span></a>
-          <a class="btn repair btn-ghost" href="#contact" data-service="Rot">Price a repair</a>
+          <a class="btn btn-ghost" href="#contact" data-service="Rot repair">Price a repair</a>
         </div>
-        <p class="proof-line"><span>14 years splicing Maine porches</span> · <span data-open-now></span> · <span class="sample-tag">Sample rating</span></p>
+        <p class="proof-line"><span>14 years splicing Maine porches</span> · <span data-open-now></span> · <span class="nw">4.9/5 from 84 reviews</span> <span class="sample-tag">Sample rating</span></p>
+        </div>
       </div>
     </div>
     <div class="cut-rule" data-sw-signature="cut-list" aria-hidden="true">
@@ -589,156 +804,198 @@ textarea { resize: vertical; }
       <span class="cut-rule__kerf"></span>
     </div>
     <div class="filmstrip" data-carousel aria-label="Process steps">
-      <div class="filmstrip__track">
-        <figure class="filmstrip__frame" data-index="0">
+      <div class="filmstrip__track" data-carousel-track>
+        <figure class="filmstrip__frame plate" data-index="0">
           <img src="media/placeholder-hero-A1.webp" alt="Hands marking wood with pencil and square" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-A1" data-slot="hero-A1">
-          <figcaption class="filmstrip__cap"><span class="filmstrip__num">CUT 00</span>Pencil line laid on white oak before the first cut.</figcaption>
+          <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-mark"/></svg>
+          <figcaption class="filmstrip__cap"><span class="filmstrip__num">STEP 1</span>Pencil line laid on white oak before the first cut.</figcaption>
         </figure>
-        <figure class="filmstrip__frame" data-index="1">
+        <figure class="filmstrip__frame plate" data-index="1">
           <img src="media/placeholder-process-measure.webp" alt="Tape measure on wood" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-measure" data-slot="filmstrip-1">
-          <figcaption class="filmstrip__cap"><span class="filmstrip__num">CUT 01</span>Tape reading taken at the sill end grain.</figcaption>
+          <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-measure"/></svg>
+          <figcaption class="filmstrip__cap"><span class="filmstrip__num">STEP 2</span>Tape reading taken at the sill end grain.</figcaption>
         </figure>
-        <figure class="filmstrip__frame" data-index="2">
+        <figure class="filmstrip__frame plate" data-index="2">
           <img src="media/placeholder-process-mark-square.webp" alt="Carpenter square marking a line" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-mark-square" data-slot="filmstrip-2">
-          <figcaption class="filmstrip__cap"><span class="filmstrip__num">CUT 02</span>Square across the board to mark the kerf.</figcaption>
+          <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-square"/></svg>
+          <figcaption class="filmstrip__cap"><span class="filmstrip__num">STEP 3</span>Square across the board to mark the kerf.</figcaption>
         </figure>
-        <figure class="filmstrip__frame" data-index="3">
+        <figure class="filmstrip__frame plate" data-index="3">
           <img src="media/placeholder-process-saw-cut.webp" alt="Saw cutting a board" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-saw-cut" data-slot="filmstrip-3">
-          <figcaption class="filmstrip__cap"><span class="filmstrip__num">CUT 03</span>Saw follows the knife wall on the waste side.</figcaption>
+          <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-saw"/></svg>
+          <figcaption class="filmstrip__cap"><span class="filmstrip__num">STEP 4</span>Saw follows the knife wall on the waste side.</figcaption>
         </figure>
-        <figure class="filmstrip__frame" data-index="4">
+        <figure class="filmstrip__frame plate" data-index="4">
           <img src="media/placeholder-process-chisel.webp" alt="Chisel paring a joint" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-chisel" data-slot="filmstrip-4">
-          <figcaption class="filmstrip__cap"><span class="filmstrip__num">CUT 04</span>Chisel cleans the shoulder to the line.</figcaption>
+          <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-chisel"/></svg>
+          <figcaption class="filmstrip__cap"><span class="filmstrip__num">STEP 5</span>Chisel cleans the shoulder to the line.</figcaption>
         </figure>
-        <figure class="filmstrip__frame" data-index="5">
+        <figure class="filmstrip__frame plate" data-index="5">
           <img src="media/placeholder-process-dry-fit.webp" alt="Dry-fit of joint pieces" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-dry-fit" data-slot="filmstrip-5">
-          <figcaption class="filmstrip__cap"><span class="filmstrip__num">CUT 05</span>Dry fit checks the gap before glue.</figcaption>
+          <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-dryfit"/></svg>
+          <figcaption class="filmstrip__cap"><span class="filmstrip__num">STEP 6</span>Dry fit checks the gap before glue.</figcaption>
         </figure>
-        <figure class="filmstrip__frame" data-index="6">
+        <figure class="filmstrip__frame plate" data-index="6">
           <img src="media/placeholder-process-paint-trim.webp" alt="Brush painting white trim" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-paint-trim" data-slot="filmstrip-6">
-          <figcaption class="filmstrip__cap"><span class="filmstrip__num">CUT 06</span>First coat goes on after the joint is sanded flush.</figcaption>
+          <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-paint"/></svg>
+          <figcaption class="filmstrip__cap"><span class="filmstrip__num">STEP 7</span>First coat goes on after the joint is sanded flush.</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <!-- 2. ROT REPAIR STORY -->
+  <!-- 01. ROT REPAIR STORY -->
   <section id="story-rot" class="section story-rot t-deep">
     <div class="cut-rule" data-sw-signature="cut-list" aria-hidden="true">
-      <span class="cut-rule__label">CUT 02 · SILL DUTCHMAN · 2½ × 7 × 38 · WHITE OAK</span>
+      <span class="cut-rule__label">CUT 01 · SILL DUTCHMAN · 2½ × 7 × 38 · WHITE OAK</span>
       <span class="cut-rule__kerf"></span>
     </div>
     <div class="container story-rot__grid">
-      <div class="story-rot__copy" data-reveal>
-        <h2>We splice, not cover</h2>
+      <div class="story-rot__copy">
+        <div class="cut-head">
+          <span class="cut-head__n" aria-hidden="true">01</span>
+          <p class="cut-head__spec">Rot repair · three steps</p>
+          <h2>We splice, not cover</h2>
+        </div>
         <p class="lead">Soft wood cut out to sound stock, new wood spliced in, primed on all six sides.</p>
-        <p>When the screwdriver sinks past a quarter inch, the wood is gone. We cut back to solid stock, scarf in a new piece of white oak, and prime every face so moisture cannot get behind the patch.</p>
-        <p class="price-hint">Sample pricing: $275–$650 per sill <span class="sample-tag">Sample pricing</span></p>
-        <a class="btn repair" href="#contact" data-service="Rot">Send a photo</a>
+        <p>When the screwdriver sinks past ¼ in, the wood is gone. We cut back to solid stock, scarf in a new piece of white oak, and prime every face so moisture cannot get behind the patch.</p>
+        <p class="price-hint">Sill patch: $275 to $650 per sill <span class="sample-tag">Sample pricing</span></p>
+        <a class="btn" href="#contact" data-service="Rot repair">Price a repair</a>
+        <figure class="plate plate--deep plate--strip">
+          <img src="media/placeholder-material-rotten-wood.webp" alt="Soft wood at the sill end where moisture entered" width="1170" height="780" loading="lazy" decoding="async" data-photo="material-rotten-wood" data-slot="story-rot">
+          <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet"><use href="#d-rot"/></svg>
+          <figcaption class="plate__cap"><span class="plate__no">PL 01a</span>The soft end before the saw. Screwdriver sinks past ¼ in.</figcaption>
+        </figure>
       </div>
       <div class="story-rot__media">
-        <figure class="frame" data-fallback="Soft wood at the sill end where moisture entered" data-reveal="clip"><img src="media/placeholder-material-rotten-wood.webp" alt="Soft wood at the sill end where moisture entered" width="1170" height="780" loading="lazy" decoding="async" data-photo="material-rotten-wood" data-slot="story-rot"></figure>
-        <figure class="frame" data-fallback="Dutchman spliced into the sill, primed on six sides" data-reveal="clip"><img src="media/placeholder-detail-window-sill.webp" alt="Dutchman spliced into the sill, primed on six sides" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-window-sill" data-slot="detail-sill"></figure>
+        <figure class="scarf" data-scarf>
+          <svg class="scarf__svg" viewBox="0 0 480 260" role="img" aria-labelledby="scarf-t">
+            <title id="scarf-t">Drawing of a sill repair: the soft end is cut back on a long angle, a new white oak piece is fitted to the angle, and the joined sill is primed on every face.</title>
+            <path class="sc-grid" d="M0 40 H480 M0 80 H480 M0 120 H480 M0 160 H480 M0 200 H480 M0 240 H480 M40 0 V260 M80 0 V260 M120 0 V260 M160 0 V260 M200 0 V260 M240 0 V260 M280 0 V260 M320 0 V260 M360 0 V260 M400 0 V260 M440 0 V260"/>
+            <g class="sc-old"><path class="sc-line" d="M24 110 H250 L210 170 H24 Z"/><path class="sc-g" d="M30 126 C90 120 150 132 236 124 M30 150 C80 156 150 142 222 150"/></g>
+            <g class="sc-rot"><path class="sc-line" d="M250 110 H452 V170 H210 Z"/><path class="sc-hatch" d="M270 112 l24 56 M298 112 l24 56 M326 112 l24 56 M354 112 l24 56 M382 112 l24 56 M410 112 l24 56 M438 112 l14 34"/></g>
+            <path class="sc-cut" d="M258 98 L202 182" pathLength="1"/>
+            <g class="sc-new"><path class="sc-line sc-oak" d="M250 110 H452 V170 H210 Z"/><path class="sc-g" d="M240 126 C300 120 380 132 448 124 M226 150 C300 156 380 142 448 150"/></g>
+            <path class="sc-prime" d="M24 104 H458 V176 H24 Z" pathLength="1"/>
+            <g class="sc-labels"><text class="sc-t" x="24" y="88">CUT 01 · SILL</text><text class="sc-t sc-t--r" x="452" y="88" text-anchor="end">WHITE OAK · PRIMED 6 SIDES</text><text class="sc-t" x="24" y="206">SOUND STOCK KEPT</text><text class="sc-t sc-t--r" x="452" y="206" text-anchor="end">SCARF · LONG ANGLE</text></g>
+          </svg>
+          <ol class="scarf__steps">
+            <li data-step="1"><span>01</span> Cut back to sound wood</li>
+            <li data-step="2"><span>02</span> Fit new oak to the angle</li>
+            <li data-step="3"><span>03</span> Prime every face, then paint</li>
+          </ol>
+        </figure>
       </div>
     </div>
   </section>
 
-  <!-- 3. REPAIR OR REPLACE TOOL -->
+  <!-- 02. REPAIR OR REPLACE TOOL -->
   <section id="rot-check" class="section tool-rot t-accent">
     <div class="container tool-split">
-      <div class="tool-split__intro" data-reveal>
-        <h2>Repair or replace?</h2>
-        <p class="lead">Answer four questions about the soft spot. We will tell you whether it can be patched or needs a new matched piece.</p>
+      <div class="tool-split__intro">
+        <div class="cut-head">
+          <span class="cut-head__n" aria-hidden="true">02</span>
+          <p class="cut-head__spec">Self-check · five ticks</p>
+          <h2>Repair or replace?</h2>
+        </div>
+        <p class="lead">Take a screwdriver to the soft spot and tick what you find. Fewer ticks, smaller splice.</p>
+        <p class="tool-split__note">Most sills, casings and post bases we see are saved with a splice. A full new piece is the exception.</p>
       </div>
       <div class="tool-split__widget">
-        <form class="checklist" data-checklist="rot" aria-label="Rot check">
+        <div class="checklist" data-checklist="rot" data-checklist-results="0:Nothing ticked: paint and caulk may be all it needs.|1:{n} of {total}: a splice job. We cut out the soft part and fit new oak.|3:{n} of {total}: a bigger splice, maybe a new matched piece. Worth a visit.|5:{n} of {total}: replace the part. We mill the new one to match.">
           <fieldset>
-            <legend class="sr-only">What is rotten?</legend>
-            <label class="checklist__option"><input type="radio" name="part" value="sill" checked> Window sill</label>
-            <label class="checklist__option"><input type="radio" name="part" value="casing"> Casing or trim</label>
-            <label class="checklist__option"><input type="radio" name="part" value="post"> Porch post base</label>
-            <label class="checklist__option"><input type="radio" name="part" value="tread"> Stair tread</label>
+            <legend>Rot check · tick what you see</legend>
+            <label class="checklist__option"><input type="checkbox" name="r-sink"> Screwdriver sinks past ¼ in</label>
+            <label class="checklist__option"><input type="checkbox" name="r-dark"> Wood is dark or stringy under the paint</label>
+            <label class="checklist__option"><input type="checkbox" name="r-third"> Soft for more than a third of the length</label>
+            <label class="checklist__option"><input type="checkbox" name="r-joint"> Rot reaches the joint or the frame behind</label>
+            <label class="checklist__option"><input type="checkbox" name="r-through"> Screwdriver goes right through</label>
           </fieldset>
-          <fieldset>
-            <legend>Screwdriver test</legend>
-            <label class="checklist__option"><input type="radio" name="depth" value="shallow" checked> Goes in under ¼ in</label>
-            <label class="checklist__option"><input type="radio" name="depth" value="mid"> ¼ to 1 inch</label>
-            <label class="checklist__option"><input type="radio" name="depth" value="through"> Goes through</label>
-          </fieldset>
-          <fieldset>
-            <legend>How much of the length is soft?</legend>
-            <label class="checklist__option"><input type="radio" name="length" value="little" checked> Less than a third</label>
-            <label class="checklist__option"><input type="radio" name="length" value="half"> About half</label>
-            <label class="checklist__option"><input type="radio" name="length" value="most"> Most of it</label>
-          </fieldset>
-          <fieldset>
-            <legend>Is the paint holding elsewhere?</legend>
-            <label class="checklist__option"><input type="radio" name="paint" value="yes" checked> Yes, mostly</label>
-            <label class="checklist__option"><input type="radio" name="paint" value="no"> No, peeling widely</label>
-          </fieldset>
-          <div class="checklist__result" aria-live="polite" data-checklist-result></div>
+          <div class="checklist__meter" aria-hidden="true"><span class="checklist__kerf"></span></div>
+          <p class="checklist__result" data-checklist-result>Nothing ticked: paint and caulk may be all it needs.</p>
           <div class="checklist__cta">
-            <a class="btn repair" href="#contact" data-service="Rot">Send a photo of the damage</a>
+            <a class="btn" href="#contact" data-service="Rot repair">Price a repair</a>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 4. MATCHED TRIM CARDS -->
+  <!-- 03. MATCHED TRIM CARDS -->
   <section id="matched-trim" class="section trim-cards t-paper">
     <div class="container">
-      <div class="section__head" data-reveal>
-        <h2>New wood that disappears into the old</h2>
+      <div class="section__head">
+        <div class="cut-head">
+          <span class="cut-head__n" aria-hidden="true">03</span>
+          <p class="cut-head__spec">Matched profiles · three pieces</p>
+          <h2>New wood that disappears into the old</h2>
+        </div>
         <p class="lead">Bring a six-inch offcut or a photo with a ruler. We mill the profile so the new piece matches what was there.</p>
       </div>
-      <div class="trim-grid" data-reveal-stagger>
+      <div class="trim-grid">
         <article class="card card--trim">
           <div class="cut-rule cut-rule--sm" data-sw-signature="cut-list" aria-hidden="true"><span class="cut-rule__label">CUT 03a · CASING · ¾ × 3¼ · PINE</span><span class="cut-rule__kerf"></span></div>
-          <figure class="frame" data-fallback="Coped crown corner meeting at the inside angle"><img src="media/placeholder-detail-crown-corner.webp" alt="Coped crown corner meeting at the inside angle" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-crown-corner" data-slot="trim-1"></figure>
-          <h3>Matched trim and molding</h3>
-          <p>Casing, baseboard and crown milled to the old profile so the new piece disappears.</p>
-          <a class="btn trim btn-ghost" href="#contact" data-service="Matched">Price it</a>
+          <figure class="plate">
+            <img src="media/placeholder-detail-crown-corner.webp" alt="Coped crown corner meeting at the inside angle" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-crown-corner" data-slot="trim-1">
+            <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-casing"/></svg>
+            <figcaption class="plate__cap"><span class="plate__no">PL 03a</span>Casing profile, traced from a six-inch offcut.</figcaption>
+          </figure>
+          <h3>Traced from the offcut</h3>
+          <p>Six inches of the old casing is enough. We trace the profile, and a knife is ground to it.</p>
         </article>
         <article class="card card--trim">
-          <div class="cut-rule cut-rule--sm" data-sw-signature="cut-list" aria-hidden="true"><span class="cut-rule__label">CUT 03b · SASH · 1⅜ × 1¾ · PINE</span><span class="cut-rule__kerf"></span></div>
-          <figure class="frame" data-fallback="Three casing profiles laid out for matching"><img src="media/placeholder-material-molding-profiles.webp" alt="Three casing profiles laid out for matching" width="1170" height="780" loading="lazy" decoding="async" data-photo="material-molding-profiles" data-slot="trim-2"></figure>
-          <h3>Window sash and jamb repair</h3>
-          <p>Sticking or drafty old sash freed, sash cords restrung, rotten sills patched in place.</p>
-          <a class="btn repair btn-ghost" href="#contact" data-service="Sash">Price it</a>
+          <div class="cut-rule cut-rule--sm" data-sw-signature="cut-list" aria-hidden="true"><span class="cut-rule__label">CUT 03b · SASH RAIL · 1¾ × 2¼ · PINE</span><span class="cut-rule__kerf"></span></div>
+          <figure class="plate">
+            <img src="media/placeholder-material-molding-profiles.webp" alt="Three casing profiles laid out for matching" width="1170" height="780" loading="lazy" decoding="async" data-photo="material-molding-profiles" data-slot="trim-2">
+            <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-sash"/></svg>
+            <figcaption class="plate__cap"><span class="plate__no">PL 03b</span>Sash rail section with the putty bed.</figcaption>
+          </figure>
+          <h3>Run to the old section</h3>
+          <p>New rail stock is milled to the same width and the same putty bed, so the glass sits where it sat.</p>
         </article>
         <article class="card card--trim">
-          <div class="cut-rule cut-rule--sm" data-sw-signature="cut-list" aria-hidden="true"><span class="cut-rule__label">CUT 03c · DOOR PANEL · ⅝ × 18 × 24 · PINE</span><span class="cut-rule__kerf"></span></div>
-          <figure class="frame" data-fallback="Rail-and-stile door with replaced lower panel"><img src="media/placeholder-detail-panel-door.webp" alt="Rail-and-stile door with replaced lower panel" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-panel-door" data-slot="trim-3"></figure>
-          <h3>Doors that stick or won&#39;t latch</h3>
-          <p>Old doors planed, rehung and squared so they swing and latch through every season.</p>
-          <a class="btn fixes btn-ghost" href="#contact" data-service="Door">Price it</a>
+          <div class="cut-rule cut-rule--sm" data-sw-signature="cut-list" aria-hidden="true"><span class="cut-rule__label">CUT 03c · DOOR PANEL · ¾ × 18 × 24 · PINE</span><span class="cut-rule__kerf"></span></div>
+          <figure class="plate">
+            <img src="media/placeholder-detail-panel-door.webp" alt="Rail-and-stile door with replaced lower panel" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-panel-door" data-slot="trim-3">
+            <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><use href="#d-door"/></svg>
+            <figcaption class="plate__cap"><span class="plate__no">PL 03c</span>One split panel replaced, the frame kept.</figcaption>
+          </figure>
+          <h3>One panel, frame kept</h3>
+          <p>The split panel comes out and a new one goes into the old groove. Stiles, rails and hardware stay put.</p>
         </article>
       </div>
-      <blockquote class="review-inline" data-reveal>
-        <p>"The previous owner tore out the casing in the dining room. Scarf &amp; Sash took an offcut from the hall, had the profile matched, and installed it. Even my father-in-law could not tell which was which, and he notices everything."</p>
+      <blockquote class="review-inline">
+        <p>“The previous owner tore out the casing in the dining room. Scarf &amp; Sash took an offcut from the hall, had the profile matched, and installed it. Even my father-in-law could not tell which was which, and he notices everything.”</p>
         <footer>— Hannah W., Yarmouth <span class="sample-tag">Sample review</span></footer>
       </blockquote>
     </div>
   </section>
 
-  <!-- 5. FULL-BLEED BREAK -->
-  <section class="section break t-deep">
-    <figure class="frame" data-fallback="Clapboard facade with original trim intact" full-bleed data-reveal="clip"><img src="media/placeholder-region-victorian-house.webp" alt="Clapboard facade with original trim intact" width="1170" height="658" loading="lazy" decoding="async" data-photo="region-victorian-house" data-slot="break"></figure>
+  <!-- 04. FULL-BLEED BREAK -->
+  <section id="porch-elevation" class="section break t-deep" aria-label="Porch elevation drawing">
+    <figure class="plate plate--wide plate--deep">
+      <img src="media/placeholder-region-victorian-house.webp" alt="Clapboard facade with original trim intact" width="1170" height="658" loading="lazy" decoding="async" data-photo="region-victorian-house" data-slot="break">
+      <svg class="plate__draw" viewBox="0 0 600 240" aria-hidden="true" focusable="false" preserveAspectRatio="xMaxYMid slice"><use href="#d-house"/></svg>
+      <figcaption class="plate__cap container"><span class="plate__no">PL 04</span>A Portland porch elevation, marked where the water sits: post bases and rail caps.</figcaption>
+    </figure>
   </section>
 
-  <!-- 6. PORCH SAFETY CHECKLIST -->
+  <!-- 05. PORCH SAFETY CHECKLIST -->
   <section id="porch-safety" class="section porch-safety t-mid">
-    <div class="container tool-split tool-split--reverse">
-      <div class="tool-split__intro" data-reveal>
-        <h2>Is the porch safe right now?</h2>
+    <div class="container tool-split">
+      <div class="tool-split__intro">
+        <div class="cut-head">
+          <span class="cut-head__n" aria-hidden="true">05</span>
+          <p class="cut-head__spec">Porch check · six ticks</p>
+          <h2>Is the porch safe right now?</h2>
+        </div>
         <p class="lead">Six quick checks you can do from the sidewalk. If any answer is yes, keep people off until it is looked at.</p>
-        <a class="btn repair" href="#contact" data-service="Porch">Book a porch inspection</a>
+        <a class="btn" href="#contact" data-service="Porch repair">Price a repair</a>
       </div>
       <div class="tool-split__widget">
-        <form class="checklist" data-checklist="porch" aria-label="Porch safety check">
+        <div class="checklist" data-checklist="porch" data-checklist-results="0:Nothing ticked from the sidewalk. Good. Check again after the thaw.|1:{n} of {total}: keep weight off that spot and book a look.|3:{n} of {total}: keep people off the porch until it is braced.">
           <fieldset>
-            <legend class="sr-only">Safety checks</legend>
+            <legend>Porch check · from the sidewalk</legend>
             <label class="checklist__option"><input type="checkbox" name="rail-moves"> Rail moves when pushed</label>
             <label class="checklist__option"><input type="checkbox" name="post-soft"> Post bases are soft</label>
             <label class="checklist__option"><input type="checkbox" name="balusters-missing"> Balusters missing or gaps wide</label>
@@ -746,189 +1003,251 @@ textarea { resize: vertical; }
             <label class="checklist__option"><input type="checkbox" name="ledger-stained"> Ledger board stained</label>
             <label class="checklist__option"><input type="checkbox" name="stairs-pull"> Stairs pull away from the house</label>
           </fieldset>
-          <div class="checklist__result" aria-live="polite" data-checklist-result></div>
-        </form>
+          <div class="checklist__meter" aria-hidden="true"><span class="checklist__kerf"></span></div>
+          <p class="checklist__result" data-checklist-result>Nothing ticked from the sidewalk. Good. Check again after the thaw.</p>
+        </div>
       </div>
-      <figure class="frame" data-fallback="Turned column base sitting on new stone pad" data-reveal="clip"><img src="media/placeholder-region-porch-columns.webp" alt="Turned column base sitting on new stone pad" width="1170" height="1560" loading="lazy" decoding="async" data-photo="region-porch-columns" data-slot="porch"></figure>
+      <figure class="plate plate--tall">
+        <img src="media/placeholder-region-porch-columns.webp" alt="Turned column base sitting on new stone pad" width="1170" height="1560" loading="lazy" decoding="async" data-photo="region-porch-columns" data-slot="porch">
+        <svg class="plate__draw" viewBox="0 0 300 400" aria-hidden="true" focusable="false"><use href="#d-porch"/></svg>
+        <figcaption class="plate__cap"><span class="plate__no">PL 05</span>Post base splice: rot cut off, sound wood above kept.</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- 7. SERVICES LIST -->
+  <!-- 06. SERVICES LIST -->
   <section id="services" class="section services t-paper">
+    <div class="cut-rule" data-sw-signature="cut-list" aria-hidden="true">
+      <span class="cut-rule__label">CUT 06 · FULL CUT LIST · BY THE PIECE</span>
+      <span class="cut-rule__kerf"></span>
+    </div>
     <div class="container">
-      <div class="section__head" data-reveal>
-        <h2>Everything we cut, splice and fit</h2>
-        <p class="lead">Nine kinds of work, each priced by the piece or the linear foot.</p>
+      <div class="section__head">
+        <div class="cut-head">
+          <span class="cut-head__n" aria-hidden="true">06</span>
+          <p class="cut-head__spec">Full list · by the piece</p>
+          <h2>Everything we cut, splice and fit</h2>
+        </div>
+        <p class="lead">Every part of an old house we work on, priced by the piece or the linear foot.</p>
       </div>
-      <ul class="svc-list" data-reveal-stagger>
+      <ul class="svc-list" data-svc-list>
         
         <li class="svc-row">
-          <span class="svc-row__num">01</span>
-          <div class="svc-row__body">
-            <h3>Rotten trim and sill repair</h3>
-            <p>Soft wood cut out to sound stock, new wood spliced in, primed on all six sides.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">01</span><h3>Rotten trim and sill repair</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Soft wood cut out to sound stock, new wood spliced in, primed on all six sides.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Rot repair">Price a repair</a>
+            </div>
+          </details>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__num">02</span>
-          <div class="svc-row__body">
-            <h3>Porch posts, rails and floors</h3>
-            <p>Rotted post bases scarfed with new wood, wobbly rails rebuilt, soft boards replaced.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">02</span><h3>Porch posts, rails and floors</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Rotted post bases scarfed with new wood, wobbly rails rebuilt, soft boards replaced.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Porch repair">Price a repair</a>
+            </div>
+          </details>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__num">03</span>
-          <div class="svc-row__body">
-            <h3>Window sash and jamb repair</h3>
-            <p>Sticking or drafty old sash freed, sash cords restrung, rotten sills patched in place.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">03</span><h3>Window sash and jamb repair</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Sticking or drafty old sash freed, sash cords restrung, rotten sills patched in place.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Sash repair">Price a repair</a>
+            </div>
+          </details>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__num">04</span>
-          <div class="svc-row__body">
-            <h3>Matched trim and molding</h3>
-            <p>Casing, baseboard and crown milled to the old profile so the new piece disappears.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">04</span><h3>Matched trim and molding</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Casing, baseboard and crown milled to the old profile so the new piece disappears.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Matched trim">Price a repair</a>
+            </div>
+          </details>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__num">05</span>
-          <div class="svc-row__body">
-            <h3>Built-ins and window seats</h3>
-            <p>Bookcases, window seats and cupboards fitted to crooked old walls, scribed tight.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">05</span><h3>Built-ins and window seats</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Bookcases, window seats and cupboards fitted to crooked old walls, scribed tight.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Built-ins">Price a repair</a>
+            </div>
+          </details>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__num">06</span>
-          <div class="svc-row__body">
-            <h3>Stairs, rails and balusters</h3>
-            <p>Creaks silenced from below, loose newels made solid, missing balusters turned to match.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">06</span><h3>Stairs, rails and balusters</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Creaks silenced from below, loose newels made solid, missing balusters turned to match.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Stairs">Price a repair</a>
+            </div>
+          </details>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__num">07</span>
-          <div class="svc-row__body">
-            <h3>Doors that stick or won&#39;t latch</h3>
-            <p>Old doors planed, rehung and squared so they swing and latch through every season.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">07</span><h3>Doors that stick or won&#39;t latch</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Old doors planed, rehung and squared so they swing and latch through every season.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Door fixes">Price a repair</a>
+            </div>
+          </details>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__num">08</span>
-          <div class="svc-row__body">
-            <h3>Shelving and closet fit-outs</h3>
-            <p>Closets rebuilt with solid wood shelves, rods and drawers sized to what you own.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">08</span><h3>Shelving and closet fit-outs</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Closets rebuilt with solid wood shelves, rods and drawers sized to what you own.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Closets">Price a repair</a>
+            </div>
+          </details>
         </li>
         
         <li class="svc-row">
-          <span class="svc-row__num">09</span>
-          <div class="svc-row__body">
-            <h3>Framing repair</h3>
-            <p>Sagging joists sistered and weak headers replaced before new finish work goes on.</p>
-          </div>
-          <a class="btn btn-ghost" href="#contact" data-service=".short">Price it</a>
+          <details class="svc-row__d" open>
+            <summary class="svc-row__sum"><span class="svc-row__num">09</span><h3>Framing repair</h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></summary>
+            <div class="svc-row__body">
+              <p>Sagging joists sistered and weak headers replaced before new finish work goes on.</p>
+              <a class="btn btn-ghost" href="#contact" data-service="Framing">Price a repair</a>
+            </div>
+          </details>
         </li>
         
       </ul>
     </div>
   </section>
 
-  <!-- 8. PROOF & PRICES -->
+  <!-- 07. PROOF & PRICES -->
   <section id="proof" class="section proof t-deep">
     <div class="cut-rule" data-sw-signature="cut-list" aria-hidden="true">
-      <span class="cut-rule__label">CUT 08 · SAMPLE PRICES · RANGES ONLY</span>
+      <span class="cut-rule__label">CUT 07 · SAMPLE PRICES · RANGES ONLY</span>
       <span class="cut-rule__kerf"></span>
     </div>
-    <div class="container proof__grid">
-      <div class="proof__stats" data-reveal>
-        <p class="proof__rating"><span data-count="4.9">4.9</span>/5</p>
-        <p class="proof__count"><span data-count="84">84</span> reviews <span class="sample-tag">Sample rating</span></p>
-        <figure class="frame" data-fallback="Hands paring a tenon cheek to fit" sm><img src="media/placeholder-hands-at-work.webp" alt="Hands paring a tenon cheek to fit" width="1170" height="1170" loading="lazy" decoding="async" data-photo="hands-at-work" data-slot="proof-hands"></figure>
+    <div class="container">
+      <div class="cut-head proof__head">
+        <span class="cut-head__n" aria-hidden="true">07</span>
+        <p class="cut-head__spec">Reviews and ranges · sample</p>
+        <h2>What neighbors said, and what it costs</h2>
       </div>
-      <div class="proof__reviews" data-reveal-stagger>
+    </div>
+    <div class="container proof__grid">
+      <div class="proof__stats">
+        <p class="proof__rating">4.9<span class="proof__of">/5</span></p>
+        <p class="proof__count">84 reviews <span class="sample-tag">Sample rating</span></p>
+      </div>
+      <div class="proof__reviews">
         <blockquote class="review-card">
-          <p>"Our front porch posts on Munjoy Hill were punky at the bottom. Abbie cut away the rot and spliced in new oak bases. You honestly cannot find the joint once it was painted."</p>
+          <p>“Our front porch posts on Munjoy Hill were punky at the bottom. Abbie cut away the rot and spliced in new oak bases. You honestly cannot find the joint once it was painted.”</p>
           <footer>— Theo M., Portland <span class="sample-tag">Sample review</span></footer>
         </blockquote>
         <blockquote class="review-card">
-          <p>"We wanted a window seat under the bay in our 1890s house and none of the walls are square. The seat sits tight to the plaster all the way around. Cushion fits perfectly."</p>
+          <p>“We wanted a window seat under the bay in our 1890s house and none of the walls are square. The seat sits tight to the plaster all the way around. Cushion fits perfectly.”</p>
           <footer>— Rafael D., Falmouth <span class="sample-tag">Sample review</span></footer>
         </blockquote>
       </div>
-      <div class="proof__estimator" data-reveal>
+      <div class="proof__estimator">
         <h3>Price it by the job</h3>
         <div class="estimator" data-estimator>
-          <label class="estimator__field">
+          <label class="estimator__field" for="est-item">
             <span class="estimator__label">Job type</span>
-            <select data-est-select>
+            <select id="est-item" data-est-item>
               
-              <option value="1">Window sill rot repair (patch)</option>
+              <option value="Window sill rot repair (patch)">Window sill rot repair (patch)</option>
               
-              <option value="2">Porch post base splice</option>
+              <option value="Porch post base splice">Porch post base splice</option>
               
-              <option value="3">Matched casing or baseboard</option>
+              <option value="Matched casing or baseboard">Matched casing or baseboard</option>
               
-              <option value="4">Built-in bookcase or window seat</option>
+              <option value="Built-in bookcase or window seat">Built-in bookcase or window seat</option>
               
-              <option value="5">Sash repair and restring</option>
+              <option value="Sash repair and restring">Sash repair and restring</option>
               
             </select>
           </label>
-          <div class="estimator__output cut-rule cut-rule--mini" aria-live="polite" data-est-output></div>
+          <div class="est-ticket">
+            <div class="est-ticket__rule" aria-hidden="true"><span class="est-ticket__lbl">CUT 07 · PRICE · RANGE</span><span class="est-ticket__kerf" data-est-kerf></span></div>
+            <p class="estimator__output" data-est-out aria-live="polite"><span class="sw-est-range">Window sill rot repair (patch): $275 to $650 per sill</span> <span class="sample-tag">Sample pricing</span></p>
+          </div>
           <p class="estimator__note">Ranges are sample. Your number comes after we see the part.</p>
-          <a class="btn repair" href="#contact" data-service="Rot">Get my number</a>
+          <a class="btn" href="#contact" data-service="Rot repair">Price a repair</a>
         </div>
       </div>
     </div>
-    <p class="guarantee container" data-reveal>If a joint we made opens up or a repair rots back within 3 years, we come back and fix it. <span class="sample-tag">Sample guarantee</span></p>
+    <p class="guarantee container">If a joint we made opens up or a repair rots back within 3 years, we come back and fix it. <span class="sample-tag">Sample guarantee</span></p>
   </section>
 
-  <!-- 9. SERVICE AREA + ZIP -->
+  <!-- 08. SERVICE AREA + ZIP (the finished scarf plate straddles the navy/paper seam) -->
   <section id="area" class="section area t-paper">
-    <div class="container tool-split">
-      <div class="tool-split__intro" data-reveal>
-        <h2>Where we work</h2>
+    <div class="container area__seam">
+      <figure class="plate plate--seam">
+        <img src="media/placeholder-hands-at-work.webp" alt="Hands paring a tenon cheek to fit" width="1170" height="1170" loading="lazy" decoding="async" data-photo="hands-at-work" data-slot="proof-hands">
+        <svg class="plate__draw" viewBox="0 0 300 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet"><use href="#d-sill"/></svg>
+        <figcaption class="plate__cap"><span class="plate__no">PL 07</span>The finished joint: new oak on a long scarf, planed flush to the original.</figcaption>
+      </figure>
+    </div>
+    <div class="cut-rule" data-sw-signature="cut-list" aria-hidden="true">
+      <span class="cut-rule__label">CUT 08 · SITE · Portland AND NEARBY</span>
+      <span class="cut-rule__kerf"></span>
+    </div>
+    <div class="container tool-split area__grid">
+      <div class="tool-split__intro">
+        <div class="cut-head">
+          <span class="cut-head__n" aria-hidden="true">08</span>
+          <p class="cut-head__spec">Site · Portland and nearby</p>
+          <h2>Where we work</h2>
+        </div>
         <p class="lead">Portland and South Portland, Westbrook, Falmouth, Cape Elizabeth, Scarborough, Yarmouth and Gorham.</p>
         <div class="zip-check" data-zip>
           <label class="zip-check__label" for="zip-input">Check your ZIP</label>
           <div class="zip-check__row">
             <input id="zip-input" class="input zip-check__input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="04101" autocomplete="postal-code" data-zip-input>
-            <button class="btn btn-sm" type="button" data-zip-btn>Check</button>
+            <button class="btn" type="button" data-zip-btn>Check</button>
           </div>
           <div class="zip-check__result" aria-live="polite" data-zip-result></div>
         </div>
-        <p class="open-now"><span data-open-now></span> · <span data-open-now>Mon–Thu 7 am – 4:30 pm · Fri 7 am – 3 pm</span></p>
+        <div class="area__hours">
+          <p class="open-now"><span data-open-now>Mon–Thu 7 am – 4:30 pm · Fri 7 am – 3 pm</span></p>
+          <dl class="hours"><div><dt>Mon</dt><dd>7 am – 4:30 pm</dd></div><div><dt>Tue</dt><dd>7 am – 4:30 pm</dd></div><div><dt>Wed</dt><dd>7 am – 4:30 pm</dd></div><div><dt>Thu</dt><dd>7 am – 4:30 pm</dd></div><div><dt>Fri</dt><dd>7 am – 3 pm</dd></div><div><dt>Sat</dt><dd>Closed</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
+        </div>
       </div>
-      <figure class="frame" data-fallback="Painted treads under October leaves" data-reveal="clip"><img src="media/placeholder-season-autumn-steps.webp" alt="Painted treads under October leaves" width="1170" height="1560" loading="lazy" decoding="async" data-photo="season-autumn-steps" data-slot="area-season"></figure>
+      <figure class="plate plate--tall">
+        <img src="media/placeholder-season-autumn-steps.webp" alt="Painted treads under October leaves" width="1170" height="1560" loading="lazy" decoding="async" data-photo="season-autumn-steps" data-slot="area-season">
+        <svg class="plate__draw" viewBox="0 0 300 400" aria-hidden="true" focusable="false"><use href="#d-steps"/></svg>
+        <figcaption class="plate__cap"><span class="plate__no">PL 08</span>Fall is tread season: soft treads before the snow.</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- 10. CONTACT FORM + FOOTER RULE -->
+  <!-- 09. CONTACT FORM -->
   <section id="contact" class="section contact t-deep">
+    <div class="cut-rule" data-sw-signature="cut-list" aria-hidden="true">
+      <span class="cut-rule__label">CUT 09 · THE ORDER · FOUR STEPS</span>
+      <span class="cut-rule__kerf"></span>
+    </div>
     <div class="container contact__grid">
-      <div class="contact__intro" data-reveal>
-        <h2>Get a number</h2>
-        <p class="lead">Tell us what is broken, what it is made of, and when you need it done. We will call you back to set up a visit.</p>
+      <div class="contact__intro">
+        <div class="cut-head">
+          <span class="cut-head__n" aria-hidden="true">09</span>
+          <p class="cut-head__spec">The order · four steps</p>
+          <h2>Price a repair</h2>
+        </div>
+        <p class="lead">Tell us which part has gone soft or stuck. We look at it in person before we put a number on it.</p>
         <p class="contact__direct">Or call <a class="tel-plain" href="tel:+12075550167">(207) 555-0167</a> · <span data-open-now>Mon–Thu 7 am – 4:30 pm · Fri 7 am – 3 pm</span></p>
       </div>
-      <form class="lead-form" data-lead novalidate>
-        <div class="lead-form__steps">
-          <div class="lead-step is-active" data-step="1">
-            <h3 class="lead-step__title">Step 1 · The problem</h3>
+      <div class="contact__form">
+        <form class="lead-form" data-lead novalidate>
+          <div class="lead-form__progress" data-form-progress aria-label="Form progress"><span></span></div>
+          <fieldset class="lead-step" data-step data-step-title="The problem">
+            <legend class="lead-step__title">Step 1 · The problem</legend>
             <label class="lead-field">
               <span class="lead-field__label">What needs work?</span>
               <select name="service" required data-lead-service>
@@ -958,76 +1277,90 @@ textarea { resize: vertical; }
               <span class="lead-field__label">Describe it in your words</span>
               <textarea name="details" rows="3" required placeholder="e.g., front porch post base is soft at the bottom"></textarea>
             </label>
-            <button class="btn" type="button" data-lead-next>Next</button>
-          </div>
-          <div class="lead-step" data-step="2">
-            <h3 class="lead-step__title">Step 2 · The part</h3>
+          </fieldset>
+          <fieldset class="lead-step" data-step data-step-title="The part">
+            <legend class="lead-step__title">Step 2 · The part</legend>
             <label class="lead-field">
               <span class="lead-field__label">Material (if known)</span>
-              <input type="text" name="material" placeholder="e.g., pine casing, oak sill">
+              <input class="input" type="text" name="material" placeholder="e.g., pine casing, oak sill">
             </label>
             <label class="lead-field">
               <span class="lead-field__label">Rough size</span>
-              <input type="text" name="size" placeholder="e.g., 3 ft wide, 6 ft tall">
+              <input class="input" type="text" name="size" placeholder="e.g., 3 ft wide, 6 ft tall">
             </label>
-            <div class="lead-step__nav">
-              <button class="btn btn-ghost" type="button" data-lead-prev>Back</button>
-              <button class="btn" type="button" data-lead-next>Next</button>
-            </div>
-          </div>
-          <div class="lead-step" data-step="3">
-            <h3 class="lead-step__title">Step 3 · Photo note</h3>
-            <p class="lead-step__hint">No upload in this demo. In your version this step accepts photos.</p>
+          </fieldset>
+          <fieldset class="lead-step" data-step data-step-title="Photo of the damage">
+            <legend class="lead-step__title">Step 3 · Photo of the damage</legend>
+            <p class="lead-step__hint">No upload in this demo. On the real site you attach a photo here, ruler in frame if you can.</p>
             <label class="lead-field">
               <span class="lead-field__label">Anything else we should know before the visit?</span>
               <textarea name="notes" rows="2"></textarea>
             </label>
-            <div class="lead-step__nav">
-              <button class="btn btn-ghost" type="button" data-lead-prev>Back</button>
-              <button class="btn" type="button" data-lead-next>Next</button>
-            </div>
-          </div>
-          <div class="lead-step" data-step="4">
-            <h3 class="lead-step__title">Step 4 · Contact</h3>
+          </fieldset>
+          <fieldset class="lead-step" data-step data-step-title="Contact">
+            <legend class="lead-step__title">Step 4 · Contact</legend>
             <label class="lead-field">
               <span class="lead-field__label">Name</span>
-              <input type="text" name="name" required autocomplete="name">
+              <input class="input" type="text" name="name" required autocomplete="name">
             </label>
             <label class="lead-field">
               <span class="lead-field__label">Phone</span>
-              <input type="tel" name="phone" required autocomplete="tel" placeholder="(207) 555-01XX">
+              <input class="input" type="tel" name="phone" required autocomplete="tel">
             </label>
-            <label class="lead-field lead-field--hidden">
-              <span class="lead-field__label">Website</span>
-              <input type="text" name="website2" tabindex="-1" autocomplete="off">
-            </label>
-            <input type="hidden" name="t" data-lead-time>
-            <div class="lead-step__nav">
-              <button class="btn btn-ghost" type="button" data-lead-prev>Back</button>
-              <button class="btn" type="submit">Send</button>
-            </div>
-            <p class="lead-form__micro">We'll call you back to set up a visit.</p>
+          </fieldset>
+          <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website2" tabindex="-1" autocomplete="off"></label></div>
+          <input type="hidden" name="t">
+          <div class="lead-form__nav" data-form-nav>
+            <button class="btn btn-ghost" type="button" data-back>Back</button>
+            <button class="btn" type="button" data-next>Next</button>
+            <button class="btn" type="submit" data-submit>Ask for a visit</button>
           </div>
-        </div>
-        <div class="lead-form__thanks" data-lead-thanks hidden>
+          <p class="lead-form__micro">We’ll call back to set a day to look at it.</p>
+        </form>
+        <div class="lead-form__thanks" data-thanks-box hidden>
           <h3>Thanks, {name}.</h3>
-          <p>In your version this goes straight to your phone and inbox. For now, call <a class="tel-plain" href="tel:+12075550167">(207) 555-0167</a> to reach Scarf &amp; Sash.</p>
+          <p>This is a demo, nothing was sent. On the real site this goes to Scarf &amp; Sash. To talk now, call <a class="tel-plain" href="tel:+12075550167">(207) 555-0167</a>.</p>
         </div>
-      </form>
-    </div>
-    <div class="cut-rule cut-rule--footer" data-sw-signature="cut-list" aria-hidden="true">
-      <span class="cut-rule__label">CUT 99 · FINISHED JOINT · ALL PIECES MET</span>
-      <span class="cut-rule__kerf"></span>
+      </div>
     </div>
   </section>
 
 </main>
 
-<footer class="footer t-deep">
-  <div class="container footer__inner">
+<footer class="footer t-paper">
+  <div class="cut-rule cut-rule--footer" data-sw-signature="cut-list" aria-hidden="true">
+    <span class="cut-rule__label">CUT 99 · FINISHED JOINT · ALL PIECES MET</span>
+    <span class="cut-rule__kerf"></span>
+  </div>
+  <div class="container footer__grid">
+    <nav class="cutlist" aria-label="Cut list">
+      <h2 class="cutlist__title"><span class="cutlist__big" aria-hidden="true">99</span>Cut list, finished</h2>
+      <ol class="cutlist__rows">
+        <li><a href="#hero"><span class="cutlist__n">00</span><span class="cutlist__piece">Old-house carpentry</span><span class="cutlist__spec">White oak · Portland</span></a></li>
+        <li><a href="#story-rot"><span class="cutlist__n">01</span><span class="cutlist__piece">Sill dutchman</span><span class="cutlist__spec">2½ × 7 × 38 · oak</span></a></li>
+        <li><a href="#rot-check"><span class="cutlist__n">02</span><span class="cutlist__piece">Repair or replace</span><span class="cutlist__spec">Five ticks</span></a></li>
+        <li><a href="#matched-trim"><span class="cutlist__n">03</span><span class="cutlist__piece">Casing, sash rail, panel</span><span class="cutlist__spec">¾ × 3¼ · 1¾ × 2¼ · pine</span></a></li>
+        <li><a href="#porch-elevation"><span class="cutlist__n">04</span><span class="cutlist__piece">Porch elevation</span><span class="cutlist__spec">Post base · rail cap</span></a></li>
+        <li><a href="#porch-safety"><span class="cutlist__n">05</span><span class="cutlist__piece">Porch check</span><span class="cutlist__spec">Six ticks</span></a></li>
+        <li><a href="#services"><span class="cutlist__n">06</span><span class="cutlist__piece">Full list</span><span class="cutlist__spec">By the piece</span></a></li>
+        <li><a href="#proof"><span class="cutlist__n">07</span><span class="cutlist__piece">Reviews and prices</span><span class="cutlist__spec">Ranges only</span></a></li>
+        <li><a href="#area"><span class="cutlist__n">08</span><span class="cutlist__piece">Site</span><span class="cutlist__spec">Portland and nearby</span></a></li>
+        <li><a href="#contact"><span class="cutlist__n">09</span><span class="cutlist__piece">Price a repair</span><span class="cutlist__spec">Four steps</span></a></li>
+      </ol>
+      <p class="cutlist__total"><span>Total</span><span>Ten cuts · one finished joint</span></p>
+    </nav>
+    <div class="footer__card">
+      <p class="footer__name">Scarf &amp; Sash Carpentry</p>
+      <p class="footer__tel"><a class="tel-plain" href="tel:+12075550167">(207) 555-0167</a></p>
+      <p class="footer__line"><span data-open-now>Mon–Thu 7 am – 4:30 pm · Fri 7 am – 3 pm</span></p>
+      <p class="footer__line">Portland and South Portland, Westbrook, Falmouth, Cape Elizabeth, Scarborough, Yarmouth and Gorham</p>
+      <a class="btn btn-call" href="tel:+12075550167"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (207) 555-0167</span></a>
+    </div>
+  </div>
+  <div class="container footer__fine">
     <p class="footer__disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
-    <p class="footer__biz">Scarf &amp; Sash Carpentry · Portland, ME · Licence # SAMPLE-ME-30417 <span class="sample-tag">Sample license</span></p>
-    <ul class="credits"><li>Sample photos via Pexels (placeholder mode)</li></ul>
+    <p class="footer__biz">Scarf &amp; Sash Carpentry · Portland, ME · License # SAMPLE-ME-30417 <span class="sample-tag">Sample license</span></p>
+    <ul class="credits"><li>Drawings made for this sample site</li></ul>
     <p class="footer__copy">© 2026 Scarf &amp; Sash Carpentry. All rights reserved.</p>
   </div>
 </footer>
@@ -1035,7 +1368,7 @@ textarea { resize: vertical; }
 <div class="mobilebar t-deep" data-mobilebar>
   <div class="mobilebar__inner">
     <a class="btn btn-call" href="tel:+12075550167"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (207) 555-0167</span></a>
-    <a class="btn repair" href="#contact" data-service="Rot">Price it</a>
+    <a class="btn" href="#contact" data-service="Rot repair">Price a repair</a>
   </div>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Scarf & Sash Carpentry","short":"Scarf & Sash","phone":"(207) 555-0167","phoneE164":"+12075550167","sms":true,"email":"hello@scarf-and-sash.example","city":"Portland","state":"ME","timezone":"America/New_York","areas":["South Portland","Westbrook","Falmouth","Cape Elizabeth","Scarborough","Yarmouth","Gorham"],"zips":["04101","04102","04103","04106","04092","04105","04107","04074","04096","04038"],"hours":{"mon":["07:00","16:30"],"tue":["07:00","16:30"],"wed":["07:00","16:30"],"thu":["07:00","16:30"],"fri":["07:00","15:00"],"sat":null,"sun":null},"emergency":false},"services":[{"name":"Rotten trim and sill repair","short":"Rot repair"},{"name":"Porch posts, rails and floors","short":"Porch repair"},{"name":"Window sash and jamb repair","short":"Sash repair"},{"name":"Matched trim and molding","short":"Matched trim"},{"name":"Built-ins and window seats","short":"Built-ins"},{"name":"Stairs, rails and balusters","short":"Stairs"},{"name":"Doors that stick or won't latch","short":"Door fixes"},{"name":"Shelving and closet fit-outs","short":"Closets"},{"name":"Framing repair","short":"Framing"}],"proof":{"label":"Sample","prices":[{"item":"Window sill rot repair (patch)","from":"$275","to":"$650","unit":"per sill","note":"sill saved; new sill costs more"},{"item":"Porch post base splice","from":"$450","to":"$1,100","unit":"per post","note":"includes priming"},{"item":"Matched casing or baseboard","from":"$14","to":"$32","unit":"per linear ft","note":"custom knife adds a one-time charge"},{"item":"Built-in bookcase or window seat","from":"$3,200","to":"$9,500","note":"paint-grade, typical wall"},{"item":"Sash repair and restring","from":"$225","to":"$475","unit":"per window"}]},"hours":{"mon":["07:00","16:30"],"tue":["07:00","16:30"],"wed":["07:00","16:30"],"thu":["07:00","16:30"],"fri":["07:00","15:00"],"sat":null,"sun":null},"timezone":"America/New_York","zips":["04101","04102","04103","04106","04092","04105","04107","04074","04096","04038"],"areas":["South Portland","Westbrook","Falmouth","Cape Elizabeth","Scarborough","Yarmouth","Gorham"],"phone":"(207) 555-0167","phoneE164":"+12075550167"}</script>

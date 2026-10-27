@@ -1,5 +1,8 @@
 # Blueprint — carpenter-A
 
+## Round 3 (fix + elevate)
+Type: every h2 now sits under a large Young Serif cut number (01–09) against a small mono spec, and all dimensions use one ½ ¼ ¾ glyph style. Layout: the footer is now paper and gathers CUT 00–09 into one finished cut list; the finished-scarf plate (PL 07) overlaps the proof/area seam. The story is now scrubbed without a pin (no spacer gap), reveals and counters are gone (no blank capture), services are an accordion under 640px, the estimator starts on the selected job, and the form uses the kit [data-form-nav] markup.
+
 ## Round 2
 Photo: every placeholder slot is now a drawn shop-drawing plate (teal + cream duotone, PL numbers, dimension lines); a real photo hides its plate once it loads. Motion/wow: pinned 3-step scarf-joint story (cut → fit oak → prime) in #story-rot, and the estimator price is cut in by a kerf line on every change. Also fixed: giant unsized button icons, broken t-accent tone, estimator and rot-check wiring, hidden-h1 split CSS, kerf hidden with JS off, 390 overflow. Signature added to #services and #area.
 
