@@ -76,3 +76,7 @@ Tones: dark → paper → dark → dark(break) → deep → paper → accent →
 - Interactive hooks: data-checklist (1), data-tabs (2 instances), data-zip (1), data-open-now (1), data-lead (1), data-sw-signature (3 instances) = 7 hooks ✓. Signature present ✓.
 - One #contact ✓.
 - Required content: services ✓, service area + ZIP ✓, hours/open-now ✓, sample reviews ✓, sample prices (via estimator/cards with [[sample pricing]]) ✓, footer disclaimer + credits ✓.
+
+## Round 4 (fix, from qa/last/src)
+The triple-decker became the navigation: the hero porches are links (1F/2F/3F), and a margin house rail at 1400px and up builds each porch (posts, then rail, then balusters) on scroll as its floor enters. The safety check lights the chosen floor in rust. Distinctiveness and motion were the weakest categories; this answers both with one idea.
+Also: copy-4 applied, the break moved between #proof and #floor-3 (no touching navies), the floor-1 plate redrawn tall and sticky, #area split with a drawn town map, #contact split with a call card, the form moved to kit nav markup, tabs moved to kit markup (panels visible with JS off), the mobile bar held until the hero buttons leave the screen, reveal hiding scoped to .sw-motion, and the empty credits list hidden with :empty.

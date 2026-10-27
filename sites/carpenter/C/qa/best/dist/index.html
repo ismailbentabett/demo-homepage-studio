@@ -23,7 +23,6 @@
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/bebas-neue/bebas-neue-400-normal.woff2" crossorigin>
 <link rel="preload" as="image" href="media/placeholder-hero-C1.webp" fetchpriority="high">
-<link rel="preload" as="image" href="media/placeholder-region-victorian-house.webp" fetchpriority="high">
 <link rel="stylesheet" href="vendor/lenis.css">
 <style>
 @font-face{font-family:"Bebas Neue";src:url("fonts/bebas-neue/bebas-neue-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
@@ -316,7 +315,8 @@ legend { font-weight: 600; margin-bottom: var(--s-3); }
 
 .mono { font-family: 'DM Mono', monospace; font-weight: 400; letter-spacing: 0.02em; }
 .kicker { font-size: var(--fs-0); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--s-3); }
-.floor-label { font-size: var(--fs-0); text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--s-3); }
+.floor-label { display: flex; align-items: center; gap: var(--s-3); font-size: var(--fs-1); font-weight: 600; color: var(--accent); margin-bottom: var(--s-2); }
+.fl-num { display: inline-grid; place-items: center; min-width: 2.6em; height: 1.9em; padding-inline: 0.4em; border: 1.5px solid currentColor; font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 1.15em; letter-spacing: 0.04em; line-height: 1; }
 .caption { font-size: var(--fs--1); color: var(--muted-paper); margin-top: var(--s-2); }
 .t-dark .caption, .t-deep .caption { color: var(--muted-dark); }
 .lead { font-size: var(--fs-2); line-height: 1.4; max-width: 65ch; }
@@ -354,9 +354,14 @@ h3 { font-size: var(--fs-3); margin-bottom: var(--s-3); }
 
 .sample-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 6px; background: var(--rule); color: var(--muted); border-radius: 0; }
 
-.frame { position: relative; overflow: hidden; aspect-ratio: 4/3; background: var(--rule); }
-.frame img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8) contrast(1.08) sepia(0.12) brightness(0.92); }
-.frame.is-broken { display: flex; align-items: center; justify-content: center; padding: var(--s-5); text-align: center; font-size: var(--fs-0); color: var(--muted); }
+.frame { position: relative; overflow: hidden; aspect-ratio: 4/3; border: 1px solid var(--rule); background: var(--frame-bg, #E7DABB) var(--dwg, none) center / cover no-repeat; }
+.t-deep .frame, .t-dark .frame { --frame-bg: #141C27; }
+.t-accent .frame { --frame-bg: var(--paper); }
+.frame::after { content: ""; position: absolute; inset: 10px; border: 1px solid currentColor; opacity: 0.18; pointer-events: none; }
+.frame img { width: 100%; height: 100%; color: transparent; font-size: 0; object-fit: cover; filter: saturate(0.8) contrast(1.08) sepia(0.12) brightness(0.92); }
+.frame.is-broken { display: block; padding: 0; }
+.frame.is-broken .frame-fallback, .frame-fallback { display: none; }
+img[data-sw-broken] { opacity: 0; }
 
 .site-header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); z-index: 100; transition: background var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out); }
 .site-header.is-scrolled { background: var(--ink); box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
@@ -374,8 +379,9 @@ h3 { font-size: var(--fs-3); margin-bottom: var(--s-3); }
 .header-actions .btn-primary { display: none; }
 @media (min-width: 900px) {
   .header-actions .btn-primary { display: inline-flex; }
+  .menu-btn { display: none; }
 }
-.menu-btn { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; color: var(--paper); }
+.menu-btn { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; color: var(--paper); }
 .menu-btn svg { width: 24px; height: 24px; }
 .progress-bar { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--accent); width: calc(var(--p,0) * 100%); transition: width 100ms linear; }
 
@@ -392,13 +398,11 @@ h3 { font-size: var(--fs-3); margin-bottom: var(--s-3); }
 
 .hero { position: relative; min-height: calc(100svh - var(--header-h)); display: flex; align-items: flex-end; padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-9); overflow: hidden; }
 .hero-media { position: absolute; inset: 0; z-index: 0; }
-.hero-img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(0.8) contrast(1.08) sepia(0.12) brightness(0.92); }
+.hero-img { position: relative; width: 100%; height: 100%; color: transparent; font-size: 0; object-fit: cover; object-position: 34% 40%; filter: saturate(0.8) contrast(1.08) sepia(0.12) brightness(0.92); }
 .hero-content { position: relative; z-index: 1; padding-bottom: var(--s-8); }
 .hero-title { color: var(--paper); text-transform: uppercase; margin-bottom: var(--s-4); }
-.type-mask { background-image: var(--hero-bg, none); background-size: cover; background-position: 50% 30%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
-.sw-motion .type-mask[data-split="chars"] span { opacity: 0; transform: translateY(100%); animation: char-rise 0.6s var(--ease-out) forwards; animation-delay: calc(var(--i,0) * 30ms); }
-@keyframes char-rise {
-  to { opacity: 1; transform: translateY(0); }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .type-mask, .type-mask .sw-char { background-image: repeating-linear-gradient(180deg, var(--paper) 0 0.105em, #CDBF9C 0.105em 0.125em); background-size: 100% 0.25em; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
 .elevation-badge { position: fixed; bottom: var(--s-5); right: var(--s-4); width: 48px; height: 80px; z-index: 50; color: var(--muted-dark); opacity: 0.6; transition: opacity var(--dur-ui) var(--ease-out); }
@@ -431,11 +435,23 @@ h3 { font-size: var(--fs-3); margin-bottom: var(--s-3); }
 
 .checklist-tool { margin-top: var(--s-5); padding: var(--s-5); border: 1px solid var(--rule); background: rgba(255,255,255,0.03); }
 .t-paper .checklist-tool { background: rgba(0,0,0,0.02); }
-.tool-label { font-size: var(--fs-0); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--s-4); color: var(--accent); }
+.tool-label { font-family: 'Bebas Neue', sans-serif; font-size: var(--fs-3); letter-spacing: 0.01em; line-height: 1; margin-bottom: var(--s-4); color: var(--accent); }
 .t-paper .tool-label { color: var(--ink); }
 .checklist-items { display: flex; flex-direction: column; gap: var(--s-3); }
 .checklist-items label { display: flex; align-items: flex-start; gap: var(--s-3); cursor: pointer; font-size: var(--fs-1); }
-.checklist-items input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
+.checklist-items li { position: relative; }
+.checklist-items label { flex-direction: row; align-items: center; min-height: 48px; padding: var(--s-2) var(--s-3); font-weight: 400; box-shadow: inset 0 0 0 0 var(--signal); transition: box-shadow var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out); }
+.checklist-items label:has(:checked) { box-shadow: inset 4px 0 0 0 var(--signal); background-color: rgba(199,91,57,0.08); font-weight: 600; }
+.checklist-items input[type="checkbox"] { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; padding: 0; margin: 0; flex-shrink: 0; display: grid; place-content: center; border: 2px solid currentColor; border-radius: 2px; background: transparent; cursor: pointer; transition: background-color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out); }
+.checklist-items input[type="checkbox"]::after { content: ""; width: 11px; height: 6px; border-left: 2.5px solid var(--paper); border-bottom: 2.5px solid var(--paper); transform: translateY(-2px) rotate(-45deg) scale(0); transition: transform 180ms var(--ease-out); }
+.checklist-items input[type="checkbox"]:checked { background: var(--ink); border-color: var(--ink); animation: tick-pulse 460ms var(--ease-out); }
+.checklist-items input[type="checkbox"]:checked::after { transform: translateY(-2px) rotate(-45deg) scale(1); }
+.checklist-items input[type="checkbox"]:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+@keyframes tick-pulse {
+  0% { transform: scale(0.82); box-shadow: 0 0 0 0 rgba(74,158,150,0.7); }
+  45% { transform: scale(1.12); }
+  100% { transform: scale(1); box-shadow: 0 0 0 14px rgba(74,158,150,0); }
+}
 .checklist-result-card { margin-top: var(--s-5); padding: var(--s-5); border: 2px solid var(--accent); background: rgba(74,158,150,0.06); display: flex; align-items: center; gap: var(--s-4); }
 .checklist-result-card[hidden] { display: none; }
 .t-paper .checklist-result-card { background: rgba(74,158,150,0.08); }
@@ -458,7 +474,9 @@ h3 { font-size: var(--fs-3); margin-bottom: var(--s-3); }
 .svc-card h3 { font-size: var(--fs-3); }
 .svc-card p { font-size: var(--fs-1); color: var(--muted); }
 .t-paper .svc-card p { color: var(--muted-paper); }
-.sample-price { font-size: var(--fs-0); color: var(--accent); }
+.sample-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: var(--fs-1); color: var(--accent); }
+.price-fig { font-family: 'DM Mono', monospace; font-weight: 500; white-space: nowrap; }
+.price-unit { white-space: nowrap; }
 .t-paper .sample-price { color: var(--ink); }
 .svc-card .btn { margin-top: auto; align-self: flex-start; }
 .svc-more { margin-top: var(--s-6); display: flex; flex-direction: column; gap: var(--s-3); align-items: flex-start; }
@@ -469,10 +487,13 @@ h3 { font-size: var(--fs-3); margin-bottom: var(--s-3); }
 
 .profile-tabs { margin-top: var(--s-5); }
 .tabs-list { display: flex; flex-wrap: wrap; gap: var(--s-2); border-bottom: 1px solid var(--rule); padding-bottom: var(--s-2); margin-bottom: var(--s-4); }
-.tabs-list button { padding: var(--s-2) var(--s-4); font-size: var(--fs-0); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 2px solid transparent; transition: color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out); }
+.tabs-list button { min-height: 44px; padding: var(--s-2) var(--s-4); font-size: var(--fs-1); font-weight: 600; color: var(--muted); border-bottom: 2px solid transparent; transition: color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out); }
 .tabs-list button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
 .t-paper .tabs-list button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
-.tab-panel { font-size: var(--fs-1); }
+.tab-panel { font-size: var(--fs-2); line-height: 1.4; }
+.tab-panel p { max-width: 40ch; }
+.panel-h { font-size: var(--fs-2); margin-bottom: var(--s-2); }
+.sw-js [data-tablist] ~ .tab-panel .panel-h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 .tab-panel[hidden] { display: none; }
 .trim-services { display: grid; gap: var(--s-4); margin-top: var(--s-6); }
 @media (min-width: 640px) {
@@ -489,7 +510,7 @@ h3 { font-size: var(--fs-3); margin-bottom: var(--s-3); }
 .t-paper .review-stars { color: var(--ink); }
 .review-stars svg { width: 16px; height: 16px; }
 .review-card blockquote { font-size: var(--fs-1); font-style: normal; line-height: 1.5; }
-.review-meta { font-size: var(--fs-0); color: var(--muted); }
+.review-meta { font-size: var(--fs-0); line-height: 1.45; color: var(--muted); }
 .t-paper .review-meta { color: var(--muted-paper); }
 
 .season-tool { margin-top: var(--s-5); padding: var(--s-5); border: 1px solid var(--rule); background: rgba(0,0,0,0.05); }
@@ -543,18 +564,20 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
 .credits li { font-size: var(--fs--1); }
 
 .mobile-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 90; background: var(--ink); padding: var(--s-3) var(--s-4); display: flex; gap: var(--s-3); box-shadow: 0 -2px 12px rgba(15,20,28,0.3); }
-.mobile-bar .btn { flex: 1; }
+.mobile-bar .btn { flex: 1; white-space: nowrap; padding-inline: 0.75em; font-size: var(--fs-0); }
+.mobile-bar .btn-secondary { color: var(--paper); border-color: var(--accent); }
+.mobile-bar .btn-secondary:hover { background: rgba(255,255,255,0.08); }
 @media (min-width: 900px) {
   .mobile-bar { display: none; }
 }
 .mobile-bar.is-hidden { transform: translateY(100%); transition: transform var(--dur-ui) var(--ease-out); }
 
-[data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-[data-reveal].is-in { opacity: 1; transform: translateY(0); }
-[data-reveal="clip"] { clip-path: inset(0 0 100% 0); opacity: 1; transform: none; transition: clip-path var(--dur-story) var(--ease-out); }
-[data-reveal="clip"].is-in { clip-path: inset(0 0 0 0); }
-[data-reveal-stagger] > * { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-[data-reveal-stagger].is-in > * { opacity: 1; transform: translateY(0); }
+.sw-motion [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
+.sw-motion [data-reveal].is-in { opacity: 1; transform: translateY(0); }
+.sw-motion [data-reveal="clip"] { clip-path: inset(0 0 100% 0); opacity: 1; transform: none; transition: clip-path var(--dur-story) var(--ease-out); }
+.sw-motion [data-reveal="clip"].is-in { clip-path: inset(0 0 0 0); }
+.sw-motion [data-reveal-stagger] > * { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
+.sw-motion [data-reveal-stagger].is-in > * { opacity: 1; transform: translateY(0); }
 [data-reveal-stagger].is-in > *:nth-child(1) { transition-delay: 0ms; }
 [data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: calc(var(--dur-stagger)); }
 [data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: calc(var(--dur-stagger) * 2); }
@@ -562,14 +585,16 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
 [data-reveal-stagger].is-in > *:nth-child(5) { transition-delay: calc(var(--dur-stagger) * 4); }
 [data-reveal-stagger].is-in > *:nth-child(6) { transition-delay: calc(var(--dur-stagger) * 5); }
 
-.sw-motion .hero-media { clip-path: inset(0 0 100% 0); transition: clip-path var(--dur-story) var(--ease-out); }
-.sw-motion .hero-media.is-in { clip-path: inset(0 0 0 0); }
+.sw-motion .hero-media { animation: hero-unclip var(--dur-story) var(--ease-out) both; }
+@keyframes hero-unclip {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   [data-reveal], [data-reveal="clip"], [data-reveal-stagger] > * { opacity: 1; transform: none; clip-path: none; }
   .baluster-rule { clip-path: none; }
-  .type-mask span { opacity: 1; transform: none; }
 }
 
 @media (min-width: 390px) {
@@ -585,6 +610,212 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
 @media (min-width: 1440px) {
   :root { --fs-h1: clamp(4rem, 10vw, 7rem); }
 }
+/* ---------- drawn treatments (placeholder-safe: real photos cover them) ---------- */
+.draw-rot { --dwg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cg fill='none' stroke='%230F141C' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M0 210 H400' opacity='.5'/%3E%3Cpath d='M0 226 H400' opacity='.5'/%3E%3Cpath d='M0 242 H400' opacity='.5'/%3E%3Cpath d='M0 258 H400' opacity='.5'/%3E%3Cpath d='M0 274 H400' opacity='.5'/%3E%3Cpath d='M0 290 H400' opacity='.5'/%3E%3Cpath d='M150 0 V210 M230 0 V210'/%3E%3Cpath d='M140 196 h100 M140 206 h100'/%3E%3Cpath d='M162 0 C168 60 156 120 164 180' opacity='.45'/%3E%3Cpath d='M176 0 C182 60 170 120 178 180' opacity='.45'/%3E%3Cpath d='M190 0 C196 60 184 120 192 180' opacity='.45'/%3E%3Cpath d='M204 0 C210 60 198 120 206 180' opacity='.45'/%3E%3Cpath d='M218 0 C224 60 212 120 220 180' opacity='.45'/%3E%3Cpath d='M150 150 C170 140 200 160 230 146' stroke-dasharray='3 4'/%3E%3Cpath d='M152 206 L166 156' opacity='.7'/%3E%3Cpath d='M161 206 L175 156' opacity='.7'/%3E%3Cpath d='M170 206 L184 156' opacity='.7'/%3E%3Cpath d='M179 206 L193 156' opacity='.7'/%3E%3Cpath d='M188 206 L202 156' opacity='.7'/%3E%3Cpath d='M197 206 L211 156' opacity='.7'/%3E%3Cpath d='M206 206 L220 156' opacity='.7'/%3E%3Cpath d='M215 206 L229 156' opacity='.7'/%3E%3Cpath d='M224 206 L238 156' opacity='.7'/%3E%3Cpath d='M330 120 L238 178' stroke-width='3'/%3E%3Cpath d='M330 120 l40 -25 l8 12 l-40 25 Z'/%3E%3Cpath d='M246 196 L222 182' stroke='%23C75B39' stroke-width='2.4'/%3E%3Cpath d='M260 230 h70 M260 224 v12 M330 224 v12' /%3E%3Cpath d='M252 214 L262 230' opacity='.6'/%3E%3C/g%3E%3C/svg%3E"); }
+.draw-bal { --dwg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cg fill='none' stroke='%234A9E96' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M0 46 H400 M0 58 H400'/%3E%3Cpath d='M0 262 H400 M0 272 H400'/%3E%3Cpath d='M24 20 h44 v14 h-44 Z M30 34 V272 M62 34 V272 M30 120 h32 M30 200 h32 M36 120 v80 M56 120 v80'/%3E%3Cpath d='M94 58 h12 M96 58 V78 C90 88 90 100 96 108 C98 140 91 168 91 196 C91 214 96 224 94 236 V262 M104 58 V78 C110 88 110 100 104 108 C102 140 109 168 109 196 C109 214 104 224 106 236 V262 M92 236 h16 M94 108 h12'/%3E%3Cpath d='M128 58 h12 M130 58 V78 C124 88 124 100 130 108 C132 140 125 168 125 196 C125 214 130 224 128 236 V262 M138 58 V78 C144 88 144 100 138 108 C136 140 143 168 143 196 C143 214 138 224 140 236 V262 M126 236 h16 M128 108 h12'/%3E%3Cpath d='M162 58 h12 M164 58 V78 C158 88 158 100 164 108 C166 140 159 168 159 196 C159 214 164 224 162 236 V262 M172 58 V78 C178 88 178 100 172 108 C170 140 177 168 177 196 C177 214 172 224 174 236 V262 M160 236 h16 M162 108 h12'/%3E%3Cpath d='M196 58 h12 M198 58 V78 C192 88 192 100 198 108 C200 140 193 168 193 196 C193 214 198 224 196 236 V262 M206 58 V78 C212 88 212 100 206 108 C204 140 211 168 211 196 C211 214 206 224 208 236 V262 M194 236 h16 M196 108 h12'/%3E%3Cpath d='M230 58 h12 M232 58 V78 C226 88 226 100 232 108 C234 140 227 168 227 196 C227 214 232 224 230 236 V262 M240 58 V78 C246 88 246 100 240 108 C238 140 245 168 245 196 C245 214 240 224 242 236 V262 M228 236 h16 M230 108 h12'/%3E%3Cpath d='M264 58 h12 M266 58 V78 C260 88 260 100 266 108 C268 140 261 168 261 196 C261 214 266 224 264 236 V262 M274 58 V78 C280 88 280 100 274 108 C272 140 279 168 279 196 C279 214 274 224 276 236 V262 M262 236 h16 M264 108 h12'/%3E%3Cpath d='M298 58 h12 M300 58 V78 C294 88 294 100 300 108 C302 140 295 168 295 196 C295 214 300 224 298 236 V262 M308 58 V78 C314 88 314 100 308 108 C306 140 313 168 313 196 C313 214 308 224 310 236 V262 M296 236 h16 M298 108 h12'/%3E%3Cpath d='M332 58 h12 M334 58 V78 C328 88 328 100 334 108 C336 140 329 168 329 196 C329 214 334 224 332 236 V262 M342 58 V78 C348 88 348 100 342 108 C340 140 347 168 347 196 C347 214 342 224 344 236 V262 M330 236 h16 M332 108 h12'/%3E%3Cpath d='M366 58 h12 M368 58 V78 C362 88 362 100 368 108 C370 140 363 168 363 196 C363 214 368 224 366 236 V262 M376 58 V78 C382 88 382 100 376 108 C374 140 381 168 381 196 C381 214 376 224 378 236 V262 M364 236 h16 M366 108 h12'/%3E%3Cpath d='M134 286 H168 M134 280 v12 M168 280 v12' stroke='%23C75B39' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E"); }
+.draw-rain { --dwg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cg fill='none' stroke='%230F141C' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M0 10 H250 M0 14 H250' opacity='0.45'/%3E%3Cpath d='M0 32 H250 M0 36 H250' opacity='0.45'/%3E%3Cpath d='M0 54 H250 M0 58 H250' opacity='0.45'/%3E%3Cpath d='M0 76 H250 M0 80 H250' opacity='0.45'/%3E%3Cpath d='M0 98 H250 M0 102 H250' opacity='0.45'/%3E%3Cpath d='M0 120 H250 M0 124 H250' opacity='0.45'/%3E%3Cpath d='M0 142 H250 M0 146 H250' opacity='0.45'/%3E%3Cpath d='M0 164 H250 M0 168 H250' opacity='0.45'/%3E%3Cpath d='M0 186 H250 M0 190 H250' opacity='0.45'/%3E%3Cpath d='M0 208 H250 M0 212 H250' opacity='0.45'/%3E%3Cpath d='M0 230 H250 M0 234 H250' opacity='0.45'/%3E%3Cpath d='M0 252 H250 M0 256 H250' opacity='0.45'/%3E%3Cpath d='M0 274 H250 M0 278 H250' opacity='0.45'/%3E%3Cpath d='M0 296 H250 M0 300 H250' opacity='0.45'/%3E%3Cpath d='M250 0 V300 M268 0 V300 M268 70 h132 M268 84 h132 M300 84 V300 M380 84 V300 M300 190 h80'/%3E%3Cpath d='M0 0 l-8 18' opacity='.55'/%3E%3Cpath d='M53 97 l-8 18' opacity='.55'/%3E%3Cpath d='M106 194 l-8 18' opacity='.55'/%3E%3Cpath d='M159 11 l-8 18' opacity='.55'/%3E%3Cpath d='M212 108 l-8 18' opacity='.55'/%3E%3Cpath d='M265 205 l-8 18' opacity='.55'/%3E%3Cpath d='M318 22 l-8 18' opacity='.55'/%3E%3Cpath d='M371 119 l-8 18' opacity='.55'/%3E%3Cpath d='M24 216 l-8 18' opacity='.55'/%3E%3Cpath d='M77 33 l-8 18' opacity='.55'/%3E%3Cpath d='M130 130 l-8 18' opacity='.55'/%3E%3Cpath d='M183 227 l-8 18' opacity='.55'/%3E%3Cpath d='M236 44 l-8 18' opacity='.55'/%3E%3Cpath d='M289 141 l-8 18' opacity='.55'/%3E%3Cpath d='M342 238 l-8 18' opacity='.55'/%3E%3Cpath d='M395 55 l-8 18' opacity='.55'/%3E%3Cpath d='M48 152 l-8 18' opacity='.55'/%3E%3Cpath d='M101 249 l-8 18' opacity='.55'/%3E%3Cpath d='M154 66 l-8 18' opacity='.55'/%3E%3Cpath d='M207 163 l-8 18' opacity='.55'/%3E%3Cpath d='M260 260 l-8 18' opacity='.55'/%3E%3Cpath d='M313 77 l-8 18' opacity='.55'/%3E%3Cpath d='M366 174 l-8 18' opacity='.55'/%3E%3Cpath d='M19 271 l-8 18' opacity='.55'/%3E%3Cpath d='M72 88 l-8 18' opacity='.55'/%3E%3Cpath d='M125 185 l-8 18' opacity='.55'/%3E%3Cpath d='M30 58 v10 M50 102 v8' stroke='%23C75B39'/%3E%3Cpath d='M76 58 v10 M96 102 v8' stroke='%23C75B39'/%3E%3Cpath d='M122 58 v10 M142 102 v8' stroke='%23C75B39'/%3E%3Cpath d='M168 58 v10 M188 102 v8' stroke='%23C75B39'/%3E%3Cpath d='M214 58 v10 M234 102 v8' stroke='%23C75B39'/%3E%3C/g%3E%3C/svg%3E"); }
+.break { --dwg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 520' preserveAspectRatio='xMidYMax slice'%3E%3Cstyle%3E.d-clap{opacity:.35}.d-bal{opacity:.8}.d-thin{opacity:.7}%3C/style%3E%3Cg fill='none' stroke='%234A9E96' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath class='d-roof' d='M66 110 L200 20 L334 110 Z'/%3E%3Cpath class='d-thin' d='M174 84 h52 v-30 h-52 Z'/%3E%3Crect class='d-body' x='80' y='110' width='240' height='360'/%3E%3Cg class='d-floor d-f3'%3E%3Cpath d='M70 230 h135.2'/%3E%3Cpath d='M80 114 V230 M195.2 114 V230'/%3E%3Cpath d='M70 118 h135.2'/%3E%3Cpath d='M80 191.6 h115.19999999999999 M80 224 h115.19999999999999'/%3E%3Cpath class='d-bal' d='M89 191.6 V224 M98 191.6 V224 M107 191.6 V224 M116 191.6 V224 M125 191.6 V224 M134 191.6 V224 M143 191.6 V224 M152 191.6 V224 M161 191.6 V224 M170 191.6 V224 M179 191.6 V224 M188 191.6 V224'/%3E%3Crect class='d-thin' x='143.4' y='136' width='25.3' height='88'/%3E%3Crect class='d-thin' x='217.2' y='136' width='34.4' height='66'/%3E%3Cpath class='d-thin' d='M217.2 169 h34.4'/%3E%3Crect class='d-thin' x='263.6' y='136' width='34.4' height='66'/%3E%3Cpath class='d-thin' d='M263.6 169 h34.4'/%3E%3Cpath class='d-clap' d='M199.2 120 H320 M199.2 129 H320 M199.2 138 H320 M199.2 147 H320 M199.2 156 H320 M199.2 165 H320 M199.2 174 H320 M199.2 183 H320 M199.2 192 H320 M199.2 201 H320 M199.2 210 H320 M199.2 219 H320'/%3E%3C/g%3E%3Cg class='d-floor d-f2'%3E%3Cpath d='M70 350 h135.2'/%3E%3Cpath d='M80 234 V350 M195.2 234 V350'/%3E%3Cpath d='M70 238 h135.2'/%3E%3Cpath d='M80 311.6 h115.19999999999999 M80 344 h115.19999999999999'/%3E%3Cpath class='d-bal' d='M89 311.6 V344 M98 311.6 V344 M107 311.6 V344 M116 311.6 V344 M125 311.6 V344 M134 311.6 V344 M143 311.6 V344 M152 311.6 V344 M161 311.6 V344 M170 311.6 V344 M179 311.6 V344 M188 311.6 V344'/%3E%3Crect class='d-thin' x='143.4' y='256' width='25.3' height='88'/%3E%3Crect class='d-thin' x='217.2' y='256' width='34.4' height='66'/%3E%3Cpath class='d-thin' d='M217.2 289 h34.4'/%3E%3Crect class='d-thin' x='263.6' y='256' width='34.4' height='66'/%3E%3Cpath class='d-thin' d='M263.6 289 h34.4'/%3E%3Cpath class='d-clap' d='M199.2 240 H320 M199.2 249 H320 M199.2 258 H320 M199.2 267 H320 M199.2 276 H320 M199.2 285 H320 M199.2 294 H320 M199.2 303 H320 M199.2 312 H320 M199.2 321 H320 M199.2 330 H320 M199.2 339 H320'/%3E%3C/g%3E%3Cg class='d-floor d-f1'%3E%3Cpath d='M70 470 h135.2'/%3E%3Cpath d='M80 354 V470 M195.2 354 V470'/%3E%3Cpath d='M70 358 h135.2'/%3E%3Cpath d='M80 431.6 h115.19999999999999 M80 464 h115.19999999999999'/%3E%3Cpath class='d-bal' d='M89 431.6 V464 M98 431.6 V464 M107 431.6 V464 M116 431.6 V464 M125 431.6 V464 M134 431.6 V464 M143 431.6 V464 M152 431.6 V464 M161 431.6 V464 M170 431.6 V464 M179 431.6 V464 M188 431.6 V464'/%3E%3Crect class='d-thin' x='143.4' y='376' width='25.3' height='88'/%3E%3Crect class='d-thin' x='217.2' y='376' width='34.4' height='66'/%3E%3Cpath class='d-thin' d='M217.2 409 h34.4'/%3E%3Crect class='d-thin' x='263.6' y='376' width='34.4' height='66'/%3E%3Cpath class='d-thin' d='M263.6 409 h34.4'/%3E%3Cpath class='d-clap' d='M199.2 360 H320 M199.2 369 H320 M199.2 378 H320 M199.2 387 H320 M199.2 396 H320 M199.2 405 H320 M199.2 414 H320 M199.2 423 H320 M199.2 432 H320 M199.2 441 H320 M199.2 450 H320 M199.2 459 H320'/%3E%3C/g%3E%3Cpath class='d-thin' d='M10 500 L70 470'/%3E%3Cpath class='d-ground' d='M-40 500 H400'/%3E%3Cpath class='d-roof' d='M426 130 L550 40 L674 130 Z'/%3E%3Cpath class='d-thin' d='M524 104 h52 v-30 h-52 Z'/%3E%3Crect class='d-body' x='440' y='130' width='220' height='336'/%3E%3Cg class='d-floor d-f3'%3E%3Cpath d='M430 242 h125.6'/%3E%3Cpath d='M440 134 V242 M545.6 134 V242'/%3E%3Cpath d='M430 138 h125.6'/%3E%3Cpath d='M440 206.16 h105.6 M440 236 h105.6'/%3E%3Cpath class='d-bal' d='M449 206.2 V236 M458 206.2 V236 M467 206.2 V236 M476 206.2 V236 M485 206.2 V236 M494 206.2 V236 M503 206.2 V236 M512 206.2 V236 M521 206.2 V236 M530 206.2 V236 M539 206.2 V236'/%3E%3Crect class='d-thin' x='498.1' y='156' width='23.2' height='80'/%3E%3Crect class='d-thin' x='567.6' y='156' width='29.2' height='61.6'/%3E%3Cpath class='d-thin' d='M567.6 186.8 h29.2'/%3E%3Crect class='d-thin' x='608.8' y='156' width='29.2' height='61.6'/%3E%3Cpath class='d-thin' d='M608.8 186.8 h29.2'/%3E%3Cpath class='d-clap' d='M549.6 140 H660 M549.6 149 H660 M549.6 158 H660 M549.6 167 H660 M549.6 176 H660 M549.6 185 H660 M549.6 194 H660 M549.6 203 H660 M549.6 212 H660 M549.6 221 H660 M549.6 230 H660 M549.6 239 H660'/%3E%3C/g%3E%3Cg class='d-floor d-f2'%3E%3Cpath d='M430 354 h125.6'/%3E%3Cpath d='M440 246 V354 M545.6 246 V354'/%3E%3Cpath d='M430 250 h125.6'/%3E%3Cpath d='M440 318.15999999999997 h105.6 M440 348 h105.6'/%3E%3Cpath class='d-bal' d='M449 318.2 V348 M458 318.2 V348 M467 318.2 V348 M476 318.2 V348 M485 318.2 V348 M494 318.2 V348 M503 318.2 V348 M512 318.2 V348 M521 318.2 V348 M530 318.2 V348 M539 318.2 V348'/%3E%3Crect class='d-thin' x='498.1' y='268' width='23.2' height='80'/%3E%3Crect class='d-thin' x='567.6' y='268' width='29.2' height='61.6'/%3E%3Cpath class='d-thin' d='M567.6 298.8 h29.2'/%3E%3Crect class='d-thin' x='608.8' y='268' width='29.2' height='61.6'/%3E%3Cpath class='d-thin' d='M608.8 298.8 h29.2'/%3E%3Cpath class='d-clap' d='M549.6 252 H660 M549.6 261 H660 M549.6 270 H660 M549.6 279 H660 M549.6 288 H660 M549.6 297 H660 M549.6 306 H660 M549.6 315 H660 M549.6 324 H660 M549.6 333 H660 M549.6 342 H660 M549.6 351 H660'/%3E%3C/g%3E%3Cg class='d-floor d-f1'%3E%3Cpath d='M430 466 h125.6'/%3E%3Cpath d='M440 358 V466 M545.6 358 V466'/%3E%3Cpath d='M430 362 h125.6'/%3E%3Cpath d='M440 430.15999999999997 h105.6 M440 460 h105.6'/%3E%3Cpath class='d-bal' d='M449 430.2 V460 M458 430.2 V460 M467 430.2 V460 M476 430.2 V460 M485 430.2 V460 M494 430.2 V460 M503 430.2 V460 M512 430.2 V460 M521 430.2 V460 M530 430.2 V460 M539 430.2 V460'/%3E%3Crect class='d-thin' x='498.1' y='380' width='23.2' height='80'/%3E%3Crect class='d-thin' x='567.6' y='380' width='29.2' height='61.6'/%3E%3Cpath class='d-thin' d='M567.6 410.8 h29.2'/%3E%3Crect class='d-thin' x='608.8' y='380' width='29.2' height='61.6'/%3E%3Cpath class='d-thin' d='M608.8 410.8 h29.2'/%3E%3Cpath class='d-clap' d='M549.6 364 H660 M549.6 373 H660 M549.6 382 H660 M549.6 391 H660 M549.6 400 H660 M549.6 409 H660 M549.6 418 H660 M549.6 427 H660 M549.6 436 H660 M549.6 445 H660 M549.6 454 H660 M549.6 463 H660'/%3E%3C/g%3E%3Cpath class='d-thin' d='M370 496 L430 466'/%3E%3Cpath class='d-ground' d='M320 496 H740'/%3E%3Cpath class='d-roof' d='M766 100 L905 10 L1044 100 Z'/%3E%3Cpath class='d-thin' d='M879 74 h52 v-30 h-52 Z'/%3E%3Crect class='d-body' x='780' y='100' width='250' height='372'/%3E%3Cg class='d-floor d-f3'%3E%3Cpath d='M770 224 h140'/%3E%3Cpath d='M780 104 V224 M900 104 V224'/%3E%3Cpath d='M770 108 h140'/%3E%3Cpath d='M780 184.32 h120 M780 218 h120'/%3E%3Cpath class='d-bal' d='M789 184.3 V218 M798 184.3 V218 M807 184.3 V218 M816 184.3 V218 M825 184.3 V218 M834 184.3 V218 M843 184.3 V218 M852 184.3 V218 M861 184.3 V218 M870 184.3 V218 M879 184.3 V218 M888 184.3 V218'/%3E%3Crect class='d-thin' x='846' y='126' width='26.4' height='92'/%3E%3Crect class='d-thin' x='922' y='126' width='37' height='68.2'/%3E%3Cpath class='d-thin' d='M922 160.1 h37'/%3E%3Crect class='d-thin' x='971' y='126' width='37' height='68.2'/%3E%3Cpath class='d-thin' d='M971 160.1 h37'/%3E%3Cpath class='d-clap' d='M904 110 H1030 M904 119 H1030 M904 128 H1030 M904 137 H1030 M904 146 H1030 M904 155 H1030 M904 164 H1030 M904 173 H1030 M904 182 H1030 M904 191 H1030 M904 200 H1030 M904 209 H1030 M904 218 H1030'/%3E%3C/g%3E%3Cg class='d-floor d-f2'%3E%3Cpath d='M770 348 h140'/%3E%3Cpath d='M780 228 V348 M900 228 V348'/%3E%3Cpath d='M770 232 h140'/%3E%3Cpath d='M780 308.32 h120 M780 342 h120'/%3E%3Cpath class='d-bal' d='M789 308.3 V342 M798 308.3 V342 M807 308.3 V342 M816 308.3 V342 M825 308.3 V342 M834 308.3 V342 M843 308.3 V342 M852 308.3 V342 M861 308.3 V342 M870 308.3 V342 M879 308.3 V342 M888 308.3 V342'/%3E%3Crect class='d-thin' x='846' y='250' width='26.4' height='92'/%3E%3Crect class='d-thin' x='922' y='250' width='37' height='68.2'/%3E%3Cpath class='d-thin' d='M922 284.1 h37'/%3E%3Crect class='d-thin' x='971' y='250' width='37' height='68.2'/%3E%3Cpath class='d-thin' d='M971 284.1 h37'/%3E%3Cpath class='d-clap' d='M904 234 H1030 M904 243 H1030 M904 252 H1030 M904 261 H1030 M904 270 H1030 M904 279 H1030 M904 288 H1030 M904 297 H1030 M904 306 H1030 M904 315 H1030 M904 324 H1030 M904 333 H1030 M904 342 H1030'/%3E%3C/g%3E%3Cg class='d-floor d-f1'%3E%3Cpath d='M770 472 h140'/%3E%3Cpath d='M780 352 V472 M900 352 V472'/%3E%3Cpath d='M770 356 h140'/%3E%3Cpath d='M780 432.32 h120 M780 466 h120'/%3E%3Cpath class='d-bal' d='M789 432.3 V466 M798 432.3 V466 M807 432.3 V466 M816 432.3 V466 M825 432.3 V466 M834 432.3 V466 M843 432.3 V466 M852 432.3 V466 M861 432.3 V466 M870 432.3 V466 M879 432.3 V466 M888 432.3 V466'/%3E%3Crect class='d-thin' x='846' y='374' width='26.4' height='92'/%3E%3Crect class='d-thin' x='922' y='374' width='37' height='68.2'/%3E%3Cpath class='d-thin' d='M922 408.1 h37'/%3E%3Crect class='d-thin' x='971' y='374' width='37' height='68.2'/%3E%3Cpath class='d-thin' d='M971 408.1 h37'/%3E%3Cpath class='d-clap' d='M904 358 H1030 M904 367 H1030 M904 376 H1030 M904 385 H1030 M904 394 H1030 M904 403 H1030 M904 412 H1030 M904 421 H1030 M904 430 H1030 M904 439 H1030 M904 448 H1030 M904 457 H1030 M904 466 H1030'/%3E%3C/g%3E%3Cpath class='d-thin' d='M710 502 L770 472'/%3E%3Cpath class='d-ground' d='M660 502 H1110'/%3E%3Cpath class='d-roof' d='M1126 126 L1255 36 L1384 126 Z'/%3E%3Cpath class='d-thin' d='M1229 100 h52 v-30 h-52 Z'/%3E%3Crect class='d-body' x='1140' y='126' width='230' height='348'/%3E%3Cg class='d-floor d-f3'%3E%3Cpath d='M1130 242 h130.39999999999998'/%3E%3Cpath d='M1140 130 V242 M1250.4 130 V242'/%3E%3Cpath d='M1130 134 h130.39999999999998'/%3E%3Cpath d='M1140 204.88 h110.39999999999999 M1140 236 h110.39999999999999'/%3E%3Cpath class='d-bal' d='M1149 204.9 V236 M1158 204.9 V236 M1167 204.9 V236 M1176 204.9 V236 M1185 204.9 V236 M1194 204.9 V236 M1203 204.9 V236 M1212 204.9 V236 M1221 204.9 V236 M1230 204.9 V236 M1239 204.9 V236'/%3E%3Crect class='d-thin' x='1200.7' y='152' width='24.3' height='84'/%3E%3Crect class='d-thin' x='1272.4' y='152' width='31.8' height='63.8'/%3E%3Cpath class='d-thin' d='M1272.4 183.9 h31.8'/%3E%3Crect class='d-thin' x='1316.2' y='152' width='31.8' height='63.8'/%3E%3Cpath class='d-thin' d='M1316.2 183.9 h31.8'/%3E%3Cpath class='d-clap' d='M1254.4 136 H1370 M1254.4 145 H1370 M1254.4 154 H1370 M1254.4 163 H1370 M1254.4 172 H1370 M1254.4 181 H1370 M1254.4 190 H1370 M1254.4 199 H1370 M1254.4 208 H1370 M1254.4 217 H1370 M1254.4 226 H1370 M1254.4 235 H1370'/%3E%3C/g%3E%3Cg class='d-floor d-f2'%3E%3Cpath d='M1130 358 h130.39999999999998'/%3E%3Cpath d='M1140 246 V358 M1250.4 246 V358'/%3E%3Cpath d='M1130 250 h130.39999999999998'/%3E%3Cpath d='M1140 320.88 h110.39999999999999 M1140 352 h110.39999999999999'/%3E%3Cpath class='d-bal' d='M1149 320.9 V352 M1158 320.9 V352 M1167 320.9 V352 M1176 320.9 V352 M1185 320.9 V352 M1194 320.9 V352 M1203 320.9 V352 M1212 320.9 V352 M1221 320.9 V352 M1230 320.9 V352 M1239 320.9 V352'/%3E%3Crect class='d-thin' x='1200.7' y='268' width='24.3' height='84'/%3E%3Crect class='d-thin' x='1272.4' y='268' width='31.8' height='63.8'/%3E%3Cpath class='d-thin' d='M1272.4 299.9 h31.8'/%3E%3Crect class='d-thin' x='1316.2' y='268' width='31.8' height='63.8'/%3E%3Cpath class='d-thin' d='M1316.2 299.9 h31.8'/%3E%3Cpath class='d-clap' d='M1254.4 252 H1370 M1254.4 261 H1370 M1254.4 270 H1370 M1254.4 279 H1370 M1254.4 288 H1370 M1254.4 297 H1370 M1254.4 306 H1370 M1254.4 315 H1370 M1254.4 324 H1370 M1254.4 333 H1370 M1254.4 342 H1370 M1254.4 351 H1370'/%3E%3C/g%3E%3Cg class='d-floor d-f1'%3E%3Cpath d='M1130 474 h130.39999999999998'/%3E%3Cpath d='M1140 362 V474 M1250.4 362 V474'/%3E%3Cpath d='M1130 366 h130.39999999999998'/%3E%3Cpath d='M1140 436.88 h110.39999999999999 M1140 468 h110.39999999999999'/%3E%3Cpath class='d-bal' d='M1149 436.9 V468 M1158 436.9 V468 M1167 436.9 V468 M1176 436.9 V468 M1185 436.9 V468 M1194 436.9 V468 M1203 436.9 V468 M1212 436.9 V468 M1221 436.9 V468 M1230 436.9 V468 M1239 436.9 V468'/%3E%3Crect class='d-thin' x='1200.7' y='384' width='24.3' height='84'/%3E%3Crect class='d-thin' x='1272.4' y='384' width='31.8' height='63.8'/%3E%3Cpath class='d-thin' d='M1272.4 415.9 h31.8'/%3E%3Crect class='d-thin' x='1316.2' y='384' width='31.8' height='63.8'/%3E%3Cpath class='d-thin' d='M1316.2 415.9 h31.8'/%3E%3Cpath class='d-clap' d='M1254.4 368 H1370 M1254.4 377 H1370 M1254.4 386 H1370 M1254.4 395 H1370 M1254.4 404 H1370 M1254.4 413 H1370 M1254.4 422 H1370 M1254.4 431 H1370 M1254.4 440 H1370 M1254.4 449 H1370 M1254.4 458 H1370 M1254.4 467 H1370'/%3E%3C/g%3E%3Cpath class='d-thin' d='M1070 504 L1130 474'/%3E%3Cpath class='d-ground' d='M1020 504 H1450'/%3E%3C/g%3E%3C/svg%3E"); }
+.break { background: #121A24 var(--dwg) center bottom / cover no-repeat; }
+.break-img { position: relative; color: transparent; font-size: 0; }
+.break::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(15,20,28,0.85) 0%, rgba(15,20,28,0) 45%); pointer-events: none; }
+.break-caption { z-index: 1; }
+
+/* Hero: drawn triple-decker elevation behind the photo slot */
+.hero { background: radial-gradient(120% 80% at 80% 20%, #1B2633 0%, var(--ink) 62%); }
+.hero-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(15,20,28,0.96) 0%, rgba(15,20,28,0.78) 34%, rgba(15,20,28,0) 62%); pointer-events: none; }
+.hero-dwg { position: absolute; top: calc(var(--header-h) - 8px); right: -38%; width: auto; height: 66%; max-width: none; fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.hero-dwg .dwg-grid { stroke: var(--rule-dark); stroke-width: 1; opacity: 0.55; }
+.hero-dwg .d-clap { opacity: 0.35; stroke-width: 1; }
+.hero-dwg .d-thin { opacity: 0.6; stroke-width: 1.2; }
+.hero-dwg .d-roof, .hero-dwg .d-body { stroke: var(--paper); opacity: 0.55; }
+.hero-dwg .d-ground { stroke: var(--paper); opacity: 0.4; }
+.hero-dwg .dwg-dim { stroke: var(--signal); stroke-width: 1.4; }
+.hero-dwg .d-f1 { stroke: var(--paper); }
+.hero-dwg .d-f1 .d-bal { stroke: var(--accent); }
+@media (min-width: 390px) {
+  .hero-dwg { right: -30%; height: 64%; }
+}
+@media (min-width: 640px) {
+  .hero-dwg { top: auto; bottom: 0; right: -6%; height: 88%; }
+  .hero-media::after { background: linear-gradient(90deg, rgba(15,20,28,0.94) 0%, rgba(15,20,28,0.72) 42%, rgba(15,20,28,0) 70%); }
+}
+@media (min-width: 1200px) {
+  .hero-dwg { right: 3%; height: 92%; }
+}
+.sw-motion .hero-dwg .d-floor, .sw-motion .hero-dwg .d-roof, .sw-motion .hero-dwg .d-body { animation: floor-in 420ms var(--ease-out) both; }
+.sw-motion .hero-dwg .d-body { animation-delay: 0ms; }
+.sw-motion .hero-dwg .d-f1 { animation-delay: 160ms; }
+.sw-motion .hero-dwg .d-f2 { animation-delay: 340ms; }
+.sw-motion .hero-dwg .d-f3 { animation-delay: 520ms; }
+.sw-motion .hero-dwg .d-roof { animation-delay: 700ms; }
+@keyframes floor-in {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+.credits-note { margin-bottom: var(--s-2); }
+@media (max-width: 899px) {
+  .site-footer { padding-bottom: calc(var(--s-8) + 80px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-dwg * { animation: none !important; }
+}
+@media (max-width: 639px) {
+  .hero { padding-bottom: var(--s-7); }
+  .hero-content { padding-bottom: var(--s-5); }
+}
+@media (min-width: 900px) {
+  .menu-btn { display: none; }
+  .hero-title { max-width: 9.5ch; }
+}
+.t-accent .tool-label, .t-accent .caption { color: var(--ink); }
+
+/* ---------- round 4: the house is the navigation ---------- */
+.elevation-badge { display: none; }
+.floor-nav { display: none; }
+@media (min-width: 900px) {
+  .floor-nav { display: block; position: absolute; z-index: 2; bottom: 0; right: -6%; height: 88%; aspect-ratio: 520 / 640; pointer-events: none; }
+  .fn { position: absolute; left: 30.8%; width: 31.5%; height: 24.4%; pointer-events: auto; outline-offset: 2px; transition: background-color var(--dur-ui) var(--ease-out); }
+  .fn-3 { top: 20.9%; }
+  .fn-2 { top: 45.9%; }
+  .fn-1 { top: 70.9%; }
+  .fn:hover, .fn:focus-visible { background-color: rgba(74,158,150,0.16); }
+  .fn:focus-visible { outline: 3px solid var(--accent); }
+  .fn-tag { position: absolute; right: calc(100% + 14px); top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; white-space: nowrap; font-size: var(--fs-0); font-weight: 600; color: var(--paper); padding: 6px 10px; background: rgba(15,20,28,0.88); border: 1px solid var(--rule-dark); transition: border-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out); }
+  .fn-tag::after { content: ""; position: absolute; left: 100%; top: 50%; width: 14px; height: 1px; background: var(--accent); }
+  .fn-tag b { font-family: "Bebas Neue", sans-serif; font-weight: 400; font-size: 1.25em; color: var(--accent); letter-spacing: 0.04em; }
+  .fn:hover .fn-tag, .fn:focus-visible .fn-tag { border-color: var(--accent); color: #fff; }
+}
+@media (min-width: 1200px) {
+  .floor-nav { right: 3%; height: 92%; }
+}
+
+.house-rail { display: none; }
+@media (min-width: 1400px) {
+  .house-rail { display: flex; flex-direction: column; position: fixed; z-index: 60; left: 16px; top: 50%; transform: translateY(-46%); width: 80px; padding: 8px 0 0; background: var(--ink); border: 1px solid var(--rule-dark); color: var(--paper); box-shadow: 0 6px 24px rgba(15,20,28,0.25); }
+  .hr-roof { width: 80px; height: 34px; fill: none; stroke: currentColor; stroke-width: 1.5; opacity: 0.7; }
+  .hr-fl { position: relative; display: block; width: 80px; height: 60px; color: var(--muted-dark); transition: color var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out); }
+  .hr-fl svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: 1; }
+  .hr-fl .p-wall { stroke-dasharray: none; opacity: 0.5; }
+  .hr-num { position: absolute; left: 50%; top: 9px; transform: translateX(-50%); font-family: "Bebas Neue", sans-serif; font-size: 1.15rem; line-height: 1; letter-spacing: 0.04em; padding: 0 4px; background: var(--ink); }
+  .hr-name { position: absolute; left: calc(100% + 10px); top: 50%; transform: translate(-6px, -50%); opacity: 0; pointer-events: none; white-space: nowrap; font-size: var(--fs-0); font-weight: 600; padding: 4px 8px; background: var(--ink); color: var(--paper); transition: opacity var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out); }
+  .hr-fl:hover .hr-name, .hr-fl:focus-visible .hr-name { opacity: 1; transform: translate(0, -50%); }
+  .hr-fl:hover, .hr-fl.is-active { color: var(--accent); background-color: rgba(74,158,150,0.12); }
+  .hr-fl:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .hr-fl.is-flag { color: var(--signal); background-color: rgba(199,91,57,0.16); }
+  .hr-fl.is-flag .hr-num { color: var(--signal); }
+  .hr-ground { display: block; height: 6px; border-top: 2px solid var(--paper); margin: 0 -6px; opacity: 0.6; }
+}
+
+/* checklist: pick a floor, read the answer on a drawn house */
+.floor-pick { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-bottom: var(--s-4); }
+.floor-pick-q { font-weight: 600; margin-right: var(--s-2); font-size: var(--fs-1); }
+.pick { flex-direction: row; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-4); border: 1px solid var(--rule-paper); font-size: var(--fs-0); font-weight: 600; cursor: pointer; }
+.pick input { width: 18px; height: 18px; padding: 0; accent-color: var(--signal); background: none; }
+.pick:has(:checked) { border-color: var(--ink); background: rgba(15,20,28,0.06); }
+.pick:has(:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.check-result { display: grid; grid-template-columns: 64px 1fr; gap: var(--s-5); align-items: center; margin-top: var(--s-5); padding: var(--s-5); background: var(--ink); color: var(--paper); border-left: 4px solid var(--accent); }
+.check-result[data-level="2"], .check-result[data-level="3"] { border-left-color: var(--signal); }
+.check-result-body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-4); }
+.result-text { font-size: var(--fs-1); font-weight: 600; line-height: 1.4; }
+.check-result .btn-primary { background: var(--signal); color: #fff; }
+.mini-house { width: 64px; height: 104px; fill: none; stroke: var(--paper); stroke-width: 1.5; }
+.mini-house .mh-fl { fill: transparent; stroke-opacity: 0.55; transition: fill var(--dur-page) var(--ease-out), stroke var(--dur-page) var(--ease-out); }
+.mini-house .mh-fl.is-pick { stroke: var(--accent); stroke-opacity: 1; stroke-width: 2.5; }
+.check-result[data-level="1"] .mh-fl.is-pick { fill: rgba(74,158,150,0.35); }
+.check-result[data-level="2"] .mh-fl.is-pick { fill: rgba(199,91,57,0.55); stroke: var(--signal); }
+.check-result[data-level="3"] .mh-fl.is-pick { fill: var(--signal); stroke: var(--signal); }
+
+/* floor-1 plate: tall, pinned beside the checklist */
+.plate-tall { aspect-ratio: 3 / 4; }
+.plate-dwg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.plate-tall img { position: relative; }
+.plate-dwg .pd-grid { stroke: var(--rule-paper); stroke-width: 1; }
+.plate-dwg .pd-grain { stroke-width: 1; opacity: 0.45; }
+.plate-dwg .pd-thin { stroke-width: 1.1; opacity: 0.7; }
+.plate-dwg .pd-rot { stroke: #7A5A3A; stroke-width: 1.1; }
+.plate-dwg .pd-hatch { stroke-width: 0.9; opacity: 0.4; }
+.plate-dwg .pd-ground { stroke-width: 2.2; }
+.plate-dwg .pd-tool { stroke-width: 1.8; }
+.plate-dwg .pd-dim { stroke: var(--signal); stroke-width: 1.6; }
+.plate-dwg .pd-lead { stroke-width: 1; stroke-dasharray: 3 3; }
+.plate-dwg text { fill: var(--ink); stroke: none; font-family: "DM Mono", monospace; font-size: 13px; }
+.plate-dwg .pd-rust { fill: var(--signal); font-size: 15px; font-weight: 500; }
+@media (min-width: 900px) {
+  .plate-sticky { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; }
+  .plate-tall { aspect-ratio: 3 / 5; max-height: calc(100svh - var(--header-h) - 120px); }
+}
+
+/* break caption */
+.break-caption p { font-size: var(--fs-2); font-weight: 600; max-width: 34ch; line-height: 1.3; }
+
+/* area: copy left, drawn map right */
+.area-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); align-items: center; }
+.zip-row input { min-width: 0; }
+.area-lead { font-size: var(--fs-1); color: var(--muted-dark); max-width: 42ch; margin-bottom: var(--s-5); }
+@media (min-width: 900px) {
+  .area-layout { grid-template-columns: 5fr 6fr; gap: var(--s-8); }
+  .area-copy h2 { font-size: clamp(2.2rem, 1.2rem + 2.2vw, 3.4rem); }
+}
+.zip-tool label { font-weight: 600; }
+.zip-row .btn { flex: 0 0 auto; }
+.zip-result { font-size: var(--fs-1); }
+.sw-zip-go, .sw-zip-call { display: inline-flex; align-items: center; min-height: 44px; margin-top: var(--s-2); padding: 0 var(--s-4); border: 1px solid var(--accent); color: var(--accent); font-weight: 600; }
+.area-map { margin: 0; }
+.area-map svg { width: 100%; height: auto; fill: none; stroke: var(--accent); stroke-width: 1.5; }
+.am-grid { stroke: var(--rule-dark); stroke-width: 1; }
+.am-edge { stroke: var(--paper); stroke-opacity: 0.55; stroke-dasharray: 6 6; }
+.am-road { stroke-opacity: 0.8; }
+.am-town circle { fill: var(--ink); stroke: var(--accent); stroke-width: 2; }
+.am-home { stroke: var(--signal); stroke-width: 2; fill: var(--ink); }
+.am-north { stroke: var(--paper); stroke-opacity: 0.6; }
+.area-map text { stroke: none; fill: var(--paper); font-family: "Source Sans 3", sans-serif; font-weight: 600; font-size: 15px; }
+.area-map .am-city { font-family: "Bebas Neue", sans-serif; font-weight: 400; font-size: 24px; fill: var(--signal); letter-spacing: 0.02em; }
+.area-map .caption { color: var(--muted-dark); }
+
+/* contact: form left, call card right */
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); align-items: start; }
+@media (min-width: 900px) {
+  .contact-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--s-8); }
+}
+.form-col { max-width: 640px; }
+.lead-form fieldset { display: flex; flex-direction: column; gap: var(--s-4); }
+.lead-form legend { font-family: "Bebas Neue", sans-serif; font-weight: 400; font-size: var(--fs-3); line-height: 1; margin-bottom: var(--s-4); }
+.form-progress { height: 4px; background: var(--rule-paper); position: relative; overflow: hidden; }
+.form-progress span { position: absolute; inset: 0; background: var(--signal); transform-origin: left; transform: scaleX(var(--progress, 1)); transition: transform var(--dur-page) var(--ease-out); }
+.form-nav { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: var(--s-3); margin-top: var(--s-2); }
+.form-nav .btn { min-height: 48px; min-width: 120px; }
+.form-nav [hidden] { display: none; }
+.toggle { min-height: 48px; }
+.field-error { color: #9E3A1E; font-size: var(--fs-0); font-weight: 600; }
+[data-form-status] { font-size: var(--fs-0); min-height: 1.4em; }
+.form-thankyou { text-align: left; padding: var(--s-6); border: 1px solid var(--ink); margin-top: var(--s-6); }
+.form-thankyou .note { font-size: var(--fs-0); color: var(--muted-paper); margin-top: var(--s-3); }
+.call-card { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-4); padding: var(--s-6); border-top: 4px solid var(--signal); }
+.call-card h3 { font-size: var(--fs-4); margin: 0; }
+.call-card p { color: var(--muted-dark); }
+.call-card .open-now { color: var(--accent); font-weight: 600; margin: 0; }
+.call-house { width: 52px; height: 84px; fill: none; stroke: var(--accent); stroke-width: 1.5; }
+.call-card .hours { width: 100%; font-size: var(--fs-0); margin-top: 0; padding-top: var(--s-4); border-top: 1px solid var(--rule-dark); }
+.call-card .hours .is-today { color: var(--accent); font-weight: 600; }
+@media (min-width: 900px) {
+  .call-card { position: sticky; top: calc(var(--header-h) + 24px); }
+}
+.footer-hours { color: var(--accent); font-weight: 600; }
+.credits-note { font-size: var(--fs-0); }
+
+/* mobile bar waits until the hero buttons have left the screen */
+.mobile-bar.is-held { transform: translate3d(0, 110%, 0); visibility: hidden; transition: transform var(--dur-ui) var(--ease-out), visibility 0s linear var(--dur-ui); }
+
+@media (forced-colors: active) {
+  .hr-fl.is-flag, .hr-fl.is-active { outline: 2px solid CanvasText; }
+  .check-result { border: 2px solid CanvasText; }
+}
+.credits:empty { display: none; }
+.sample-price { display: grid; justify-items: start; gap: 6px; }
+.price-line { white-space: nowrap; }
+.hours { grid-template-columns: 1fr; gap: var(--s-1); }
+.hours > div { display: flex; justify-content: space-between; gap: var(--s-4); }
+
 </style>
 </head>
 <body>
@@ -637,29 +868,35 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
   </div>
 </nav>
 
+<nav class="house-rail" aria-label="Floors of the house" data-house>
+  <svg class="hr-roof" viewBox="0 0 80 34" aria-hidden="true" focusable="false"><path d="M2 32 L40 4 L78 32"/><path d="M52 14 V6 H62 V21"/></svg>
+  <a class="hr-fl" href="#floor-3" data-floor="3"><svg viewBox="0 0 80 60" aria-hidden="true" focusable="false"><path class="p-wall" d="M2 0V60M78 0V60"/><path class="p-post" pathLength="1" d="M12 4V58M68 4V58"/><path class="p-rail" pathLength="1" d="M6 4H74M12 30H68M12 52H68M4 58H76"/><path class="p-bal" pathLength="1" d="M20 30V52M28 30V52M36 30V52M44 30V52M52 30V52M60 30V52"/></svg><span class="hr-num">3F</span><span class="hr-name">Season</span></a>
+  <a class="hr-fl" href="#floor-2" data-floor="2"><svg viewBox="0 0 80 60" aria-hidden="true" focusable="false"><path class="p-wall" d="M2 0V60M78 0V60"/><path class="p-post" pathLength="1" d="M12 4V58M68 4V58"/><path class="p-rail" pathLength="1" d="M6 4H74M12 30H68M12 52H68M4 58H76"/><path class="p-bal" pathLength="1" d="M20 30V52M28 30V52M36 30V52M44 30V52M52 30V52M60 30V52"/></svg><span class="hr-num">2F</span><span class="hr-name">Rails and trim</span></a>
+  <a class="hr-fl" href="#floor-1" data-floor="1"><svg viewBox="0 0 80 60" aria-hidden="true" focusable="false"><path class="p-wall" d="M2 0V60M78 0V60"/><path class="p-post" pathLength="1" d="M12 4V58M68 4V58"/><path class="p-rail" pathLength="1" d="M6 4H74M12 30H68M12 52H68M4 58H76"/><path class="p-bal" pathLength="1" d="M20 30V52M28 30V52M36 30V52M44 30V52M52 30V52M60 30V52"/></svg><span class="hr-num">1F</span><span class="hr-name">Safety</span></a>
+  <span class="hr-ground" aria-hidden="true"></span>
+</nav>
+
 <main>
   <!-- 1. HERO -->
   <section id="hero" class="hero t-dark floor-band" data-sw-signature="floor-band">
     <div class="hero-media">
-      <img src="media/placeholder-hero-C1.webp" alt="Placeholder for hero-C1" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-C1" data-slot="hero" class="hero-img">
+      <svg class="hero-dwg" viewBox="0 0 520 640" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false"><g class="dwg-grid"><path d="M0 0 V640"/><path d="M40 0 V640"/><path d="M80 0 V640"/><path d="M120 0 V640"/><path d="M160 0 V640"/><path d="M200 0 V640"/><path d="M240 0 V640"/><path d="M280 0 V640"/><path d="M320 0 V640"/><path d="M360 0 V640"/><path d="M400 0 V640"/><path d="M440 0 V640"/><path d="M480 0 V640"/><path d="M520 0 V640"/><path d="M0 0 H520"/><path d="M0 40 H520"/><path d="M0 80 H520"/><path d="M0 120 H520"/><path d="M0 160 H520"/><path d="M0 200 H520"/><path d="M0 240 H520"/><path d="M0 280 H520"/><path d="M0 320 H520"/><path d="M0 360 H520"/><path d="M0 400 H520"/><path d="M0 440 H520"/><path d="M0 480 H520"/><path d="M0 520 H520"/><path d="M0 560 H520"/><path d="M0 600 H520"/><path d="M0 640 H520"/></g><path class="d-roof" d="M156 130 L320 40 L484 130 Z"/><path class="d-thin" d="M294 104 h52 v-30 h-52 Z"/><rect class="d-body" x="170" y="130" width="300" height="480"/><g class="d-floor d-f3"><path d="M160 290 h164"/><path d="M170 134 V290 M314 134 V290"/><path d="M160 138 h164"/><path d="M170 238.8 h144 M170 284 h144"/><path class="d-bal" d="M179 238.8 V284 M188 238.8 V284 M197 238.8 V284 M206 238.8 V284 M215 238.8 V284 M224 238.8 V284 M233 238.8 V284 M242 238.8 V284 M251 238.8 V284 M260 238.8 V284 M269 238.8 V284 M278 238.8 V284 M287 238.8 V284 M296 238.8 V284 M305 238.8 V284"/><rect class="d-thin" x="249.2" y="156" width="31.7" height="128"/><rect class="d-thin" x="336" y="156" width="50" height="88"/><path class="d-thin" d="M336 200 h50"/><rect class="d-thin" x="398" y="156" width="50" height="88"/><path class="d-thin" d="M398 200 h50"/><path class="d-clap" d="M318 140 H470 M318 149 H470 M318 158 H470 M318 167 H470 M318 176 H470 M318 185 H470 M318 194 H470 M318 203 H470 M318 212 H470 M318 221 H470 M318 230 H470 M318 239 H470 M318 248 H470 M318 257 H470 M318 266 H470 M318 275 H470 M318 284 H470"/></g><g class="d-floor d-f2"><path d="M160 450 h164"/><path d="M170 294 V450 M314 294 V450"/><path d="M160 298 h164"/><path d="M170 398.8 h144 M170 444 h144"/><path class="d-bal" d="M179 398.8 V444 M188 398.8 V444 M197 398.8 V444 M206 398.8 V444 M215 398.8 V444 M224 398.8 V444 M233 398.8 V444 M242 398.8 V444 M251 398.8 V444 M260 398.8 V444 M269 398.8 V444 M278 398.8 V444 M287 398.8 V444 M296 398.8 V444 M305 398.8 V444"/><rect class="d-thin" x="249.2" y="316" width="31.7" height="128"/><rect class="d-thin" x="336" y="316" width="50" height="88"/><path class="d-thin" d="M336 360 h50"/><rect class="d-thin" x="398" y="316" width="50" height="88"/><path class="d-thin" d="M398 360 h50"/><path class="d-clap" d="M318 300 H470 M318 309 H470 M318 318 H470 M318 327 H470 M318 336 H470 M318 345 H470 M318 354 H470 M318 363 H470 M318 372 H470 M318 381 H470 M318 390 H470 M318 399 H470 M318 408 H470 M318 417 H470 M318 426 H470 M318 435 H470 M318 444 H470"/></g><g class="d-floor d-f1"><path d="M160 610 h164"/><path d="M170 454 V610 M314 454 V610"/><path d="M160 458 h164"/><path d="M170 558.8 h144 M170 604 h144"/><path class="d-bal" d="M179 558.8 V604 M188 558.8 V604 M197 558.8 V604 M206 558.8 V604 M215 558.8 V604 M224 558.8 V604 M233 558.8 V604 M242 558.8 V604 M251 558.8 V604 M260 558.8 V604 M269 558.8 V604 M278 558.8 V604 M287 558.8 V604 M296 558.8 V604 M305 558.8 V604"/><rect class="d-thin" x="249.2" y="476" width="31.7" height="128"/><rect class="d-thin" x="336" y="476" width="50" height="88"/><path class="d-thin" d="M336 520 h50"/><rect class="d-thin" x="398" y="476" width="50" height="88"/><path class="d-thin" d="M398 520 h50"/><path class="d-clap" d="M318 460 H470 M318 469 H470 M318 478 H470 M318 487 H470 M318 496 H470 M318 505 H470 M318 514 H470 M318 523 H470 M318 532 H470 M318 541 H470 M318 550 H470 M318 559 H470 M318 568 H470 M318 577 H470 M318 586 H470 M318 595 H470 M318 604 H470"/></g><path class="d-thin" d="M100 640 L160 610"/><path class="d-ground" d="M50 640 H550"/><g class="dwg-dim"><path d="M490 130 V610 M484 130 h12 M484 290 h12 M484 450 h12 M484 610 h12"/></g></svg>
+      <img src="media/placeholder-hero-C1.webp" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-C1" data-slot="hero" class="hero-img" alt="Three stacked back porches on a triple-decker at dusk">
     </div>
     <div class="hero-content container">
-      <p class="kicker mono">Carpentry for Worcester's stacked porches</p>
+      <p class="kicker mono">Carpentry for Worcester’s stacked porches</p>
       <h1 class="hero-title type-mask" data-split="chars">Worcester Porch Rebuilds</h1>
-      <p class="lead">156 sample reviews | 11 years in Worcester</p>
-      <div class="hero-ctas">
+      <p class="lead">156 sample reviews. 11 years in Worcester.</p>
+      <div class="hero-ctas" data-hero-ctas>
         <a class="btn btn-call btn-primary" href="tel:+15085550169"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (508) 555-0169</span></a>
-        <a class="btn btn-secondary" href="#contact" data-service="Framing">Price a rebuild</a>
+        <a class="btn btn-secondary" href="#contact" data-service="Porch rebuilds">Price a rebuild</a>
       </div>
     </div>
-    <div class="elevation-badge" aria-hidden="true" data-elevation>
-      <svg viewBox="0 0 60 100" class="elevation-svg">
-        <rect class="fl fl-3" x="5" y="5" width="50" height="28" rx="1"/>
-        <rect class="fl fl-2" x="5" y="36" width="50" height="28" rx="1"/>
-        <rect class="fl fl-1" x="5" y="67" width="50" height="28" rx="1"/>
-        <line x1="0" y1="100" x2="60" y2="100" stroke="currentColor" stroke-width="2"/>
-      </svg>
-    </div>
+    <nav class="floor-nav" aria-label="Walk up the house">
+      <a class="fn fn-3" href="#floor-3"><span class="fn-tag"><b>3F</b> Season planner</span></a>
+      <a class="fn fn-2" href="#floor-2"><span class="fn-tag"><b>2F</b> Rails and trim</span></a>
+      <a class="fn fn-1" href="#floor-1"><span class="fn-tag"><b>1F</b> Safety check</span></a>
+    </nav>
   </section>
 
   <!-- 2. FLOOR 1: SAFETY & STRUCTURE -->
@@ -667,11 +904,17 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
     <div class="baluster-rule" aria-hidden="true"></div>
     <div class="container split-layout">
       <div class="split-content" data-reveal>
-        <p class="floor-label mono">1F · SAFETY &amp; STRUCTURE</p>
+        <p class="floor-label"><span class="fl-num">1F</span> Safety and structure</p>
         <h2>What to check before someone gets hurt</h2>
-        <p class="lead">If the screwdriver goes in past a quarter inch, it is not paint's problem anymore — it is ours.</p>
-        <div class="checklist-tool" data-checklist>
-          <p class="mono tool-label">Porch safety self-check</p>
+        <p class="lead">If the screwdriver goes in past a quarter inch, it is not paint’s problem anymore. It is ours.</p>
+        <div class="checklist-tool" data-checklist data-checklist-results="0:Tick what you see. Your floor lights up here.|1:One sign on this floor. Worth a probe test this season.|2:{n} of {total} signs on this floor. Book a look before summer.|4:{n} of {total} signs. Keep weight off this porch and call today.">
+          <p class="tool-label">Porch safety self-check</p>
+          <div class="floor-pick" role="radiogroup" aria-label="Which porch are you checking?">
+            <span class="floor-pick-q">Which porch?</span>
+            <label class="pick"><input type="radio" name="porch-floor" value="1" checked> 1st floor</label>
+            <label class="pick"><input type="radio" name="porch-floor" value="2"> 2nd</label>
+            <label class="pick"><input type="radio" name="porch-floor" value="3"> 3rd</label>
+          </div>
           <ul class="checklist-items">
             <li><label><input type="checkbox" name="rail-moves"> Rail moves when you lean on it</label></li>
             <li><label><input type="checkbox" name="post-soft"> Post base is soft or crumbling</label></li>
@@ -680,23 +923,41 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
             <li><label><input type="checkbox" name="ledger-stain"> Ledger board has dark stains</label></li>
             <li><label><input type="checkbox" name="stairs-pull"> Stairs pull away from the house</label></li>
           </ul>
-          <div class="checklist-result-card" data-checklist-result hidden>
-            <div class="result-floor-icon" aria-hidden="true">
-              <svg viewBox="0 0 60 100" class="elevation-svg">
-                <rect class="fl fl-3" x="5" y="5" width="50" height="28" rx="1"/>
-                <rect class="fl fl-2" x="5" y="36" width="50" height="28" rx="1"/>
-                <rect class="fl fl-1" x="5" y="67" width="50" height="28" rx="1"/>
-                <line x1="0" y1="100" x2="60" y2="100" stroke="currentColor" stroke-width="2"/>
-              </svg>
+          <div class="check-result" data-level="0">
+            <svg class="mini-house" viewBox="0 0 64 104" aria-hidden="true" focusable="false"><path class="mh-roof" d="M4 24 L32 4 L60 24"/><rect class="mh-fl" data-mh="3" x="6" y="24" width="52" height="24"/><rect class="mh-fl" data-mh="2" x="6" y="50" width="52" height="24"/><rect class="mh-fl is-pick" data-mh="1" x="6" y="76" width="52" height="24"/><path class="mh-ground" d="M0 102 H64"/></svg>
+            <div class="check-result-body">
+              <p class="result-text" data-checklist-result>Tick what you see. Two or more signs on one floor means call before the next tenant leans on that rail.</p>
+              <a class="btn btn-primary" href="#contact" data-service="Floors &amp; posts">Price it</a>
             </div>
-            <p class="mono result-text" aria-live="polite" data-checklist-text></p>
-            <a href="#contact" class="btn btn-primary" data-service="Railings" data-checklist-cta hidden>Book an inspection</a>
           </div>
         </div>
       </div>
-      <div class="split-media" data-reveal="clip">
-        <figure class="frame" data-fallback="Soft wood at the sill end where moisture entered" class="floor-frame"><img src="media/placeholder-material-rotten-wood.webp" alt="Soft wood at the sill end where moisture entered" width="1170" height="780" loading="lazy" decoding="async" data-photo="material-rotten-wood" data-slot="floor-1-photo"></figure>
-        <p class="caption mono">Soft wood at a post base, probe depth over 1/4 inch</p>
+      <div class="split-media plate-sticky">
+        <figure class="frame floor-frame plate-tall" data-fallback="Soft, rotted wood at the base of a porch post">
+          <svg class="plate-dwg" viewBox="0 0 300 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+            <g class="pd-grid"><path d="M0 40H300M0 80H300M0 120H300M0 160H300M0 200H300M0 240H300M0 280H300M0 320H300M0 360H300M0 400H300M0 440H300M0 480H300M40 0V520M80 0V520M120 0V520M160 0V520M200 0V520M240 0V520M280 0V520"/></g>
+            <path class="pd-thin" d="M70 30 H230 M80 22 H220 V30"/>
+            <path class="pd-ink" d="M110 30 V380 M190 30 V300"/>
+            <path class="pd-grain" d="M126 40 C130 120 122 200 128 290 M146 40 C142 130 150 210 144 300 M166 40 C170 110 164 200 170 280 M178 40 C176 140 182 220 178 296"/>
+            <path class="pd-ink" d="M190 300 L184 312 L194 324 L182 338 L192 352 L180 366 L188 380"/>
+            <path class="pd-rot" d="M114 300 L186 300 M112 316 L176 352 M112 336 L160 364 M112 356 L140 372 M130 300 L186 334 M152 300 L186 318 M120 300 L186 348 M114 324 L184 366"/>
+            <path class="pd-ink" d="M60 380 H240 M60 392 H240 M78 380 V392 M134 380 V392 M206 380 V392"/>
+            <path class="pd-thin" d="M120 392 V470 H180 V392 M104 470 H196"/>
+            <path class="pd-hatch" d="M124 410 L176 410 M124 426 L176 426 M124 442 L176 442 M124 458 L176 458"/>
+            <path class="pd-ground" d="M20 470 H280"/>
+            <g class="pd-tool"><path d="M178 336 L236 312"/><path d="M233 305.5 L287 283.5 L293 296.5 L239 318.5 Z"/><path d="M248 300 L252 309 M262 294 L266 303 M276 288 L280 297"/></g>
+            <g class="pd-dim"><path d="M190 352 H178"/><path d="M190 346 V358 M178 346 V358"/><path d="M184 352 V404"/></g>
+            <text class="pd-lbl pd-rust" x="184" y="420" text-anchor="middle">1/4 in</text>
+            <path class="pd-lead" d="M196 120 H246"/>
+            <text class="pd-lbl" x="250" y="124">sound</text>
+            <path class="pd-lead" d="M108 330 H50"/>
+            <text class="pd-lbl" x="46" y="322" text-anchor="end">soft</text>
+            <text class="pd-lbl" x="46" y="338" text-anchor="end">base</text>
+            <text class="pd-lbl" x="150" y="500" text-anchor="middle">pier footing</text>
+          </svg>
+          <img src="media/placeholder-material-rotten-wood.webp" width="1170" height="780" loading="lazy" decoding="async" data-photo="material-rotten-wood" data-slot="floor-1-photo" alt="Soft, rotted wood at the base of a porch post">
+        </figure>
+        <p class="caption">The probe test: if the tip sinks past a quarter inch at the post base, the wood is gone.</p>
       </div>
     </div>
   </section>
@@ -705,40 +966,32 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
   <section id="services" class="svc-section t-paper floor-band" data-sw-signature="floor-band">
     <div class="baluster-rule" aria-hidden="true"></div>
     <div class="container">
-      <p class="floor-label mono">CORE SERVICES</p>
+      <p class="floor-label">The porch jobs</p>
       <h2>Built floor by floor, rail by rail</h2>
       <div class="svc-grid" data-reveal-stagger>
         <article class="svc-card">
           <h3>Triple-decker porch rebuilds</h3>
           <p>Front or back porch stacks rebuilt floor by floor: posts, decking, rails and roof trim.</p>
-          <p class="sample-price mono"><span class="sample-tag">Sample pricing</span> From $9,500 per floor</p>
+          <p class="sample-price"><span class="sample-tag">Sample pricing</span> <span class="price-line"><span class="price-fig">From $9,500</span> <span class="price-unit">per floor</span></span></p>
           <a class="btn btn-secondary" href="#contact" data-service="Porch rebuilds">Price it</a>
         </article>
         <article class="svc-card">
           <h3>Porch railings and balusters</h3>
           <p>Wobbly rails replaced at typical 36-inch guard height with balusters spaced under 4 inches.</p>
-          <p class="sample-price mono"><span class="sample-tag">Sample pricing</span> From $75 per linear ft</p>
+          <p class="sample-price"><span class="sample-tag">Sample pricing</span> <span class="price-line"><span class="price-fig">From $75</span> <span class="price-unit">per linear ft</span></span></p>
           <a class="btn btn-secondary" href="#contact" data-service="Railings">Price it</a>
         </article>
         <article class="svc-card">
           <h3>Back stairs and egress stairs</h3>
           <p>Rotted rear stairs rebuilt with solid stringers, even risers and a rail you can grip.</p>
-          <p class="sample-price mono"><span class="sample-tag">Sample pricing</span> From $4,500 per flight</p>
+          <p class="sample-price"><span class="sample-tag">Sample pricing</span> <span class="price-line"><span class="price-fig">From $4,500</span> <span class="price-unit">per flight</span></span></p>
           <a class="btn btn-secondary" href="#contact" data-service="Back stairs">Price it</a>
         </article>
       </div>
       <div class="svc-more" data-reveal>
-        <p class="mono">Plus: exterior trim · back stairs · decks · doors · turnover fixes</p>
-        <a class="btn btn-text" href="#contact" data-service="Framing">See full list →</a>
+        <p>Also on the list: exterior trim, small decks, doors that stick and turnover fixes between tenants.</p>
+        <a class="btn btn-text" href="#contact" data-service="Framing">Ask about another job</a>
       </div>
-    </div>
-  </section>
-
-  <!-- 4. BREAK — FULL BLEED -->
-  <section class="break t-brand" aria-label="Visual pause">
-    <img src="media/placeholder-region-victorian-house.webp" alt="Clapboard facade with original trim intact" width="1170" height="658" fetchpriority="high" decoding="async" data-photo="region-victorian-house" data-slot="break" class="break-img">
-    <div class="break-caption container">
-      <p class="mono">Victorian-era clapboard facade with original trim profiles</p>
     </div>
   </section>
 
@@ -747,39 +1000,42 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
     <div class="baluster-rule" aria-hidden="true"></div>
     <div class="container split-layout split-reverse">
       <div class="split-media" data-reveal="clip">
-        <figure class="frame" data-fallback="Placeholder for detail-stair-balusters" class="floor-frame"><img src="media/placeholder-detail-stair-balusters.webp" alt="Placeholder for detail-stair-balusters" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-stair-balusters" data-slot="floor-2-photo"></figure>
-        <p class="caption mono">Turned wooden balusters and newel post on an interior stair railing</p>
+        <figure class="frame floor-frame draw-bal" data-fallback="Turned wooden balusters and a newel post on a stair rail"><img src="media/placeholder-detail-stair-balusters.webp" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-stair-balusters" data-slot="floor-2-photo" alt="Turned wooden balusters and a newel post on a stair rail"></figure>
+        <p class="caption">A turned baluster, drawn to copy: we match the bead, the vase and the taper.</p>
       </div>
       <div class="split-content" data-reveal>
-        <p class="floor-label mono">2F · RAILS &amp; TRIM</p>
+        <p class="floor-label"><span class="fl-num">2F</span> Rails and trim</p>
         <h2>Matched profiles, not flat pine</h2>
         <p class="lead">Your triple-decker was built with turned spindles and molded rails. We match the profile so new work reads as original.</p>
         <div class="profile-tabs" data-tabs>
-          <div class="tabs-list" role="tablist" aria-label="Era profiles">
-            <button role="tab" aria-selected="true" aria-controls="panel-victorian" id="tab-victorian">Victorian</button>
-            <button role="tab" aria-selected="false" aria-controls="panel-craftsman" id="tab-craftsman">Craftsman</button>
-            <button role="tab" aria-selected="false" aria-controls="panel-colonial" id="tab-colonial">Colonial Revival</button>
+          <div class="tabs-list" data-tablist aria-label="Era profiles">
+            <button type="button" data-tab>Victorian</button>
+            <button type="button" data-tab>Craftsman</button>
+            <button type="button" data-tab>Colonial Revival</button>
           </div>
-          <div role="tabpanel" id="panel-victorian" aria-labelledby="tab-victorian" class="tab-panel">
-            <p class="mono">Turned balusters · scroll-sawn brackets · built-up crown</p>
+          <div data-tabpanel class="tab-panel">
+            <h3 class="panel-h">Victorian</h3>
+            <p>Turned balusters, scroll-sawn brackets and built-up crown.</p>
           </div>
-          <div role="tabpanel" id="panel-craftsman" aria-labelledby="tab-craftsman" class="tab-panel" hidden>
-            <p class="mono">Square tapered posts · exposed joinery · wide flat rails</p>
+          <div data-tabpanel class="tab-panel">
+            <h3 class="panel-h">Craftsman</h3>
+            <p>Square tapered posts, exposed joinery and wide flat rails.</p>
           </div>
-          <div role="tabpanel" id="panel-colonial" aria-labelledby="tab-colonial" class="tab-panel" hidden>
-            <p class="mono">Doric columns · dentil molding · paneled newels</p>
+          <div data-tabpanel class="tab-panel">
+            <h3 class="panel-h">Colonial Revival</h3>
+            <p>Doric columns, dentil molding and paneled newels.</p>
           </div>
         </div>
         <div class="trim-services" data-reveal-stagger>
-          <article class="svc-card svc-card-sm">
-            <h3>Porch railings and balusters</h3>
-            <p>Wobbly rails replaced at typical 36-inch guard height with balusters spaced under 4 inches.</p>
-            <a class="btn btn-secondary" href="#contact" data-service="Railings">Price it</a>
-          </article>
           <article class="svc-card svc-card-sm" data-service="Exterior trim">
             <h3>Clapboard and exterior trim</h3>
             <p>Split clapboards, corner boards and rotted window trim replaced and primed before winter.</p>
-            <a class="btn btn-secondary" href="#contact" data-service="Exterior trim">Get a trim quote</a>
+            <a class="btn btn-secondary" href="#contact" data-service="Exterior trim">Price it</a>
+          </article>
+          <article class="svc-card svc-card-sm" data-service="Exterior trim">
+            <h3>Brackets and spindles, matched</h3>
+            <p>Keep the one broken piece. We copy its profile so the new bracket or spindle lines up with the old ones.</p>
+            <a class="btn btn-secondary" href="#contact" data-service="Exterior trim">Price it</a>
           </article>
         </div>
       </div>
@@ -790,7 +1046,7 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
   <section id="proof" class="proof-section t-paper">
     <div class="container">
       <h2>From Worcester porches</h2>
-      <p class="lead mono"><span class="sample-tag">Sample review</span> 156 reviews | 4.8 stars</p>
+      <p class="lead"><span class="sample-tag">Sample stats</span> 156 reviews, 4.8 stars average</p>
       <div class="review-stack" data-reveal-stagger>
         
         <article class="review-card">
@@ -798,8 +1054,8 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
             <!-- repeat stars via inline SVGs handled by CSS or static markup below -->
             <svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
           </div>
-          <blockquote>"I own a triple-decker on Grafton Hill and the back porches were failing on all three floors. Nico&#39;s crew rebuilt them one floor at a time so my tenants always had a way down the back. Done before the October rain."</blockquote>
-          <p class="review-meta mono">Fatima R., Worcester · Triple-decker porch rebuilds</p>
+          <blockquote>“I own a triple-decker on Grafton Hill and the back porches were failing on all three floors. Nico&#39;s crew rebuilt them one floor at a time so my tenants always had a way down the back. Done before the October rain.”</blockquote>
+          <p class="review-meta">Fatima R., Worcester<br>Triple-decker porch rebuilds</p>
           <span class="sample-tag">Sample review</span>
         </article>
         
@@ -808,8 +1064,8 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
             <!-- repeat stars via inline SVGs handled by CSS or static markup below -->
             <svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
           </div>
-          <blockquote>"Second-floor railing moved when you leaned on it. They replaced the whole run, and my inspector checked the height and the baluster gaps without a single note."</blockquote>
-          <p class="review-meta mono">Kevin D., Worcester · Porch railings and balusters</p>
+          <blockquote>“Second-floor railing moved when you leaned on it. They replaced the whole run, and my inspector checked the height and the baluster gaps without a single note.”</blockquote>
+          <p class="review-meta">Kevin D., Worcester<br>Porch railings and balusters</p>
           <span class="sample-tag">Sample review</span>
         </article>
         
@@ -818,12 +1074,20 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
             <!-- repeat stars via inline SVGs handled by CSS or static markup below -->
             <svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
           </div>
-          <blockquote>"Back stairs had one tread that cracked in February. They came out, shored it up so we could use it, and rebuilt the full stair in April when the ground thawed."</blockquote>
-          <p class="review-meta mono">Ana P., Shrewsbury · Back stairs and egress stairs</p>
+          <blockquote>“Back stairs had one tread that cracked in February. They came out, shored it up so we could use it, and rebuilt the full stair in April when the ground thawed.”</blockquote>
+          <p class="review-meta">Ana P., Shrewsbury<br>Back stairs and egress stairs</p>
           <span class="sample-tag">Sample review</span>
         </article>
         
       </div>
+    </div>
+  </section>
+
+  <!-- BREAK: FULL BLEED -->
+  <section class="break t-brand" aria-label="Visual pause">
+    <img src="media/placeholder-region-victorian-house.webp" width="1170" height="658" loading="lazy" decoding="async" data-photo="region-victorian-house" data-slot="break" class="break-img" alt="A street of triple-deckers with clapboard facades and original trim">
+    <div class="break-caption container">
+      <p>Every street in Worcester has a row like this. Every porch on it is somebody’s second way out.</p>
     </div>
   </section>
 
@@ -832,66 +1096,90 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
     <div class="baluster-rule" aria-hidden="true"></div>
     <div class="container split-layout">
       <div class="split-content" data-reveal>
-        <p class="floor-label mono">3F · SEASON &amp; BOOKING</p>
+        <p class="floor-label"><span class="fl-num">3F</span> Season and booking</p>
         <h2>Book porches in April for June starts</h2>
-        <p class="lead">We book porches in April for June starts; call in March and you pick your month.</p>
+        <p class="lead">Call in March and you pick your month. By May the summer calendar is spoken for.</p>
         <div class="season-tool" data-tabs>
-          <p class="mono tool-label">Season planner</p>
-          <div class="tabs-list" role="tablist" aria-label="Job timing">
-            <button role="tab" aria-selected="true" aria-controls="season-spring" id="tab-spring">Spring</button>
-            <button role="tab" aria-selected="false" aria-controls="season-summer" id="tab-summer">Summer</button>
-            <button role="tab" aria-selected="false" aria-controls="season-fall" id="tab-fall">Fall</button>
+          <p class="tool-label">Season planner</p>
+          <div class="tabs-list" data-tablist aria-label="Job timing">
+            <button type="button" data-tab>Spring</button>
+            <button type="button" data-tab>Summer</button>
+            <button type="button" data-tab>Fall</button>
           </div>
-          <div role="tabpanel" id="season-spring" aria-labelledby="tab-spring" class="tab-panel">
-            <p class="mono">Best for: porch rebuilds, framing, stair replacement. Ground thaws, paint cure window opens mid-May.</p>
+          <div data-tabpanel class="tab-panel">
+            <h3 class="panel-h">Spring</h3>
+            <p>Best for porch rebuilds, framing and stair replacement. The ground thaws, and paint cures well from mid-May.</p>
           </div>
-          <div role="tabpanel" id="season-summer" aria-labelledby="tab-summer" class="tab-panel" hidden>
-            <p class="mono">Best for: railings, trim, deck builds. Long days, fast paint dry. Book early — June fills by April.</p>
+          <div data-tabpanel class="tab-panel">
+            <h3 class="panel-h">Summer</h3>
+            <p>Best for railings, trim and deck builds. Long days and paint dries fast, so June fills first.</p>
           </div>
-          <div role="tabpanel" id="season-fall" aria-labelledby="tab-fall" class="tab-panel" hidden>
-            <p class="mono">Best for: rot repair, priming, turnover fixes. Beat the freeze. Avoid painting after mid-October.</p>
+          <div data-tabpanel class="tab-panel">
+            <h3 class="panel-h">Fall</h3>
+            <p>Best for rot repair, priming and turnover fixes. Paint goes on before mid-October, not after.</p>
           </div>
         </div>
-        <a class="btn btn-primary" href="#contact" data-service="Framing">Lock a month</a>
+        <a class="btn btn-primary" href="#contact" data-service="Porch rebuilds">Price it</a>
       </div>
       <div class="split-media" data-reveal="clip">
-        <figure class="frame" data-fallback="Placeholder for season-rain-wood" class="floor-frame"><img src="media/placeholder-season-rain-wood.webp" alt="Placeholder for season-rain-wood" width="1170" height="780" loading="lazy" decoding="async" data-photo="season-rain-wood" data-slot="floor-3-photo"></figure>
-        <p class="caption mono">Wet clapboard after rain, primed trim ready for paint cure window</p>
+        <figure class="frame floor-frame draw-rain" data-fallback="Rain on clapboard siding beside primed window trim"><img src="media/placeholder-season-rain-wood.webp" width="1170" height="780" loading="lazy" decoding="async" data-photo="season-rain-wood" data-slot="floor-3-photo" alt="Rain on clapboard siding beside primed window trim"></figure>
+        <p class="caption">Primed trim waits for a dry week. Paint goes on when the clapboard does.</p>
       </div>
     </div>
   </section>
 
   <!-- 8. SERVICE AREA + ZIP -->
   <section id="area" class="area-section t-dark">
-    <div class="container statement-layout" data-reveal>
-      <h2>Serving Worcester, Shrewsbury, Auburn, Holden, Millbury, Leicester and West Boylston</h2>
-      <div class="zip-tool" data-zip>
-        <label for="zip-input" class="mono">Check your ZIP</label>
-        <div class="zip-row">
-          <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="ZIP" autocomplete="postal-code" data-zip-input>
-          <button class="btn btn-secondary" data-zip-btn>Check</button>
-        </div>
-        <p class="zip-result mono" aria-live="polite" data-zip-result></p>
+    <div class="container area-layout">
+      <div class="area-copy" data-reveal>
+        <h2>Serving Worcester, Shrewsbury, Auburn, Holden, Millbury, Leicester and West Boylston</h2>
+        <p class="area-lead">If your street has triple-deckers, we have probably stood on a porch on it.</p>
+        <form class="zip-tool" data-zip data-zip-yes="Yes, {zip} is on our map.">
+          <label for="zip-input">Check your ZIP</label>
+          <div class="zip-row">
+            <input id="zip-input" name="zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="5 digits" autocomplete="postal-code">
+            <button type="submit" class="btn btn-primary">Check</button>
+          </div>
+          <p class="zip-result" data-zip-result></p>
+        </form>
       </div>
-      <p class="open-now mono" data-open-now></p>
+      <figure class="area-map" data-reveal="clip">
+        <svg viewBox="0 0 520 400" role="img" aria-label="Sketch map of Worcester and the towns around it" focusable="false">
+          <g class="am-grid"><path d="M0 50H520M0 100H520M0 150H520M0 200H520M0 250H520M0 300H520M0 350H520M65 0V400M130 0V400M195 0V400M260 0V400M325 0V400M390 0V400M455 0V400"/></g>
+          <path class="am-edge" d="M70 120 C110 40 230 20 320 30 C420 40 490 110 480 200 C470 300 400 370 300 380 C190 392 90 350 60 270 C45 220 50 160 70 120 Z"/>
+          <path class="am-road" d="M260 210 L150 92 M260 210 L276 64 M260 210 L420 172 M260 210 L370 318 M260 210 L216 344 M260 210 L96 252"/>
+          <g class="am-town"><circle cx="150" cy="92" r="5"/><circle cx="276" cy="64" r="5"/><circle cx="420" cy="172" r="5"/><circle cx="370" cy="318" r="5"/><circle cx="216" cy="344" r="5"/><circle cx="96" cy="252" r="5"/></g>
+          <g class="am-home"><path d="M244 236 V204 L260 190 L276 204 V236 Z"/><path d="M244 214 H276 M244 225 H276"/></g>
+          <text class="am-city" x="260" y="260" text-anchor="middle">Worcester</text>
+          <text class="am-lbl" x="432" y="168">Shrewsbury</text>
+          <text class="am-lbl" x="216" y="368" text-anchor="middle">Auburn</text>
+          <text class="am-lbl" x="140" y="82" text-anchor="end">Holden</text>
+          <text class="am-lbl" x="382" y="336">Millbury</text>
+          <text class="am-lbl" x="96" y="278" text-anchor="middle">Leicester</text>
+          <text class="am-lbl" x="288" y="58">West Boylston</text>
+          <path class="am-north" d="M494 24 V56 M486 34 L494 24 L502 34"/>
+        </svg>
+        <figcaption class="caption">Not to scale. The dashed line is how far we drive.</figcaption>
+      </figure>
     </div>
   </section>
 
   <!-- 9. CONTACT FORM -->
   <section id="contact" class="contact-section t-paper">
-    <div class="container form-container" data-reveal>
-      <h2>Price it</h2>
-      <p class="lead">Tell us what needs fixing. We will call with a number, not a sales pitch.</p>
-      <form data-lead class="lead-form" novalidate>
-        <div class="form-step" data-step="1">
-          <fieldset>
-            <legend class="mono">Step 1 of 4 · Who and what</legend>
-            <div class="toggle-group" role="radiogroup" aria-label="Role">
-              <label class="toggle"><input type="radio" name="role" value="owner" checked> I am the owner</label>
-              <label class="toggle"><input type="radio" name="role" value="landlord"> I am a landlord</label>
+    <div class="container contact-grid">
+      <div class="form-col" data-reveal>
+        <h2>Price it</h2>
+        <p class="lead">Tell us what needs fixing. We will call with a number, not a sales pitch.</p>
+        <form data-lead class="lead-form" novalidate data-thanks="Thanks, {name}.">
+          <div class="form-progress" data-form-progress><span></span></div>
+          <fieldset data-step data-step-title="Who and what">
+            <legend>Who and what</legend>
+            <div class="toggle-group" role="radiogroup" aria-label="Who is asking">
+              <label class="toggle"><input type="radio" name="role" value="owner" checked> I own the house</label>
+              <label class="toggle"><input type="radio" name="role" value="landlord"> I rent out units</label>
             </div>
             <label for="svc-select">Service needed</label>
-            <select id="svc-select" name="service" required data-service-select>
+            <select id="svc-select" name="service" required>
               <option value="">Choose a service…</option>
               
               <option value="Porch rebuilds">Triple-decker porch rebuilds</option>
@@ -916,22 +1204,15 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
               
             </select>
           </fieldset>
-          <button type="button" class="btn btn-primary" data-next>Next</button>
-        </div>
-        <div class="form-step" data-step="2" hidden>
-          <fieldset>
-            <legend class="mono">Step 2 of 4 · Job details</legend>
-            <label for="details">What should we know?</label>
-            <textarea id="details" name="details" rows="4" placeholder="Floor, location, what is failing…" required></textarea>
+          <fieldset data-step data-step-title="The porch">
+            <legend>The porch</legend>
+            <label for="details">Which floor, and what is failing?</label>
+            <textarea id="details" name="details" rows="4" placeholder="Second-floor back porch, rail moves, two soft treads" required></textarea>
+            <label for="zip">ZIP code</label>
+            <input id="zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code">
           </fieldset>
-          <div class="form-nav">
-            <button type="button" class="btn btn-text" data-prev>Back</button>
-            <button type="button" class="btn btn-primary" data-next>Next</button>
-          </div>
-        </div>
-        <div class="form-step" data-step="3" hidden>
-          <fieldset>
-            <legend class="mono">Step 3 of 4 · Timing</legend>
+          <fieldset data-step data-step-title="Timing">
+            <legend>Timing</legend>
             <label for="when">When do you want this done?</label>
             <select id="when" name="when" required>
               <option value="">Choose a timeframe…</option>
@@ -942,34 +1223,37 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
               <option value="flexible">Flexible</option>
             </select>
           </fieldset>
-          <div class="form-nav">
-            <button type="button" class="btn btn-text" data-prev>Back</button>
-            <button type="button" class="btn btn-primary" data-next>Next</button>
-          </div>
-        </div>
-        <div class="form-step" data-step="4" hidden>
-          <fieldset>
-            <legend class="mono">Step 4 of 4 · Contact</legend>
+          <fieldset data-step data-step-title="Your details">
+            <legend>Your details</legend>
             <label for="name">Name</label>
             <input id="name" name="name" type="text" autocomplete="name" required>
             <label for="phone">Phone</label>
             <input id="phone" name="phone" type="tel" autocomplete="tel" required>
             <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="email" required>
-            <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <input type="hidden" name="t" data-time-trap>
+            <input id="email" name="email" type="email" autocomplete="email">
           </fieldset>
-          <div class="form-nav">
-            <button type="button" class="btn btn-text" data-prev>Back</button>
-            <button type="submit" class="btn btn-primary">Send my request</button>
+          <div class="hp" aria-hidden="true"><label>Website <input name="website2" tabindex="-1" autocomplete="off"></label></div>
+          <input type="hidden" name="t">
+          <div class="form-nav" data-form-nav>
+            <button type="button" class="btn btn-secondary" data-back>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+            <button type="submit" class="btn btn-primary" data-submit>Send my request</button>
           </div>
-        </div>
-        <div class="form-thankyou" data-thankyou hidden>
+        </form>
+        <div class="form-thankyou" data-thanks-box hidden tabindex="-1">
           <p class="h3">Thanks, {name}.</p>
-          <p>In your version this goes straight to Nico's phone and inbox.</p>
-          <p class="mono">This is a demo site. No data was sent.</p>
+          <p>In your version this goes straight to the owner’s phone and inbox.</p>
+          <p class="note">This is a demo site. No data was sent.</p>
         </div>
-      </form>
+      </div>
+      <aside class="call-card t-dark" aria-label="Call instead">
+        <svg class="call-house" viewBox="0 0 64 104" aria-hidden="true" focusable="false"><path d="M4 24 L32 4 L60 24"/><rect x="6" y="24" width="52" height="24"/><rect x="6" y="50" width="52" height="24"/><rect x="6" y="76" width="52" height="24"/><path d="M12 36 H52 M12 62 H52 M12 88 H52"/><path d="M0 102 H64"/></svg>
+        <h3>Rather talk it through?</h3>
+        <p>Say which floor and what moves when you lean on it. We ask the rest.</p>
+        <a class="btn btn-call btn-primary" href="tel:+15085550169"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (508) 555-0169</span></a>
+        <p class="open-now" data-open-now>Hours below</p>
+        <dl class="hours"><div><dt>Mon</dt><dd>7 am – 5 pm</dd></div><div><dt>Tue</dt><dd>7 am – 5 pm</dd></div><div><dt>Wed</dt><dd>7 am – 5 pm</dd></div><div><dt>Thu</dt><dd>7 am – 5 pm</dd></div><div><dt>Fri</dt><dd>7 am – 5 pm</dd></div><div><dt>Sat</dt><dd>8 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
+      </aside>
     </div>
   </section>
 </main>
@@ -979,28 +1263,28 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); out
   <div class="container footer-inner">
     <div class="footer-brand">
       <p class="logo-mark">TP</p>
-      <p>Three Porches Carpentry · Worcester, MA</p>
-      <p class="mono disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
+      <p>Three Porches Carpentry, Worcester, MA</p>
+      <p class="disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
     </div>
     <div class="footer-contact">
       <a class="tel-plain" href="tel:+15085550169">(508) 555-0169</a>
       <p class="mono">hello@three-porches.example</p>
-      <div class="hours" aria-label="Business hours"><dl class="hours"><div><dt>Mon</dt><dd>7 am – 5 pm</dd></div><div><dt>Tue</dt><dd>7 am – 5 pm</dd></div><div><dt>Wed</dt><dd>7 am – 5 pm</dd></div><div><dt>Thu</dt><dd>7 am – 5 pm</dd></div><div><dt>Fri</dt><dd>7 am – 5 pm</dd></div><div><dt>Sat</dt><dd>8 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl></div>
+      <p class="footer-hours"><span data-open-now>Mon–Fri 7 am – 5 pm · Sat 8 am – 1 pm</span></p>
     </div>
     <div class="footer-credits">
-      <ul class="credits"><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li></ul>
+      <p class="credits-note">Line drawings stand in for project photos in this demo.</p>
+      <ul class="credits"></ul>
     </div>
   </div>
 </footer>
 
 <div class="mobile-bar" data-mobilebar>
   <a class="btn btn-call btn-primary" href="tel:+15085550169"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (508) 555-0169</span></a>
-  <a class="btn btn-secondary" href="#contact" data-service="Framing">Price it</a>
+  <a class="btn btn-secondary" href="#contact" data-service="Porch rebuilds">Price a rebuild</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Three Porches Carpentry","short":"Three Porches","phone":"(508) 555-0169","phoneE164":"+15085550169","sms":true,"email":"hello@three-porches.example","city":"Worcester","state":"MA","timezone":"America/New_York","areas":["Shrewsbury","Auburn","Holden","Millbury","Leicester","West Boylston"],"zips":["01602","01603","01604","01605","01606","01607","01608","01609","01610","01545","01501","01520","01527","01524","01583"],"hours":{"mon":["07:00","17:00"],"tue":["07:00","17:00"],"wed":["07:00","17:00"],"thu":["07:00","17:00"],"fri":["07:00","17:00"],"sat":["08:00","13:00"],"sun":null},"emergency":false},"services":[{"name":"Triple-decker porch rebuilds","short":"Porch rebuilds"},{"name":"Porch railings and balusters","short":"Railings"},{"name":"Back stairs and egress stairs","short":"Back stairs"},{"name":"Porch floors and posts","short":"Floors & posts"},{"name":"Clapboard and exterior trim","short":"Exterior trim"},{"name":"Decks and back steps","short":"Decks"},{"name":"Apartment turnover carpentry","short":"Turnover fixes"},{"name":"Doors that stick or won't lock","short":"Doors"},{"name":"Sheds, pergolas and fences","short":"Outdoor builds"},{"name":"Sills, joists and framing","short":"Framing"}],"proof":{"label":"Sample","prices":[{"item":"Triple-decker porch rebuild","from":"$9,500","to":"$22,000","unit":"per floor","note":"depends on size, roof and stairs"},{"item":"Porch railing and balusters","from":"$75","to":"$160","unit":"per linear ft"},{"item":"Rear egress stair rebuild","from":"$4,500","to":"$12,000","unit":"per flight"},{"item":"Porch floor boards replaced","from":"$18","to":"$35","unit":"per sq ft"},{"item":"Exterior trim rot repair","from":"$350","to":"$1,200","note":"corner boards, sills, fascia"}]},"hours":{"mon":["07:00","17:00"],"tue":["07:00","17:00"],"wed":["07:00","17:00"],"thu":["07:00","17:00"],"fri":["07:00","17:00"],"sat":["08:00","13:00"],"sun":null},"timezone":"America/New_York","zips":["01602","01603","01604","01605","01606","01607","01608","01609","01610","01545","01501","01520","01527","01524","01583"],"areas":["Shrewsbury","Auburn","Holden","Millbury","Leicester","West Boylston"],"phone":"(508) 555-0169","phoneE164":"+15085550169"}</script>
 <script defer src="vendor/gsap.min.js"></script>
 <script defer src="vendor/ScrollTrigger.min.js"></script>
-<script defer src="vendor/DrawSVGPlugin.min.js"></script>
 <script defer src="vendor/lenis.min.js"></script>
 <script defer src="app.js"></script>
 </body>
