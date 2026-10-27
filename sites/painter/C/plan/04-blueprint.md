@@ -1,5 +1,10 @@
 # Blueprint — painter-C (Haint & Harbor)
 
+## Round 2 (critique-2 → elevate+fix)
+Motion: the centre house now ends with its shutters swung open and its lamps lit (from closed over the glass), and the pinned piazza paints its ceiling (mildew grey → wash → primer → two haint-blue sweeps with a wet edge; the same sweeps scrub unpinned on phones). Layout: services became a second street of nine small facades with hung plaques on Charleston green, prep moved to t-plaster and area to t-mist, so no two pale sections touch. Fixes: the break caption sits on a solid plaque above the skyline, the hero plaque hangs on a sidewalk below the ground line, review stars no longer wrap, the prep houses each show their defect, every plaque has the same 4px shadow, and the lead form uses the kit [data-form-nav] markup.
+
+Tones: ink · light · plaster · deep · accent · green · paper · deep · light · mist · ink · light(footer).
+
 ## Round 1 (critique-1 → fix)
 Placeholder photos rendered blank, so every frame is now a drawn facade system (street, explorer house, prep row, marsh, porch ceiling, beach house). Elevate layout: replaced the repeated split-story with street hero → stage → facade row → full-bleed marsh → pinned haint story → ledger. Elevate motion: shutter intro tied to the plaque reveal, plus a pinned scroll story where the porch ceiling goes mildew → wash → prime → haint blue. Also: the next band peeks below the hero, CTA reads "Price it", estimator draws on a house sketch with a print button, stars read "N of 5", en-dashes fixed, empty credits hidden, invented claim and hours removed.
 
