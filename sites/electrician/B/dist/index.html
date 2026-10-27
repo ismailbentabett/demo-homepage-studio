@@ -22,7 +22,6 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Electrician","name":"Torque & Tag Electric","description":"San Antonio electrical work written into your panel schedule: panel swaps, aluminum wiring repair, generator interlocks and EV chargers nearby.","telephone":"+12105550111","email":"hello@torque-and-tag-electric.example","areaServed":[{"@type":"City","name":"San Antonio"},{"@type":"City","name":"Alamo Heights"},{"@type":"City","name":"Helotes"},{"@type":"City","name":"Boerne"},{"@type":"City","name":"Schertz"},{"@type":"City","name":"Live Oak"},{"@type":"City","name":"Leon Valley"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"08:00","closes":"12:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/oswald/oswald-200-700-normal.woff2" crossorigin>
-<link rel="stylesheet" href="vendor/lenis.css">
 <style>
 @font-face{font-family:"Oswald";src:url("fonts/oswald/oswald-200-700-normal.woff2") format("woff2");font-weight:200 700;font-style:normal;font-display:swap}
 @font-face{font-family:"Karla";src:url("fonts/karla/karla-200-800-normal.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
@@ -250,876 +249,1057 @@ html.lenis, html.lenis body { height: auto; }
   html.sw-print-est [data-est-print] { display: none; }
 }
 
-@layer reset, tokens, base, layout, components, signature, utilities;
+/* electrician-B · Torque & Tag · "Panel Schedule Flip"
+   Raw colours are --c-*. Tones only ever point at raw colours (never at themselves). */
 
-@layer reset {
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body { min-height: 100svh; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
-  img, video, svg { display: block; max-width: 100%; height: auto; }
-  button, input, select, textarea { font: inherit; color: inherit; }
-  ul, ol { list-style: none; }
-  a { color: inherit; text-decoration: none; }
-  fieldset { border: none; }
+:root {
+  /* palette (plan/03-system.md) */
+  --c-ink: #E8E4DC;
+  --c-paper: #F5F3EE;
+  --c-amber: #E09A15;
+  --c-amber-hi: #F0AE35;   /* amber words on panel grey: 5.45:1 */
+  --c-deep: #1C1F23;
+  --c-deep-2: #24282D;
+  --c-signal: #C43E2A;
+  --c-signal-ink: #A33424; /* red words on paper: 6.16:1 */
+  --c-mid: #3A3F47;
+  --c-muted-light: #A8A49C; /* on deep 6.65:1 */
+  --c-muted-paper: #5A5650; /* on paper 6.57:1 */
+  --c-muted-mid: #B8B4AC;   /* on mid 5.12:1 */
+  --c-rule-light: #3A3F47;
+  --c-rule-paper: #D8D4CC;
+  --c-rule-mid: #565C65;
+  --c-plate-paper: #ECE8DF;
+
+  /* type scale */
+  --fs--1: clamp(0.81rem, 0.77rem + 0.2vw, 0.88rem);
+  --fs-0: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --fs-1: clamp(1.13rem, 1.04rem + 0.45vw, 1.33rem);
+  --fs-2: clamp(1.35rem, 1.22rem + 0.65vw, 1.78rem);
+  --fs-3: clamp(2rem, 1.6rem + 1.9vw, 3.4rem);
+  --fs-4: clamp(2.4rem, 1.8rem + 3vw, 4.6rem);
+  --fs-h1: clamp(2.6rem, min(8.4vw, 9svh) + 0.1rem, 5rem);
+
+  /* space */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+
+  /* motion */
+  --ease-out: cubic-bezier(.23,1,.32,1);
+  --ease-io: cubic-bezier(.77,0,.175,1);
+  --dur-press: 120ms;
+  --dur-ui: 200ms;
+  --dur-page: 520ms;
+  --dur-story: 900ms;
+  --dur-stagger: 60ms;
+
+  /* layout */
+  --header-h: 64px;
+  --gutter: 20px;
+  --max-w: 1280px;
+  --radius: 2px;
+  --rule-w: 1.5px;
+  --sw-anchor-offset: 80px;
 }
+@media (min-width: 640px) { :root { --gutter: 32px; } }
+@media (min-width: 1200px) { :root { --gutter: 48px; } }
 
-@layer tokens {
-  :root {
-    /* Palette */
-    --ink: #E8E4DC;
-    --paper: #F5F3EE;
-    --accent: #E09A15;
-    --deep: #1C1F23;
-    --signal: #C43E2A;
-    --mid: #3A3F47;
-    --muted-light: #A8A49C;
-    --muted-paper: #5A5650;
-    --muted-mid: #B8B4AC;
-    --rule-light: #3A3F47;
-    --rule-paper: #D8D4CC;
-    --rule-mid: #525860;
+/* ---------- tones ---------- */
+.t-deep  { --bg: var(--c-deep);  --fg: var(--c-ink);  --muted: var(--c-muted-light); --rule: var(--c-rule-light); --hi: var(--c-amber);      --focus: var(--c-amber); --btn-bg: var(--c-amber); --btn-fg: var(--c-deep); --plate: var(--c-deep-2); --draw: var(--c-ink); }
+.t-paper { --bg: var(--c-paper); --fg: var(--c-deep); --muted: var(--c-muted-paper); --rule: var(--c-rule-paper); --hi: var(--c-signal-ink); --focus: var(--c-signal); --btn-bg: var(--c-deep); --btn-fg: var(--c-paper); --plate: var(--c-plate-paper); --draw: var(--c-deep); }
+.t-mid   { --bg: var(--c-mid);   --fg: var(--c-ink);  --muted: var(--c-muted-mid);   --rule: var(--c-rule-mid);   --hi: var(--c-amber-hi);   --focus: var(--c-amber); --btn-bg: var(--c-amber); --btn-fg: var(--c-deep); --plate: var(--c-deep-2); --draw: var(--c-ink); }
+.t-accent { --bg: var(--c-amber); --fg: var(--c-deep); --muted: #3A2A10; --rule: #B87A0A; --hi: var(--c-deep); --focus: var(--c-deep); --btn-bg: var(--c-deep); --btn-fg: var(--c-paper); --plate: var(--c-deep); --draw: var(--c-amber); }
+.t-deep, .t-paper, .t-mid, .t-accent { background: var(--bg); color: var(--fg); }
 
-    /* Type scale */
-    --fs--1: clamp(0.78rem, 0.74rem + 0.2vw, 0.83rem);
-    --fs-0: clamp(0.94rem, 0.88rem + 0.3vw, 1rem);
-    --fs-1: clamp(1.13rem, 1.04rem + 0.45vw, 1.33rem);
-    --fs-2: clamp(1.35rem, 1.22rem + 0.65vw, 1.78rem);
-    --fs-3: clamp(1.62rem, 1.43rem + 0.95vw, 2.37rem);
-    --fs-4: clamp(1.94rem, 1.67rem + 1.35vw, 3.16rem);
-    --fs-h1: clamp(2.6rem, min(9vw, 9.5svh) + 0.1rem, 5.25rem);
-
-    /* Space */
-    --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
-    --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
-
-    /* Motion */
-    --ease-out: cubic-bezier(.23,1,.32,1);
-    --ease-io: cubic-bezier(.77,0,.175,1);
-    --dur-press: 120ms;
-    --dur-ui: 200ms;
-    --dur-page: 520ms;
-    --dur-story: 900ms;
-    --dur-stagger: 60ms;
-
-    /* Layout */
-    --header-h: 64px;
-    --grid-gutter: 24px;
-    --max-w: 1280px;
-    --radius: 2px;
-    --radius-pill: 999px;
-  }
-
-  @media (max-width: 768px) {
-    :root { --grid-gutter: 16px; }
-  }
+/* ---------- base ---------- */
+html { background: var(--c-deep); }
+body {
+  font-family: 'Karla', system-ui, sans-serif;
+  font-size: var(--fs-0);
+  line-height: 1.55;
+  color: var(--c-ink);
+  background: var(--c-deep);
 }
-
-@layer base {
-  body {
-    font-family: 'Karla', system-ui, sans-serif;
-    font-size: var(--fs-0);
-    line-height: 1.55;
-    color: var(--ink);
-    background: var(--deep);
-  }
-
-  h1, h2, h3, h4 {
-    font-family: 'Oswald', system-ui, sans-serif;
-    font-weight: 600;
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-    text-wrap: balance;
-  }
-
-  h1 { font-size: var(--fs-h1); }
-  h2 { font-size: var(--fs-3); margin-bottom: var(--s-5); }
-  h3 { font-size: var(--fs-2); margin-bottom: var(--s-3); }
-
-  p { max-width: 64ch; margin-bottom: var(--s-4); }
-  .lead { font-size: var(--fs-1); font-weight: 500; margin-bottom: var(--s-5); }
-
-  .kicker {
-    font-family: 'DM Mono', monospace;
-    font-size: var(--fs--1);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    margin-bottom: var(--s-3);
-  }
-
-  .proof-line {
-    font-family: 'DM Mono', monospace;
-    font-size: var(--fs--1);
-    color: var(--muted-light);
-    margin-top: var(--s-4);
-  }
-
-  a:focus-visible, button:focus-visible, input:focus-visible,
-  select:focus-visible, textarea:focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 3px;
-  }
-
-  @media (forced-colors: active) {
-    .btn { border: 2px solid CanvasText; }
-    .circuit__handle { border: 1px solid CanvasText; }
-  }
+h1, h2, h3 {
+  font-family: 'Oswald', system-ui, sans-serif;
+  font-weight: 600;
+  line-height: .95;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
+h1 { font-size: var(--fs-h1); letter-spacing: -0.03em; line-height: .92; }
+h1 em { font-style: normal; color: var(--hi); }
+h2 { font-size: var(--fs-3); margin-bottom: var(--s-4); }
+h3 { font-size: var(--fs-1); line-height: 1.1; letter-spacing: 0; }
+p { text-wrap: pretty; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend { padding: 0; }
+a { text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.lead { font-size: var(--fs-1); line-height: 1.45; max-width: 46ch; color: var(--fg); }
+.kicker {
+  font-family: 'DM Mono', monospace;
+  font-size: var(--fs--1);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--hi);
+  margin-bottom: var(--s-4);
+}
+.i { width: 1.15em; height: 1.15em; flex: none; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+:focus-visible { outline: 3px solid var(--focus, var(--c-amber)); outline-offset: 3px; }
+.skip-link { background: var(--c-amber); color: var(--c-deep); padding: 12px 16px; font-weight: 700; }
 
-@layer layout {
-  .container {
-    width: 100%;
-    max-width: var(--max-w);
-    margin-inline: auto;
-    padding-inline: var(--grid-gutter);
-  }
-
-  .section {
-    padding-block: var(--s-9);
-  }
-
+.container { width: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--s-8); }
+.section.tight { padding-block: var(--s-7); }
+@media (min-width: 900px) {
+  .section { padding-block: var(--s-9); }
   .section.tight { padding-block: var(--s-8); }
-  .section.loose { padding-block: 128px; }
-
-  /* Tones */
-  .t-deep { --bg: var(--deep); --ink: var(--ink); --muted: var(--muted-light); --rule: var(--rule-light); --accent: var(--accent); --focus: var(--accent); }
-  .t-paper { --bg: var(--paper); --ink: var(--deep); --muted: var(--muted-paper); --rule: var(--rule-paper); --accent: var(--signal); --focus: var(--signal); }
-  .t-mid { --bg: var(--mid); --ink: var(--ink); --muted: var(--muted-mid); --rule: var(--rule-mid); --accent: var(--accent); --focus: var(--accent); }
-  .t-accent { --bg: var(--accent); --ink: var(--deep); --muted: #3A2A10; --rule: #B87A0A; --accent: var(--deep); --focus: var(--deep); }
-
-  .t-deep, .t-paper, .t-mid, .t-accent {
-    background: var(--bg);
-    color: var(--ink);
-  }
-
-  .split-aside { display: grid; gap: var(--s-7); }
-  @media (min-width: 768px) {
-    .split-aside { grid-template-columns: 1.2fr 0.8fr; align-items: start; }
-  }
-
-  .split-image__grid { display: grid; gap: var(--s-7); }
-  @media (min-width: 768px) {
-    .split-image__grid { grid-template-columns: 1fr 1fr; align-items: center; }
-  }
-
-  .stack-center { text-align: center; }
-  .stack-center p, .stack-center .tool { margin-inline: auto; }
-
-  .form-center { text-align: center; }
-  .form-center .lead-form { max-width: 560px; margin-inline: auto; text-align: left; }
 }
 
-@layer components {
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--s-2);
-    min-height: 48px;
-    padding-inline: var(--s-5);
-    font-family: 'Oswald', system-ui, sans-serif;
-    font-weight: 600;
-    font-size: var(--fs-0);
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    border-radius: var(--radius);
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: transform var(--dur-press) var(--ease-out), background var(--dur-ui) var(--ease-out);
-  }
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  min-height: 48px; padding: 10px 22px;
+  font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: 1.0625rem;
+  letter-spacing: .04em; text-transform: uppercase; text-decoration: none; line-height: 1.1;
+  border-radius: var(--radius); border: 2px solid transparent; cursor: pointer;
+  transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--btn-bg); color: var(--btn-fg); border-color: var(--btn-bg); }
+.btn-secondary { background: transparent; color: var(--fg); border-color: currentColor; }
+.btn-ghost { background: transparent; color: var(--fg); border-color: transparent; text-decoration: underline; text-underline-offset: 5px; padding-inline: 8px; }
+@media (hover: hover) {
+  .btn-primary:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+  .btn-secondary:hover { background: var(--fg); color: var(--bg); }
+}
 
-  .btn:active { transform: scale(0.97); }
+/* ---------- sample tag ---------- */
+.sample-tag {
+  display: inline-block; vertical-align: .15em; margin-left: .4em;
+  font-family: 'DM Mono', monospace; font-size: .72rem; line-height: 1.3; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+  padding: 1px 6px; border: 1px solid currentColor; border-radius: var(--radius); color: inherit;
+}
 
-  .btn-primary {
-    background: var(--accent);
-    color: var(--deep);
-    border-color: var(--accent);
-  }
+/* ---------- header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 100; height: var(--header-h);
+  background: rgba(28, 31, 35, .94); color: var(--c-ink);
+  border-bottom: 1px solid var(--c-rule-light);
+  --fg: var(--c-ink); --bg: var(--c-deep); --btn-bg: var(--c-amber); --btn-fg: var(--c-deep); --focus: var(--c-amber);
+}
+@supports (backdrop-filter: blur(8px)) { .site-header { backdrop-filter: blur(8px); background: rgba(28, 31, 35, .86); } }
+.header__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); height: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: var(--gutter); }
+.header__logo { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; text-decoration: none; font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: 1.3rem; letter-spacing: .01em; text-transform: uppercase; }
+.logo__mark { width: 30px; height: 18px; border: 2px solid var(--c-ink); border-radius: var(--radius); position: relative; flex: none; }
+.logo__mark span { position: absolute; top: 2px; right: 2px; width: 12px; height: 10px; background: var(--c-amber); }
+.header__cta { display: flex; align-items: center; gap: var(--s-2); }
+.header__phone { display: none; align-items: center; gap: 8px; min-height: 48px; padding-inline: 8px; font-family: 'DM Mono', monospace; font-size: .95rem; font-variant-numeric: tabular-nums; text-decoration: none; }
+.header__quote { min-height: 44px; padding: 8px 16px; font-size: 1rem; }
+.header__burger { display: inline-grid; place-items: center; width: 48px; height: 48px; background: none; border: 1.5px solid var(--c-rule-mid); border-radius: var(--radius); color: var(--c-ink); }
+.header__burger .i { width: 22px; height: 22px; }
+.header__nav { display: none; }
+.nav__list a { display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 calc(100% - 12px); transition: background-size var(--dur-ui) var(--ease-out); }
+@media (hover: hover) { .nav__list a:hover, .header__phone:hover { background-size: 100% 1px; color: var(--c-amber); } }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--ink);
-    border-color: var(--ink);
-  }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--ink);
-    border-color: transparent;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-
-  .t-paper .btn-primary { background: var(--deep); color: var(--paper); border-color: var(--deep); }
-  .t-paper .btn-secondary { color: var(--deep); border-color: var(--deep); }
-  .t-paper .btn-ghost { color: var(--deep); }
-
-  /* Header */
-  .site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--header-h);
-    z-index: 100;
-    background: rgba(28, 31, 35, 0.9);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--rule-light);
-  }
-
-  .header__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    max-width: var(--max-w);
-    margin-inline: auto;
-    padding-inline: var(--grid-gutter);
-  }
-
-  .header__logo {
-    font-family: 'Oswald', system-ui, sans-serif;
-    font-size: var(--fs-2);
-    font-weight: 700;
-    color: var(--accent);
-  }
-
-  .header__nav { display: none; }
-  @media (min-width: 768px) {
-    .header__nav { display: block; }
-    .header__burger { display: none; }
-  }
-
+/* phone drawer (JS on, under 900) */
+@media (max-width: 899px) {
+  .sw-js .header__nav { display: block; position: fixed; inset: var(--header-h) 0 auto 0; background: var(--c-deep); border-bottom: 1px solid var(--c-rule-light); padding: var(--s-4) var(--gutter) var(--s-6); }
+  .sw-js .header__nav .nav__list { display: grid; }
+  .sw-js .header__nav .nav__list a { font-size: 1.05rem; width: 100%; border-bottom: 1px solid var(--c-rule-light); }
+  .sw-js .header__nav:not(.is-open) { visibility: hidden; pointer-events: none; }
+  .sw-motion .header__nav { transition: opacity var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out), visibility 0s linear var(--dur-ui); }
+  .sw-motion .header__nav:not(.is-open) { opacity: 0; transform: translateY(-8px); }
+  .sw-motion .header__nav.is-open { transition-delay: 0s; }
+}
+@media (min-width: 900px) {
+  .header__nav { display: block; }
   .nav__list { display: flex; gap: var(--s-5); }
-  .nav__list a {
-    font-size: var(--fs--1);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding-block: 12px;
-    margin-block: -12px;
-  }
-  .nav__list a:hover { color: var(--accent); }
+  .header__burger { display: none; }
+  .header__phone { display: inline-flex; }
+}
+@media (min-width: 900px) and (max-width: 1099px) { .nav__list li:nth-child(2) { display: none; } }
 
-  .header__cta { display: flex; gap: var(--s-3); align-items: center; }
-  .header__phone { display: none; }
-  @media (min-width: 768px) { .header__phone { display: inline-flex; } }
+/* ---------- mobile bar ---------- */
+.mobile-bar {
+  position: fixed; inset: auto 0 0 0; z-index: 90;
+  display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--s-2);
+  padding: 8px var(--gutter) calc(8px + env(safe-area-inset-bottom));
+  background: var(--c-deep); border-top: 1px solid var(--c-rule-mid);
+  box-shadow: 0 -2px 12px rgba(0,0,0,.25);
+  --fg: var(--c-ink); --bg: var(--c-deep); --btn-bg: var(--c-amber); --btn-fg: var(--c-deep);
+}
+.mobile-bar .btn { min-height: 48px; padding-inline: 10px; font-size: 1rem; }
+.mobile-bar__call span { font-variant-numeric: tabular-nums; }
+@media (max-width: 899px) { body { padding-bottom: 72px; } }
+@media (min-width: 900px) { .mobile-bar { display: none; } }
 
-  .header__burger {
-    background: none;
-    border: none;
-    color: var(--ink);
-    cursor: pointer;
-    padding: var(--s-2);
-  }
+/* =========================================================
+   SIGNATURE: breakers
+   ========================================================= */
+.breaker__handle, .circuit__handle, .ledger__handle {
+  position: relative; display: inline-block; flex: none;
+  width: 34px; height: 16px; border-radius: var(--radius);
+  border: 1.5px solid var(--muted); background: transparent;
+}
+.breaker__handle::after, .circuit__handle::after, .ledger__handle::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 13px; height: 9px;
+  background: var(--muted); border-radius: 1px;
+  transition: transform var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out);
+}
+.is-on > .breaker__handle, .is-on > .circuit__handle, .ledger__handle { border-color: var(--c-amber); }
+.is-on > .breaker__handle::after, .is-on > .circuit__handle::after, .ledger__handle::after { transform: translateX(14px); background: var(--c-amber); }
+.circuit__handle.is-off::after { transform: none; }
 
-  /* Mobile bar */
-  .mobile-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
-    background: var(--deep);
-    border-top: 1px solid var(--rule-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--s-3);
-    padding-inline: var(--grid-gutter);
-    z-index: 90;
-    transform: translateY(100%);
-    transition: transform var(--dur-ui) var(--ease-out);
-  }
+/* hero panel */
+.hero { min-height: calc(100svh - var(--header-h) - 56px); display: grid; align-items: center; padding-block: var(--s-6) var(--s-7); position: relative; overflow: hidden; }
+.hero::before { /* faint DIN-rail grid behind everything */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: linear-gradient(var(--c-deep-2) 1px, transparent 1px), linear-gradient(90deg, var(--c-deep-2) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.hero__grid { position: relative; width: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: var(--gutter); display: grid; gap: var(--s-7); align-items: center; }
+.hero__lead { font-size: var(--fs-1); line-height: 1.45; max-width: 40ch; margin-top: var(--s-5); color: var(--fg); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
+.proof-line { margin-top: var(--s-5); font-family: 'DM Mono', monospace; font-size: var(--fs--1); color: var(--muted); font-variant-numeric: tabular-nums; }
 
-  .mobile-bar.is-visible { transform: translateY(0); }
-  @media (min-width: 768px) { .mobile-bar { display: none; } }
-
-  /* Cards & frames */
-  .frame { overflow: hidden; border-radius: var(--radius); }
-  .frame img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) sepia(.35) contrast(1.15) brightness(.88); mix-blend-mode: luminosity; }
-  .t-deep .frame img { mix-blend-mode: soft-light; opacity: .92; }
-  .t-paper .frame img { mix-blend-mode: multiply; opacity: .95; }
-  .t-mid .frame img { mix-blend-mode: overlay; opacity: .9; }
-  .t-accent .frame img { mix-blend-mode: hard-light; opacity: .88; }
-
-  .break__img { aspect-ratio: 21/9; }
-  @media (max-width: 768px) { .break__img { aspect-ratio: 16/9; } }
-
-  /* Sample tag */
-  .sample-tag {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    border: 1px solid currentColor;
-    padding: 2px 6px;
-    border-radius: var(--radius);
-    vertical-align: middle;
-    margin-left: var(--s-2);
-    opacity: 0.7;
-  }
-
-  /* Trust stats */
-  .trust__stats { display: grid; gap: var(--s-4); }
-  .trust__stats dt { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-  .trust__stats dd { font-size: var(--fs-1); font-weight: 600; margin-top: var(--s-1); }
-
-  /* Price table */
-  .price-table { width: 100%; border-collapse: collapse; font-size: var(--fs-0); }
-  .price-table th, .price-table td { padding: var(--s-3) var(--s-4); text-align: left; border-bottom: 1px solid var(--rule); }
-  .price-table th { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.06em; }
-  .price-table td:nth-child(2), .price-table td:nth-child(3) { font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .sample-note { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-4); }
-
-  /* ZIP checker */
-  .zip-checker { display: flex; gap: var(--s-3); max-width: 400px; margin-block: var(--s-5); }
-  .zip-checker input { flex: 1; height: 48px; padding-inline: var(--s-4); background: var(--paper); border: 1.5px solid var(--rule); border-radius: var(--radius); }
-  .zip__result { margin-top: var(--s-3); font-size: var(--fs-0); }
-  .area__list { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-5); }
-
-  /* Form */
-  .lead-form fieldset { margin-bottom: var(--s-5); }
-  .lead-form legend { font-family: 'Oswald', system-ui, sans-serif; font-size: var(--fs-1); margin-bottom: var(--s-3); }
-  .lead-form label { display: block; margin-bottom: var(--s-3); }
-  .lead-form input, .lead-form select, .lead-form textarea {
-    width: 100%;
-    height: 48px;
-    padding-inline: var(--s-4);
-    background: rgba(255,255,255,0.08);
-    border: 1.5px solid var(--rule);
-    border-radius: var(--radius);
-    margin-top: var(--s-1);
-  }
-  .lead-form textarea { height: auto; padding-block: var(--s-3); }
-  .lead-form select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23E8E4DC' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
-  .t-paper .lead-form input, .t-paper .lead-form select, .t-paper .lead-form textarea { background: rgba(0,0,0,0.04); }
-  .form__nav { display: flex; gap: var(--s-3); margin-top: var(--s-5); }
-  .form__thanks { padding: var(--s-7); background: rgba(224, 154, 21, 0.15); border-radius: var(--radius); text-align: center; }
-
-  /* Tool */
-  .tool fieldset { margin-bottom: var(--s-5); }
-  .tool legend { font-family: 'Oswald', system-ui, sans-serif; font-size: var(--fs-1); margin-bottom: var(--s-3); }
-  .tool label { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) 0; cursor: pointer; }
-  .tool input[type="radio"], .tool input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); }
-  .tool__result, .tool__output { padding: var(--s-4); background: rgba(255,255,255,0.05); border-radius: var(--radius); margin-bottom: var(--s-4); min-height: 48px; }
-  .tool__total { font-size: var(--fs-1); font-variant-numeric: tabular-nums; }
-  .tool__rec { margin-top: var(--s-3); }
-  .tool__price { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-3); }
-  .tool__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.panel { background: var(--c-deep-2); border: var(--rule-w) solid var(--c-rule-mid); border-radius: var(--radius); padding: var(--s-4); box-shadow: inset 0 0 0 6px var(--c-deep), inset 0 0 0 7px var(--c-rule-light); }
+.panel__head, .panel__foot { display: flex; justify-content: space-between; gap: var(--s-3); font-family: 'DM Mono', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: var(--s-2) var(--s-2); }
+.panel__head { border-bottom: 1px dashed var(--c-rule-mid); margin-bottom: var(--s-3); }
+.panel__title { color: var(--c-ink); }
+.panel__main { display: inline-flex; align-items: center; gap: 8px; color: var(--c-amber); }
+.lamp { width: 8px; height: 8px; border-radius: 50%; background: var(--c-amber); box-shadow: 0 0 0 3px rgba(224,154,21,.25); }
+.panel__foot { border-top: 1px dashed var(--c-rule-mid); margin-top: var(--s-3); }
+.panel__grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: row; column-gap: var(--s-4); position: relative; }
+.panel__grid::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--c-rule-mid); }
+.breaker { display: grid; grid-template-columns: 22px 34px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 44px; padding: 4px 6px; border-bottom: 1px solid var(--c-deep); }
+.breaker__num { font-family: 'DM Mono', monospace; font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.breaker__label { font-family: 'DM Mono', monospace; font-size: .8rem; line-height: 1.2; text-transform: uppercase; letter-spacing: .03em; color: var(--c-ink); overflow-wrap: anywhere; }
+.breaker.is-spare .breaker__label { color: var(--muted); }
+.breaker.is-spare .breaker__handle { border-style: dashed; }
+.breaker:nth-child(even) { grid-template-columns: minmax(0, 1fr) 34px 22px; text-align: right; }
+.breaker:nth-child(even) .breaker__label { order: -1; }
+.breaker:nth-child(even) .breaker__num { order: 2; }
+.breaker:nth-child(even) .breaker__handle { transform: scaleX(-1); }
+@media (max-width: 639px) {
+  .panel { padding: var(--s-3) var(--s-2); }
+  .panel__grid { column-gap: var(--s-3); }
+  .breaker, .breaker:nth-child(even) { grid-template-columns: 30px minmax(0, 1fr); gap: 8px; padding-inline: 4px; }
+  .breaker:nth-child(even) { grid-template-columns: minmax(0, 1fr) 30px; }
+  .breaker__num { display: none; }
+  .breaker__handle { width: 30px; }
+  .breaker__label { font-size: .72rem; overflow-wrap: normal; }
+  .is-on > .breaker__handle::after { transform: translateX(11px); }
 }
 
-@layer signature {
-  /* Circuit primitive */
-  .circuit {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--s-3);
-    padding: var(--s-4);
-    border-left: 2px solid var(--rule);
-  }
-
-  .circuit__num {
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    color: var(--muted);
-    min-width: 28px;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .circuit__handle {
-    width: 24px;
-    height: 12px;
-    background: var(--muted);
-    border-radius: var(--radius-pill);
-    flex-shrink: 0;
-    margin-top: 4px;
-    transition: transform var(--dur-ui) var(--ease-out), background var(--dur-ui) var(--ease-out);
-    transform-origin: center;
-  }
-
-  .circuit.is-on .circuit__handle {
-    background: var(--accent);
-    transform: rotate(90deg);
-  }
-
-  .circuit__body { flex: 1; }
-  .circuit__label { font-family: 'Oswald', system-ui, sans-serif; font-size: var(--fs-1); margin-bottom: var(--s-2); }
-
-  .circuit-list { display: grid; gap: var(--s-1); }
-
-  /* Hero mosaic */
-  .hero { min-height: calc(100svh - var(--header-h)); display: grid; position: relative; padding-top: var(--header-h); }
-  @media (min-width: 768px) {
-    .hero { grid-template-columns: 1fr 1.2fr; }
-  }
-
-  .hero__mosaic {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-    background: var(--rule);
-  }
-
-  .hero__tile { aspect-ratio: 4/3; }
-  .hero__tile img { width: 100%; height: 100%; object-fit: cover; }
-
-  .hero__spine {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: var(--s-7) var(--grid-gutter);
-  }
-
-  .hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
-
-  /* Footer rail */
-  .footer__rail { padding-block: var(--s-7); }
-  .footer__disclaimer { font-size: var(--fs--1); color: var(--muted); }
-  .footer__license { font-family: 'DM Mono', monospace; font-size: var(--fs--1); margin-top: var(--s-2); }
-  .footer__credits { margin-top: var(--s-5); font-size: var(--fs--1); color: var(--muted); }
-  .credits { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-bottom: var(--s-3); }
+@media (min-width: 900px) {
+  .hero__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: var(--s-8); }
+  .breaker { min-height: 52px; }
+  .breaker__label { font-size: .86rem; }
+}
+@media (max-width: 899px) {
+  .hero { align-items: start; padding-top: var(--s-6); }
 }
 
-@layer utilities {
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
+/* hero intro (motion only): handles start OFF and flip on, labels never hide */
+.sw-motion .hero .breaker:not(.is-on) .breaker__handle { border-color: var(--muted); }
 
-  [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-  [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
-
-  [data-reveal="clip"] { clip-path: inset(0 0 100% 0); transition: clip-path var(--dur-story) var(--ease-out); }
-  [data-reveal="clip"].is-visible { clip-path: inset(0); }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-    [data-reveal], [data-reveal="clip"] { opacity: 1; transform: none; clip-path: none; }
-    .circuit__handle { transition: none; }
-  }
+/* ---------- trust ledger ---------- */
+.trust__row { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 2px solid var(--fg); }
+.trust__cell { padding: var(--s-4) 0; border-bottom: 1px solid var(--rule); }
+.trust__cell dt { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+.trust__cell dd { margin: 0; font-size: var(--fs-0); line-height: 1.4; font-variant-numeric: tabular-nums; }
+.trust__big { font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: var(--fs-2); line-height: 1.1; }
+.trust__num { font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: 1.5em; line-height: 1; }
+@media (min-width: 640px) { .trust__row { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-6); } }
+@media (min-width: 1100px) {
+  .trust__row { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr) minmax(0, 1fr) minmax(0, 1.4fr); border-bottom: 1px solid var(--rule); }
+  .trust__cell { border-bottom: 0; padding: var(--s-5) var(--s-5) var(--s-5) 0; }
+  .trust__cell + .trust__cell { border-left: 1px solid var(--rule); padding-left: var(--s-5); }
 }
+
+/* ---------- shared tool parts ---------- */
+.tool legend { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: var(--s-3); }
+.tool fieldset + fieldset { margin-top: var(--s-5); }
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.chips legend { width: 100%; }
+.chip { position: relative; display: inline-flex; cursor: pointer; }
+.chip input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.chip span { display: inline-flex; align-items: center; min-height: 48px; padding: 8px 16px; border: 1.5px solid var(--rule); border-radius: var(--radius); font-weight: 500; transition: background-color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out); }
+.chip input:checked + span { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.chip input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+@media (hover: hover) { .chip:hover span { border-color: var(--fg); } }
+.tool__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
+
+/* ---------- sorter ---------- */
+.sorter__grid { display: grid; gap: var(--s-6); }
+@media (min-width: 900px) { .sorter__grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: var(--s-8); align-items: start; } }
+.tag-card { margin-top: var(--s-5); background: var(--c-paper); color: var(--c-deep); border-radius: var(--radius); padding: var(--s-4) var(--s-5) var(--s-5); position: relative; border-left: 8px solid var(--c-amber); }
+.tag-card__head { display: flex; justify-content: space-between; gap: var(--s-3); font-family: 'DM Mono', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--c-muted-paper); border-bottom: 1px dashed var(--c-rule-paper); padding-bottom: var(--s-2); margin-bottom: var(--s-3); }
+.tag-card__title { font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: var(--fs-2); line-height: 1.1; margin-bottom: var(--s-2); }
+.tag-card__text { max-width: 58ch; }
+.tag-card[data-level="stop"] { border-left-color: var(--c-signal); }
+
+/* ---------- services rail ---------- */
+.services__grid { display: grid; gap: var(--s-7); }
+.services__meter { display: grid; grid-template-columns: 1fr auto; gap: 6px var(--s-3); margin-top: var(--s-5); font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); max-width: 360px; }
+.meter__count { color: var(--c-amber); font-variant-numeric: tabular-nums; }
+.meter__bar { grid-column: 1 / -1; height: 6px; background: var(--c-deep-2); border: 1px solid var(--rule); }
+.meter__bar span { display: block; height: 100%; width: calc(var(--rail-p, 1) * 100%); background: var(--c-amber); transition: width var(--dur-ui) var(--ease-out); }
+.rail { border-top: 2px solid var(--c-rule-mid); counter-reset: none; }
+.circuit { display: grid; grid-template-columns: 52px 34px minmax(0, 1fr); gap: var(--s-3); align-items: start; padding: var(--s-5) 0; border-bottom: 1px solid var(--rule); }
+.circuit__num { font-family: 'DM Mono', monospace; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 3px; }
+.circuit__handle { margin-top: 4px; }
+.circuit__label { font-size: var(--fs-2); margin-bottom: var(--s-2); }
+.circuit__body p { color: var(--muted); max-width: 52ch; }
+.circuit__link.btn { min-height: 44px; padding: 8px 0; margin-top: 4px; background: none; border: 0; color: var(--c-amber); font-size: .95rem; background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 85%; transition: background-size var(--dur-ui) var(--ease-out); }
+@media (hover: hover) { .circuit__link.btn:hover { background-size: 100% 1px; background-color: transparent; color: var(--c-amber); } }
+.circuit.is-on .circuit__num { color: var(--c-amber); }
+@media (min-width: 900px) {
+  .services__grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: var(--s-8); align-items: start; }
+  .services__side { position: sticky; top: calc(var(--header-h) + var(--s-6)); }
+  .circuit { grid-template-columns: 64px 34px minmax(0, 1fr); }
+}
+/* scroll story (motion only): rows arrive OFF, flip ON, the label wipes in */
+.sw-motion .rail .circuit:not(.is-on) .circuit__label { clip-path: inset(0 100% 0 0); }
+.sw-motion .rail .circuit .circuit__label { transition: clip-path 400ms var(--ease-out) 120ms; clip-path: inset(0 0 0 0); }
+
+/* ---------- drawn plates (stand-ins for photos) ---------- */
+.plate {
+  position: relative; overflow: hidden; border-radius: var(--radius);
+  background-color: var(--plate); color: var(--draw);
+  background-image: linear-gradient(color-mix(in srgb, var(--draw) 9%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--draw) 9%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+  aspect-ratio: 4 / 3;
+  border: var(--rule-w) solid color-mix(in srgb, var(--draw) 22%, transparent);
+}
+.plate__draw { position: absolute; inset: 10% 8% 18%; width: 84%; height: 72%; stroke-width: 2; }
+.plate__photo { position: absolute; inset: 0; margin: 0; }
+.plate__photo img { width: 100%; height: 100%; object-fit: cover; color: transparent; font-size: 0; filter: grayscale(.2) sepia(.12) contrast(1.06) saturate(.85); }
+.plate__photo.is-broken, .plate__photo .frame-fallback { display: none; }
+.plate__tag { position: absolute; left: var(--s-3); bottom: var(--s-3); right: var(--s-3); display: flex; align-items: center; gap: 10px; font-family: 'DM Mono', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--draw); }
+.plate__tag span { white-space: nowrap; flex: none; background: var(--c-amber); color: var(--c-deep); padding: 2px 6px; border-radius: var(--radius); font-weight: 500; }
+.plate--labels { margin-top: var(--s-6); max-width: 420px; display: none; }
+@media (min-width: 900px) { .plate--labels { display: block; aspect-ratio: 4 / 3.4; } }
+
+/* break */
+.break { padding: 0; }
+.plate--wide { aspect-ratio: auto; min-height: 420px; border: 0; border-radius: 0; display: flex; flex-direction: column; justify-content: space-between; background-size: 32px 32px; }
+.plate--wide .plate__draw { inset: auto 0 0 0; width: 100%; height: 62%; }
+.break__copy { position: relative; padding: var(--s-7) var(--gutter); max-width: var(--max-w); margin-inline: auto; width: 100%; }
+.break__line { font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: var(--fs-4); line-height: .98; letter-spacing: -0.02em; max-width: 16ch; color: var(--c-deep); text-wrap: balance; }
+.break__line em { font-style: normal; color: var(--c-signal-ink); }
+.break .plate__tag { position: static; margin-top: var(--s-4); color: var(--c-deep); }
+@media (min-width: 900px) {
+  .plate--wide { min-height: 0; aspect-ratio: 21 / 8; justify-content: center; }
+  .plate--wide .plate__draw { left: 40%; width: 58%; height: 90%; }
+  .break__copy { position: absolute; inset: 0 auto 0 0; width: 42%; max-width: none; display: flex; flex-direction: column; justify-content: center; padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter))); }
+  .break__line { font-size: var(--fs-3); max-width: 13ch; }
+}
+
+/* ---------- generator sizer (amber band) ---------- */
+.sizer__grid { display: grid; gap: var(--s-6); }
+.plate--gen { margin-top: var(--s-5); max-width: 460px; }
+.sizer__tool { background: var(--c-deep); color: var(--c-ink); border-radius: var(--radius); padding: var(--s-5); --fg: var(--c-ink); --bg: var(--c-deep); --muted: var(--c-muted-light); --rule: var(--c-rule-mid); --focus: var(--c-amber); --btn-bg: var(--c-amber); --btn-fg: var(--c-deep); }
+.loads { display: grid; gap: 2px; }
+.load { display: flex; align-items: center; gap: var(--s-3); min-height: 48px; padding: 6px var(--s-3); background: var(--c-deep-2); cursor: pointer; }
+.load input { width: 22px; height: 22px; accent-color: var(--c-amber); flex: none; margin: 0; }
+.load:has(input:checked) { box-shadow: inset 3px 0 0 var(--c-amber); }
+.gauge { margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px dashed var(--c-rule-mid); }
+.gauge__read { display: flex; align-items: baseline; gap: 10px; }
+.gauge__num { font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: var(--fs-4); line-height: 1; color: var(--c-amber); font-variant-numeric: tabular-nums; }
+.gauge__unit { font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .08em; color: var(--c-muted-light); }
+.gauge__scale { position: relative; height: 12px; margin: var(--s-4) 0 var(--s-6); background: var(--c-deep-2); border: 1px solid var(--c-rule-mid); }
+.gauge__fill { position: absolute; inset: 0 auto 0 0; width: var(--load, 0%); background: var(--c-amber); transition: width var(--dur-page) var(--ease-out); }
+.gauge__mark { position: absolute; left: var(--at); top: 100%; transform: translateX(-50%); padding-top: 6px; font-family: 'DM Mono', monospace; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--c-muted-light); }
+.gauge__mark::before { content: ""; position: absolute; left: 50%; top: -14px; height: 14px; width: 1.5px; background: var(--c-muted-light); }
+.gauge__rec { font-size: var(--fs-1); line-height: 1.4; }
+.sizer__price { margin-top: var(--s-4); font-size: var(--fs--1); color: var(--c-muted-light); font-variant-numeric: tabular-nums; }
+@media (min-width: 900px) { .sizer__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); align-items: start; } .sizer__tool { padding: var(--s-6); } }
+
+/* ---------- EV ---------- */
+.ev__grid { display: grid; gap: var(--s-6); }
+.ev__result { margin-top: var(--s-5); padding: var(--s-4); border-left: 4px solid var(--c-signal); background: var(--c-plate-paper); max-width: 52ch; }
+.ev__result[data-level="ok"] { border-left-color: var(--c-deep); }
+@media (min-width: 900px) { .ev__grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: var(--s-8); align-items: center; } }
+
+/* ---------- proof filing ---------- */
+.proof__head { display: grid; gap: var(--s-2); margin-bottom: var(--s-6); }
+.proof__sum { color: var(--muted); font-variant-numeric: tabular-nums; }
+.proof__sum .trust__num { color: var(--c-amber); }
+.filing { display: grid; gap: var(--s-5) var(--s-4); }
+.file { position: relative; background: var(--c-deep-2); border: 1px solid var(--c-rule-light); border-radius: 0 var(--radius) var(--radius) var(--radius); padding: var(--s-5); margin-top: 22px; display: flex; flex-direction: column; gap: var(--s-4); }
+.file__tab { position: absolute; left: -1px; bottom: 100%; display: flex; gap: 10px; align-items: center; background: var(--c-deep-2); border: 1px solid var(--c-rule-light); border-bottom: 0; padding: 4px 12px; font-family: 'DM Mono', monospace; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; max-width: calc(100% - 24px); }
+.file__num { color: var(--c-amber); }
+.file__svc { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file__quote p { font-size: var(--fs-0); line-height: 1.55; }
+.file__by { margin-top: auto; font-size: var(--fs--1); color: var(--muted); }
+.file__stars { color: var(--c-ink); }
+@media (min-width: 640px) { .filing { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) {
+  .proof__head { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+  .proof__head .kicker, .proof__head h2 { grid-column: 1; }
+  .proof__sum { grid-column: 2; grid-row: 2; margin-bottom: var(--s-4); }
+  .filing { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .file:nth-child(2), .file:nth-child(3), .file:nth-child(5) { grid-column: span 2; }
+  .file:nth-child(3) .file__quote p { font-family: 'Oswald', system-ui, sans-serif; font-weight: 400; font-size: var(--fs-2); line-height: 1.2; letter-spacing: -0.01em; }
+}
+
+/* ---------- area ---------- */
+.area__inner { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.area__inner .lead { margin-inline: auto; }
+.zip { width: 100%; max-width: 480px; margin-top: var(--s-5); text-align: left; }
+.zip label { display: block; font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+.zip__row { display: flex; gap: var(--s-2); }
+.zip input { flex: 1; min-width: 0; height: 52px; padding-inline: var(--s-4); font-family: 'DM Mono', monospace; font-size: 1.2rem; letter-spacing: .1em; background: #fff; color: var(--c-deep); border: 1.5px solid var(--c-deep); border-radius: var(--radius); }
+.zip input::placeholder { color: var(--c-muted-paper); letter-spacing: .02em; font-size: 1rem; }
+.zip .btn { min-height: 52px; white-space: nowrap; }
+.zip__result { margin-top: var(--s-3); min-height: 1.5em; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); align-items: center; }
+.zip[data-zip-state="yes"] .sw-zip-msg { font-weight: 700; }
+.sw-zip-go, .sw-zip-call { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; background: var(--c-deep); color: var(--c-paper); border: 0; border-radius: var(--radius); font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; text-decoration: none; }
+.area__tags { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); margin-top: var(--s-6); max-width: 720px; }
+.area__tags li { font-family: 'DM Mono', monospace; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; padding: 6px 12px; border: 1px solid var(--c-rule-paper); border-left: 4px solid var(--c-deep); background: var(--c-plate-paper); }
+
+/* ---------- pricing ledger ---------- */
+.pricing__head { margin-bottom: var(--s-6); }
+.ledger { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.ledger thead { display: none; }
+.ledger tr { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px var(--s-3); padding: var(--s-4) 0; border-bottom: 1px solid var(--rule); }
+.ledger tbody tr:first-child { border-top: 2px solid var(--fg); }
+.ledger td, .ledger th { text-align: left; padding: 0; }
+.ledger__num { display: inline-flex; align-items: center; gap: 10px; font-family: 'DM Mono', monospace; font-size: .85rem; color: var(--hi); grid-row: span 1; }
+.ledger__job { font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: var(--fs-1); }
+.ledger__price { font-family: 'DM Mono', monospace; font-size: 1rem; }
+.ledger__price::before { content: attr(data-label) " "; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
+.ledger__note { grid-column: 1 / -1; color: var(--muted); font-size: var(--fs--1); }
+.ledger__note .sample-tag { color: var(--fg); }
+.pricing__note { margin-top: var(--s-4); font-size: var(--fs--1); color: var(--muted); }
+@media (min-width: 900px) {
+  .ledger thead { display: table-header-group; }
+  .ledger tr { display: table-row; }
+  .ledger th, .ledger td { padding: var(--s-4) var(--s-4) var(--s-4) 0; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+  .ledger thead th { font-family: 'DM Mono', monospace; font-weight: 400; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); border-bottom: 2px solid var(--fg); }
+  .ledger tbody tr:first-child { border-top: 0; }
+  .ledger__num { display: table-cell; white-space: nowrap; }
+  .ledger__num .ledger__handle { vertical-align: middle; margin-right: 10px; }
+  .ledger__price { white-space: nowrap; font-size: 1.1rem; }
+  .ledger__price::before { content: none; }
+  .ledger__note { max-width: 34ch; }
+  @media (hover: hover) { .ledger tbody tr:hover { background: rgba(255,255,255,.04); } }
+}
+
+/* ---------- contact ---------- */
+.contact__grid { display: grid; gap: var(--s-7); }
+.contact__card { margin-top: var(--s-6); padding: var(--s-5); border: 1px solid var(--c-rule-light); border-left: 6px solid var(--c-amber); background: var(--c-deep-2); max-width: 400px; }
+.contact__label { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.contact__phone { display: inline-flex; align-items: center; min-height: 48px; font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: var(--fs-3); line-height: 1; text-decoration: none; color: var(--c-amber); font-variant-numeric: tabular-nums; }
+.contact__hours { color: var(--muted); font-size: var(--fs--1); }
+.contact__form { background: var(--c-paper); color: var(--c-deep); border-radius: var(--radius); padding: var(--s-5); --fg: var(--c-deep); --bg: var(--c-paper); --muted: var(--c-muted-paper); --rule: var(--c-rule-paper); --focus: var(--c-signal); --btn-bg: var(--c-deep); --btn-fg: var(--c-paper); }
+@media (min-width: 640px) { .contact__form { padding: var(--s-6); } }
+@media (min-width: 900px) { .contact__grid { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: var(--s-8); align-items: start; } }
+.form__progress { height: 6px; background: var(--c-rule-paper); margin-bottom: var(--s-5); }
+.form__progress span { display: block; height: 100%; width: calc(var(--progress, 1) * 100%); background: var(--c-amber); transition: width var(--dur-ui) var(--ease-out); }
+.lead-form fieldset { display: grid; gap: 6px; }
+.lead-form fieldset + fieldset { margin-top: var(--s-6); }
+.sw-js .lead-form fieldset + fieldset { margin-top: 0; }
+.lead-form legend { font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: var(--fs-2); line-height: 1.1; margin-bottom: var(--s-4); display: flex; gap: var(--s-3); align-items: baseline; }
+.step__num { font-family: 'DM Mono', monospace; font-weight: 500; font-size: .85rem; color: var(--c-signal-ink); }
+.lead-form label { font-weight: 700; font-size: .95rem; margin-top: var(--s-3); }
+.lead-form label:first-of-type { margin-top: 0; }
+.lead-form input, .lead-form select, .lead-form textarea { width: 100%; min-height: 50px; padding: 10px 14px; background: #fff; color: var(--c-deep); border: 1.5px solid #8A857C; border-radius: var(--radius); font-size: 1rem; }
+.lead-form textarea { min-height: 112px; resize: vertical; }
+.lead-form input::placeholder, .lead-form textarea::placeholder { color: var(--c-muted-paper); }
+.lead-form select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--c-deep) 50%), linear-gradient(135deg, var(--c-deep) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 40px; }
+.lead-form [aria-invalid="true"] { border-color: var(--c-signal); box-shadow: 0 0 0 1px var(--c-signal); }
+.field-error { color: var(--c-signal-ink); font-size: .9rem; font-weight: 700; }
+.form__nav { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+.form__nav .btn { min-height: 48px; min-width: 120px; flex: 1 1 auto; }
+.form__nav [data-back] { flex: 0 1 auto; }
+[data-form-status] { margin-top: var(--s-3); font-size: .9rem; color: var(--c-muted-paper); min-height: 1.2em; }
+.form__micro { margin-top: var(--s-3); font-size: var(--fs--1); color: var(--c-muted-paper); }
+.form__thanks { padding: var(--s-5); border-left: 6px solid var(--c-amber); background: var(--c-plate-paper); font-size: var(--fs-1); }
+.form__thanks-tag { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: var(--c-signal-ink); margin-bottom: var(--s-2); }
+
+/* ---------- footer ---------- */
+.site-footer { padding-block: var(--s-7) var(--s-6); border-top: 2px solid var(--c-amber); }
+.footer__grid { display: grid; gap: var(--s-6); }
+.footer__slot { display: grid; grid-template-columns: 44px 34px minmax(0, 1fr); gap: var(--s-3); align-items: start; }
+.footer__slot .circuit__num { font-family: 'DM Mono', monospace; font-size: .8rem; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.footer__name { font-family: 'Oswald', system-ui, sans-serif; font-weight: 600; font-size: var(--fs-2); line-height: 1.1; margin-bottom: var(--s-2); }
+.footer__line { color: var(--muted); font-size: var(--fs--1); font-variant-numeric: tabular-nums; }
+.footer__line a { display: inline-block; padding-block: 12px; margin-block: -12px; color: var(--fg); }
+.footer__line + .footer__line { margin-top: var(--s-3); }
+.footer__nav ul { display: grid; gap: 0 var(--s-5); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.footer__nav a { display: inline-flex; align-items: center; min-height: 44px; font-family: 'DM Mono', monospace; font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; }
+.footer__legal { font-size: var(--fs--1); color: var(--muted); display: grid; gap: var(--s-2); border-top: 1px solid var(--rule); padding-top: var(--s-4); }
+.credits { display: flex; flex-wrap: wrap; gap: 4px var(--s-4); }
+.credits a { color: var(--muted); }
+@media (min-width: 900px) {
+  .footer__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+  .footer__legal { grid-column: 1 / -1; }
+}
+
+/* ---------- forced colours / reduced motion / print ---------- */
+@media (forced-colors: active) {
+  .btn, .chip span, .breaker__handle, .circuit__handle, .ledger__handle { border: 2px solid CanvasText; }
+  .breaker__handle::after, .circuit__handle::after, .ledger__handle::after, .gauge__fill, .meter__bar span, .form__progress span { background: Highlight; forced-color-adjust: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gauge__fill, .meter__bar span, .form__progress span, .breaker__handle::after, .circuit__handle::after { transition: none; }
+}
+@media print {
+  .site-header, .mobile-bar, .hero::before, .plate__draw { display: none !important; }
+  body { background: #fff; color: #000; }
+  .t-deep, .t-mid, .t-accent { background: #fff; color: #000; }
+}
+
 </style>
 </head>
 <body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+
+  <!-- drawn plates: line drawings that stand in for the photos until the real ones arrive -->
+  <symbol id="d-lights" viewBox="0 0 640 260" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 232h640"/>
+    <path d="M300 232V128l120-64 120 64v104"/><path d="M286 136l134-72 134 72"/>
+    <path d="M330 232v-60h44v60M450 150h50v40h-50z"/><path d="M475 150v40M450 170h50"/>
+    <path d="M300 186h-170v46M130 186v-10h170"/>
+    <path d="M60 232c4-40-8-70-2-100M58 132c-30-6-52-30-44-56 10-30 46-34 60-20 8-26 52-30 66-4 24-6 46 16 36 40 22 14 10 46-14 46-16 18-48 12-58-4-16 8-40 6-46-2z"/>
+    <path d="M70 92c40 44 140 54 230 36" stroke-dasharray="2 0"/>
+    <path d="M90 104c60 50 150 50 210 26" opacity=".55"/>
+    <g fill="currentColor" stroke="none"><circle cx="96" cy="108" r="4"/><circle cx="128" cy="122" r="4"/><circle cx="162" cy="130" r="4"/><circle cx="198" cy="133" r="4"/><circle cx="234" cy="132" r="4"/><circle cx="268" cy="128" r="4"/></g>
+    <path d="M196 232v-26M188 206h16M236 232v-26M228 206h16M156 232v-26M148 206h16"/>
+    <path d="M596 232v-60M590 172h12l-6-10z"/>
+  </symbol>
+  <symbol id="d-generator" viewBox="0 0 400 260" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 220h400"/><path d="M40 220v-8h200v8"/>
+    <rect x="56" y="104" width="168" height="108" rx="3"/><path d="M56 128h168"/>
+    <path d="M76 150h56M76 162h56M76 174h56M76 186h56"/>
+    <rect x="160" y="148" width="44" height="40" rx="2"/><path d="M170 160h24M170 170h16"/>
+    <path d="M300 30v190M300 30h100"/>
+    <rect x="316" y="92" width="56" height="74" rx="2"/><path d="M326 108h36M326 120h36M326 132h20"/>
+    <path d="M224 196h40v-58h52"/><path d="M264 196v24" stroke-dasharray="4 6"/>
+    <circle cx="344" cy="190" r="10"/><path d="M344 166v14"/>
+  </symbol>
+  <symbol id="d-ev" viewBox="0 0 400 260" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 228h400M250 20v208"/>
+    <rect x="270" y="70" width="64" height="96" rx="8"/><circle cx="302" cy="104" r="14"/><path d="M296 104l6-8v16l6-8"/>
+    <path d="M282 140h40"/>
+    <path d="M302 166c0 40-40 34-60 20s-60-4-64 22"/>
+    <path d="M340 30h44v44h-44zM346 40h32M346 52h32M346 64h18"/>
+    <path d="M334 118h30v-44"/>
+    <path d="M10 196c10-34 30-50 70-56l60-8c22-2 40 10 52 30l10 20v32H10z"/><path d="M60 140l22-26h46l28 22"/>
+    <circle cx="56" cy="214" r="16"/><circle cx="170" cy="214" r="16"/>
+  </symbol>
+  <symbol id="d-labels" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="70" y="20" width="200" height="260" rx="4"/><rect x="86" y="36" width="168" height="228" rx="2"/>
+    <path d="M170 52v196"/>
+    <g><path d="M96 60h30M96 84h30M96 108h30M96 132h30M96 156h30M96 180h30M96 204h30M96 228h30"/><path d="M214 60h30M214 84h30M214 108h30M214 132h30M214 156h30M214 180h30M214 204h30M214 228h30"/></g>
+    <g fill="currentColor" stroke="none"><rect x="132" y="55" width="30" height="10" rx="2"/><rect x="132" y="79" width="30" height="10" rx="2"/><rect x="132" y="103" width="30" height="10" rx="2"/><rect x="132" y="127" width="30" height="10" rx="2"/><rect x="178" y="55" width="30" height="10" rx="2"/><rect x="178" y="79" width="30" height="10" rx="2"/><rect x="178" y="103" width="30" height="10" rx="2"/></g>
+    <path d="M132 151h30v10h-30zM132 175h30v10h-30zM178 127h30v10h-30zM178 151h30v10h-30z"/>
+    <path d="M300 250l70-150 14 6-70 150-16 10z"/><path d="M362 116l14 6"/>
+  </symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header" data-header>
   <div class="header__inner">
-    <a href="#top" class="header__logo" aria-label="Torque &amp; Tag Electric home">T&amp;T</a>
-    <nav class="header__nav" data-menu>
+    <a href="#top" class="header__logo" aria-label="Torque &amp; Tag Electric, back to top"><span class="logo__mark" aria-hidden="true"><span></span></span><span class="logo__word">Torque &amp; Tag</span></a>
+    <nav class="header__nav" id="site-nav" data-menu data-menu-mq="(max-width: 899px)" aria-label="Main">
       <ul class="nav__list">
         <li><a href="#services">Services</a></li>
+        <li><a href="#breaker-sorter">Tripping breaker</a></li>
         <li><a href="#proof">Reviews</a></li>
         <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#area">Service Area</a></li>
+        <li><a href="#area">Service area</a></li>
       </ul>
     </nav>
     <div class="header__cta">
-      <a href="tel:+12105550111" class="btn btn-ghost header__phone"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>(210) 555-0111</span></a>
-      <a class="btn btn-primary" href="#contact" data-service="Panels">Price it</a>
+      <a href="tel:+12105550111" class="header__phone"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>(210) 555-0111</span></a>
+      <a class="btn btn btn-primary header__quote" href="#contact" data-service="Panels">Price it</a>
+      <button class="header__burger" type="button" data-menu-btn aria-controls="site-nav" aria-expanded="false"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg><span class="sr-only">Menu</span></button>
     </div>
-    <button class="header__burger" type="button" data-menu-toggle aria-expanded="false" aria-controls="nav-list">
-      <span class="sr-only">Menu</span>
-      <svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
-    </button>
   </div>
 </header>
 
-<main id="top">
-  <!-- 1. HERO -->
-  <section id="hero" class="section t-deep hero" data-sw-signature="panel-schedule">
-    <div class="hero__mosaic">
-      <div class="circuit is-on"><span class="circuit__num">01</span><span class="circuit__handle"></span></div>
-      <div class="circuit is-on"><span class="circuit__num">02</span><span class="circuit__handle"></span></div>
-      <figure class="frame hero__tile" data-fallback="Placeholder for tool-labels"><img src="media/tool-labels.jpg" alt="Placeholder for tool-labels" width="1170" height="780" loading="lazy" decoding="async" data-photo="tool-labels" data-slot="detail-lug" loading="lazy"></figure>
-      <figure class="frame hero__tile" data-fallback="Placeholder for tool-wire-spools"><img src="media/tool-wire-spools.jpg" alt="Placeholder for tool-wire-spools" width="1170" height="780" loading="lazy" decoding="async" data-photo="tool-wire-spools" data-slot="detail-wire" loading="lazy"></figure>
-      <figure class="frame hero__tile" data-fallback="Placeholder for hero-B3"><img src="media/hero-B3.jpg" alt="Placeholder for hero-B3" width="1170" height="780" loading="lazy" decoding="async" data-photo="hero-B3" data-slot="ranch-dusk" loading="lazy"></figure>
-      <figure class="frame hero__tile" data-fallback="Placeholder for equip-generator"><img src="media/equip-generator.jpg" alt="Placeholder for equip-generator" width="1170" height="780" loading="lazy" decoding="async" data-photo="equip-generator" data-slot="generator-stone" loading="lazy"></figure>
-    </div>
-    <div class="hero__spine">
-      <p class="kicker">Torque &amp; Tag · San Antonio, Texas</p>
-      <h1 data-split="lines">San Antonio electrical work,<br>written into your panel schedule.</h1>
-      <p class="proof-line">Mon–Sat 7–6 · Sample rating 4.8 (158 reviews)</p>
-      <div class="hero__actions">
-        <a class="btn btn-primary" href="#contact" data-service="Panels">Price it</a>
-        <a class="btn btn-call btn-ghost" href="tel:+12105550111"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (210) 555-0111</span></a>
+<main id="main">
+  <!-- 1. HERO: the panel schedule itself -->
+  <section id="top" class="section t-deep hero" data-layout="panel-spine" data-sw-signature="panel-schedule" data-hook="hero-flip">
+    <div class="hero__grid">
+      <div class="hero__spine">
+        <p class="kicker">Torque &amp; Tag · San Antonio, Texas</p>
+        <h1 data-split="lines">San Antonio electrical work, written into your <em>panel schedule.</em></h1>
+        <p class="hero__lead">Panels, aluminum wiring, generators and EV chargers. Every circuit we touch leaves typed, numbered and matched to the room.</p>
+        <div class="hero__actions">
+          <a class="btn btn btn-primary" href="#contact" data-service="Panels">Price it</a>
+          <a class="btn btn-call btn-secondary" href="tel:+12105550111"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (210) 555-0111</span></a>
+        </div>
+        <p class="proof-line"><span data-open-now>Mon–Fri 7–6 · Sat 8–12</span> · Alamo Heights to Boerne · 4.8 <span class="sample-tag">Sample rating</span></p>
+      </div>
+
+      <div class="panel" role="group" aria-label="Panel schedule: the services we label">
+        <div class="panel__head">
+          <span class="panel__title">Panel schedule</span>
+          <span class="panel__main"><span class="lamp" aria-hidden="true"></span>Main · on</span>
+        </div>
+        <ol class="panel__grid">
+          
+          <li class="breaker is-on"><span class="breaker__num">01</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Panels</span></li>
+          
+          <li class="breaker is-on"><span class="breaker__num">02</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Aluminum wiring</span></li>
+          
+          <li class="breaker is-on"><span class="breaker__num">03</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Interlocks</span></li>
+          
+          <li class="breaker is-on"><span class="breaker__num">04</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Standby</span></li>
+          
+          <li class="breaker is-on"><span class="breaker__num">05</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">EV chargers</span></li>
+          
+          <li class="breaker is-on"><span class="breaker__num">06</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Repairs</span></li>
+          
+          <li class="breaker is-on"><span class="breaker__num">07</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Surge</span></li>
+          
+          <li class="breaker is-on"><span class="breaker__num">08</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Pools &amp; spas</span></li>
+          
+          <li class="breaker is-on"><span class="breaker__num">09</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Outdoor lighting</span></li>
+          
+          <li class="breaker is-spare"><span class="breaker__num">10</span><span class="breaker__handle" aria-hidden="true"></span><span class="breaker__label">Spare</span></li>
+        </ol>
+        <p class="panel__foot"><span>Typed at the van</span><span>T&amp;T · Sheet 1 of 1</span></p>
       </div>
     </div>
   </section>
 
-  <!-- 2. TRUST -->
-  <section id="trust" class="section t-paper trust">
-    <div class="container split-aside">
-      <div class="split-aside__main">
-        <h2>Open now, ready to help</h2>
-        <p class="lead">We answer the phone during business hours and text when the van is on the way. Every job gets a written scope before we start.</p>
-      </div>
-      <aside class="split-aside__side">
-        <dl class="trust__stats">
-          <div>
-            <dt>Status</dt>
-            <dd><span data-open-now></span></dd>
-          </div>
-          <div>
-            <dt>Hours</dt>
-            <dd>Mon–Fri 7–6, Sat 8–12</dd>
-          </div>
-          <div>
-            <dt>Rating</dt>
-            <dd>4.8 / 5 <span class="sample-tag">Sample review</span></dd>
-          </div>
-          <div>
-            <dt>Area</dt>
-            <dd>Alamo Heights, Helotes, Boerne, Schertz, Live Oak and Leon Valley</dd>
-          </div>
-        </dl>
-      </aside>
+  <!-- 2. OPEN NOW / TRUST LEDGER -->
+  <section id="trust" class="section tight t-paper trust" data-layout="ledger-row">
+    <div class="container">
+      <dl class="trust__row">
+        <div class="trust__cell">
+          <dt>Right now</dt>
+          <dd class="trust__big"><span data-open-now>Mon–Fri 7–6, Sat 8–12</span></dd>
+        </div>
+        <div class="trust__cell">
+          <dt>Hours</dt>
+          <dd>Mon–Fri 7 am–6 pm<br>Sat 8 am–noon</dd>
+        </div>
+        <div class="trust__cell">
+          <dt>Rating</dt>
+          <dd><span class="trust__num">4.8</span> / 5 from <span data-count="158">158</span> reviews <span class="sample-tag">Sample rating</span></dd>
+        </div>
+        <div class="trust__cell">
+          <dt>We drive to</dt>
+          <dd>San Antonio, Alamo Heights, Helotes, Boerne, Schertz, Live Oak and Leon Valley</dd>
+        </div>
+      </dl>
     </div>
   </section>
 
   <!-- 3. BREAKER SORTER -->
-  <section id="breaker-sorter" class="section t-mid tool-card">
-    <div class="container">
-      <h2>Breaker keeps tripping?</h2>
-      <p class="lead">Answer three questions and we will tell you whether it is an overload, a short or something else — and what to do next.</p>
-      <div class="tool" data-checklist data-service="Troubleshooting and repairs">
-        <fieldset>
+  <section id="breaker-sorter" class="section t-mid sorter" data-layout="tool-split" data-hook="sorter">
+    <div class="container sorter__grid">
+      <div class="sorter__intro">
+        <p class="kicker">Tool · two questions</p>
+        <h2>Breaker keeps tripping?</h2>
+        <p class="lead">Tell us when it trips and where. We will tell you what it usually means and whether to leave it off.</p>
+      </div>
+      <div class="tool sorter__tool" data-sorter>
+        <fieldset class="chips">
           <legend>When does it trip?</legend>
-          <label><input type="radio" name="trip-when" value="immediate"> Right away, every time</label>
-          <label><input type="radio" name="trip-when" value="minutes"> After a few minutes</label>
-          <label><input type="radio" name="trip-when" value="appliance"> Only when an appliance starts</label>
+          <label class="chip"><input type="radio" name="trip-when" value="immediate"><span>Right away, every time</span></label>
+          <label class="chip"><input type="radio" name="trip-when" value="minutes"><span>After a few minutes</span></label>
+          <label class="chip"><input type="radio" name="trip-when" value="appliance"><span>When one appliance starts</span></label>
         </fieldset>
-        <fieldset>
+        <fieldset class="chips">
           <legend>Which room?</legend>
-          <label><input type="radio" name="trip-room" value="kitchen"> Kitchen</label>
-          <label><input type="radio" name="trip-room" value="bedroom"> Bedroom</label>
-          <label><input type="radio" name="trip-room" value="garage"> Garage / outdoor</label>
-          <label><input type="radio" name="trip-room" value="other"> Other</label>
+          <label class="chip"><input type="radio" name="trip-room" value="kitchen"><span>Kitchen</span></label>
+          <label class="chip"><input type="radio" name="trip-room" value="bedroom"><span>Bedroom</span></label>
+          <label class="chip"><input type="radio" name="trip-room" value="garage"><span>Garage or outdoor</span></label>
+          <label class="chip"><input type="radio" name="trip-room" value="other"><span>Somewhere else</span></label>
         </fieldset>
-        <div class="tool__result" aria-live="polite" data-checklist-result></div>
+        <div class="tag-card" data-sorter-card>
+          <p class="tag-card__head"><span>Circuit tag</span><span data-sorter-code>— · —</span></p>
+          <p class="tag-card__title" data-sorter-title>Pick an answer in each row</p>
+          <p class="tag-card__text" aria-live="polite" data-sorter-text>Your likely cause shows here. If a breaker trips the moment you reset it, leave it off and call us.</p>
+        </div>
         <div class="tool__cta">
-          <a class="btn btn-primary" href="#contact" data-service="Repairs">Price this repair</a>
+          <a class="btn btn btn-primary" href="#contact" data-service="Repairs">Price this repair</a>
+          <a class="btn btn-call btn-ghost" href="tel:+12105550111"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (210) 555-0111</span></a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 4. SERVICES -->
-  <section id="services" class="section t-deep circuit-rail" data-sw-signature="panel-schedule">
-    <div class="container">
-      <h2>What we fix, install and label</h2>
-      <ul class="circuit-list">
+  <!-- 4. SERVICES: the schedule, opened -->
+  <section id="services" class="section t-deep services" data-layout="circuit-rail" data-sw-signature="panel-schedule" data-hook="rail">
+    <div class="container services__grid">
+      <div class="services__side">
+        <p class="kicker">The schedule, opened</p>
+        <h2>What we fix, install and label</h2>
+        <p class="lead">Nine circuits of work. Each one ends the same way: the breaker it lives on, typed on the door.</p>
+        <div class="services__meter" aria-hidden="true">
+          <span class="meter__label">Circuits labeled</span>
+          <span class="meter__count"><span data-rail-count>09</span> / 09</span>
+          <span class="meter__bar"><span data-rail-bar></span></span>
+        </div>
+        <div class="plate plate--labels">
+          <svg class="plate__draw" viewBox="0 0 400 300" aria-hidden="true"><use href="#d-labels"/></svg>
+          <figure class="frame plate__photo" data-fallback="Placeholder for tool-labels"><img src="media/tool-labels.jpg" alt="Placeholder for tool-labels" width="1170" height="780" loading="lazy" decoding="async" data-photo="tool-labels" data-slot="detail-lug" loading="lazy"></figure>
+          <p class="plate__tag"><span>C-01</span> Panel door, every slot typed</p>
+        </div>
+      </div>
+      <ol class="rail">
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">01</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-01</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">Panel replacement and labeling</h3>
             <p>Old and overloaded panels replaced, every lug torqued to spec and every circuit labeled.</p>
+            <a class="btn circuit__link" href="#contact" data-service="Panels">Price it</a>
           </div>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">02</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-02</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">Aluminum wiring repair</h3>
             <p>1960s and 1970s aluminum branch wiring made safe with rated connectors at each device.</p>
+            <a class="btn circuit__link" href="#contact" data-service="Aluminum wiring">Price it</a>
           </div>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">03</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-03</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">Generator interlocks</h3>
             <p>A portable generator inlet and a panel interlock, so the house runs safely in an outage.</p>
+            <a class="btn circuit__link" href="#contact" data-service="Interlocks">Price it</a>
           </div>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">04</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-04</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">Standby generators</h3>
             <p>Natural gas standby generators with an automatic transfer switch, sized to what must keep running.</p>
+            <a class="btn circuit__link" href="#contact" data-service="Standby">Price it</a>
           </div>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">05</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-05</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">EV charger installation</h3>
             <p>Level 2 chargers wired on a dedicated circuit, with the load on your panel checked first.</p>
+            <a class="btn circuit__link" href="#contact" data-service="EV chargers">Price it</a>
           </div>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">06</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-06</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">Troubleshooting and repairs</h3>
             <p>Tripping breakers, dead outlets and dimming lights traced with a meter and written down.</p>
+            <a class="btn circuit__link" href="#contact" data-service="Repairs">Price it</a>
           </div>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">07</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-07</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">Whole-home surge protection</h3>
             <p>A panel-mounted surge protector for spring storms and lightning season in the Hill Country.</p>
+            <a class="btn circuit__link" href="#contact" data-service="Surge">Price it</a>
           </div>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">08</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-08</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">Pool and hot tub wiring</h3>
             <p>Bonding, GFCI protection and disconnects for pools and hot tubs, inspected before the first swim.</p>
+            <a class="btn circuit__link" href="#contact" data-service="Pools &amp; spas">Price it</a>
           </div>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">09</span>
+        <li class="circuit is-on">
+          <span class="circuit__num">C-09</span>
           <span class="circuit__handle" aria-hidden="true"></span>
           <div class="circuit__body">
             <h3 class="circuit__label">Outdoor and landscape lighting</h3>
             <p>Low-voltage path lights and outdoor GFCI outlets for patios under the live oaks.</p>
+            <a class="btn circuit__link" href="#contact" data-service="Outdoor lighting">Price it</a>
           </div>
         </li>
         
-      </ul>
+      </ol>
     </div>
   </section>
 
-  <!-- 5. BREAK -->
-  <section class="section t-paper break" data-reveal="clip">
-    <figure class="frame break__img" data-fallback="Placeholder for home-patio-lights"><img src="media/home-patio-lights.jpg" alt="Placeholder for home-patio-lights" width="1170" height="780" loading="lazy" decoding="async" data-photo="home-patio-lights" data-slot="break" loading="lazy"></figure>
+  <!-- 5. BREAK: full-bleed drawn plate -->
+  <section class="section t-paper break" data-layout="break" aria-label="Outdoor lighting drawing">
+    <div class="plate plate--wide" data-reveal="clip">
+      <svg class="plate__draw" viewBox="0 0 640 260" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><use href="#d-lights"/></svg>
+      <figure class="frame plate__photo" data-fallback="Placeholder for home-patio-lights"><img src="media/home-patio-lights.jpg" alt="Placeholder for home-patio-lights" width="1170" height="780" loading="lazy" decoding="async" data-photo="home-patio-lights" data-slot="break" loading="lazy"></figure>
+      <div class="break__copy">
+        <p class="break__line">Lights under the live oaks. A <em>GFCI</em> by the door. Breaker 09, typed.</p>
+        <p class="plate__tag"><span>C-09</span> Outdoor and landscape lighting</p>
+      </div>
+    </div>
   </section>
 
   <!-- 6. GENERATOR SIZER -->
-  <section id="generator" class="section t-accent tool-wide">
-    <div class="container">
-      <h2>Plan for the next outage</h2>
-      <p class="lead">Check what must keep running and we will size a portable-plus-interlock or a standby system, with sample pricing from recent jobs.</p>
-      <div class="tool" data-estimator data-service="Generator interlocks">
-        <fieldset>
-          <legend>What must stay on?</legend>
-          <label><input type="checkbox" name="load" value="fridge" data-watts="700"> Refrigerator / freezer</label>
-          <label><input type="checkbox" name="load" value="furnace" data-watts="800"> Furnace blower</label>
-          <label><input type="checkbox" name="load" value="well" data-watts="1200"> Well pump</label>
-          <label><input type="checkbox" name="load" value="ac" data-watts="3500"> Central AC</label>
-          <label><input type="checkbox" name="load" value="medical" data-watts="500"> Medical device</label>
-          <label><input type="checkbox" name="load" value="lights" data-watts="300"> Lights + outlets</label>
-        </fieldset>
-        <div class="tool__output">
-          <p class="tool__total">Estimated load: <strong data-count="0">0</strong> W</p>
-          <p class="tool__rec" data-est-result></p>
-          <p class="tool__price"><span class="sample-tag">Sample pricing</span> Typical range: $900 – $1,900 (interlock) · $12,500 – $19,500 (standby)</p>
+  <section id="generator" class="section t-accent sizer" data-layout="tool-meter" data-hook="sizer">
+    <div class="container sizer__grid">
+      <div class="sizer__intro">
+        <p class="kicker">Tool · outage plan</p>
+        <h2>What has to keep running?</h2>
+        <p class="lead">Tick it. The load adds up, and we tell you whether a portable with an interlock covers it or a standby makes more sense.</p>
+        <div class="plate plate--gen">
+          <svg class="plate__draw" viewBox="0 0 400 260" aria-hidden="true"><use href="#d-generator"/></svg>
+          <figure class="frame plate__photo" data-fallback="Placeholder for equip-generator"><img src="media/equip-generator.jpg" alt="Placeholder for equip-generator" width="1170" height="780" loading="lazy" decoding="async" data-photo="equip-generator" data-slot="generator-stone" loading="lazy"></figure>
+          <p class="plate__tag"><span>C-03</span> Inlet, interlock, transfer switch</p>
         </div>
+      </div>
+      <div class="tool sizer__tool" data-sizer>
+        <fieldset class="loads">
+          <legend>Must stay on</legend>
+          <label class="load"><input type="checkbox" name="load" value="fridge" data-watts="700"><span>Refrigerator and freezer</span></label>
+          <label class="load"><input type="checkbox" name="load" value="furnace" data-watts="800"><span>Furnace blower</span></label>
+          <label class="load"><input type="checkbox" name="load" value="well" data-watts="1200"><span>Well pump</span></label>
+          <label class="load"><input type="checkbox" name="load" value="ac" data-watts="3500"><span>Central AC</span></label>
+          <label class="load"><input type="checkbox" name="load" value="medical" data-watts="500"><span>Medical device</span></label>
+          <label class="load"><input type="checkbox" name="load" value="lights" data-watts="300"><span>Lights and outlets</span></label>
+        </fieldset>
+        <div class="gauge">
+          <p class="gauge__read"><span class="gauge__num" data-sizer-watts>0</span> <span class="gauge__unit">watts</span></p>
+          <div class="gauge__scale" aria-hidden="true"><span class="gauge__fill" data-sizer-fill></span><span class="gauge__mark" style="--at:30%">Portable</span><span class="gauge__mark" style="--at:70%">Standby</span></div>
+          <p class="gauge__rec" aria-live="polite" data-sizer-rec>Tick what must stay on. Without a pick, we size it on the visit.</p>
+        </div>
+        <p class="sizer__price"><span class="sample-tag">Sample pricing</span> Interlock and inlet $900–$1,900 · Standby $12,500–$19,500</p>
         <div class="tool__cta">
-          <a class="btn btn-primary" href="#contact" data-service="Interlocks">Price an interlock</a>
-          <a class="btn btn-secondary" href="#contact" data-service="Standby">Price a standby</a>
+          <a class="btn btn btn-primary" href="#contact" data-service="Interlocks">Price an interlock</a>
+          <a class="btn btn btn-secondary" href="#contact" data-service="Standby">Price a standby</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 7. EV LOAD CHECK -->
-  <section id="ev-load" class="section t-paper split-image">
-    <div class="container split-image__grid">
-      <div class="split-image__text">
+  <section id="ev-load" class="section t-paper ev" data-layout="split-plate" data-hook="ev-check">
+    <div class="container ev__grid">
+      <div class="plate plate--ev">
+        <svg class="plate__draw" viewBox="0 0 400 260" aria-hidden="true"><use href="#d-ev"/></svg>
+        <figure class="frame plate__photo" data-fallback="Placeholder for equip-ev-charger"><img src="media/equip-ev-charger.jpg" alt="Placeholder for equip-ev-charger" width="1170" height="780" loading="lazy" decoding="async" data-photo="equip-ev-charger" data-slot="detail-ev-charger" loading="lazy"></figure>
+        <p class="plate__tag"><span>C-05</span> Dedicated charger circuit</p>
+      </div>
+      <div class="ev__text">
+        <p class="kicker">Tool · panel capacity</p>
         <h2>Can my house handle an EV charger?</h2>
-        <p class="lead">Most Level 2 chargers need a dedicated 40–50 A circuit. We check your panel capacity before we wire anything.</p>
-        <div class="tool" data-checklist data-service="EV charger installation">
-          <fieldset>
-            <legend>Service size</legend>
-            <label><input type="radio" name="svc-size" value="100"> 100 A</label>
-            <label><input type="radio" name="svc-size" value="150"> 150 A</label>
-            <label><input type="radio" name="svc-size" value="200"> 200 A</label>
+        <p class="lead">Most Level 2 chargers want their own 40–50 A circuit. Two answers tell you how tight your panel is.</p>
+        <div class="tool" data-evcheck>
+          <fieldset class="chips">
+            <legend>Main breaker size</legend>
+            <label class="chip"><input type="radio" name="svc-size" value="100"><span>100 A</span></label>
+            <label class="chip"><input type="radio" name="svc-size" value="150"><span>150 A</span></label>
+            <label class="chip"><input type="radio" name="svc-size" value="200"><span>200 A</span></label>
           </fieldset>
-          <fieldset>
-            <legend>Big loads already present?</legend>
-            <label><input type="checkbox" name="big-load" value="ac"> Central AC</label>
-            <label><input type="checkbox" name="big-load" value="dryer"> Electric dryer</label>
-            <label><input type="checkbox" name="big-load" value="range"> Electric range</label>
-            <label><input type="checkbox" name="big-load" value="pool"> Pool / spa</label>
+          <fieldset class="chips">
+            <legend>Big loads already on it</legend>
+            <label class="chip"><input type="checkbox" name="big-load" value="ac"><span>Central AC</span></label>
+            <label class="chip"><input type="checkbox" name="big-load" value="dryer"><span>Electric dryer</span></label>
+            <label class="chip"><input type="checkbox" name="big-load" value="range"><span>Electric range</span></label>
+            <label class="chip"><input type="checkbox" name="big-load" value="pool"><span>Pool or spa</span></label>
           </fieldset>
-          <div class="tool__result" aria-live="polite" data-checklist-result></div>
+          <p class="ev__result" aria-live="polite" data-ev-result>The main breaker size is printed on the biggest breaker at the top of your panel.</p>
           <div class="tool__cta">
             <a class="btn btn-primary" href="#contact" data-service="EV charger installation">Price an EV charger</a>
           </div>
         </div>
       </div>
-      <figure class="frame split-image__media" data-fallback="Placeholder for equip-ev-charger"><img src="media/equip-ev-charger.jpg" alt="Placeholder for equip-ev-charger" width="1170" height="780" loading="lazy" decoding="async" data-photo="equip-ev-charger" data-slot="detail-ev-charger" loading="lazy"></figure>
     </div>
   </section>
 
-  <!-- 8. PROOF -->
-  <section id="proof" class="section t-deep circuit-rail" data-sw-signature="panel-schedule">
+  <!-- 8. PROOF: reviews filed by circuit -->
+  <section id="proof" class="section t-deep proof" data-layout="filing" data-sw-signature="panel-schedule">
     <div class="container">
-      <h2>Sample reviews, filed by circuit</h2>
-      <ul class="circuit-list">
+      <div class="proof__head">
+        <p class="kicker">Filed by circuit</p>
+        <h2>What neighbors wrote on the door</h2>
+        <p class="proof__sum"><span class="trust__num">4.8</span> / 5 · 158 reviews <span class="sample-tag">Sample rating</span></p>
+      </div>
+      <ol class="filing">
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">01</span>
-          <span class="circuit__handle" aria-hidden="true"></span>
-          <div class="circuit__body">
-            <blockquote>
-              <p>After the February 2021 freeze we wanted a plan for the next outage. They sized a portable generator with us and installed the inlet and interlock. Fridge, furnace fan and lights all run on it.</p>
-              <footer>— Marisol V., San Antonio · Generator interlocks · 5★ <span class="sample-tag">Sample review</span></footer>
-            </blockquote>
-          </div>
+        <li class="file">
+          <p class="file__tab"><span class="file__num">R-01</span><span class="file__svc">Generator interlocks</span></p>
+          <blockquote class="file__quote"><p>“After the February 2021 freeze we wanted a plan for the next outage. They sized a portable generator with us and installed the inlet and interlock. Fridge, furnace fan and lights all run on it.”</p></blockquote>
+          <p class="file__by">Marisol V., San Antonio · <span class="file__stars">5 of 5</span> <span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">02</span>
-          <span class="circuit__handle" aria-hidden="true"></span>
-          <div class="circuit__body">
-            <blockquote>
-              <p>Our 1968 ranch has aluminum wiring. They walked every room, put rated connectors on each outlet and switch, and left a sheet listing what they found in every box.</p>
-              <footer>— Glenn H., Leon Valley · Aluminum wiring repair · 5★ <span class="sample-tag">Sample review</span></footer>
-            </blockquote>
-          </div>
+        <li class="file">
+          <p class="file__tab"><span class="file__num">R-02</span><span class="file__svc">Aluminum wiring repair</span></p>
+          <blockquote class="file__quote"><p>“Our 1968 ranch has aluminum wiring. They walked every room, put rated connectors on each outlet and switch, and left a sheet listing what they found in every box.”</p></blockquote>
+          <p class="file__by">Glenn H., Leon Valley · <span class="file__stars">5 of 5</span> <span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">03</span>
-          <span class="circuit__handle" aria-hidden="true"></span>
-          <div class="circuit__body">
-            <blockquote>
-              <p>The panel door used to say kitchen with a question mark on half the breakers. Now every circuit is typed, numbered and matches the room. Small thing, but the inspector noticed it right away.</p>
-              <footer>— Ana P., Alamo Heights · Panel replacement and labeling · 5★ <span class="sample-tag">Sample review</span></footer>
-            </blockquote>
-          </div>
+        <li class="file">
+          <p class="file__tab"><span class="file__num">R-03</span><span class="file__svc">Panel replacement and labeling</span></p>
+          <blockquote class="file__quote"><p>“The panel door used to say kitchen with a question mark on half the breakers. Now every circuit is typed, numbered and matches the room. Small thing, but the inspector noticed it right away.”</p></blockquote>
+          <p class="file__by">Ana P., Alamo Heights · <span class="file__stars">5 of 5</span> <span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">04</span>
-          <span class="circuit__handle" aria-hidden="true"></span>
-          <div class="circuit__body">
-            <blockquote>
-              <p>The breaker for the back bedroom tripped every evening. They found a space heater and a window unit sharing one old circuit and split them onto two. No more trips.</p>
-              <footer>— Derek S., Live Oak · Troubleshooting and repairs · 5★ <span class="sample-tag">Sample review</span></footer>
-            </blockquote>
-          </div>
+        <li class="file">
+          <p class="file__tab"><span class="file__num">R-04</span><span class="file__svc">Troubleshooting and repairs</span></p>
+          <blockquote class="file__quote"><p>“The breaker for the back bedroom tripped every evening. They found a space heater and a window unit sharing one old circuit and split them onto two. No more trips.”</p></blockquote>
+          <p class="file__by">Derek S., Live Oak · <span class="file__stars">5 of 5</span> <span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">05</span>
-          <span class="circuit__handle" aria-hidden="true"></span>
-          <div class="circuit__body">
-            <blockquote>
-              <p>The standby generator took about three weeks from quote to running, mostly waiting on the gas meter upgrade. Once it was in, the test run and the walkthrough were thorough.</p>
-              <footer>— Kathy W., Boerne · Standby generators · 4★ <span class="sample-tag">Sample review</span></footer>
-            </blockquote>
-          </div>
+        <li class="file">
+          <p class="file__tab"><span class="file__num">R-05</span><span class="file__svc">Standby generators</span></p>
+          <blockquote class="file__quote"><p>“The standby generator took about three weeks from quote to running, mostly waiting on the gas meter upgrade. Once it was in, the test run and the walkthrough were thorough.”</p></blockquote>
+          <p class="file__by">Kathy W., Boerne · <span class="file__stars">4 of 5</span> <span class="sample-tag">Sample review</span></p>
         </li>
         
-        <li class="circuit" data-reveal>
-          <span class="circuit__num">06</span>
-          <span class="circuit__handle" aria-hidden="true"></span>
-          <div class="circuit__body">
-            <blockquote>
-              <p>The hot tub needed a disconnect and GFCI before the city would sign off. They handled the permit, tied in everything, and passed inspection the first time.</p>
-              <footer>— Ray F., Schertz · Pool and hot tub wiring · 5★ <span class="sample-tag">Sample review</span></footer>
-            </blockquote>
-          </div>
+        <li class="file">
+          <p class="file__tab"><span class="file__num">R-06</span><span class="file__svc">Pool and hot tub wiring</span></p>
+          <blockquote class="file__quote"><p>“The hot tub needed a disconnect and GFCI before the city would sign off. They handled the permit, tied in everything, and passed inspection the first time.”</p></blockquote>
+          <p class="file__by">Ray F., Schertz · <span class="file__stars">5 of 5</span> <span class="sample-tag">Sample review</span></p>
         </li>
+        
+      </ol>
+    </div>
+  </section>
+
+  <!-- 9. AREA -->
+  <section id="area" class="section t-paper area" data-layout="stack-center" data-hook="zip">
+    <div class="container area__inner">
+      <p class="kicker">Service area</p>
+      <h2>Do you work in my neighborhood?</h2>
+      <p class="lead">Type your ZIP. The answer shows right here.</p>
+      <div class="zip" data-zip data-zip-yes="Yes, {zip} is on our route." data-zip-no="{zip} is outside our usual route. Call and we will tell you straight.">
+        <label for="zip-input">Your ZIP code</label>
+        <div class="zip__row">
+          <input id="zip-input" name="zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="5 digits">
+          <button type="button" class="btn btn-primary">Check my ZIP</button>
+        </div>
+        <p class="zip__result" data-zip-result></p>
+      </div>
+      <ul class="area__tags" aria-label="Areas we serve">
+        <li>San Antonio</li>
+        
+        <li>Alamo Heights</li>
+        
+        <li>Helotes</li>
+        
+        <li>Boerne</li>
+        
+        <li>Schertz</li>
+        
+        <li>Live Oak</li>
+        
+        <li>Leon Valley</li>
         
       </ul>
     </div>
   </section>
 
-  <!-- 9. AREA -->
-  <section id="area" class="section t-paper stack-center">
+  <!-- 10. PRICING LEDGER (circuit-numbered) -->
+  <section id="pricing" class="section t-mid pricing" data-layout="ledger" data-sw-signature="panel-schedule">
     <div class="container">
-      <h2>Do you serve my neighborhood?</h2>
-      <p class="lead">Enter your ZIP and we will confirm right away.</p>
-      <div class="zip-checker" data-zip>
-        <label class="sr-only" for="zip-input">ZIP code</label>
-        <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Your ZIP" autocomplete="postal-code" data-zip-input>
-        <button type="button" class="btn btn-primary" data-zip-btn>Check</button>
-        <div class="zip__result" aria-live="polite" data-zip-result></div>
+      <div class="pricing__head">
+        <p class="kicker">Sample pricing</p>
+        <h2>What jobs like yours ran</h2>
+        <p class="lead">Ranges from recent San Antonio jobs. Your number comes after we see the panel.</p>
       </div>
-      <p class="area__list">We work in Alamo Heights, Helotes, Boerne, Schertz, Live Oak and Leon Valley and nearby ZIP codes: 78201,78205,78209,78210,78212,78213,78216,78217,78230,78232,78023,78006,78154,78233,78238.</p>
-    </div>
-  </section>
-
-  <!-- 10. PRICING -->
-  <section id="pricing" class="section t-mid ledger-table">
-    <div class="container">
-      <h2>Sample pricing</h2>
-      <p class="lead">Ranges from recent jobs in San Antonio. Your number comes after we see the site.</p>
-      <table class="price-table">
+      <table class="ledger">
+        <caption class="sr-only">Sample price ranges by job</caption>
         <thead>
-          <tr><th scope="col">Job</th><th scope="col">From</th><th scope="col">To</th><th scope="col">Note</th></tr>
+          <tr><th scope="col">Circuit</th><th scope="col">Job</th><th scope="col">From</th><th scope="col">To</th><th scope="col">What it covers</th></tr>
         </thead>
         <tbody>
           
           <tr>
-            <td>Panel replacement <span class="sample-tag">Sample pricing</span></td>
-            <td>$2,600</td>
-            <td>$5,600</td>
-            <td>100-200 amp, labeled schedule included</td>
+            <td class="ledger__num" data-label="Circuit"><span class="ledger__handle" aria-hidden="true"></span>C-01</td>
+            <th scope="row" class="ledger__job">Panel replacement</th>
+            <td class="ledger__price" data-label="From">$2,600</td>
+            <td class="ledger__price" data-label="To">$5,600</td>
+            <td class="ledger__note" data-label="Covers">100-200 amp, labeled schedule included <span class="sample-tag">Sample pricing</span></td>
           </tr>
           
           <tr>
-            <td>Generator interlock and inlet <span class="sample-tag">Sample pricing</span></td>
-            <td>$900</td>
-            <td>$1,900</td>
-            <td>inlet, interlock and permit</td>
+            <td class="ledger__num" data-label="Circuit"><span class="ledger__handle" aria-hidden="true"></span>C-02</td>
+            <th scope="row" class="ledger__job">Generator interlock and inlet</th>
+            <td class="ledger__price" data-label="From">$900</td>
+            <td class="ledger__price" data-label="To">$1,900</td>
+            <td class="ledger__note" data-label="Covers">inlet, interlock and permit <span class="sample-tag">Sample pricing</span></td>
           </tr>
           
           <tr>
-            <td>Standby generator <span class="sample-tag">Sample pricing</span></td>
-            <td>$12,500</td>
-            <td>$19,500</td>
-            <td>installed with automatic transfer switch</td>
+            <td class="ledger__num" data-label="Circuit"><span class="ledger__handle" aria-hidden="true"></span>C-03</td>
+            <th scope="row" class="ledger__job">Standby generator</th>
+            <td class="ledger__price" data-label="From">$12,500</td>
+            <td class="ledger__price" data-label="To">$19,500</td>
+            <td class="ledger__note" data-label="Covers">installed with automatic transfer switch <span class="sample-tag">Sample pricing</span></td>
           </tr>
           
           <tr>
-            <td>EV charger installation <span class="sample-tag">Sample pricing</span></td>
-            <td>$850</td>
-            <td>$2,400</td>
-            <td>Level 2, depends on distance to the panel</td>
+            <td class="ledger__num" data-label="Circuit"><span class="ledger__handle" aria-hidden="true"></span>C-04</td>
+            <th scope="row" class="ledger__job">EV charger installation</th>
+            <td class="ledger__price" data-label="From">$850</td>
+            <td class="ledger__price" data-label="To">$2,400</td>
+            <td class="ledger__note" data-label="Covers">Level 2, depends on distance to the panel <span class="sample-tag">Sample pricing</span></td>
           </tr>
           
           <tr>
-            <td>Whole-home surge protector <span class="sample-tag">Sample pricing</span></td>
-            <td>$350</td>
-            <td>$750</td>
-            <td>mounted at the main panel</td>
+            <td class="ledger__num" data-label="Circuit"><span class="ledger__handle" aria-hidden="true"></span>C-05</td>
+            <th scope="row" class="ledger__job">Whole-home surge protector</th>
+            <td class="ledger__price" data-label="From">$350</td>
+            <td class="ledger__price" data-label="To">$750</td>
+            <td class="ledger__note" data-label="Covers">mounted at the main panel <span class="sample-tag">Sample pricing</span></td>
           </tr>
           
         </tbody>
       </table>
-      <p class="sample-note"><span class="sample-tag">Sample pricing</span> All figures are illustrative.</p>
+      <p class="pricing__note"><span class="sample-tag">Sample pricing</span> Illustrative ranges. Permits and site conditions move the number; we write it down before we start.</p>
     </div>
   </section>
 
   <!-- 11. CONTACT -->
-  <section id="contact" class="section t-deep form-center">
-    <div class="container">
-      <h2>Get a number for your job</h2>
-      <p class="lead">Tell us what is going on and when works. We will call back to set up a visit.</p>
-      <form data-lead class="lead-form" novalidate>
-        <div class="form__step" data-step="1">
-          <fieldset>
-            <legend>What do you need?</legend>
+  <section id="contact" class="section t-deep contact" data-layout="form-split">
+    <div class="container contact__grid">
+      <div class="contact__side">
+        <p class="kicker">Work order</p>
+        <h2>Get a number for your job</h2>
+        <p class="lead">Four short steps. We call back to set up a visit and write the scope down before any work starts.</p>
+        <div class="contact__card">
+          <p class="contact__label">Rather talk?</p>
+          <a class="contact__phone" href="tel:+12105550111">(210) 555-0111</a>
+          <p class="contact__hours"><span data-open-now>Mon–Fri 7–6, Sat 8–12</span></p>
+        </div>
+      </div>
+      <div class="contact__form">
+        <form class="lead-form" data-lead novalidate data-thanks="Thanks, {name}. In your version this goes straight to your phone and inbox.">
+          <div class="form__progress" data-form-progress aria-label="Form progress"><span></span></div>
+          <fieldset data-step>
+            <legend><span class="step__num">01</span> What do you need?</legend>
             <label for="lead-service">Service</label>
-            <select id="lead-service" name="service" required data-prefill>
-              <option value="">Choose…</option>
+            <select id="lead-service" name="service" required>
+              <option value="">Choose a service</option>
               
               <option value="Panel replacement and labeling">Panel replacement and labeling</option>
               
@@ -1141,100 +1321,82 @@ html.lenis, html.lenis body { height: auto; }
               
             </select>
           </fieldset>
-          <button type="button" class="btn btn-primary" data-next>Next</button>
-        </div>
-        <div class="form__step" data-step="2" hidden>
-          <fieldset>
-            <legend>Job details</legend>
-            <label for="lead-details">Describe the problem or project</label>
-            <textarea id="lead-details" name="details" rows="3" required></textarea>
+          <fieldset data-step>
+            <legend><span class="step__num">02</span> Job details</legend>
+            <label for="lead-details">What is going on?</label>
+            <textarea id="lead-details" name="details" rows="4" required placeholder="Kitchen breaker trips when the microwave runs"></textarea>
+            <label for="lead-zip">ZIP code</label>
+            <input id="lead-zip" name="zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code">
           </fieldset>
-          <div class="form__nav">
-            <button type="button" class="btn btn-ghost" data-prev>Back</button>
-            <button type="button" class="btn btn-primary" data-next>Next</button>
-          </div>
-        </div>
-        <div class="form__step" data-step="3" hidden>
-          <fieldset>
-            <legend>When works?</legend>
+          <fieldset data-step>
+            <legend><span class="step__num">03</span> When works?</legend>
             <label for="lead-when">Preferred time</label>
             <select id="lead-when" name="when" required>
-              <option value="">Choose…</option>
-              <option value="morning">Morning (7–12)</option>
-              <option value="afternoon">Afternoon (12–6)</option>
-              <option value="flexible">Flexible</option>
+              <option value="">Choose a time</option>
+              <option value="morning">Weekday morning (7–12)</option>
+              <option value="afternoon">Weekday afternoon (12–6)</option>
+              <option value="saturday">Saturday morning</option>
+              <option value="flexible">Any time</option>
             </select>
           </fieldset>
-          <div class="form__nav">
-            <button type="button" class="btn btn-ghost" data-prev>Back</button>
-            <button type="button" class="btn btn-primary" data-next>Next</button>
-          </div>
-        </div>
-        <div class="form__step" data-step="4" hidden>
-          <fieldset>
-            <legend>Your contact</legend>
+          <fieldset data-step>
+            <legend><span class="step__num">04</span> How do we reach you?</legend>
             <label for="lead-name">Name</label>
             <input id="lead-name" name="name" type="text" required autocomplete="name">
             <label for="lead-phone">Phone</label>
             <input id="lead-phone" name="phone" type="tel" required autocomplete="tel">
             <label for="lead-email">Email (optional)</label>
             <input id="lead-email" name="email" type="email" autocomplete="email">
-            <label for="lead-zip">ZIP</label>
-            <input id="lead-zip" name="zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" data-zip-prefill>
-            <input type="hidden" name="website2" tabindex="-1" autocomplete="off">
           </fieldset>
-          <div class="form__nav">
-            <button type="button" class="btn btn-ghost" data-prev>Back</button>
-            <button type="submit" class="btn btn-primary">Send request</button>
+          <div class="hp" aria-hidden="true"><label>Website <input name="website2" tabindex="-1" autocomplete="off"></label></div>
+          <div class="form__nav" data-form-nav>
+            <button type="button" class="btn btn-secondary" data-back data-js-only>Back</button>
+            <button type="button" class="btn btn-primary" data-next data-js-only>Next step</button>
+            <button type="submit" class="btn btn-primary" data-submit>Send request</button>
           </div>
-        </div>
-        <div class="form__thanks" data-thanks hidden>
+          <p class="form__micro">We call you back to set up a visit. This demo sends nothing.</p>
+        </form>
+        <div class="form__thanks" data-thanks-box hidden>
+          <p class="form__thanks-tag">Work order received</p>
           <p>Thanks, {name}. In your version this goes straight to your phone and inbox.</p>
         </div>
-      </form>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="site-footer t-mid" data-sw-signature="panel-schedule">
-  <div class="container footer__rail">
-    <div class="circuit is-off">
-      <span class="circuit__num">99</span>
-      <span class="circuit__handle" aria-hidden="true"></span>
-      <div class="circuit__body">
-        <p class="footer__disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
-        <p class="footer__license">Licence # SAMPLE-TECL-41207 <span class="sample-tag">Sample label</span></p>
+  <div class="container footer__grid">
+    <div class="footer__slot">
+      <span class="circuit__num">Main</span>
+      <span class="circuit__handle is-off" aria-hidden="true"></span>
+      <div>
+        <p class="footer__name">Torque &amp; Tag Electric</p>
+        <p class="footer__line">San Antonio, TX · <a href="tel:+12105550111">(210) 555-0111</a> · <a href="mailto:hello@torque-and-tag-electric.example">hello@torque-and-tag-electric.example</a></p>
+        <p class="footer__line">Licence SAMPLE-TECL-41207 <span class="sample-tag">Sample label</span></p>
       </div>
     </div>
-    <div class="footer__credits">
-      <ul class="credits">
-        <li>Photo by Pexels Creator</li>
-        <li>Photo by Pexels Creator</li>
-        <li>Photo by Pexels Creator</li>
-        <li>Photo by Pexels Creator</li>
-        <li>Photo by Pexels Creator</li>
-        <li>Photo by Pexels Creator</li>
+    <nav class="footer__nav" aria-label="Footer">
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#generator">Generator sizing</a></li>
+        <li><a href="#ev-load">EV chargers</a></li>
+        <li><a href="#contact">Get a number</a></li>
       </ul>
-      <p>&copy; 2026 Torque &amp; Tag Electric. All rights reserved.</p>
+    </nav>
+    <div class="footer__legal">
+      <p>Sample website by Site Sledge. Business details are illustrative.</p>
+      <ul class="credits"></ul>
+      <p>© 2026 Torque &amp; Tag Electric</p>
     </div>
   </div>
 </footer>
 
 <div class="mobile-bar" data-mobilebar>
   <a class="btn btn-call btn-primary mobile-bar__call" href="tel:+12105550111"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (210) 555-0111</span></a>
-  <a class="btn btn-secondary mobile-bar__quote" href="#contact" data-service="Panels">Price it</a>
+  <a class="btn btn btn-secondary mobile-bar__quote" href="#contact" data-service="Panels">Price it</a>
 </div>
-
-<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
-  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
-</svg>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Torque & Tag Electric","short":"Torque & Tag","phone":"(210) 555-0111","phoneE164":"+12105550111","sms":true,"email":"hello@torque-and-tag-electric.example","city":"San Antonio","state":"TX","timezone":"America/Chicago","areas":["Alamo Heights","Helotes","Boerne","Schertz","Live Oak","Leon Valley"],"zips":["78201","78205","78209","78210","78212","78213","78216","78217","78230","78232","78023","78006","78154","78233","78238"],"hours":{"mon":["07:00","18:00"],"tue":["07:00","18:00"],"wed":["07:00","18:00"],"thu":["07:00","18:00"],"fri":["07:00","18:00"],"sat":["08:00","12:00"],"sun":null},"emergency":true},"services":[{"name":"Panel replacement and labeling","short":"Panels"},{"name":"Aluminum wiring repair","short":"Aluminum wiring"},{"name":"Generator interlocks","short":"Interlocks"},{"name":"Standby generators","short":"Standby"},{"name":"EV charger installation","short":"EV chargers"},{"name":"Troubleshooting and repairs","short":"Repairs"},{"name":"Whole-home surge protection","short":"Surge"},{"name":"Pool and hot tub wiring","short":"Pools & spas"},{"name":"Outdoor and landscape lighting","short":"Outdoor lighting"}],"proof":{"label":"Sample","prices":[{"item":"Panel replacement","from":"$2,600","to":"$5,600","note":"100-200 amp, labeled schedule included"},{"item":"Generator interlock and inlet","from":"$900","to":"$1,900","note":"inlet, interlock and permit"},{"item":"Standby generator","from":"$12,500","to":"$19,500","note":"installed with automatic transfer switch"},{"item":"EV charger installation","from":"$850","to":"$2,400","note":"Level 2, depends on distance to the panel"},{"item":"Whole-home surge protector","from":"$350","to":"$750","note":"mounted at the main panel"}]},"hours":{"mon":["07:00","18:00"],"tue":["07:00","18:00"],"wed":["07:00","18:00"],"thu":["07:00","18:00"],"fri":["07:00","18:00"],"sat":["08:00","12:00"],"sun":null},"timezone":"America/Chicago","zips":["78201","78205","78209","78210","78212","78213","78216","78217","78230","78232","78023","78006","78154","78233","78238"],"areas":["Alamo Heights","Helotes","Boerne","Schertz","Live Oak","Leon Valley"],"phone":"(210) 555-0111","phoneE164":"+12105550111"}</script>
-<script defer src="vendor/gsap.min.js"></script>
-<script defer src="vendor/ScrollTrigger.min.js"></script>
-<script defer src="vendor/lenis.min.js"></script>
 <script defer src="app.js"></script>
 </body>
 </html>

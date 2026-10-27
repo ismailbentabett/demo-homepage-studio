@@ -447,45 +447,6 @@ SW.mod('mobilebar', function (SW) {
 });
 
 ;
-/* kit: lenis */
-/* lenis: smooth scrolling when <html data-smooth> is set, window.Lenis is loaded and motion is allowed.
-   lerp .1, wheelMultiplier 1, driven by the GSAP ticker (and synced to ScrollTrigger) when GSAP is loaded.
-   Sets SW.lenis. Same-page anchor links scroll through Lenis and focus their target. */
-SW.mod('lenis', function (SW) {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-smooth') || SW.reduced || typeof window.Lenis !== 'function') return;
-  var lenis = new window.Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    // never hijack scrolling inside an open dialog or an element that scrolls itself
-    prevent: function (node) { return !!(node && node.closest && node.closest('[data-lenis-prevent], dialog[open]')); },
-  });
-  SW.lenis = lenis;
-
-  if (window.gsap && window.gsap.ticker) {
-    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
-    window.gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-    window.gsap.ticker.lagSmoothing(0);
-  } else {
-    var raf = function (time) { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var hash = a.getAttribute('href');
-    if (hash.length < 2) return;
-    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) return;
-    e.preventDefault();
-    SW.scrollTo(target);
-    if (history.pushState) history.pushState(null, '', hash);
-  });
-});
-
-;
 /* kit: split */
 /* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
    Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
@@ -614,56 +575,6 @@ SW.mod('counters', function (SW) {
 });
 
 ;
-/* kit: video */
-/* video: <video data-video data-src="media/x.mp4" poster muted loop playsinline preload="none"> inside a figure
-   with a <button data-vid-btn aria-pressed="false">Pause background video</button> (the [[video]] macro writes both).
-   Loads data-src when it comes near the screen, plays muted, pauses off-screen and in a hidden tab.
-   The button keeps its label; aria-pressed="true" means paused. The figure gets data-state="playing|paused".
-   Under reduced motion nothing autoplays (the poster shows, the button starts pressed; a click plays). */
-SW.mod('video', function (SW) {
-  SW.$$('video[data-video]').forEach(function (v) {
-    var fig = v.closest('figure') || v.parentElement;
-    var btn = fig ? SW.$('[data-vid-btn]', fig) : null;
-    v.muted = true;
-    v.setAttribute('muted', '');
-    v.playsInline = true;
-    var userPaused = SW.reduced;
-    var near = false;
-
-    function load() {
-      if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; }
-    }
-    function play() {
-      load();
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { reflect(); });
-    }
-    function reflect() {
-      var playing = !v.paused && !v.ended;
-      if (btn) btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-      if (fig) fig.setAttribute('data-state', playing ? 'playing' : 'paused');
-    }
-    function sync() {
-      if (near && !userPaused && !document.hidden) play();
-      else if (!v.paused) v.pause();
-    }
-    v.addEventListener('play', reflect);
-    v.addEventListener('playing', reflect);
-    v.addEventListener('pause', reflect);
-    if (btn) {
-      btn.type = 'button';
-      btn.addEventListener('click', function () {
-        if (v.paused) { userPaused = false; play(); } else { userPaused = true; v.pause(); }
-        v.toggleAttribute('data-user-paused', userPaused);
-      });
-    }
-    SW.inView(v, function (inside) { near = inside; sync(); }, { once: false, rootMargin: '150px' });
-    document.addEventListener('visibilitychange', sync);
-    reflect();
-  });
-});
-
-;
 /* kit: zip */
 /* zip: "Do you serve my area?" checker against facts biz.zips.
    <form data-zip>
@@ -738,6 +649,33 @@ SW.mod('zip', function (SW) {
     }
     input.addEventListener('input', function () { input.removeAttribute('aria-invalid'); });
   });
+});
+
+;
+/* kit: prefill */
+/* prefill: any link or button with data-service="Leak repair" (outside the lead form) fills the form's
+   "service" field, scrolls to #contact and focuses that field. The [[quote]] macro writes these links
+   (href="#contact" so they still work without JS). The value can be a service name or its short name. */
+SW.mod('prefill', function (SW) {
+  // capture phase: runs before the smooth-scroll anchor handler
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var t = e.target.closest ? e.target.closest('[data-service]') : null;
+    if (!t || t.closest('form[data-lead]')) return;
+    var form = SW.$('form[data-lead]');
+    if (!form) return; // plain anchor behaviour
+    e.preventDefault();
+    var want = (t.getAttribute('data-service') || '').trim().toLowerCase();
+    var services = SW.fact('services') || [];
+    var hit = services.find(function (s) {
+      return String(s.name || '').toLowerCase() === want || String(s.short || '').toLowerCase() === want;
+    });
+    var name = hit ? hit.name : t.getAttribute('data-service');
+    SW.prefillForm(name ? { service: name } : {}, { focus: 'service' });
+    if (t.getAttribute('href') && t.getAttribute('href').charAt(0) === '#') {
+      try { history.pushState(null, '', t.getAttribute('href')); } catch (err) { /* file:// */ }
+    }
+  }, true);
 });
 
 ;
@@ -975,57 +913,6 @@ SW.mod('form', function (SW) {
 });
 
 ;
-/* kit: faq */
-/* faq: <div data-accordion> with <details><summary>Question</summary><div>Answer</div></details> items.
-   Native details/summary does the keyboard and ARIA work (works without JS); this adds a height animation
-   on the answer (the first element after <summary>). data-accordion="single" keeps only one open.
-   The <details> gets .is-opening / .is-closing while it moves. Under reduced motion the native toggle is left alone. */
-SW.mod('faq', function (SW) {
-  SW.$$('[data-accordion]').forEach(function (group) {
-    var single = group.getAttribute('data-accordion') === 'single';
-    var items = SW.$$('details', group);
-
-    function body(d) { return d.querySelector(':scope > summary ~ *'); }
-    function animate(d, open) {
-      var el = body(d);
-      if (d._swAnim) { d._swAnim.cancel(); d._swAnim = null; }
-      if (SW.reduced || !el || !el.animate) { d.open = open; return; }
-      if (open) d.open = true;
-      var h = el.scrollHeight;
-      d.classList.toggle('is-opening', open);
-      d.classList.toggle('is-closing', !open);
-      el.style.overflow = 'hidden';
-      var anim = el.animate(
-        { height: open ? ['0px', h + 'px'] : [h + 'px', '0px'], opacity: open ? [0, 1] : [1, 0] },
-        { duration: open ? 280 : 200, easing: 'cubic-bezier(.23,1,.32,1)' }
-      );
-      d._swAnim = anim;
-      anim.onfinish = function () {
-        d._swAnim = null;
-        if (!open) d.open = false;
-        el.style.overflow = '';
-        d.classList.remove('is-opening', 'is-closing');
-      };
-    }
-
-    items.forEach(function (d) {
-      var summary = d.querySelector('summary');
-      if (!summary) return;
-      summary.addEventListener('click', function (e) {
-        if (SW.reduced) return; // native toggle
-        e.preventDefault();
-        var opening = !d.open || d.classList.contains('is-closing');
-        if (opening && single) items.forEach(function (o) { if (o !== d && o.open) animate(o, false); });
-        animate(d, opening);
-      });
-      d.addEventListener('toggle', function () {
-        if (single && d.open) items.forEach(function (o) { if (o !== d && o.open && !o._swAnim) o.open = false; });
-      });
-    });
-  });
-});
-
-;
 /* kit: opennow */
 /* opennow: <p data-open-now>Mon to Fri 7 am to 6 pm</p> becomes "Open now · until 6 pm" / "Closed · opens 7 am" /
    "Closed · opens Mon 7 am", worked out in the business time zone (facts biz.timezone) from facts biz.hours:
@@ -1118,212 +1005,6 @@ SW.mod('opennow', function (SW) {
 });
 
 ;
-/* kit: popup */
-/* popup: <dialog data-popup id="offer" data-popup-delay="12000" aria-labelledby="offer-title"> ... <button data-popup-close>No thanks</button></dialog>
-   Shown at most once per browser session (sessionStorage "sw-popup-<id>"), never on load: only after
-   max(8 s, data-popup-delay) and then on exit intent (mouse leaves the top of the window) or when the visitor
-   has scrolled 60% of the page. Not while the menu or another dialog is open, a field has focus, or the tab is hidden.
-   [data-popup-close], Esc, a click on the backdrop or on any "#..." link inside closes it; Tab stays inside;
-   focus returns to where it was. data-popup-scroll="0.6" changes the scroll trigger. */
-SW.mod('popup', function (SW) {
-  SW.$$('dialog[data-popup]').forEach(function (dlg, n) {
-    if (typeof dlg.showModal !== 'function') return;
-    var key = 'sw-popup-' + (dlg.id || n);
-    if (SW.store.get(key)) return;
-    var delay = Math.max(8000, parseInt(dlg.getAttribute('data-popup-delay'), 10) || 0);
-    var depth = parseFloat(dlg.getAttribute('data-popup-scroll')) || 0.6;
-    var armed = false, done = false, back = null, release = null;
-    dlg.setAttribute('data-lenis-prevent', '');
-
-    function canPop() {
-      if (done || !armed || document.hidden) return false;
-      if (document.documentElement.classList.contains('sw-menu-open')) return false;
-      if (SW.$('dialog[open]')) return false;
-      var a = document.activeElement;
-      if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return false;
-      return true;
-    }
-    function open() {
-      if (!canPop()) return;
-      done = true;
-      SW.store.set(key, '1');
-      back = document.activeElement;
-      dlg.showModal();
-      dlg.classList.add('is-open');
-      SW.lockScroll(true);
-      release = SW.trapFocus(dlg);
-      var first = SW.$('[data-popup-first]', dlg) || SW.focusables(dlg)[0];
-      SW.focusEl(first || dlg);
-      cleanup();
-    }
-    function close() { if (dlg.open) dlg.close(); }
-    dlg.addEventListener('close', function () {
-      dlg.classList.remove('is-open');
-      SW.lockScroll(false);
-      if (release) { release(); release = null; }
-      if (back && back.focus && document.contains(back)) back.focus();
-    });
-    dlg.addEventListener('click', function (e) {
-      var t = e.target;
-      if (t.closest('[data-popup-close]')) { close(); return; }
-      var link = t.closest('a[href^="#"]');
-      if (link) { close(); return; } // let the anchor scroll after closing
-      if (t === dlg) {
-        var r = dlg.getBoundingClientRect();
-        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) close();
-      }
-    });
-
-    function onLeave(e) { if (e.clientY <= 0 && !e.relatedTarget && SW.finePointer) open(); }
-    function onScroll() {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      if (max > 0 && window.scrollY / max >= depth) open();
-    }
-    function cleanup() {
-      document.removeEventListener('mouseout', onLeave);
-      window.removeEventListener('scroll', onScroll);
-    }
-    setTimeout(function () {
-      armed = true;
-      document.addEventListener('mouseout', onLeave);
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-    }, delay);
-    // test/demo hook: SW.popup.open('offer') ignores the wait, not the other guards
-    SW.popup = SW.popup || { open: function (id) { var d = id ? document.getElementById(id) : SW.$('dialog[data-popup]'); if (d && d._swOpen) d._swOpen(); } };
-    dlg._swOpen = function () { armed = true; open(); };
-  });
-});
-
-;
-/* kit: checklist */
-/* checklist: a self-check list ("Signs you need a new roof").
-   <div data-checklist data-checklist-results="0:Tick what you see.|1:One sign: worth a free look.|3:{n} of {total}: time to call.">
-     <label><input type="checkbox"> Shingles curling</label> ...
-     <p data-checklist-result></p>   (aria-live; created when missing)
-   </div>
-   The result line uses the highest threshold that n reaches. Sets data-checked="n" and --checked / --total on the box. */
-SW.mod('checklist', function (SW) {
-  SW.$$('[data-checklist]').forEach(function (box) {
-    var boxes = SW.$$('input[type="checkbox"]', box);
-    if (!boxes.length) return;
-    var out = SW.$('[data-checklist-result]', box);
-    if (!out) { out = document.createElement('p'); out.setAttribute('data-checklist-result', ''); box.appendChild(out); }
-    out.setAttribute('aria-live', 'polite');
-    var rules = (box.getAttribute('data-checklist-results') || '0:{n} of {total} checked.')
-      .split('|').map(function (r) {
-        var i = r.indexOf(':');
-        return { min: parseInt(r.slice(0, i), 10) || 0, text: r.slice(i + 1).trim() };
-      }).sort(function (a, b) { return a.min - b.min; });
-    function update() {
-      var n = boxes.filter(function (b) { return b.checked; }).length;
-      var rule = rules.filter(function (r) { return n >= r.min; }).pop() || rules[0];
-      box.setAttribute('data-checked', String(n));
-      box.style.setProperty('--checked', n);
-      box.style.setProperty('--total', boxes.length);
-      box.style.setProperty('--checked-pct', (n / boxes.length * 100).toFixed(1) + '%');
-      out.textContent = rule.text.replace(/\{n\}/g, n).replace(/\{total\}/g, boxes.length);
-      boxes.forEach(function (b) { var l = b.closest('label'); if (l) l.classList.toggle('is-checked', b.checked); });
-    }
-    boxes.forEach(function (b) { b.addEventListener('change', update); });
-    update();
-  });
-});
-
-;
-/* kit: estimator */
-/* estimator: shows the sample price ranges from facts proof.prices. It never does math on dollars.
-   <div data-estimator>
-     <label for="est-item">Job</label> <select id="est-item" data-est-item></select>   (filled from the prices when empty)
-     <label for="est-size">Size</label> <input id="est-size" type="range" min="0" max="2" value="1" data-est-size>   (optional)
-     <div data-est-sketch></div>      (optional; gets data-item / data-level / --est for a drawing)
-     <p data-est-out></p>             (aria-live; created when missing)
-     <button data-est-print>Print this price</button>   (optional)
-   </div>
-   The range only sets a level (low / mid / high) and --est 0..1 for the sketch; the shown range stays the facts' from-to.
-   Output: "Leak repair: $300 to $950", the note, and a .sample-tag "Sample price". */
-SW.mod('estimator', function (SW) {
-  var LEVELS = ['low', 'mid', 'high'];
-  SW.$$('[data-estimator]').forEach(function (box) {
-    var prices = SW.fact('proof.prices', 'prices') || [];
-    var sel = SW.$('[data-est-item]', box);
-    var size = SW.$('[data-est-size]', box);
-    var sketch = SW.$('[data-est-sketch]', box);
-    var out = SW.$('[data-est-out]', box);
-    var printBtn = SW.$('[data-est-print]', box);
-    if (!sel || !prices.length) { SW.warn('estimator: needs [data-est-item] and proof.prices', box); return; }
-    if (!out) { out = document.createElement('p'); out.setAttribute('data-est-out', ''); box.appendChild(out); }
-    out.setAttribute('aria-live', 'polite');
-    if (!sel.options.length) {
-      prices.forEach(function (p, i) {
-        var o = document.createElement('option');
-        o.value = String(i);
-        o.textContent = p.item;
-        sel.appendChild(o);
-      });
-    }
-    function money(v) {
-      if (typeof v === 'number') return '$' + v.toLocaleString('en-US');
-      return String(v);
-    }
-    function current() {
-      var v = sel.value;
-      var byIndex = /^\d+$/.test(v) ? prices[parseInt(v, 10)] : null;
-      return byIndex || prices.find(function (p) { return p.item.toLowerCase() === String(sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : v).toLowerCase(); }) || prices[0];
-    }
-    function update() {
-      var p = current();
-      var level = 1, k = 0.5;
-      if (size) {
-        var min = parseFloat(size.min) || 0, max = parseFloat(size.max) || 100, val = parseFloat(size.value);
-        k = max > min ? (val - min) / (max - min) : 0.5;
-        level = k < 1 / 3 ? 0 : k < 2 / 3 ? 1 : 2;
-        size.setAttribute('aria-valuetext', LEVELS[level] === 'low' ? 'Small job' : LEVELS[level] === 'mid' ? 'Typical job' : 'Large job');
-      }
-      box.style.setProperty('--est', k.toFixed(3));
-      box.setAttribute('data-level', LEVELS[level]);
-      if (sketch) {
-        sketch.setAttribute('data-item', p.item);
-        sketch.setAttribute('data-level', LEVELS[level]);
-        sketch.style.setProperty('--est', k.toFixed(3));
-      }
-      out.textContent = '';
-      var line = document.createElement('span');
-      line.className = 'sw-est-range';
-      line.textContent = p.item + ': ' + money(p.from) + ' to ' + money(p.to) + (p.unit ? ' ' + p.unit : '');
-      out.appendChild(line);
-      if (p.note) {
-        var note = document.createElement('span');
-        note.className = 'sw-est-note';
-        note.textContent = ' (' + p.note + ')';
-        out.appendChild(note);
-      }
-      out.appendChild(document.createTextNode(' '));
-      var tag = document.createElement('span');
-      tag.className = 'sample-tag';
-      tag.textContent = 'Sample price';
-      out.appendChild(tag);
-    }
-    sel.addEventListener('change', update);
-    if (size) size.addEventListener('input', update);
-    if (printBtn) {
-      printBtn.type = 'button';
-      printBtn.addEventListener('click', function () {
-        document.documentElement.classList.add('sw-print-est');
-        box.classList.add('is-printing');
-        window.print();
-      });
-      window.addEventListener('afterprint', function () {
-        document.documentElement.classList.remove('sw-print-est');
-        box.classList.remove('is-printing');
-      });
-    }
-    box.setAttribute('data-estimator-ready', '');
-    update();
-  });
-});
-
-;
 /* kit: media-fallback */
 /* media-fallback: always on. The listener lives in core.js (it must catch errors that happen before the
    modules start); this module re-checks images that had already failed by the time the page was ready.
@@ -1337,154 +1018,135 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* electrician-B signature: Panel Schedule Flip */
+/* electrician-B · Panel Schedule Flip
+   Tools (sorter, sizer, EV check) always work. Motion (hero flip intro, rail story) runs only with
+   sw-motion and without reduced motion; the HTML ships every breaker ON, so JS-off and reduced motion
+   see the finished schedule. */
 (function () {
   'use strict';
+  var root = document.documentElement;
+  var motion = !(window.SW && SW.reduced) && root.classList.contains('sw-motion');
+  function $(s, c) { return (c || document).querySelector(s); }
+  function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
+  function val(box, name) { var el = $('input[name="' + name + '"]:checked', box); return el ? el.value : ''; }
 
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* Circuit flip on scroll — sequential panel schedule activation */
-  function initCircuits() {
-    var lists = document.querySelectorAll('.circuit-list');
-    if (!lists.length) return;
-
-    if (reduced) {
-      document.querySelectorAll('.circuit:not(.is-on)').forEach(function (c) { c.classList.add('is-on'); });
-      return;
-    }
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting && !entry.target.dataset.activated) {
-          entry.target.dataset.activated = 'true';
-          var circuits = entry.target.querySelectorAll('.circuit:not(.is-on)');
-          circuits.forEach(function (c, i) {
-            setTimeout(function () {
-              c.classList.add('is-on');
-            }, i * 120);
-          });
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
-
-    lists.forEach(function (list) { observer.observe(list); });
-  }
-
-  /* Hero mosaic stagger */
-  function initHeroMosaic() {
-    var tiles = document.querySelectorAll('.hero__tile');
-    if (!tiles.length || reduced) return;
-
-    tiles.forEach(function (tile, i) {
-      tile.style.opacity = '0';
-      tile.style.transform = 'translateY(24px)';
-      setTimeout(function () {
-        tile.style.transition = 'opacity 500ms var(--ease-out), transform 500ms var(--ease-out)';
-        tile.style.opacity = '1';
-        tile.style.transform = 'translateY(0)';
-      }, 80 * i + 200);
-    });
-  }
-
-  /* Amperage count-up for estimator */
-  function initCountUp() {
-    var counters = document.querySelectorAll('[data-count]');
-    if (!counters.length) return;
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting && !entry.target.dataset.counted) {
-          entry.target.dataset.counted = 'true';
-          var target = parseInt(entry.target.dataset.count, 10) || 0;
-          if (reduced || target === 0) {
-            entry.target.textContent = target;
-            return;
-          }
-          var duration = 900;
-          var start = performance.now();
-          function step(now) {
-            var progress = Math.min((now - start) / duration, 1);
-            var eased = 1 - Math.pow(1 - progress, 3);
-            entry.target.textContent = Math.round(eased * target);
-            if (progress < 1) requestAnimationFrame(step);
-          }
-          requestAnimationFrame(step);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    counters.forEach(function (c) { observer.observe(c); });
-  }
-
-  /* Wire estimator output to count-up target */
-  function initEstimatorWiring() {
-    var estimator = document.querySelector('[data-estimator]');
-    if (!estimator) return;
-    var checkboxes = estimator.querySelectorAll('input[type="checkbox"][data-watts]');
-    var totalEl = estimator.querySelector('[data-count]');
-    var recEl = estimator.querySelector('[data-est-result]');
-    if (!checkboxes.length || !totalEl) return;
-
+  /* ---------- breaker trip sorter ---------- */
+  function sorter() {
+    var box = $('[data-sorter]');
+    if (!box) return;
+    var card = $('[data-sorter-card]', box), code = $('[data-sorter-code]', box),
+        title = $('[data-sorter-title]', box), text = $('[data-sorter-text]', box);
+    var WHEN = {
+      immediate: { tag: 'Short / fault', title: 'Likely a short or a ground fault', text: 'A breaker that trips the instant you reset it is doing its job. Leave it off, unplug what is on that circuit and call us; resetting it again heats the wire.', level: 'stop' },
+      minutes: { tag: 'Overload', title: 'Likely an overload', text: 'Too much is running on one circuit, so the breaker warms up and lets go after a while.', level: 'ok' },
+      appliance: { tag: 'Appliance', title: 'Likely the appliance, or a worn breaker', text: 'A motor that draws a surge at start-up (a compressor, a vacuum, a hair dryer) can trip a tired breaker.', level: 'ok' }
+    };
+    var ROOM = {
+      kitchen: { tag: 'Kitchen', text: 'Countertop appliances often share one circuit; a second small-appliance circuit usually ends it.' },
+      bedroom: { tag: 'Bedroom', text: 'Space heaters and window units on an old bedroom circuit are the usual pair; splitting them fixes it.' },
+      garage: { tag: 'Garage', text: 'Garage and outdoor outlets sit on GFCI protection; moisture or a worn tool cord trips it.' },
+      other: { tag: 'Other', text: 'We trace it with a meter and write down what we find on the panel schedule.' }
+    };
     function update() {
-      var total = 0;
-      checkboxes.forEach(function (cb) {
-        if (cb.checked) total += parseInt(cb.dataset.watts, 10) || 0;
+      var w = WHEN[val(box, 'trip-when')], r = ROOM[val(box, 'trip-room')];
+      if (!w && !r) return;
+      code.textContent = (w ? w.tag : '—') + ' · ' + (r ? r.tag : '—');
+      title.textContent = w ? w.title : 'Now, when does it trip?';
+      text.textContent = (w ? w.text + ' ' : '') + (r ? r.text : 'Pick the room for the usual cause there.');
+      card.setAttribute('data-level', w ? w.level : 'ok');
+    }
+    box.addEventListener('change', update);
+  }
+
+  /* ---------- generator sizer ---------- */
+  function sizer() {
+    var box = $('[data-sizer]');
+    if (!box) return;
+    var boxes = $$('input[data-watts]', box), out = $('[data-sizer-watts]', box),
+        fill = $('[data-sizer-fill]', box), rec = $('[data-sizer-rec]', box);
+    var shown = 0, raf = 0;
+    function draw(target) {
+      cancelAnimationFrame(raf);
+      if (!motion) { shown = target; out.textContent = target.toLocaleString('en-US'); return; }
+      var from = shown, t0 = performance.now();
+      (function step(now) {
+        var p = Math.min((now - t0) / 520, 1), e = 1 - Math.pow(1 - p, 3);
+        shown = Math.round(from + (target - from) * e);
+        out.textContent = shown.toLocaleString('en-US');
+        if (p < 1) raf = requestAnimationFrame(step);
+      })(t0);
+    }
+    function update() {
+      var total = boxes.reduce(function (s, b) { return s + (b.checked ? parseInt(b.getAttribute('data-watts'), 10) || 0 : 0); }, 0);
+      draw(total);
+      box.style.setProperty('--load', Math.min(total / 10000 * 100, 100).toFixed(1) + '%');
+      if (fill) fill.style.width = Math.min(total / 10000 * 100, 100).toFixed(1) + '%';
+      if (!total) rec.textContent = 'Tick what must stay on. Without a pick, we size it on the visit.';
+      else if (total <= 3000) rec.textContent = 'A portable generator with an inlet and interlock covers this comfortably.';
+      else if (total <= 7000) rec.textContent = 'A larger portable with an interlock works. A standby adds automatic switchover and no cords to run.';
+      else rec.textContent = 'This load points to a standby generator with an automatic transfer switch.';
+    }
+    box.addEventListener('change', update);
+  }
+
+  /* ---------- EV capacity check ---------- */
+  function evcheck() {
+    var box = $('[data-evcheck]');
+    if (!box) return;
+    var out = $('[data-ev-result]', box);
+    function update() {
+      var size = parseInt(val(box, 'svc-size'), 10);
+      var loads = $$('input[name="big-load"]:checked', box).length;
+      if (!size) { out.textContent = 'Now pick your main breaker size; it is printed on the biggest breaker at the top of the panel.'; return; }
+      var level, msg;
+      if (size >= 200 && loads <= 2) { level = 'ok'; msg = 'Room to spare, most likely. A dedicated charger circuit should fit without a service upgrade; we confirm with a load calculation.'; }
+      else if (size >= 150 && loads <= 1) { level = 'ok'; msg = 'Probably fine. We run a load calculation first and may set the charger a step lower.'; }
+      else if (size === 100 && loads >= 2) { level = 'tight'; msg = 'Tight. With ' + loads + ' big loads on a 100 A main, plan on a load manager or a panel upgrade.'; }
+      else { level = 'tight'; msg = 'Close to the line. A load calculation decides between a smart load manager and a panel upgrade.'; }
+      out.textContent = msg;
+      out.setAttribute('data-level', level);
+    }
+    box.addEventListener('change', update);
+  }
+
+  /* ---------- motion: hero intro + rail story ---------- */
+  function heroFlip() {
+    var breakers = $$('.hero .breaker:not(.is-spare)');
+    breakers.forEach(function (b) { b.classList.remove('is-on'); });
+    setTimeout(function () {
+      breakers.forEach(function (b, i) { setTimeout(function () { b.classList.add('is-on'); }, i * 70); });
+    }, 280);
+  }
+
+  function railStory() {
+    var rows = $$('.rail .circuit');
+    var count = $('[data-rail-count]'), bar = $('[data-rail-bar]');
+    var meter = $('.services__meter');
+    if (!rows.length) return;
+    function tally() {
+      var n = rows.filter(function (r) { return r.classList.contains('is-on'); }).length;
+      if (count) count.textContent = (n < 10 ? '0' : '') + n;
+      if (meter) meter.style.setProperty('--rail-p', (n / rows.length).toFixed(3));
+    }
+    rows.forEach(function (r) { r.classList.remove('is-on'); });
+    tally();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-on'); io.unobserve(e.target); tally(); }
       });
-      totalEl.dataset.count = String(total);
-      totalEl.textContent = String(total);
-      if (recEl) {
-        if (total === 0) {
-          recEl.textContent = 'Select what must stay on to see a recommendation.';
-        } else if (total <= 3000) {
-          recEl.textContent = 'A portable generator with an interlock kit covers this load comfortably.';
-        } else if (total <= 7000) {
-          recEl.textContent = 'A larger portable with interlock works, but a standby gives you automatic switchover and no extension cords.';
-        } else {
-          recEl.textContent = 'This load needs a standby generator with an automatic transfer switch.';
-        }
-      }
-    }
-
-    checkboxes.forEach(function (cb) { cb.addEventListener('change', update); });
-    update();
-  }
-
-  /* Mobile bar visibility */
-  function initMobileBar() {
-    var bar = document.querySelector('[data-mobilebar]');
-    if (!bar) return;
-    var lastY = window.scrollY;
-    var contactSection = document.getElementById('contact');
-
-    function check() {
-      var y = window.scrollY;
-      var contactVisible = contactSection && contactSection.getBoundingClientRect().top < window.innerHeight;
-      if (y > 300 && !contactVisible && y < lastY) {
-        bar.classList.add('is-visible');
-      } else {
-        bar.classList.remove('is-visible');
-      }
-      lastY = y;
-    }
-
-    window.addEventListener('scroll', check, { passive: true });
-    check();
-  }
-
-  /* Init all */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.02 });
+    rows.forEach(function (r) { io.observe(r); });
+    window.addEventListener('beforeprint', function () { rows.forEach(function (r) { r.classList.add('is-on'); }); tally(); });
   }
 
   function init() {
-    initCircuits();
-    initHeroMosaic();
-    initCountUp();
-    initEstimatorWiring();
-    initMobileBar();
+    sorter(); sizer(); evcheck();
+    if (motion && 'IntersectionObserver' in window) {
+      heroFlip();
+      railStory();
+      if (window.ScrollTrigger && document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+    }
   }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+

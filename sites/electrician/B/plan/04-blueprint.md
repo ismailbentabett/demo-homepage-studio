@@ -1,6 +1,11 @@
 # Blueprint — electrician-B (Torque & Tag Electric)
 
-## Round 2
+## Round 2 (answered; rebuild)
+- Photo: grey placeholder frames replaced with drawn line-art plates (lights, generator, EV, labels) on one grid ground in one ink, so every frame reads as one shoot; the photo sits on top only when it loads.
+- Distinctiveness: circuit numbering now runs through the hero panel, the services rail (C-01…), the reviews (R-01 tabs), the pricing ledger (C-NN rows with breaker handles) and the footer "Main" slot.
+- Form: kit [data-form-nav] markup with Back, Next and Submit buttons at 48px; muted text is at 4.5:1 or more on every tone.
+
+## Round 2 (earlier notes)
 - Photo: applied tone-aware duotone filters (grayscale + sepia + blend-mode per tone class) to unify placeholder images across dark/light/accent bands.
 - Wow/Distinctiveness: rewrote circuit activation to sequential panel-schedule flip (120ms stagger per breaker within each .circuit-list), replacing instant bulk toggle.
 - Polish: removed broken `<a>` wrappers from footer credits; now plain text to satisfy static check.
