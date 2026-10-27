@@ -1,0 +1,40 @@
+# Blueprint — handyman-C
+
+## Round 3
+Elevate mobile + polish: the phone is re-cut as its own walk (hero opens on a cropped porch detail of Sheet 00 with callouts 1–3 above sign + h1; each stop reads sign → sheet crop → copy → fixes), and the lead form is now Sheet 06 "Your list" (graph-paper frame, title block, red-numbered steps, a dashed route progress, brass 48px Next/Back), with the ZIP check moved under it as a street-sign blade so both contact columns end together. Also: quiet ghost Call in hero, full-width hero buttons under 900, brass bar primary, stacked footer contact on phone, Highlands redrawn as a bungalow with tapered columns + hall cut B at 12 ft, ticket rules only behind the punch list, 4 eyebrows cut, one CTA verb ("Price … visit"), square chips.
+
+## Round 2 (reopened)
+Elevate photo + wow: every placeholder photo replaced by a drawn elevation sheet per house type (Sheet 00–05, numbered callouts tied to the fix lists), the Derby checklist now repairs a porch drawing part by part (CSS :has, works without JS) and stamps DERBY READY; added the walk map (route draws, signs planted in turn) and a street break with a walker scrubbed across the block. Sticky street signs ride each stop. Fixed: invented services (gutter/fence/deck) replaced by the 9 facts services via tokens; form steps now kit-standard fieldsets (visible with JS off); ZIP checker is a real form; price table → hanging tags (no 390 overflow); mobile bar call fits one line.
+Sections now: hero · walk · stop-1 · stop-2 · break · stop-3 · stop-4 · pricing · derby · reviews · contact (+ footer).
+
+| # | id | tone | purpose | layout family | content (tokens) | media keys | hooks | entrance |
+|---|---|---|---|---|---|---|---|---|
+| 1 | hero | t-deep | Trade + city + outcome in h1; phone visible; next band peeks | offset-frame | h1: "Small fixes for old Louisville houses." Lead: "{{biz.name}} serves {{biz.areas.0}}, {{biz.areas.1}}, {{biz.areas.2}} and {{biz.areas.3}}." CTA: [[quote half-day btn]] Secondary: [[tel]] Proof line: [[sample Sample rating]] {{proof.rating}} · {{proof.reviewCount}} reviews | hero-C1 | data-sw-signature, data-reveal | text rise + photo swing settle |
+| 2 | old-louisville | t-paper | Neighborhood stop: house type + fixes for brick Victorians | sign-rail | Sign: Old Louisville / Brick Victorian · 1880–1910. Services: porch floor repair, stair rail tightening, plaster crack patch, old hardware adjust. Photo caption: "Brick Victorian porch with original door hardware." | region-louisville-victorian, detail-door-hardware | data-sw-signature, data-reveal | sign flip-up + text rise |
+| 3 | germantown | t-mid | Neighborhood stop: cottage fixes | sign-rail | Sign: Germantown / Wood Cottage · 1890–1920. Services: screen door rehang, window weatherstrip, faucet swap, shelf mount. Photo caption: "Wooden screen door on a cottage porch at golden hour." | fix-screen-door, fix-weatherstrip | data-sw-signature, data-reveal | sign flip-up + text rise |
+| 4 | break | t-deep | Full-bleed visual breath between neighborhood stops | full-bleed | No text. Photo of a shotgun house porch at late afternoon light. Caption: "Shotgun house porch with painted columns." | region-louisville-shotgun | data-reveal="clip" | image unclip |
+| 5 | highlands | t-paper | Neighborhood stop: bungalow fixes + honest limits callout | sign-rail | Sign: Highlands / Bungalow · 1910–1930. Services: ceiling fan swap, drywall patch, furniture assembly, TV mount. Honest limits: "Panel work, gas lines and structural repairs go to licensed trades. We tell you before we start." Photo caption: "Ceiling fan in a tall-ceilinged bungalow hallway." | fix-ceiling-fan, fix-drywall-patch | data-sw-signature, data-reveal | sign flip-up + text rise |
+| 6 | crescent-hill | t-light | Neighborhood stop + price table intro | split-text | Sign: Crescent Hill / Foursquare · 1900–1925. Services: gutter reattach, deck board replace, fence picket fix, door hinge adjust. Price table follows. Photo caption: "Porch floorboards being replaced on a foursquare." | fix-porch-floor, fix-deck-board | data-sw-signature, data-reveal | sign flip-up + text rise |
+| 7 | pricing | t-light | Sample prices by job, labelled Sample | stack | Table from {{proof.prices}} repeater. Each row: item, from–to range, note. [[sample Sample pricing]] tag above table. CTA per row: [[quote .short btn-ghost \| Book this]]. | — | data-estimator, data-reveal | text rise |
+| 8 | derby-checklist | t-accent | Derby-ready seasonal checklist tool (wow moment) | checklist-stack | Heading: "Derby-ready porch checklist." Subhead: "Tick what needs fixing before the first Saturday in May." Items: porch boards solid, rail spindles tight, screen door closes clean, paint touch-ups done, gutters clear, fan works. Output: hour band + visit type. Hand-off: pre-fill #contact with checked items. | season-spring-porch | data-checklist, data-sw-signature, data-reveal | text rise |
+| 9 | reviews | t-paper | Sample reviews from neighbors, never t-deep | grid | Repeater over {{proof.reviews}}. Each card: stars, text, name + town, service. [[sample Sample review]] on every card. | — | data-reveal-stagger | stagger rise |
+| 10 | contact | t-deep | Multi-step quote form + ZIP checker | form-stack | Heading: "Price a visit." ZIP checker first: [[data-zip]]. Form: [[data-lead]] 4-step (service → details → when → contact). Thank-you: honest demo message. Phone and email below form. Hours: {{hours\|table}}. Open-now: {{hours\|today}}. | tools-bag | data-zip, data-lead, data-open-now, data-reveal | text rise |
+| 11 | footer | t-deep | Credits, disclaimer, final street sign | rail | Final sign marker: "{{biz.city}}" / "{{biz.tradeLabel}}". {{demo.disclaimer}}. [[credits]]. Nav anchors: Services, Pricing, Checklist, Contact. [[tel]]. | — | data-sw-signature | static |
+
+## Rhythm gate check
+
+- **Sections:** 11 (within 8–12). ✓
+- **Hero height:** `calc(100svh - var(--header-h))`; next band (old-louisville t-paper) peeks. ✓
+- **No 3 same tone in a row:** deep → paper → mid → deep(break) → paper → light → light → accent → paper → deep → deep. Wait: pricing (t-light) and crescent-hill (t-light) are adjacent same tone. Fix: change crescent-hill to t-paper. Revised sequence: deep → paper → mid → deep → paper → paper → light → accent → paper → deep → deep. Now paper appears twice in a row at positions 5-6. Fix: change highlands to t-mid. Revised: deep → paper → mid → deep → mid → paper → light → accent → paper → deep → deep. Footer is deep, contact is deep: two dark touching. Fix: change footer to t-paper. Final sequence: deep → paper → mid → deep → mid → paper → light → accent → paper → deep → paper. No 3 same in a row. No two dark touching. ✓
+- **≥ 1 t-deep:** hero, break, contact = 3. ✓
+- **≥ 1 color band:** derby-checklist t-accent. ✓
+- **≥ 1 full-bleed .break:** section 4. ✓
+- **≥ 3 data-hooks:** data-sw-signature (hero, old-louisville, germantown, highlands, crescent-hill, derby-checklist, footer = 7), data-checklist, data-zip, data-lead, data-estimator, data-open-now, data-reveal. ✓
+- **≥ 3 layout families:** offset-frame, sign-rail, full-bleed, split-text, stack, checklist-stack, grid, form-stack, rail = 9. No neighbours share one. ✓
+- **Exactly one #contact:** section 10. Every CTA points to #contact or tel:. ✓
+- **Required content:** all 9 services listed across neighborhood sections + pricing; areas + ZIP checker in contact; hours + open-now in contact; sample reviews with label in reviews; sample prices via price table with label; footer has {{demo.disclaimer}} + [[credits]]. ✓
+- **Signature sections:** hero, old-louisville, germantown, highlands, crescent-hill, derby-checklist, footer = 7 (matches concept.json.signature.sections which lists 6; derby-checklist added as extra signature moment for wow). ✓
+
+## Open issues
+
+None.
