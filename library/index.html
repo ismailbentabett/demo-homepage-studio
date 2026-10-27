@@ -1,0 +1,1554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homepage Library</title>
+<meta name="description" content="Every demo homepage in the studio, grouped by trade, with score, concept and a link to open it.">
+<style>
+@font-face{font-family:"Showcase Sans";src:url("../assets/fonts/instrument-sans/instrument-sans-400-700-normal.woff2") format("woff2");font-weight:400 700;font-display:swap}
+@font-face{font-family:"Showcase Mono";src:url("../assets/fonts/dm-mono/dm-mono-300-normal.woff2") format("woff2");font-weight:400 500;font-display:swap}
+:root{
+  --bg:#f5f3ee;--surface:#fffefb;--ink:#17181a;--muted:#5d6066;--line:#e2ded4;--chip:#ebe7dd;
+  --accent:#1f5f4a;--accent-ink:#fff;--gold:#8a5a00;--gold-bg:#fbefd5;--shadow:0 1px 2px rgba(20,20,20,.05),0 8px 24px -12px rgba(20,20,20,.18);
+  --sans:"Showcase Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Showcase Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141517;--surface:#1c1d20;--ink:#ecebe7;--muted:#a3a5aa;--line:#2e3034;--chip:#26282c;
+  --accent:#6cc4a1;--accent-ink:#0d1f18;--gold:#f1c46b;--gold-bg:#3a2e14;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+header.top{padding:56px 0 28px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+h1{font-size:clamp(34px,5vw,56px);line-height:1.02;letter-spacing:-.025em;margin:0 0 14px;font-weight:700;max-width:16ch}
+.lede{font-size:18px;color:var(--muted);max-width:60ch;margin:0}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 0;padding:0;list-style:none}
+.stats li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-width:130px}
+.stats b{display:block;font-size:24px;line-height:1.1;letter-spacing:-.01em}
+.stats span{font-size:13px;color:var(--muted)}
+
+.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding-top:12px;padding-bottom:12px}
+.search{flex:1 1 260px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 12px;min-height:44px}
+.search input{flex:1;border:0;background:transparent;font:inherit;color:inherit;min-height:42px;outline:none}
+.search:focus-within{border-color:var(--accent)}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls select,.controls button{font:inherit;font-size:14px;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;min-height:44px;padding:0 12px;cursor:pointer}
+.controls button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;width:100%;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chips[hidden],#grouped[hidden]{display:none}
+.chips a{flex:none;text-decoration:none;font-size:13px;padding:7px 12px;border-radius:999px;background:var(--chip);color:var(--ink);white-space:nowrap}
+.chips a:hover{background:var(--ink);color:var(--bg)}
+
+main{padding:12px 0 80px}
+section.trade{padding-top:44px}
+section.trade[hidden]{display:none}
+.trade-head{display:flex;align-items:baseline;gap:12px;margin:0 0 18px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.trade-head h2{margin:0;font-size:26px;letter-spacing:-.015em}
+.trade-head span{font:500 12px/1 var(--mono);color:var(--muted);letter-spacing:.06em}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+@media (max-width:1080px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:680px){.grid{grid-template-columns:1fr}.bar{position:static}.wrap{padding:0 16px}header.top{padding-top:36px}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-2px)}
+.card[hidden]{display:none}
+.shots{position:relative;display:block;aspect-ratio:16/10;background:var(--chip);overflow:hidden;border-bottom:1px solid var(--line)}
+.shot-desk{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .5s ease}
+.card:hover .shot-desk{transform:scale(1.025)}
+.shot-phone{position:absolute;right:14px;bottom:14px;width:19%;aspect-ratio:390/844;object-fit:cover;object-position:top;border-radius:12px;border:3px solid #111;box-shadow:0 12px 24px -8px rgba(0,0,0,.45);background:#111}
+.shot-missing{display:grid;place-items:center;height:100%;color:var(--muted);font-size:14px}
+.body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.row{display:flex;align-items:center;gap:10px}
+.variant{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:7px;background:var(--ink);color:var(--bg);font:600 13px/1 var(--mono)}
+.row h3{margin:0;font-size:18px;line-height:1.25;letter-spacing:-.01em;flex:1;min-width:0}
+.badge{flex:none;font:500 13px/1 var(--mono);padding:6px 8px;border-radius:7px;background:var(--chip);color:var(--ink)}
+.badge--top{background:var(--gold-bg);color:var(--gold)}
+.badge--wip{background:transparent;border:1px dashed var(--line);color:var(--muted)}
+.city{margin:-4px 0 0 36px;font-size:14px;color:var(--muted)}
+.sig{margin:4px 0 0;font-size:14px;font-weight:600}
+.label{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.thesis{margin:0;font-size:14px;color:var(--muted)}
+.meta{margin:4px 0 0;display:grid;gap:6px;font-size:13px}
+.meta div{display:flex;gap:10px;align-items:center}
+.meta dt{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);width:56px;flex:none}
+.meta dd{margin:0}
+.swatches{display:inline-flex}
+.swatches i{width:20px;height:20px;border-radius:50%;border:2px solid var(--surface);margin-left:-5px;box-shadow:0 0 0 1px var(--line)}
+.swatches i:first-child{margin-left:0}
+.actions{margin-top:auto;padding-top:10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:10px;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;font-size:15px}
+.btn:hover{filter:brightness(1.08)}
+.id{font:12px/1 var(--mono);color:var(--muted)}
+.empty{padding:60px 0;text-align:center;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Demo Homepage Studio</p>
+    <h1>Homepage library</h1>
+    <p class="lede">Every demo homepage, grouped by trade. Each trade has three different takes (A, B, C). Click a card to open the live page; the small phone shows how it looks on mobile.</p>
+    <ul class="stats">
+      <li><b>54</b><span>homepages delivered</span></li>
+      <li><b>18</b><span>trades</span></li>
+      <li><b>8.97</b><span>average score / 10</span></li>
+      <li><b>24</b><span>scored 9.0 or higher</span></li>
+    </ul>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <label class="search"><span aria-hidden="true">⌕</span><span class="sr">Search homepages</span>
+      <input id="q" type="search" placeholder="Search by business, city, trade, font…" autocomplete="off"></label>
+    <div class="controls">
+      <label class="sr" for="sort">Sort</label>
+      <select id="sort">
+        <option value="trade">Group by trade</option>
+        <option value="score">Highest score first</option>
+      </select>
+      <button id="topOnly" type="button" aria-pressed="false">9.0+ only</button>
+    </div>
+    <nav class="chips" aria-label="Jump to trade">
+      <a href="#t-autotuneup">Auto Tune Up</a><a href="#t-carpenter">Carpenter</a><a href="#t-cleaning">Cleaning</a><a href="#t-concrete">Concrete</a><a href="#t-demolition">Demolition</a><a href="#t-electrician">Electrician</a><a href="#t-flooring">Flooring</a><a href="#t-general">General Contractor</a><a href="#t-handyman">Handyman</a><a href="#t-hvac">HVAC</a><a href="#t-landscaper">Landscaper</a><a href="#t-mason">Mason</a><a href="#t-mechanic">Mechanic</a><a href="#t-painter">Painter</a><a href="#t-pest">Pest Control</a><a href="#t-plumber">Plumber</a><a href="#t-pool">Pool Service</a><a href="#t-roofer">Roofer</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap" id="main">
+  <div id="grouped">
+    <section class="trade" id="t-autotuneup" aria-labelledby="h-autotuneup">
+      <div class="trade-head"><h2 id="h-autotuneup">Auto Tune Up</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="autotuneup" data-score="9.07" data-search="quarter hour tune-up provo, ut auto tune up stopwatch stations tangerine lane + deep teal unbounded figtree autotuneup-a">
+        <a class="shots" href="../sites/autotuneup/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Quarter Hour Tune-Up homepage in a new tab">
+          <img class="shot-desk" src="../sites/autotuneup/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/autotuneup/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Quarter Hour Tune-Up</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.07</span>
+          </div>
+          <p class="city">Auto Tune Up · Provo, UT</p>
+          <p class="sig"><span class="label">Signature</span> Stopwatch Stations</p>
+          <p class="thesis">The page is the relay board: each section is a station on a timed course, and the running stopwatch total proves speed without promising what isn&#39;t true.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Unbounded + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Tangerine Lane + Deep Teal"><i style="background:#faf7f2"></i><i style="background:#1a1a18"></i><i style="background:#0f3d3a"></i><i style="background:#a83a12"></i><i style="background:#e85d26"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/autotuneup/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Quarter Hour Tune-Up</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">autotuneup-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="autotuneup" data-score="8.98" data-search="next interval tune-up reno, nv auto tune up service-interval odometer rows desert dash + cool blue + signal orange bebas neue outfit autotuneup-b">
+        <a class="shots" href="../sites/autotuneup/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Next Interval Tune-Up homepage in a new tab">
+          <img class="shot-desk" src="../sites/autotuneup/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/autotuneup/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Next Interval Tune-Up</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.98</span>
+          </div>
+          <p class="city">Auto Tune Up · Reno, NV</p>
+          <p class="sig"><span class="label">Signature</span> Service-Interval Odometer Rows</p>
+          <p class="thesis">The page is the odometer: each section is a mileage row that rolls to its interval, and the signature is the digit roll that distinguishes due now from not yet.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Bebas Neue + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Desert Dash + Cool Blue + Signal Orange"><i style="background:#f4f1eb"></i><i style="background:#1a1d21"></i><i style="background:#1a1d21"></i><i style="background:#0f5f7f"></i><i style="background:#b53d0f"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/autotuneup/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Next Interval Tune-Up</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">autotuneup-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="autotuneup" data-score="8.87" data-search="thin air tune-up santa fe, nm auto tune up altitude marker rail night sky + turquoise door + adobe dust space mono outfit autotuneup-c">
+        <a class="shots" href="../sites/autotuneup/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Thin Air Tune-Up homepage in a new tab">
+          <img class="shot-desk" src="../sites/autotuneup/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/autotuneup/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Thin Air Tune-Up</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.87</span>
+          </div>
+          <p class="city">Auto Tune Up · Santa Fe, NM</p>
+          <p class="sig"><span class="label">Signature</span> Altitude Marker Rail</p>
+          <p class="thesis">The page is an ascent: each section is a place on the road out of Santa Fe, and the altitude marker on the margin climbs as you scroll, tying every maintenance task to the elevation that…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Space Mono + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Night Sky + Turquoise Door + Adobe Dust"><i style="background:#121826"></i><i style="background:#e8e4dc"></i><i style="background:#0b1120"></i><i style="background:#3bb9a6"></i><i style="background:#d4880f"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/autotuneup/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Thin Air Tune-Up</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">autotuneup-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-carpenter" aria-labelledby="h-carpenter">
+      <div class="trade-head"><h2 id="h-carpenter">Carpenter</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="carpenter" data-score="8.9" data-search="scarf &amp; sash carpentry portland, me carpenter cut list + kerf rule harbor teal + clapboard cream + oxide red + brass young serif source serif 4 carpenter-a">
+        <a class="shots" href="../sites/carpenter/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Scarf &amp; Sash Carpentry homepage in a new tab">
+          <img class="shot-desk" src="../sites/carpenter/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/carpenter/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Scarf &amp; Sash Carpentry</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.90</span>
+          </div>
+          <p class="city">Carpenter · Portland, ME</p>
+          <p class="sig"><span class="label">Signature</span> Cut List + Kerf Rule</p>
+          <p class="thesis">The page is a cut list: every section is a numbered cut on the sheet, headed by a dimension line with ticks, and the signature is the kerf mark that grows as you scroll toward the…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Young Serif + Source Serif 4</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Harbor Teal + Clapboard Cream + Oxide Red + Brass"><i style="background:#f4efe6"></i><i style="background:#1b2631"></i><i style="background:#1b2631"></i><i style="background:#c9a24d"></i><i style="background:#8b3a3a"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/carpenter/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Scarf &amp; Sash Carpentry</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">carpenter-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="carpenter" data-score="9.08" data-search="story pole carpentry albany, ny carpenter story pole ruler graphite vellum + pencil mark anybody figtree carpenter-b">
+        <a class="shots" href="../sites/carpenter/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Story Pole Carpentry homepage in a new tab">
+          <img class="shot-desk" src="../sites/carpenter/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/carpenter/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Story Pole Carpentry</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.08</span>
+          </div>
+          <p class="city">Carpenter · Albany, NY</p>
+          <p class="sig"><span class="label">Signature</span> Story Pole Ruler</p>
+          <p class="thesis">The page is the story pole itself: a vertical ruler marks every section at a real Albany rowhouse height, and every claim is a measurement, a tolerance, or a sample price that the…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Anybody + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Graphite Vellum + Pencil Mark"><i style="background:#f4f1ea"></i><i style="background:#1a1c20"></i><i style="background:#2c2e33"></i><i style="background:#b54200"></i><i style="background:#b54200"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/carpenter/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Story Pole Carpentry</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">carpenter-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="carpenter" data-score="8.91" data-search="three porches carpentry worcester, ma carpenter floor band + baluster rule night blue + porch light + clapboard bebas neue source sans 3 carpenter-c">
+        <a class="shots" href="../sites/carpenter/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Three Porches Carpentry homepage in a new tab">
+          <img class="shot-desk" src="../sites/carpenter/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/carpenter/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Three Porches Carpentry</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.91</span>
+          </div>
+          <p class="city">Carpenter · Worcester, MA</p>
+          <p class="sig"><span class="label">Signature</span> Floor Band + Baluster Rule</p>
+          <p class="thesis">The page is the triple-decker read from the sidewalk.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Bebas Neue + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Night Blue + Porch Light + Clapboard"><i style="background:#F2E8D0"></i><i style="background:#0F141C"></i><i style="background:#1B2633"></i><i style="background:#4A9E96"></i><i style="background:#C75B39"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/carpenter/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Three Porches Carpentry</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">carpenter-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-cleaning" aria-labelledby="h-cleaning">
+      <div class="trade-head"><h2 id="h-cleaning">Cleaning</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="cleaning" data-score="8.98" data-search="ticklist house cleaning greenville, sc cleaning visit timeline tick pollen sage + ink blue outfit karla cleaning-a">
+        <a class="shots" href="../sites/cleaning/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Ticklist House Cleaning homepage in a new tab">
+          <img class="shot-desk" src="../sites/cleaning/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/cleaning/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Ticklist House Cleaning</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.98</span>
+          </div>
+          <p class="city">Cleaning · Greenville, SC</p>
+          <p class="sig"><span class="label">Signature</span> Visit Timeline Tick</p>
+          <p class="thesis">The page is the visit clipboard: every section is a room on the checklist, and the signature is the pencil tick that draws itself as you scroll through the timed visit.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Outfit + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Pollen Sage + Ink Blue"><i style="background:#f7f5f0"></i><i style="background:#1a2b3c"></i><i style="background:#1e2d24"></i><i style="background:#5a7a5e"></i><i style="background:#c4883a"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/cleaning/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Ticklist House Cleaning</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">cleaning-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="cleaning" data-score="8.83" data-search="every other friday cleaning huntsville, al cleaning running receipt thermal paper + friday sienna bricolage grotesque figtree cleaning-b">
+        <a class="shots" href="../sites/cleaning/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Every Other Friday Cleaning homepage in a new tab">
+          <img class="shot-desk" src="../sites/cleaning/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/cleaning/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Every Other Friday Cleaning</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.83</span>
+          </div>
+          <p class="city">Cleaning · Huntsville, AL</p>
+          <p class="sig"><span class="label">Signature</span> Running Receipt</p>
+          <p class="thesis">The page is a thermal receipt: every section prints a line item onto a paper strip with a torn bottom edge, and the signature is the running tally that accumulates as you scroll toward…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Bricolage Grotesque + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Thermal Paper + Friday Sienna"><i style="background:#F5F2EB"></i><i style="background:#2D2A26"></i><i style="background:#1E1B17"></i><i style="background:#9C4A18"></i><i style="background:#3B7A57"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/cleaning/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Every Other Friday Cleaning</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">cleaning-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="cleaning" data-score="8.92" data-search="riverfog housekeeping chattanooga, tn cleaning season dial riverfog charcoal + evergreen + brass crimson pro source sans 3 cleaning-c">
+        <a class="shots" href="../sites/cleaning/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Riverfog Housekeeping homepage in a new tab">
+          <img class="shot-desk" src="../sites/cleaning/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/cleaning/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Riverfog Housekeeping</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.92</span>
+          </div>
+          <p class="city">Cleaning · Chattanooga, TN</p>
+          <p class="sig"><span class="label">Signature</span> Season Dial</p>
+          <p class="thesis">The page is a house almanac: each season opens as an editorial spread datelined to a Chattanooga neighborhood, and the signature is a brass season dial that turns as you scroll through…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Crimson Pro + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Riverfog Charcoal + Evergreen + Brass"><i style="background:#F3EFE6"></i><i style="background:#1E2420"></i><i style="background:#141916"></i><i style="background:#B8945F"></i><i style="background:#9E4428"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/cleaning/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Riverfog Housekeeping</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">cleaning-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-concrete" aria-labelledby="h-concrete">
+      <div class="trade-head"><h2 id="h-concrete">Concrete</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="concrete" data-score="9.02" data-search="long cure concrete co. salt lake city, ut concrete carbon-copy pour ticket ticket paper + carbon blue + safety orange chivo karla concrete-a">
+        <a class="shots" href="../sites/concrete/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Long Cure Concrete Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/concrete/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/concrete/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Long Cure Concrete Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.02</span>
+          </div>
+          <p class="city">Concrete · Salt Lake City, UT</p>
+          <p class="sig"><span class="label">Signature</span> Carbon-Copy Pour Ticket</p>
+          <p class="thesis">The page is a carbon-copy pour ticket: every section is a numbered line item from dig to cure, and the signature is the perforated edge + carbon-blue duplicate offset that grows as you…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Chivo + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Ticket Paper + Carbon Blue + Safety Orange"><i style="background:#f4f1eb"></i><i style="background:#1a1c20"></i><i style="background:#1e2a36"></i><i style="background:#2b5c8a"></i><i style="background:#d45a2a"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/concrete/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Long Cure Concrete Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">concrete-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="concrete" data-score="9.09" data-search="fieldtest concrete co. mesa, az concrete spec rail + dimension callout basalt + dawn amber + bone oswald outfit concrete-b">
+        <a class="shots" href="../sites/concrete/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Fieldtest Concrete Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/concrete/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/concrete/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Fieldtest Concrete Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.09</span>
+          </div>
+          <p class="city">Concrete · Mesa, AZ</p>
+          <p class="sig"><span class="label">Signature</span> Spec Rail + Dimension Callout</p>
+          <p class="thesis">The page is a slab spec sheet: every section adds a measurable line (thickness, steel spacing, base depth, finish, pad size), and the signature is the sticky spec rail that fills as the…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Oswald + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Basalt + Dawn Amber + Bone"><i style="background:#F2EDE4"></i><i style="background:#F2EDE4"></i><i style="background:#1C1F23"></i><i style="background:#D4880F"></i><i style="background:#B8432F"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/concrete/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Fieldtest Concrete Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">concrete-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="concrete" data-score="8.91" data-search="red grit concrete colorado springs, co concrete contour line + elevation marker pikes peak granite + pine + snow young serif figtree concrete-c">
+        <a class="shots" href="../sites/concrete/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Red Grit Concrete homepage in a new tab">
+          <img class="shot-desk" src="../sites/concrete/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/concrete/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Red Grit Concrete</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.91</span>
+          </div>
+          <p class="city">Concrete · Colorado Springs, CO</p>
+          <p class="sig"><span class="label">Signature</span> Contour Line + Elevation Marker</p>
+          <p class="thesis">The page is a topographic survey sheet: every section sits at an elevation band marked by contour lines, and the site climbs from valley floor to ridge as you scroll, proving this…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Young Serif + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Pikes Peak Granite + Pine + Snow"><i style="background:#F5F3F0"></i><i style="background:#1A2622"></i><i style="background:#1A2622"></i><i style="background:#8C3B2E"></i><i style="background:#E07A5F"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/concrete/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Red Grit Concrete</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">concrete-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-demolition" aria-labelledby="h-demolition">
+      <div class="trade-head"><h2 id="h-demolition">Demolition</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="demolition" data-score="9.07" data-search="pry &amp; peel demolition akron, oh demolition layer gauge charcoal stud + plaster + safety bitter outfit demolition-a">
+        <a class="shots" href="../sites/demolition/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Pry &amp; Peel Demolition homepage in a new tab">
+          <img class="shot-desk" src="../sites/demolition/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/demolition/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Pry &amp; Peel Demolition</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.07</span>
+          </div>
+          <p class="city">Demolition · Akron, OH</p>
+          <p class="sig"><span class="label">Signature</span> Layer Gauge</p>
+          <p class="thesis">The page is the wall section being peeled.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Bitter + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Charcoal Stud + Plaster + Safety"><i style="background:#e8e4dc"></i><i style="background:#1a1c20"></i><i style="background:#2b2d33"></i><i style="background:#ff5f1f"></i><i style="background:#b84a1a"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/demolition/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Pry &amp; Peel Demolition</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">demolition-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="demolition" data-score="9.09" data-search="scale ticket demo &amp; haul toledo, oh demolition perforated weigh ticket scale-ticket buff + carbon teal + stamp red chivo work sans demolition-b">
+        <a class="shots" href="../sites/demolition/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Scale Ticket Demo &amp; Haul homepage in a new tab">
+          <img class="shot-desk" src="../sites/demolition/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/demolition/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Scale Ticket Demo &amp; Haul</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.09</span>
+          </div>
+          <p class="city">Demolition · Toledo, OH</p>
+          <p class="sig"><span class="label">Signature</span> Perforated Weigh Ticket</p>
+          <p class="thesis">The page is a scale-ticket docket: every section is a perforated stub that records what left the house, where it went, and at what weight, so trust is built by paperwork rather than…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Chivo + Work Sans</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Scale-Ticket Buff + Carbon Teal + Stamp Red"><i style="background:#F5F0E6"></i><i style="background:#1A1A1A"></i><i style="background:#1E2A36"></i><i style="background:#1F6B5F"></i><i style="background:#B8372B"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/demolition/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Scale Ticket Demo &amp; Haul</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">demolition-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="demolition" data-score="9" data-search="hollow &amp; hill demolition roanoke, va demolition reclaimed-space ruler blue ridge pine + dogwood cream + slate anton crimson pro demolition-c">
+        <a class="shots" href="../sites/demolition/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Hollow &amp; Hill Demolition homepage in a new tab">
+          <img class="shot-desk" src="../sites/demolition/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/demolition/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Hollow &amp; Hill Demolition</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.00</span>
+          </div>
+          <p class="city">Demolition · Roanoke, VA</p>
+          <p class="sig"><span class="label">Signature</span> Reclaimed-Space Ruler</p>
+          <p class="thesis">The page is a surveyor&#39;s field book opened on a Roanoke hillside.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Anton + Crimson Pro</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Blue Ridge Pine + Dogwood Cream + Slate"><i style="background:#F4F1EB"></i><i style="background:#1B3A2E"></i><i style="background:#1B3A2E"></i><i style="background:#3D4F5F"></i><i style="background:#567265"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/demolition/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Hollow &amp; Hill Demolition</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">demolition-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-electrician" aria-labelledby="h-electrician">
+      <div class="trade-head"><h2 id="h-electrician">Electrician</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="electrician" data-score="9.03" data-search="lineside electric columbus, oh electrician one-line diagram trace teal field + copper trace + chalk archivo outfit electrician-a">
+        <a class="shots" href="../sites/electrician/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Lineside Electric homepage in a new tab">
+          <img class="shot-desk" src="../sites/electrician/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/electrician/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Lineside Electric</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.03</span>
+          </div>
+          <p class="city">Electrician · Columbus, OH</p>
+          <p class="sig"><span class="label">Signature</span> One-Line Diagram Trace</p>
+          <p class="thesis">The page is the one-line diagram: a single vertical copper line draws down the page through real electrical symbols, and each symbol is a section where services, tools and proof hang off…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Archivo + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Teal Field + Copper Trace + Chalk"><i style="background:#0e2a2f"></i><i style="background:#f0ece4"></i><i style="background:#091c20"></i><i style="background:#cf6a2e"></i><i style="background:#e8b86d"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/electrician/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Lineside Electric</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">electrician-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="electrician" data-score="8.85" data-search="torque &amp; tag electric san antonio, tx electrician panel schedule flip breaker charcoal + panel cream + amber on oswald karla electrician-b">
+        <a class="shots" href="../sites/electrician/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Torque &amp; Tag Electric homepage in a new tab">
+          <img class="shot-desk" src="../sites/electrician/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/electrician/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Torque &amp; Tag Electric</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.85</span>
+          </div>
+          <p class="city">Electrician · San Antonio, TX</p>
+          <p class="sig"><span class="label">Signature</span> Panel Schedule Flip</p>
+          <p class="thesis">The page is a panel schedule that fills itself in.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Oswald + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Breaker Charcoal + Panel Cream + Amber ON"><i style="background:#F5F3EE"></i><i style="background:#E8E4DC"></i><i style="background:#1C1F23"></i><i style="background:#E09A15"></i><i style="background:#C43E2A"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/electrician/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Torque &amp; Tag Electric</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">electrician-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="electrician" data-score="9.07" data-search="bungalow current electric kansas city, mo electrician room marker + arch frame plaster + oak + brick cormorant garamond karla electrician-c">
+        <a class="shots" href="../sites/electrician/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Bungalow Current Electric homepage in a new tab">
+          <img class="shot-desk" src="../sites/electrician/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/electrician/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Bungalow Current Electric</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.07</span>
+          </div>
+          <p class="city">Electrician · Kansas City, MO</p>
+          <p class="sig"><span class="label">Signature</span> Room Marker + Arch Frame</p>
+          <p class="thesis">The page is a guided tour through a 1925 Kansas City bungalow.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Cormorant Garamond + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Plaster + Oak + Brick"><i style="background:#F5F0E8"></i><i style="background:#3B2F26"></i><i style="background:#2C241E"></i><i style="background:#7A3B3B"></i><i style="background:#C9A96E"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/electrician/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Bungalow Current Electric</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">electrician-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-flooring" aria-labelledby="h-flooring">
+      <div class="trade-head"><h2 id="h-flooring">Flooring</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="flooring" data-score="8.91" data-search="third coat floor works knoxville, tn flooring grit sequence rail raw maple + walnut ink + finish amber crimson pro karla flooring-a">
+        <a class="shots" href="../sites/flooring/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Third Coat Floor Works homepage in a new tab">
+          <img class="shot-desk" src="../sites/flooring/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/flooring/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Third Coat Floor Works</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.91</span>
+          </div>
+          <p class="city">Flooring · Knoxville, TN</p>
+          <p class="sig"><span class="label">Signature</span> Grit Sequence Rail</p>
+          <p class="thesis">The page is the sanding pass: each section is one grit, and the signature is the grit number that gets finer as you scroll from bare wood to finish coat.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Crimson Pro + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Raw Maple + Walnut Ink + Finish Amber"><i style="background:#F5F0E8"></i><i style="background:#2C241E"></i><i style="background:#1A1612"></i><i style="background:#8B5A2B"></i><i style="background:#A63D1F"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/flooring/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Third Coat Floor Works</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">flooring-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="flooring" data-score="8.96" data-search="twelve mil flooring atlanta, ga flooring sample chip cross-section georgia clay + bone + terracotta archivo karla flooring-b">
+        <a class="shots" href="../sites/flooring/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Twelve Mil Flooring homepage in a new tab">
+          <img class="shot-desk" src="../sites/flooring/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/flooring/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Twelve Mil Flooring</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.96</span>
+          </div>
+          <p class="city">Flooring · Atlanta, GA</p>
+          <p class="sig"><span class="label">Signature</span> Sample Chip Cross-Section</p>
+          <p class="thesis">The page is a sample board: every section is a physical-looking sample chip pinned to a clay field, and the signature is the cut-edge cross-section that peels apart as you scroll to…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Archivo + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Georgia Clay + Bone + Terracotta"><i style="background:#F4EFE6"></i><i style="background:#1C1917"></i><i style="background:#3B2218"></i><i style="background:#B85C38"></i><i style="background:#D4A855"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/flooring/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Twelve Mil Flooring</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">flooring-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="flooring" data-score="9.01" data-search="heart &amp; tide floor co. norfolk, va flooring tide line gauge tide navy + heart pine amber + sand paper oswald source sans 3 flooring-c">
+        <a class="shots" href="../sites/flooring/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Heart &amp; Tide Floor Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/flooring/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/flooring/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Heart &amp; Tide Floor Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.01</span>
+          </div>
+          <p class="city">Flooring · Norfolk, VA</p>
+          <p class="sig"><span class="label">Signature</span> Tide Line Gauge</p>
+          <p class="thesis">The page is a tide gauge: every section sits at a water level, and the signature is the horizontal rule that rises and falls to show where wood meets water in Norfolk&#39;s old houses.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Oswald + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Tide Navy + Heart Pine Amber + Sand Paper"><i style="background:#E8DCC8"></i><i style="background:#0F1C24"></i><i style="background:#0F1C24"></i><i style="background:#3BB9A6"></i><i style="background:#6B8E9E"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/flooring/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Heart &amp; Tide Floor Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">flooring-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-general" aria-labelledby="h-general">
+      <div class="trade-head"><h2 id="h-general">General Contractor</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="general" data-score="8.82" data-search="crosstie building co. nashville, tn general contractor crosstie track creosote + work-light barlow condensed work sans general-a">
+        <a class="shots" href="../sites/general/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Crosstie Building Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/general/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/general/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Crosstie Building Co.</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.82</span>
+          </div>
+          <p class="city">General Contractor · Nashville, TN</p>
+          <p class="sig"><span class="label">Signature</span> crosstie track</p>
+          <p class="thesis">The page is a rail track of crossties: every section is one tie laid down with its week number stenciled on the end, and scrolling moves the amber today line forward so each tie flips…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Barlow Condensed + Work Sans</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="creosote + work-light"><i style="background:#1b1915"></i><i style="background:#f2efe8"></i><i style="background:#2a2722"></i><i style="background:#d49a2a"></i><i style="background:#e8c96a"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/general/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Crosstie Building Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">general-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="general" data-score="8.87" data-search="open ledger builders madison, wi general contractor ledger line + percent column ledger cream + ink blue + signal red space grotesk karla general-b">
+        <a class="shots" href="../sites/general/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Open Ledger Builders homepage in a new tab">
+          <img class="shot-desk" src="../sites/general/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/general/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Open Ledger Builders</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.87</span>
+          </div>
+          <p class="city">General Contractor · Madison, WI</p>
+          <p class="sig"><span class="label">Signature</span> Ledger line + percent column</p>
+          <p class="thesis">The page is an open ledger: every section is a cost-sheet line item with a percent-of-budget column on the right edge, and the running total in the margin climbs to 100% by the footer.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Space Grotesk + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Ledger cream + ink blue + signal red"><i style="background:#F6F3ED"></i><i style="background:#1A2332"></i><i style="background:#0F1720"></i><i style="background:#B8432F"></i><i style="background:#D4654E"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/general/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Open Ledger Builders</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">general-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="general" data-score="8.88" data-search="switchback building co. asheville, nc general contractor contour bands with elevation tags blue ridge slate + moss + rust zilla slab source serif 4 general-c">
+        <a class="shots" href="../sites/general/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Switchback Building Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/general/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/general/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Switchback Building Co.</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.88</span>
+          </div>
+          <p class="city">General Contractor · Asheville, NC</p>
+          <p class="sig"><span class="label">Signature</span> Contour bands with elevation tags</p>
+          <p class="thesis">The page is a topographic map: each section sits on its own contour band with an elevation label, and scrolling climbs the mountain from river-level repairs to ridge-top additions.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Zilla Slab + Source Serif 4</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Blue Ridge Slate + Moss + Rust"><i style="background:#F4F1EB"></i><i style="background:#1B2838"></i><i style="background:#1B2838"></i><i style="background:#5A7D7C"></i><i style="background:#5E7D5E"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/general/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Switchback Building Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">general-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-handyman" aria-labelledby="h-handyman">
+      <div class="trade-head"><h2 id="h-handyman">Handyman</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="handyman" data-score="9.06" data-search="punchclock repair co. grand rapids, mi handyman time card punch buff card + punch red space grotesk work sans handyman-a">
+        <a class="shots" href="../sites/handyman/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Punchclock Repair Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/handyman/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/handyman/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Punchclock Repair Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.06</span>
+          </div>
+          <p class="city">Handyman · Grand Rapids, MI</p>
+          <p class="sig"><span class="label">Signature</span> Time Card Punch</p>
+          <p class="thesis">The page is a paper time card: every section is a stamped row on the card, and the signature is the red ink punch that marks each slot as you scroll.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Space Grotesk + Work Sans</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Buff Card + Punch Red"><i style="background:#F4EFE6"></i><i style="background:#1A1A18"></i><i style="background:#2B2825"></i><i style="background:#B43026"></i><i style="background:#D97706"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/handyman/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Punchclock Repair Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">handyman-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="handyman" data-score="8.9" data-search="pegboard home repair ann arbor, mi handyman pegboard hang-tag workshop teal + safety gold big shoulders outfit handyman-b">
+        <a class="shots" href="../sites/handyman/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Pegboard Home Repair homepage in a new tab">
+          <img class="shot-desk" src="../sites/handyman/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/handyman/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Pegboard Home Repair</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.90</span>
+          </div>
+          <p class="city">Handyman · Ann Arbor, MI</p>
+          <p class="sig"><span class="label">Signature</span> Pegboard Hang-Tag</p>
+          <p class="thesis">The page is a workshop pegboard: every section hangs on painted tool outlines, and adding a job to the list lifts its tool off the wall into a running tray at the bottom of the screen.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Big Shoulders + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Workshop Teal + Safety Gold"><i style="background:#F0E6D2"></i><i style="background:#1C3A38"></i><i style="background:#1C3A38"></i><i style="background:#5C4A3A"></i><i style="background:#E8C468"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/handyman/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Pegboard Home Repair</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">handyman-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="handyman" data-score="8.85" data-search="camelback repair co. louisville, ky handyman street sign marker bourbon + porch light aleo figtree handyman-c">
+        <a class="shots" href="../sites/handyman/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Camelback Repair Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/handyman/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/handyman/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Camelback Repair Co.</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.85</span>
+          </div>
+          <p class="city">Handyman · Louisville, KY</p>
+          <p class="sig"><span class="label">Signature</span> Street Sign Marker</p>
+          <p class="thesis">The page is a walk through Louisville&#39;s neighborhoods.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Aleo + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="bourbon + porch light"><i style="background:#F2E8D5"></i><i style="background:#2A1F1A"></i><i style="background:#2A1F1A"></i><i style="background:#4A9B8E"></i><i style="background:#A6372E"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/handyman/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Camelback Repair Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">handyman-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-hvac" aria-labelledby="h-hvac">
+      <div class="trade-head"><h2 id="h-hvac">HVAC</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="hvac" data-score="8.95" data-search="saltbush heating &amp; air las vegas, nv hvac ticket clock rail desert charcoal + saltbush sage + sodium signal manrope outfit hvac-a">
+        <a class="shots" href="../sites/hvac/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Saltbush Heating &amp; Air homepage in a new tab">
+          <img class="shot-desk" src="../sites/hvac/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/hvac/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Saltbush Heating &amp; Air</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.95</span>
+          </div>
+          <p class="city">HVAC · Las Vegas, NV</p>
+          <p class="sig"><span class="label">Signature</span> Ticket Clock Rail</p>
+          <p class="thesis">The page is a service ticket: every section is one timestamped entry on a vertical clock rail, and the pinned condenser photo crops to the part named in that entry.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Manrope + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Desert Charcoal + Saltbush Sage + Sodium Signal"><i style="background:#e8e4dc"></i><i style="background:#1a1c1f"></i><i style="background:#2f3530"></i><i style="background:#7da87b"></i><i style="background:#e8a45c"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/hvac/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Saltbush Heating &amp; Air</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">hvac-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="hvac" data-score="9.02" data-search="wetbulb heating &amp; cooling houston, tx hvac comfort chart dot gulf dew + graphite + coral chivo figtree hvac-b">
+        <a class="shots" href="../sites/hvac/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Wetbulb Heating &amp; Cooling homepage in a new tab">
+          <img class="shot-desk" src="../sites/hvac/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/hvac/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Wetbulb Heating &amp; Cooling</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.02</span>
+          </div>
+          <p class="city">HVAC · Houston, TX</p>
+          <p class="sig"><span class="label">Signature</span> Comfort Chart Dot</p>
+          <p class="thesis">The page is a field hygrometer: every section plots one real reading on a simplified comfort chart, and the signature dot travels from sticky to inside-the-band as you scroll toward the…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Chivo + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Gulf Dew + Graphite + Coral"><i style="background:#F4F1EC"></i><i style="background:#2B2D2E"></i><i style="background:#1B2F2C"></i><i style="background:#0E5C52"></i><i style="background:#A83A25"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/hvac/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Wetbulb Heating &amp; Cooling</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">hvac-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="hvac" data-score="9.02" data-search="shadeline heating &amp; cooling phoenix, az hvac shade line adobe terracotta + shade indigo + sun cream antonio figtree hvac-c">
+        <a class="shots" href="../sites/hvac/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Shadeline Heating &amp; Cooling homepage in a new tab">
+          <img class="shot-desk" src="../sites/hvac/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/hvac/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Shadeline Heating &amp; Cooling</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.02</span>
+          </div>
+          <p class="city">HVAC · Phoenix, AZ</p>
+          <p class="sig"><span class="label">Signature</span> Shade Line</p>
+          <p class="thesis">The page is a sundial laid flat: every section is an hour band split by a diagonal shade line that moves across the viewport as you scroll, and the signature is the advancing edge…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Antonio + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Adobe Terracotta + Shade Indigo + Sun Cream"><i style="background:#FDF6EC"></i><i style="background:#1E293B"></i><i style="background:#1E293B"></i><i style="background:#9A3412"></i><i style="background:#D97706"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/hvac/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Shadeline Heating &amp; Cooling</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">hvac-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-landscaper" aria-labelledby="h-landscaper">
+      <div class="trade-head"><h2 id="h-landscaper">Landscaper</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="landscaper" data-score="8.91" data-search="tilth &amp; tine landscape charlotte, nc landscaper depth gauge + horizon bands piedmont earth bitter karla landscaper-a">
+        <a class="shots" href="../sites/landscaper/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Tilth &amp; Tine Landscape homepage in a new tab">
+          <img class="shot-desk" src="../sites/landscaper/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/landscaper/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Tilth &amp; Tine Landscape</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.91</span>
+          </div>
+          <p class="city">Landscaper · Charlotte, NC</p>
+          <p class="sig"><span class="label">Signature</span> Depth gauge + horizon bands</p>
+          <p class="thesis">Charlotte lawns fail in the red clay, not in the grass.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Bitter + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Piedmont Earth"><i style="background:#F5F0E8"></i><i style="background:#2A1A0E"></i><i style="background:#3B1F12"></i><i style="background:#C2593A"></i><i style="background:#2D4A2E"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/landscaper/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Tilth &amp; Tine Landscape</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">landscaper-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="landscaper" data-score="9.06" data-search="half inch landscape co. austin, tx landscaper zone schedule limestone + juniper + agave space grotesk albert sans landscaper-b">
+        <a class="shots" href="../sites/landscaper/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Half Inch Landscape Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/landscaper/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/landscaper/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Half Inch Landscape Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.06</span>
+          </div>
+          <p class="city">Landscaper · Austin, TX</p>
+          <p class="sig"><span class="label">Signature</span> Zone Schedule</p>
+          <p class="thesis">The page is an irrigation controller: every section is a zone with a run-time readout and a gallons-per-week number, and scrolling advances the schedule so the homeowner sees their yard…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Space Grotesk + Albert Sans</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Limestone + Juniper + Agave"><i style="background:#F4F1EB"></i><i style="background:#1A2B24"></i><i style="background:#0F1C18"></i><i style="background:#2E5A52"></i><i style="background:#C46D3B"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/landscaper/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Half Inch Landscape Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">landscaper-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="landscaper" data-score="9.02" data-search="square &amp; shade garden co. savannah, ga landscaper botanical plant marker live oak + lantern gold cormorant garamond albert sans landscaper-c">
+        <a class="shots" href="../sites/landscaper/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Square &amp; Shade Garden Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/landscaper/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/landscaper/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Square &amp; Shade Garden Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.02</span>
+          </div>
+          <p class="city">Landscaper · Savannah, GA</p>
+          <p class="sig"><span class="label">Signature</span> Botanical Plant Marker</p>
+          <p class="thesis">The page is a botanical garden index: every section is an embossed plant marker naming what thrives in Savannah, where it lives, and what light and season it needs, so homeowners trust…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Cormorant Garamond + Albert Sans</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Live Oak + Lantern Gold"><i style="background:#F2ECE4"></i><i style="background:#1A2418"></i><i style="background:#2E3B2C"></i><i style="background:#D4A855"></i><i style="background:#8B5E3C"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/landscaper/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Square &amp; Shade Garden Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">landscaper-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-mason" aria-labelledby="h-mason">
+      <div class="trade-head"><h2 id="h-mason">Mason</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="mason" data-score="8.94" data-search="soft joint masonry cincinnati, oh mason mortar joint progression lime cream + soft brick + iron ink manrope source sans 3 mason-a">
+        <a class="shots" href="../sites/mason/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Soft Joint Masonry homepage in a new tab">
+          <img class="shot-desk" src="../sites/mason/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/mason/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Soft Joint Masonry</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.94</span>
+          </div>
+          <p class="city">Mason · Cincinnati, OH</p>
+          <p class="sig"><span class="label">Signature</span> Mortar Joint Progression</p>
+          <p class="thesis">The page is the repointing sequence: every section is a course of work, and the mortar joint between them advances from raked-out gap to finished concave profile as you scroll.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Manrope + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Lime Cream + Soft Brick + Iron Ink"><i style="background:#f4efe6"></i><i style="background:#2b2520"></i><i style="background:#3d322c"></i><i style="background:#a04e38"></i><i style="background:#c76f4e"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/mason/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Soft Joint Masonry</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">mason-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="mason" data-score="8.9" data-search="flemish bond masonry baltimore, md mason flemish-bond test panel grid soot + baltimore red + brass barlow condensed karla mason-b">
+        <a class="shots" href="../sites/mason/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Flemish Bond Masonry homepage in a new tab">
+          <img class="shot-desk" src="../sites/mason/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/mason/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Flemish Bond Masonry</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.90</span>
+          </div>
+          <p class="city">Mason · Baltimore, MD</p>
+          <p class="sig"><span class="label">Signature</span> Flemish-Bond Test Panel Grid</p>
+          <p class="thesis">The page is the mortar analysis report: every section is a test panel on the wall, and the Flemish-bond grid is the layout that holds the evidence together.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Barlow Condensed + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Soot + Baltimore Red + Brass"><i style="background:#F2EBE0"></i><i style="background:#F2EBE0"></i><i style="background:#1A1815"></i><i style="background:#C9A66B"></i><i style="background:#B8432F"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/mason/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Flemish Bond Masonry</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">mason-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="mason" data-score="9.07" data-search="kilnside masonry st. louis, mo mason maker&#39;s-mark stamp kiln red + clay buff + soot young serif source sans 3 mason-c">
+        <a class="shots" href="../sites/mason/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Kilnside Masonry homepage in a new tab">
+          <img class="shot-desk" src="../sites/mason/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/mason/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Kilnside Masonry</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.07</span>
+          </div>
+          <p class="city">Mason · St. Louis, MO</p>
+          <p class="sig"><span class="label">Signature</span> Maker&#39;s-Mark Stamp</p>
+          <p class="thesis">The page is a kiln-fired brick map of St.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Young Serif + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Kiln Red + Clay Buff + Soot"><i style="background:#F4EDE4"></i><i style="background:#1A1410"></i><i style="background:#1E1814"></i><i style="background:#8B4513"></i><i style="background:#D9B98A"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/mason/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Kilnside Masonry</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">mason-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-mechanic" aria-labelledby="h-mechanic">
+      <div class="trade-head"><h2 id="h-mechanic">Mechanic</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="mechanic" data-score="9.02" data-search="line item auto repair lansing, mi mechanic repair order line graphite form + safety orange arvo source sans 3 mechanic-a">
+        <a class="shots" href="../sites/mechanic/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Line Item Auto Repair homepage in a new tab">
+          <img class="shot-desk" src="../sites/mechanic/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/mechanic/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Line Item Auto Repair</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.02</span>
+          </div>
+          <p class="city">Mechanic · Lansing, MI</p>
+          <p class="sig"><span class="label">Signature</span> Repair Order Line</p>
+          <p class="thesis">The page is the repair order form: each section writes a numbered line with a status chip and a labor clock, and the signature is the orange Your yes line that gates every repair line…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Arvo + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Graphite Form + Safety Orange"><i style="background:#F5F3EE"></i><i style="background:#1C1F23"></i><i style="background:#2B2E33"></i><i style="background:#D45A1F"></i><i style="background:#3A7D5C"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/mechanic/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Line Item Auto Repair</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">mechanic-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="mechanic" data-score="8.98" data-search="plain code auto repair billings, mt mechanic code-to-plain translator scan screen + signal green + bay steel syne figtree mechanic-b">
+        <a class="shots" href="../sites/mechanic/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Plain Code Auto Repair homepage in a new tab">
+          <img class="shot-desk" src="../sites/mechanic/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/mechanic/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Plain Code Auto Repair</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.98</span>
+          </div>
+          <p class="city">Mechanic · Billings, MT</p>
+          <p class="sig"><span class="label">Signature</span> Code-to-Plain Translator</p>
+          <p class="thesis">The page is the scan tool&#39;s translator: every section pairs a machine reading in signal green with one plain sentence underneath, and the signature is the blinking cursor that types the…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Syne + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Scan Screen + Signal Green + Bay Steel"><i style="background:#0D1117"></i><i style="background:#E8E4DC"></i><i style="background:#161B22"></i><i style="background:#3FB950"></i><i style="background:#F0883E"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/mechanic/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Plain Code Auto Repair</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">mechanic-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="mechanic" data-score="8.85" data-search="frost heave auto repair anchorage, ak mechanic car-year thermometer rail glacier blue + fireweed magenta + spruce green + snow paper bodoni moda source sans 3 mechanic-c">
+        <a class="shots" href="../sites/mechanic/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Frost Heave Auto Repair homepage in a new tab">
+          <img class="shot-desk" src="../sites/mechanic/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/mechanic/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Frost Heave Auto Repair</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.85</span>
+          </div>
+          <p class="city">Mechanic · Anchorage, AK</p>
+          <p class="sig"><span class="label">Signature</span> Car-Year Thermometer Rail</p>
+          <p class="thesis">The page is an Alaskan car-year magazine issue.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Bodoni Moda + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Glacier Blue + Fireweed Magenta + Spruce Green + Snow Paper"><i style="background:#F4F6F8"></i><i style="background:#1A2634"></i><i style="background:#0F1923"></i><i style="background:#3B7EA1"></i><i style="background:#C43A6B"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/mechanic/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Frost Heave Auto Repair</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">mechanic-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-painter" aria-labelledby="h-painter">
+      <div class="trade-head"><h2 id="h-painter">Painter</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="painter" data-score="9.04" data-search="cutline painting co. richmond, va painter coat schedule stripe primer + brick + navy sora outfit painter-a">
+        <a class="shots" href="../sites/painter/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Cutline Painting Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/painter/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/painter/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Cutline Painting Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.04</span>
+          </div>
+          <p class="city">Painter · Richmond, VA</p>
+          <p class="sig"><span class="label">Signature</span> Coat Schedule Stripe</p>
+          <p class="thesis">The page is the coat schedule: every section is one numbered step in the crew&#39;s process, stamped with its dry time and layered under a film-build stripe that thickens as you scroll.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Sora + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="primer + brick + navy"><i style="background:#F4F1EB"></i><i style="background:#1B2A3D"></i><i style="background:#121D2B"></i><i style="background:#B5432A"></i><i style="background:#D97B2A"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/painter/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Cutline Painting Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">painter-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="painter" data-score="9.07" data-search="drawdown painting co. raleigh, nc painter tint ticket + drawdown bar teal + ochre + parchment antonio karla painter-b">
+        <a class="shots" href="../sites/painter/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Drawdown Painting Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/painter/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/painter/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Drawdown Painting Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.07</span>
+          </div>
+          <p class="city">Painter · Raleigh, NC</p>
+          <p class="sig"><span class="label">Signature</span> Tint Ticket + Drawdown Bar</p>
+          <p class="thesis">The page is a paint lab&#39;s drawdown card: every section is a tint ticket printed with gallons, sheen, coverage and a sample range, and scrolling pulls the color bar across each card like…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Antonio + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Teal + Ochre + Parchment"><i style="background:#f4f1ea"></i><i style="background:#1a3c40"></i><i style="background:#1a3c40"></i><i style="background:#0f766e"></i><i style="background:#0f766e"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/painter/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Drawdown Painting Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">painter-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="painter" data-score="9.15" data-search="haint &amp; harbor paint co. charleston, sc painter facade + plaque charleston green + haint blue + plaster cormorant garamond source serif 4 painter-c">
+        <a class="shots" href="../sites/painter/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Haint &amp; Harbor Paint Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/painter/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/painter/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Haint &amp; Harbor Paint Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.15</span>
+          </div>
+          <p class="city">Painter · Charleston, SC</p>
+          <p class="sig"><span class="label">Signature</span> Facade + Plaque</p>
+          <p class="thesis">The page is a walk along a row of Charleston facades.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Cormorant Garamond + Source Serif 4</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Charleston Green + Haint Blue + Plaster"><i style="background:#f4efe6"></i><i style="background:#1a1c1e"></i><i style="background:#2d3a3e"></i><i style="background:#7fb3c4"></i><i style="background:#8b5e3c"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/painter/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Haint &amp; Harbor Paint Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">painter-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-pest" aria-labelledby="h-pest">
+      <div class="trade-head"><h2 id="h-pest">Pest Control</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="pest" data-score="8.8" data-search="sill plate pest co. wilmington, nc pest control station tag rail graphite + inspection paper + field green zilla slab source sans 3 pest-a">
+        <a class="shots" href="../sites/pest/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Sill Plate Pest Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/pest/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/pest/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Sill Plate Pest Co.</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.80</span>
+          </div>
+          <p class="city">Pest Control · Wilmington, NC</p>
+          <p class="sig"><span class="label">Signature</span> Station Tag Rail</p>
+          <p class="thesis">The page is the inspection clipboard: each section is a numbered station on a coastal house cross-section, and the signature is the finding tag (Seen / Not seen / Conducive) that fills…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Zilla Slab + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Graphite + Inspection Paper + Field Green"><i style="background:#F5F3EB"></i><i style="background:#2D3436"></i><i style="background:#1A2E22"></i><i style="background:#1B5E3B"></i><i style="background:#B8860B"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/pest/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Sill Plate Pest Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">pest-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="pest" data-score="9.02" data-search="trap count pest co. baton rouge, la pest control station ring + log row bayou green + log bone + cypress teal chivo outfit pest-b">
+        <a class="shots" href="../sites/pest/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Trap Count Pest Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/pest/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/pest/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Trap Count Pest Co.</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.02</span>
+          </div>
+          <p class="city">Pest Control · Baton Rouge, LA</p>
+          <p class="sig"><span class="label">Signature</span> Station Ring + Log Row</p>
+          <p class="thesis">The page is the monitoring log: every section is a row in the station record, and the signature is the numbered station ring that lights up as the log fills in.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Chivo + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Bayou Green + Log Bone + Cypress Teal"><i style="background:#F0EDE6"></i><i style="background:#F0EDE6"></i><i style="background:#1A332A"></i><i style="background:#4DB8A4"></i><i style="background:#4DB8A4"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/pest/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Trap Count Pest Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">pest-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="pest" data-score="8.96" data-search="lamppost pest &amp; termite new orleans, la pest control dusk clock + lamp glow indigo dusk + streetlamp gold + wrought iron eb garamond karla pest-c">
+        <a class="shots" href="../sites/pest/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Lamppost Pest &amp; Termite homepage in a new tab">
+          <img class="shot-desk" src="../sites/pest/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/pest/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Lamppost Pest &amp; Termite</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.96</span>
+          </div>
+          <p class="city">Pest Control · New Orleans, LA</p>
+          <p class="sig"><span class="label">Signature</span> Dusk Clock + Lamp Glow</p>
+          <p class="thesis">The page is the dusk window between 7:40 pm and 9:30 pm on a Formosan swarm evening.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>EB Garamond + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Indigo Dusk + Streetlamp Gold + Wrought Iron"><i style="background:#1A1F2E"></i><i style="background:#E8E4DC"></i><i style="background:#0F1219"></i><i style="background:#D4943A"></i><i style="background:#C97B3A"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/pest/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Lamppost Pest &amp; Termite</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">pest-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-plumber" aria-labelledby="h-plumber">
+      <div class="trade-head"><h2 id="h-plumber">Plumber</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="plumber" data-score="8.9" data-search="wrench &amp; wren plumbing indianapolis, in plumber brass valve tags on pipe rail limestone + navy + polished brass zilla slab karla plumber-a">
+        <a class="shots" href="../sites/plumber/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Wrench &amp; Wren Plumbing homepage in a new tab">
+          <img class="shot-desk" src="../sites/plumber/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/plumber/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Wrench &amp; Wren Plumbing</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.90</span>
+          </div>
+          <p class="city">Plumber · Indianapolis, IN</p>
+          <p class="sig"><span class="label">Signature</span> Brass Valve Tags on Pipe Rail</p>
+          <p class="thesis">The page is a copper pipe rail: every section hangs from it as a numbered brass tag, and scrolling fills the rail with color as each step of the visit clicks into place.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Zilla Slab + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Limestone + Navy + Polished Brass"><i style="background:#F4F1EB"></i><i style="background:#1B2A3D"></i><i style="background:#0E1A2B"></i><i style="background:#B8860B"></i><i style="background:#C44D2B"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/plumber/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Wrench &amp; Wren Plumbing</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">plumber-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="plumber" data-score="9.03" data-search="ledgerline plumbing pittsburgh, pa plumber ledger rule + status stamp iron + steel blue + copper signal ibm plex mono outfit plumber-b">
+        <a class="shots" href="../sites/plumber/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Ledgerline Plumbing homepage in a new tab">
+          <img class="shot-desk" src="../sites/plumber/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/plumber/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Ledgerline Plumbing</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.03</span>
+          </div>
+          <p class="city">Plumber · Pittsburgh, PA</p>
+          <p class="sig"><span class="label">Signature</span> Ledger Rule + Status Stamp</p>
+          <p class="thesis">The page is the field ledger: every section is a ruled entry row carrying a measurement, a status stamp and the next action, and the signature is the steel-blue rule that draws itself…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>IBM Plex Mono + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Iron + Steel Blue + Copper Signal"><i style="background:#F4F2ED"></i><i style="background:#E8E6E1"></i><i style="background:#1A1D21"></i><i style="background:#6B8A96"></i><i style="background:#D96A38"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/plumber/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Ledgerline Plumbing</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">plumber-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="plumber" data-score="8.84" data-search="thawhouse plumbing buffalo, ny plumber department masthead + page-number rail lake erie blue + furnace red + snow paper fraunces source sans 3 plumber-c">
+        <a class="shots" href="../sites/plumber/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Thawhouse Plumbing homepage in a new tab">
+          <img class="shot-desk" src="../sites/plumber/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/plumber/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Thawhouse Plumbing</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.84</span>
+          </div>
+          <p class="city">Plumber · Buffalo, NY</p>
+          <p class="sig"><span class="label">Signature</span> Department Masthead + Page-Number Rail</p>
+          <p class="thesis">The page is one issue of The Thaw Issue, a Buffalo winter magazine about houses and pipes.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Fraunces + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Lake Erie Blue + Furnace Red + Snow Paper"><i style="background:#F4F1EB"></i><i style="background:#1E2328"></i><i style="background:#0B2545"></i><i style="background:#B8372B"></i><i style="background:#D4880F"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/plumber/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Thawhouse Plumbing</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">plumber-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-pool" aria-labelledby="h-pool">
+      <div class="trade-head"><h2 id="h-pool">Pool Service</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="pool" data-score="8.82" data-search="tileline pool care tampa, fl pool service waterline visit log night water + cobalt tile sora karla pool-a">
+        <a class="shots" href="../sites/pool/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Tileline Pool Care homepage in a new tab">
+          <img class="shot-desk" src="../sites/pool/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/pool/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Tileline Pool Care</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.82</span>
+          </div>
+          <p class="city">Pool Service · Tampa, FL</p>
+          <p class="sig"><span class="label">Signature</span> Waterline Visit Log</p>
+          <p class="thesis">The page is the visit log: every section is a timestamped entry on a clipboard, and the signature is the waterline tile that draws down the margin as each step checks off.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Sora + Karla</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Night Water + Cobalt Tile"><i style="background:#E8EDF2"></i><i style="background:#F0F4F8"></i><i style="background:#0B1C2C"></i><i style="background:#00B4D8"></i><i style="background:#FF6B35"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/pool/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Tileline Pool Care</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">pool-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="pool" data-score="8.92" data-search="clear reading pool co. orlando, fl pool service gauge scale + test pad paper white + forest teal + ink navy dm mono figtree pool-b">
+        <a class="shots" href="../sites/pool/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Clear Reading Pool Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/pool/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/pool/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Clear Reading Pool Co.</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.92</span>
+          </div>
+          <p class="city">Pool Service · Orlando, FL</p>
+          <p class="sig"><span class="label">Signature</span> Gauge Scale + Test Pad</p>
+          <p class="thesis">The page is a test strip: every section is a pad that reads a value against its ideal band, and the signature is the gauge scale that fills as you scroll.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>DM Mono + Figtree</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Paper White + Forest Teal + Ink Navy"><i style="background:#f5f3ee"></i><i style="background:#1a2b3c"></i><i style="background:#1a2b3c"></i><i style="background:#2d6a4f"></i><i style="background:#d4a03c"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/pool/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Clear Reading Pool Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">pool-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="pool" data-score="8.88" data-search="low desert pool co. scottsdale, az pool service almanac thumb-index sonora sand + pool teal + terracotta signal crimson pro outfit pool-c">
+        <a class="shots" href="../sites/pool/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Low Desert Pool Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/pool/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/pool/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Low Desert Pool Co.</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.88</span>
+          </div>
+          <p class="city">Pool Service · Scottsdale, AZ</p>
+          <p class="sig"><span class="label">Signature</span> Almanac Thumb-Index</p>
+          <p class="thesis">The page is a desert pool almanac: every section is a month spread with a folio number and a thumb-index tab on the right edge, and the signature is the tab that slides out and lights up…</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Crimson Pro + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Sonora Sand + Pool Teal + Terracotta Signal"><i style="background:#F3E8D4"></i><i style="background:#2C1810"></i><i style="background:#1E293B"></i><i style="background:#2A7B6F"></i><i style="background:#B85C38"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/pool/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Low Desert Pool Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">pool-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="trade" id="t-roofer" aria-labelledby="h-roofer">
+      <div class="trade-head"><h2 id="h-roofer">Roofer</h2><span>3 HOMEPAGES</span></div>
+      <div class="grid">
+      <article class="card" data-trade="roofer" data-score="8.94" data-search="felt &amp; flashing roof co. wichita, ks roofer layer stack cross-section barn red + tar + cream barlow condensed outfit roofer-a">
+        <a class="shots" href="../sites/roofer/A/dist/index.html" target="_blank" rel="noopener" aria-label="Open Felt &amp; Flashing Roof Co. homepage in a new tab">
+          <img class="shot-desk" src="../sites/roofer/A/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/roofer/A/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">A</span>
+            <h3>Felt &amp; Flashing Roof Co.</h3>
+            <span class="badge" title="Passed at the round cap (8.8–8.99)">8.94</span>
+          </div>
+          <p class="city">Roofer · Wichita, KS</p>
+          <p class="sig"><span class="label">Signature</span> Layer Stack Cross-Section</p>
+          <p class="thesis">The page is a roof cross-section: each section is one layer in build order, and the left-edge diagram adds that layer as you scroll.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Barlow Condensed + Outfit</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Barn Red + Tar + Cream"><i style="background:#f5efe6"></i><i style="background:#1a1814"></i><i style="background:#2c1a16"></i><i style="background:#7a2e28"></i><i style="background:#d4a03c"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/roofer/A/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Felt &amp; Flashing Roof Co.</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">roofer-A</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="roofer" data-score="9.24" data-search="squarecount roofing fort worth, tx roofer pinned roof plan report white + pencil graphite + red pen + blueprint blue instrument sans public sans roofer-b">
+        <a class="shots" href="../sites/roofer/B/dist/index.html" target="_blank" rel="noopener" aria-label="Open Squarecount Roofing homepage in a new tab">
+          <img class="shot-desk" src="../sites/roofer/B/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/roofer/B/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">B</span>
+            <h3>Squarecount Roofing</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.24</span>
+          </div>
+          <p class="city">Roofer · Fort Worth, TX</p>
+          <p class="sig"><span class="label">Signature</span> Pinned Roof Plan</p>
+          <p class="thesis">The page is the sample inspection report Squarecount hands you.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>Instrument Sans + Public Sans</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Report White + Pencil Graphite + Red Pen + Blueprint Blue"><i style="background:#f6f4ef"></i><i style="background:#1b1f24"></i><i style="background:#1f252b"></i><i style="background:#c41e3a"></i><i style="background:#1f5fbf"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/roofer/B/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Squarecount Roofing</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">roofer-B</span>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-trade="roofer" data-score="9.02" data-search="hailward roofing oklahoma city, ok roofer month ring almanac storm slate + hail white + prairie gold eb garamond source sans 3 roofer-c">
+        <a class="shots" href="../sites/roofer/C/dist/index.html" target="_blank" rel="noopener" aria-label="Open Hailward Roofing homepage in a new tab">
+          <img class="shot-desk" src="../sites/roofer/C/qa/screens/1440-first.jpg" alt="" loading="lazy" decoding="async" width="1440" height="900">
+          <img class="shot-phone" src="../sites/roofer/C/qa/screens/390-first.jpg" alt="" loading="lazy" decoding="async" width="390" height="844">
+        </a>
+        <div class="body">
+          <div class="row">
+            <span class="variant">C</span>
+            <h3>Hailward Roofing</h3>
+            <span class="badge badge--top" title="Passed the 9.0 bar">9.02</span>
+          </div>
+          <p class="city">Roofer · Oklahoma City, OK</p>
+          <p class="sig"><span class="label">Signature</span> Month Ring Almanac</p>
+          <p class="thesis">The page is the year over central Oklahoma.</p>
+          <dl class="meta">
+            <div><dt>Type</dt><dd>EB Garamond + Source Sans 3</dd></div>
+            <div><dt>Palette</dt><dd><span class="swatches" title="Storm Slate + Hail White + Prairie Gold"><i style="background:#e8edf2"></i><i style="background:#1a2430"></i><i style="background:#2c3642"></i><i style="background:#d4a03c"></i><i style="background:#d4a03c"></i></span></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="../sites/roofer/C/dist/index.html" target="_blank" rel="noopener">Open site<span class="sr"> for Hailward Roofing</span>&nbsp;<span aria-hidden="true">↗</span></a>
+            <span class="id">roofer-C</span>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+  </div>
+  <section class="trade" id="ranked" hidden aria-label="All homepages by score"><div class="grid"></div></section>
+  <p class="empty" id="empty" hidden>No homepage matches that search.</p>
+</main>
+
+<footer><div class="wrap">Fictional businesses for sales demos. Built 2026-10-27 by <code>node tools/build-showcase.mjs</code>. Gold score = passed the 9.0 bar; grey = passed at the round cap (8.8–8.99).</div></footer>
+
+<script>
+(() => {
+  const q = document.getElementById('q'), sort = document.getElementById('sort'), topBtn = document.getElementById('topOnly');
+  const grouped = document.getElementById('grouped'), ranked = document.getElementById('ranked'), rankedGrid = ranked.querySelector('.grid');
+  const empty = document.getElementById('empty'), chips = document.querySelector('.chips');
+  const cards = [...grouped.querySelectorAll('.card')];
+  const homes = new Map(cards.map(c => [c, c.parentElement]));
+  function apply() {
+    const term = q.value.trim().toLowerCase(), top = topBtn.getAttribute('aria-pressed') === 'true', byScore = sort.value === 'score';
+    let shown = 0;
+    for (const c of cards) {
+      const ok = (!term || c.dataset.search.includes(term)) && (!top || +c.dataset.score >= 9);
+      c.hidden = !ok; if (ok) shown++;
+    }
+    if (byScore) {
+      [...cards].sort((a, b) => b.dataset.score - a.dataset.score).forEach(c => rankedGrid.appendChild(c));
+    } else {
+      cards.forEach(c => homes.get(c).appendChild(c));
+    }
+    grouped.hidden = byScore; ranked.hidden = !byScore; chips.hidden = byScore;
+    grouped.querySelectorAll('section.trade').forEach(s => { s.hidden = !s.querySelector('.card:not([hidden])'); });
+    empty.hidden = shown > 0;
+  }
+  q.addEventListener('input', apply);
+  sort.addEventListener('change', apply);
+  topBtn.addEventListener('click', () => { topBtn.setAttribute('aria-pressed', topBtn.getAttribute('aria-pressed') !== 'true'); apply(); });
+})();
+</script>
+</body>
+</html>
