@@ -253,6 +253,7 @@ html.lenis, html.lenis body { height: auto; }
 
 @property --sw-hour { syntax: "<number>"; inherits: true; initial-value: 12; }
 @property --local { syntax: "<number>"; inherits: true; initial-value: 0.6; }
+@property --score { syntax: "<number>"; inherits: true; initial-value: 0.15; }
 
 :root {
   /* Fonts */
@@ -356,6 +357,8 @@ button { background: none; border: 0; cursor: pointer; }
 
 :focus-visible { outline: 3px solid var(--focus, #9A3412); outline-offset: 3px; }
 
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
@@ -440,10 +443,23 @@ h3 { font-size: var(--fs-3); }
   background: radial-gradient(circle, #FFFBEB 0 46%, rgba(255,251,235,.5) 52%, rgba(255,251,235,0) 70%);
 }
 .plate__art { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; }
+/* Duotone grade: amber wash on the sunlit side, navy halftone on the shaded side, a hot seam between.
+   The seam angle is the plate's own hour (--ph) leaning with its band's scroll position (--local). */
+.plate { --ang: calc(58deg + (var(--ph, 12) - 5) * 3.2deg + var(--local) * 16deg); }
 .plate::after {
   content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  background: linear-gradient(calc(64deg + (var(--ph, 12) - 5) * 3deg + (var(--sw-hour) - 12) * 2.5deg),
-    rgba(245,158,11,.14) 0 54%, rgba(30,41,59,.34) 54% 100%);
+  background: #4A6FA5;
+  mix-blend-mode: color;
+  -webkit-mask-image: linear-gradient(var(--ang), transparent 54%, #000 54%);
+  mask-image: linear-gradient(var(--ang), transparent 54%, #000 54%);
+}
+.plate__seam {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background:
+    radial-gradient(circle, rgba(15,23,42,.16) 0 .8px, transparent 1.3px) 0 0 / 4px 4px,
+    linear-gradient(var(--ang),
+      rgba(245,158,11,.16) 0 calc(54% - 2px), #FDE68A calc(54% - 2px) calc(54% + 1px),
+      rgba(15,23,42,.3) calc(54% + 1px) 100%);
 }
 .plate img {
   position: absolute; inset: 0; z-index: 1;
@@ -451,6 +467,7 @@ h3 { font-size: var(--fs-3); }
   filter: saturate(.92) contrast(1.06) sepia(.1);
 }
 .plate img[src*="placeholder-"] { opacity: 0; }
+.plate__art { filter: saturate(1.08) contrast(1.04); }
 
 .plate--hero { --sky: linear-gradient(170deg, #FFFBEB 0%, #FDE68A 34%, #F59E0B 100%); }
 .plate--dawn { --sky: linear-gradient(180deg, #CBD5E1 0%, #FDE68A 58%, #FB923C 100%); }
@@ -462,7 +479,7 @@ h3 { font-size: var(--fs-3); }
 
 /* ── Shade edge: the diagonal that moves with the hour ── */
 
-[data-hook="shade-hour"], .hero { --local: clamp(-1, calc((var(--sw-hour) - 14) / 9), 1); }
+[data-hook="shade-hour"], .hero, [data-seam] { --local: clamp(-1, calc((var(--sw-hour) - 14) / 9), 1); }
 .shade-edge {
   --ca: calc(var(--cut) * (1 + var(--local)) / 2);
   --cb: calc(var(--cut) * (1 - var(--local)) / 2);
@@ -478,6 +495,12 @@ h3 { font-size: var(--fs-3); }
   transition: transform var(--dur-ui) var(--ease-out);
 }
 .site-header.is-hidden { transform: translateY(-100%); }
+@media (min-width: 900px) { .site-header.is-hidden { transform: none; } }
+/* Sun track: the header's bottom rule fills 05:00 → 23:00 with the page clock */
+.sw-motion .site-header::after {
+  content: ""; position: absolute; left: 0; bottom: -1.5px; height: 3px;
+  width: calc((var(--sw-hour) - 5) / 18 * 100%); background: #D97706;
+}
 .header__inner {
   display: flex; align-items: center; justify-content: space-between; gap: var(--s-5);
   height: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: var(--s-4);
@@ -509,6 +532,8 @@ h3 { font-size: var(--fs-3); }
   font-size: var(--fs--1); background: #1E293B; color: #FDE68A; border-radius: 2px;
 }
 .sunclock .i { width: 14px; height: 14px; }
+.sunclock__label { color: #E7DCC8; text-transform: uppercase; letter-spacing: .08em; font-size: .7rem; }
+.sunclock [data-sunclock] { font-size: .9375rem; color: #FDF6EC; min-width: 5ch; }
 
 .menu-btn { display: grid; place-items: center; width: 48px; height: 48px; }
 .menu-btn .i { width: 26px; height: 26px; }
@@ -552,6 +577,12 @@ main { padding-top: 0; }
 }
 .hero__sun { position: relative; }
 .hero__sun .plate { position: absolute; inset: 0; aspect-ratio: auto; height: 100%; }
+.hero__sun .plate img { object-position: 50% 70%; }
+@media (max-width: 899px) {
+  .hero { grid-template-rows: calc(19svh + var(--header-h)) 1fr; }
+  .hero__sun .plate { inset: var(--header-h) 0 0 0; height: auto; }
+  .hero__sun .plate__art { inset: auto 0 -36px 0; height: calc(100% + 36px); }
+}
 .hero__reading {
   position: absolute; z-index: 2; right: var(--s-4); top: var(--s-4);
   display: none; justify-items: end; gap: 2px;
@@ -606,6 +637,7 @@ main { padding-top: 0; }
 .band p { max-width: 52ch; }
 .band__fixline { font-size: var(--fs-2); font-weight: 500; margin-block: var(--s-3) var(--s-5); }
 .band__fix .plate { margin-bottom: var(--s-5); }
+.band__sun .plate { margin-top: var(--s-6); }
 
 .band--split .band__sun { padding: var(--s-9) var(--s-4) var(--s-6); }
 .band--split .band__shade {
@@ -628,13 +660,12 @@ main { padding-top: 0; }
     padding: var(--s-10) var(--edge) var(--s-10) calc(var(--cut) + var(--s-8));
     display: flex; align-items: center;
   }
-  .band--flip { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
-  .band--flip .band__shade {
-    order: -1; margin: 0 calc(-1 * var(--cut)) 0 0;
-    clip-path: polygon(0 0, calc(100% - var(--cb)) 0, calc(100% - var(--ca)) 100%, 0 100%);
-    padding: var(--s-10) calc(var(--cut) + var(--s-8)) var(--s-10) var(--edge);
-  }
-  .band--flip .band__sun { padding: var(--s-11) var(--edge) var(--s-11) calc(var(--cut) + var(--s-4)); }
+  .band--noon { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+  .band--noon .band__sun { align-self: start; padding-block: var(--s-10); }
+  .band--noon .band__shade { padding-block: var(--s-10); }
+  .band--noon .hotday { gap: 0; }
+  .band--noon .hotday li { font-size: var(--fs-2); padding-block: var(--s-4); border-bottom: 1.5px solid var(--rule); }
+  .band--noon .hotday li:first-child { border-top: 1.5px solid var(--rule); }
 }
 
 .hotday { counter-reset: hd; display: grid; gap: var(--s-3); margin-block: var(--s-4) var(--s-5); }
@@ -661,7 +692,8 @@ main { padding-top: 0; }
   .wide__shade { margin-inline: 0; }
 }
 @media (min-width: 900px) {
-  .band--wide { padding-block: var(--s-10); }
+  .band--wide { padding-block: var(--s-10) 0; }
+  .wide__pair { margin-bottom: 0; }
   .wide__head { grid-template-columns: auto 1fr; align-items: end; gap: var(--s-7); }
   .wide__pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); margin-top: calc(-1 * var(--s-10)); position: relative; z-index: 3; }
   .wide__sun { position: relative; z-index: 1; padding: calc(var(--s-8) + var(--s-6)) calc(var(--cut) + var(--s-4)) var(--s-6) 0; }
@@ -723,17 +755,29 @@ main { padding-top: 0; }
   width: 100%; min-height: 48px; padding-inline: var(--s-3);
   background: #FFFDF8; color: #1E293B; border: 1.5px solid #8A7B66; border-radius: 2px; font-size: 1rem;
 }
+/* The verdict card is a shade-line frame: the seam swings toward Replace as the score climbs. */
 .sorter__result {
-  --s: var(--score, .15);
+  --x: calc(var(--score) * 100%);
+  position: relative; isolation: isolate;
   padding: calc(var(--s-5) + 28px) var(--s-5) var(--s-5); color: #FDF6EC; display: grid; gap: var(--s-2);
-  background: linear-gradient(calc(80deg + var(--s) * 30deg), #1E293B 0 58%, #172033 58%);
+  background: #24324B;
   clip-path: polygon(0 28px, 100% 0, 100% 100%, 0 100%);
+}
+.sorter__result > :not(.sorter__seam) { position: relative; z-index: 1; }
+.sorter__seam {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    linear-gradient(105deg, rgba(245,158,11,.1) 0 calc(var(--x) + 8% - 2px), #FDE68A calc(var(--x) + 8% - 2px) calc(var(--x) + 8% + 1px), transparent calc(var(--x) + 8% + 1px)),
+    linear-gradient(105deg, transparent 0 calc(var(--x) + 8%), #111A2C calc(var(--x) + 8%));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sorter__result { transition: --score var(--dur-story) var(--ease-io); }
 }
 .sorter__ends { display: flex; justify-content: space-between; font-size: var(--fs--1); color: #E7DCC8; }
 .sorter__meter { height: 8px; background: linear-gradient(90deg, #FDE68A, #F59E0B 50%, #9A3412); position: relative; margin-top: var(--s-3); }
 .sorter__meter span {
   position: absolute; top: -5px; width: 4px; height: 18px; background: #FDF6EC;
-  left: calc(var(--score, .15) * 100%); transition: left var(--dur-page) var(--ease-out);
+  left: calc(var(--score) * 100%);
 }
 .sorter__verdict { display: flex; align-items: baseline; gap: var(--s-3); }
 .sorter__verdict .mono { font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: #FDE68A; }
@@ -902,6 +946,10 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
 /* ── Motion ────────────────────────────────────────────── */
 
 .sw-motion .hero { animation: shade-in 900ms var(--ease-io) both; }
+/* Frames open along the shade line, not a plain fade */
+html.sw-motion [data-reveal="clip"] { transition: clip-path var(--dur-story) var(--ease-io); }
+html.sw-motion [data-reveal="clip"]:not(.is-in) { clip-path: polygon(0 0, 0 0, -40% 100%, -40% 100%); }
+html.sw-motion [data-reveal="clip"].is-in { clip-path: polygon(0 0, 140% 0, 100% 100%, -40% 100%); }
 @keyframes shade-in { from { --local: -1; } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -916,7 +964,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
 </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="17" x2="15" y2="17"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
@@ -943,7 +991,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
       </ul>
     </nav>
     <div class="header__cta">
-      <span class="sunclock mono" aria-hidden="true"><svg class="i"><use href="#i-sun"/></svg><span data-sunclock>05:00</span></span>
+      <span class="sunclock mono" aria-hidden="true"><svg class="i"><use href="#i-sun"/></svg><span class="sunclock__label">Sun</span><span data-sunclock>05:00</span></span>
       <span class="header__hours mono"><span data-open-now>Mon–Fri 5:30 am – 7 pm · Sat 6 am – 4 pm · Sun 7 am – 1 pm</span></span>
       <a class="btn btn-call btn--primary btn--sm" href="tel:+16025550106"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (602) 555-0106</span></a>
     </div>
@@ -987,6 +1035,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
           <g fill="#B79A72"><circle cx="40" cy="340" r="3"/><circle cx="480" cy="350" r="4"/><circle cx="520" cy="330" r="3"/><circle cx="70" cy="370" r="4"/><circle cx="300" cy="385" r="3"/></g>
         </svg>
         <img src="media/placeholder-equip-condensers.jpg" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="equip-condensers" data-slot="hero" alt="Two matched condensers in a desert side yard">
+        <span class="plate__seam" aria-hidden="true"></span>
       </figure>
       <p class="hero__reading mono" aria-hidden="true"><span>Shade line</span><b data-sunclock>12:00</b></p>
     </div>
@@ -1006,7 +1055,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
 
   <!-- 2. 05:00 · t-paper · split band, plate right -->
   <section class="band band--split t-paper" id="day" data-hook="shade-hour" data-hour="5" aria-labelledby="h-05">
-    <div class="band__sun" data-reveal>
+    <div class="band__sun">
       <p class="band__clock"><span class="hour-stamp">05:00</span><span class="band__zone"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg> Problem</span></p>
       <h2 id="h-05">By noon, a flat roof is no place to swap a unit.</h2>
       <p>Rooftop package units sit on black membrane in full sun. Crane lifts, curb seals and electrical all get slower and riskier as the deck heats up.</p>
@@ -1033,6 +1082,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
             <path d="M296 206l20-6" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>
           </svg>
           <img src="media/placeholder-crew-kneeling.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="crew-kneeling" data-slot="story-1" alt="Technician kneeling at an outdoor unit">
+          <span class="plate__seam" aria-hidden="true"></span>
         </figure>
         <a class="btn btn--primary" href="#contact" data-service="Rooftop units">Price it: rooftop unit</a>
       </div>
@@ -1042,7 +1092,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
   <!-- 3. 10:00 · t-mid · wide plate, problem/fix under it -->
   <section class="band band--wide t-mid" data-hook="shade-hour" data-hour="10" aria-labelledby="h-10">
     <div class="container">
-      <div class="wide__head" data-reveal>
+      <div class="wide__head">
         <span class="hour-stamp mono">10:00</span>
         <h2 id="h-10">After the haboob, the coil needs a rinse, not a replacement.</h2>
       </div>
@@ -1060,6 +1110,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
             <g fill="#FFFBEB" opacity=".9"><circle cx="460" cy="120" r="5"/><circle cx="500" cy="170" r="4"/><circle cx="430" cy="210" r="3"/><circle cx="540" cy="90" r="4"/><circle cx="120" cy="110" r="4"/></g>
           </svg>
           <img src="media/placeholder-process-coil-rinse.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-coil-rinse" data-slot="story-2" alt="Condenser coil rinsed with a hose after a dust storm">
+          <span class="plate__seam" aria-hidden="true"></span>
         </figure>
       </div>
       <div class="wide__pair">
@@ -1067,17 +1118,17 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
           <p class="band__zone"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg> Problem</p>
           <p>The unit runs but the air is barely cool. Dust and cottonwood fluff pack the coil, so the condenser can't shed heat.</p>
         </div>
-        <div class="wide__shade shade-edge" data-reveal>
+        <div class="wide__shade shade-edge">
           <p class="band__zone"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shade"/></svg> Fix</p>
-          <p>Low-pressure rinse and a soft brush. Most coils come back with water, not a new system.</p>
-          <p class="price-chip mono"><span>Monsoon storm check</span> <b>$129–$219</b> <span class="sample-tag">Sample pricing</span></p>
+          <p>Low-pressure rinse and a soft brush. Most coils come back with water, not a new system. The rinse is part of every monsoon storm check.</p>
+          <p class="price-chip mono"><span>Storm check, coil rinse included</span> <b>$129–$219</b> <span class="sample-tag">Sample pricing</span></p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 4. Break · t-deep · full-bleed dusk plate -->
-  <section class="break t-deep" aria-label="Phoenix at dusk">
+  <section class="break t-deep" data-seam aria-label="Phoenix at dusk">
     <div class="break__frame" data-reveal="clip">
       <figure class="frame plate plate--dusk" style="--ph:19" data-fallback="Sunset over flat Phoenix rooftops">
         <svg class="plate__art" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
@@ -1087,9 +1138,10 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
           <g fill="#FDE68A" opacity=".8"><rect x="350" y="312" width="10" height="12"/><rect x="760" y="300" width="10" height="12"/><rect x="980" y="318" width="10" height="12"/></g>
         </svg>
         <img src="media/placeholder-weather-desert-sunset.jpg" width="1170" height="658" loading="lazy" decoding="async" data-photo="weather-desert-sunset" data-slot="break" alt="Sunset over flat Phoenix rooftops">
+        <span class="plate__seam" aria-hidden="true"></span>
       </figure>
     </div>
-    <p class="break__line" data-reveal><span class="mono">19:42</span> The sun is down. The stucco is still giving back the day's heat.</p>
+    <p class="break__line"><span class="mono">19:42</span> The sun is down. The stucco is still giving back the day's heat.</p>
   </section>
 
   <!-- 5. Tool · t-paper · repair or replace sorter -->
@@ -1100,7 +1152,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
         <h2 id="h-sorter">Repair or replace, in four answers.</h2>
         <p>If it can be fixed, we'll tell you what and how much before we touch anything. This sorter gives you the same first read we would.</p>
       </div>
-      <form class="sorter card" data-sorter aria-label="Repair or replace sorter">
+      <form class="sorter card" data-sorter data-verdict="repair" aria-label="Repair or replace sorter">
         <div class="sorter__inputs">
           <label class="field"><span class="field__label">System age</span>
             <select name="age"><option value="0">Under 5 years</option><option value="1" selected>5–12 years</option><option value="2">13+ years</option></select></label>
@@ -1112,6 +1164,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
             <select name="repairs"><option value="0" selected>None</option><option value="1">One</option><option value="2">Two or more</option></select></label>
         </div>
         <div class="sorter__result" aria-live="polite" data-sorter-result>
+          <span class="sorter__seam" aria-hidden="true"></span>
           <p class="sorter__verdict"><span class="mono">Our read</span> <b data-sorter-verdict>Repair it</b></p>
           <p class="sorter__reason" data-sorter-reason>A young system with a small repair is almost always worth fixing.</p>
           <div class="sorter__meter" aria-hidden="true"><span data-sorter-bar></span></div>
@@ -1122,12 +1175,30 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
     </div>
   </section>
 
-  <!-- 6. 14:00 · t-accent · split band, plate left -->
-  <section class="band band--split band--flip t-accent" data-hook="shade-hour" data-hour="14" aria-labelledby="h-14">
-    <div class="band__sun" data-reveal>
+  <!-- 6. 14:00 · t-accent · problem + plate left, fix right -->
+  <section class="band band--split band--noon t-accent" data-hook="shade-hour" data-hour="14" aria-labelledby="h-14">
+    <div class="band__sun">
       <p class="band__clock"><span class="hour-stamp">14:00</span><span class="band__zone"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg> Problem</span></p>
       <h2 id="h-14">115° outside. The thermostat says 86° and climbing.</h2>
       <p>Peak afternoon is when a tired capacitor or a frozen coil gives up. The house heats a degree every few minutes.</p>
+      <figure class="frame plate plate--noon" style="--ph:14" data-fallback="Stucco block house with a unit on the flat roof" data-reveal="clip">
+        <svg class="plate__art" viewBox="0 0 600 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+          <rect x="0" y="320" width="600" height="80" fill="#D6B98C"/>
+          <rect x="110" y="170" width="380" height="152" fill="#F1D9B5"/>
+          <rect x="100" y="158" width="400" height="16" fill="#E2C49A"/>
+          <polygon points="300,174 490,174 490,322 360,322" fill="#C9A77C" opacity=".55"/>
+          <rect x="150" y="214" width="70" height="56" fill="#334155"/><rect x="380" y="214" width="70" height="56" fill="#334155"/>
+          <path d="M185 214v56M150 242h70M415 214v56M380 242h70" stroke="#E2C49A" stroke-width="4"/>
+          <rect x="272" y="236" width="56" height="86" fill="#9A3412"/>
+          <use href="#p-unit" x="300" y="78" width="110" height="88"/>
+          <path d="M270 160v-30h30" stroke="#94A3B8" stroke-width="6" fill="none"/>
+          <polygon points="490,322 600,322 600,360 560,360" fill="#1E293B" opacity=".2"/>
+          <g stroke="#FFFBEB" stroke-width="3" fill="none" opacity=".7" stroke-linecap="round"><path d="M318 60q8-10 0-20t0-20"/><path d="M350 62q8-10 0-20t0-20"/><path d="M382 60q8-10 0-20t0-20"/></g>
+          <path d="M40 320v-50q0-14 14-14t14 14v50M30 290h10M68 280h10" stroke="#4D7C0F" stroke-width="10" fill="none" stroke-linecap="round"/>
+        </svg>
+        <img src="media/placeholder-home-desert-stucco.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="home-desert-stucco" data-slot="story-3" alt="Stucco block house with a unit on the flat roof">
+        <span class="plate__seam" aria-hidden="true"></span>
+      </figure>
     </div>
     <div class="band__shade shade-edge">
       <div class="band__fix">
@@ -1138,23 +1209,6 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
           <li>Set the fan to ON to help a frozen coil thaw.</li>
           <li>Never pull the disconnect yourself. Call us.</li>
         </ol>
-        <figure class="frame plate plate--noon" style="--ph:14" data-fallback="Stucco block house with a unit on the flat roof" data-reveal="clip">
-          <svg class="plate__art" viewBox="0 0 600 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-            <rect x="0" y="320" width="600" height="80" fill="#D6B98C"/>
-            <rect x="110" y="170" width="380" height="152" fill="#F1D9B5"/>
-            <rect x="100" y="158" width="400" height="16" fill="#E2C49A"/>
-            <polygon points="300,174 490,174 490,322 360,322" fill="#C9A77C" opacity=".55"/>
-            <rect x="150" y="214" width="70" height="56" fill="#334155"/><rect x="380" y="214" width="70" height="56" fill="#334155"/>
-            <path d="M185 214v56M150 242h70M415 214v56M380 242h70" stroke="#E2C49A" stroke-width="4"/>
-            <rect x="272" y="236" width="56" height="86" fill="#9A3412"/>
-            <use href="#p-unit" x="300" y="78" width="110" height="88"/>
-            <path d="M270 160v-30h30" stroke="#94A3B8" stroke-width="6" fill="none"/>
-            <polygon points="490,322 600,322 600,360 560,360" fill="#1E293B" opacity=".2"/>
-            <g stroke="#FFFBEB" stroke-width="3" fill="none" opacity=".7" stroke-linecap="round"><path d="M318 60q8-10 0-20t0-20"/><path d="M350 62q8-10 0-20t0-20"/><path d="M382 60q8-10 0-20t0-20"/></g>
-            <path d="M40 320v-50q0-14 14-14t14 14v50M30 290h10M68 280h10" stroke="#4D7C0F" stroke-width="10" fill="none" stroke-linecap="round"/>
-          </svg>
-          <img src="media/placeholder-home-desert-stucco.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="home-desert-stucco" data-slot="story-3" alt="Stucco block house with a unit on the flat roof">
-        </figure>
         <a class="btn btn-call btn--primary" href="tel:+16025550106"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (602) 555-0106</span></a>
       </div>
     </div>
@@ -1239,7 +1293,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
 
   <!-- 8. Reviews · t-mid · sunlit ledger / shaded cards -->
   <section class="reviews band t-mid" id="reviews" data-hook="shade-hour" data-hour="16" aria-labelledby="h-rev">
-    <div class="band__sun reviews__ledger" data-reveal>
+    <div class="band__sun reviews__ledger">
       <p class="kicker mono">From homeowners</p>
       <h2 id="h-rev">What they said once we came down.</h2>
       <p class="reviews__score"><span class="reviews__num">4.9</span><span class="mono">389 reviews</span> <span class="sample-tag">Sample rating</span></p>
@@ -1280,7 +1334,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
     <div class="container dial">
       <div class="dial__text">
         <p class="dial__hour"><span class="sr-only">18:00. </span><span aria-hidden="true">18<span>:00</span></span></p>
-        <h2 id="h-18" data-reveal>The storm cell passes. Check the unit before the next one.</h2>
+        <h2 id="h-18">The storm cell passes. Check the unit before the next one.</h2>
         <div class="dial__pair">
           <div>
             <p class="band__zone"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg> Problem</p>
@@ -1308,6 +1362,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
           <path d="M290 40l-24 70h22l-18 64" stroke="#FDE68A" stroke-width="5" fill="none" stroke-linejoin="round" opacity=".85"/>
         </svg>
         <img src="media/placeholder-process-drain-line.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-drain-line" data-slot="story-4" alt="Condensate drain line with a cleanout beside the outdoor unit">
+        <span class="plate__seam" aria-hidden="true"></span>
       </figure>
     </div>
   </section>
@@ -1328,7 +1383,7 @@ form.leadform { display: grid; gap: var(--s-4); box-shadow: 10px 10px 0 #E7DCC8;
         </form>
         <p class="area__list">Phoenix, Tempe, Glendale, Chandler, Peoria, Paradise Valley and Gilbert.</p>
       </div>
-      <div class="area__hours" data-reveal>
+      <div class="area__hours">
         <p class="kicker mono">Hours: <span data-open-now>Mon–Fri 5:30 am – 7 pm · Sat 6 am – 4 pm · Sun 7 am – 1 pm</span></p>
         <dl class="hours"><div><dt>Mon</dt><dd>5:30 am – 7 pm</dd></div><div><dt>Tue</dt><dd>5:30 am – 7 pm</dd></div><div><dt>Wed</dt><dd>5:30 am – 7 pm</dd></div><div><dt>Thu</dt><dd>5:30 am – 7 pm</dd></div><div><dt>Fri</dt><dd>5:30 am – 7 pm</dd></div><div><dt>Sat</dt><dd>6 am – 4 pm</dd></div><div><dt>Sun</dt><dd>7 am – 1 pm</dd></div></dl>
       </div>
