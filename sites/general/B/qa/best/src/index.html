@@ -1,0 +1,375 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="header t-light" data-header>
+  <div class="header__inner">
+    <a class="header__logo" href="#hero" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav class="header__nav" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#proof">Reviews</a>
+      <a href="#contact">Price it</a>
+    </nav>
+    <div class="header__actions">
+      [[tel]]
+      [[quote Kitchens btn-primary|Price it]]
+    </div>
+    <button class="header__menu-btn" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      [[i menu]]
+    </button>
+  </div>
+</header>
+
+<div class="menu" data-menu id="menu" aria-hidden="true">
+  <nav class="menu__nav" aria-label="Mobile">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#proof">Reviews</a>
+    <a href="#contact">Price it</a>
+    [[tel]]
+  </nav>
+  <button class="menu__close" data-menu-btn aria-label="Close menu">[[i x]]</button>
+</div>
+
+<main id="main">
+
+  <!-- #1 hero -->
+  <section id="hero" class="section t-light split-50" data-sw-signature data-split="lines">
+    <div class="split-50__content">
+      <p class="kicker">{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
+      <h1>{{biz.city}} remodeling budgets, open line by line.</h1>
+      <p class="lead">Every trade's cost on its own line. Our fee and the contingency shown before work starts.</p>
+      <p class="proof-line"><span data-open-now>{{hours|today}}</span> · {{biz.areas.0}}, {{biz.areas.1}}, {{biz.areas.2}} · {{proof.rating}} ★ [[sample Sample rating]]</p>
+      <div class="btn-row">
+        [[call btn-secondary]]
+        [[quote Kitchens btn-primary]]
+      </div>
+    </div>
+    <div class="split-50__media ledger-hero">
+      <div class="ledger-sample">
+        <div class="ledger-sample__head">Sample budget — Kitchen remodel</div>
+        <div class="ledger-sample__row"><span>Framing &amp; drywall</span><span>18%</span></div>
+        <div class="ledger-sample__row"><span>Electrical &amp; plumbing</span><span>22%</span></div>
+        <div class="ledger-sample__row"><span>Cabinets &amp; counters</span><span>28%</span></div>
+        <div class="ledger-sample__row"><span>Flooring &amp; tile</span><span>12%</span></div>
+        <div class="ledger-sample__row"><span>{{biz.short}} fee</span><span>10%</span></div>
+        <div class="ledger-sample__row"><span>Contingency</span><span>10%</span></div>
+        <div class="ledger-sample__total"><span>Total</span><span>100%</span></div>
+      </div>
+      [[img hero|class="ledger-hero__bg" eager]]
+    </div>
+  </section>
+
+  <!-- #2 services -->
+  <section id="services" class="section t-light ledger-grid" data-hook="services">
+    <div class="ledger-grid__head">
+      <h2>Services, line by line</h2>
+      <p class="section-lead">Each service priced on its own row. Tap any line to start a quote.</p>
+    </div>
+    <div class="ledger-list">
+      <div class="ledger-group">
+        <h3 class="ledger-group__head">Structural</h3>
+        <!-- each services 0:3 -->
+        <div class="ledger-row" data-ledger-pct="18">
+          <div class="ledger-row__content">
+            <h4>{{.name}}</h4>
+            <p>{{.blurb}}</p>
+            [[quote {{.short}} btn-text|Price this →]]
+          </div>
+          <div class="ledger-row__pct" data-count aria-hidden="true"></div>
+        </div>
+        <!-- /each -->
+      </div>
+      <div class="ledger-rule" aria-hidden="true"></div>
+      <div class="ledger-group">
+        <h3 class="ledger-group__head">Finishes</h3>
+        <!-- each services 3:6 -->
+        <div class="ledger-row" data-ledger-pct="22">
+          <div class="ledger-row__content">
+            <h4>{{.name}}</h4>
+            <p>{{.blurb}}</p>
+            [[quote {{.short}} btn-text|Price this →]]
+          </div>
+          <div class="ledger-row__pct" data-count aria-hidden="true"></div>
+        </div>
+        <!-- /each -->
+      </div>
+      <div class="ledger-rule" aria-hidden="true"></div>
+      <div class="ledger-group">
+        <h3 class="ledger-group__head">Specialty</h3>
+        <!-- each services 6:9 -->
+        <div class="ledger-row" data-ledger-pct="12">
+          <div class="ledger-row__content">
+            <h4>{{.name}}</h4>
+            <p>{{.blurb}}</p>
+            [[quote {{.short}} btn-text|Price this →]]
+          </div>
+          <div class="ledger-row__pct" data-count aria-hidden="true"></div>
+        </div>
+        <!-- /each -->
+      </div>
+    </div>
+  </section>
+
+  <!-- #3 budget-tool -->
+  <section id="budget-tool" class="section t-deep stack-center" data-hook="estimator" data-ledger-pct="22">
+    <h2>Where your budget goes</h2>
+    <p class="section-lead">Pick a project type and size. See typical cost shares for {{biz.city}}.</p>
+    <div class="estimator" data-estimator>
+      <div class="estimator__controls">
+        <label class="estimator__label">Project type
+          <select data-est-type>
+            <option value="basement">Basement finishing</option>
+            <option value="kitchen">Kitchen remodel</option>
+            <option value="bathroom">Bathroom remodel</option>
+            <option value="addition">Home addition</option>
+          </select>
+        </label>
+        <label class="estimator__label">Size
+          <select data-est-size>
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </label>
+      </div>
+      <div class="estimator__output" aria-live="polite">
+        <div class="estimator__range" data-est-range></div>
+        <div class="estimator__bars" data-est-bars></div>
+      </div>
+      [[sample Sample pricing]]
+      <div class="estimator__cta">
+        [[quote Basements btn-primary|Price this budget]]
+      </div>
+    </div>
+  </section>
+
+  <!-- #4 process -->
+  <section id="process" class="section t-paper rail-horizontal" data-hook="carousel" data-ledger-pct="18">
+    <h2>How the build reads</h2>
+    <p class="section-lead">Four stages, photographed on site. Captions describe what the frame shows.</p>
+    <div class="rail" data-carousel>
+      <div class="rail__track">
+        [[frame process-1 rail__frame|data-reveal="clip"]]
+        [[frame process-2 rail__frame|data-reveal="clip"]]
+        [[frame process-3 rail__frame|data-reveal="clip"]]
+        [[frame process-4 rail__frame|data-reveal="clip"]]
+      </div>
+      <div class="rail__nav">
+        <button class="rail__btn rail__btn--prev" data-carousel-prev aria-label="Previous">[[i arrow-right]]</button>
+        <button class="rail__btn rail__btn--next" data-carousel-next aria-label="Next">[[i arrow-right]]</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- #5 permit-check -->
+  <section id="permit-check" class="section t-light split-reverse" data-hook="checklist" data-ledger-pct="5">
+    <div class="split-reverse__media">
+      [[img tools-bg|class="permit-bg" loading="lazy"]]
+    </div>
+    <div class="split-reverse__content">
+      <h2>Permits, handled</h2>
+      <p class="section-lead">Answer three questions. We tell you if a permit is likely and handle the application.</p>
+      <div class="checklist" data-checklist>
+        <label class="checklist__item">
+          <input type="checkbox" data-chk="structural"> Structural change (wall removal, addition)
+        </label>
+        <label class="checklist__item">
+          <input type="checkbox" data-chk="electrical"> New electrical circuits or panel upgrade
+        </label>
+        <label class="checklist__item">
+          <input type="checkbox" data-chk="plumbing"> New plumbing lines or fixture relocation
+        </label>
+        <div class="checklist__result" aria-live="polite" data-chk-result></div>
+      </div>
+      [[quote Permits btn-secondary|We handle permits — start here]]
+    </div>
+  </section>
+
+  <!-- #6 break -->
+  <section id="break" class="section t-deep break full-bleed" data-hook="reveal">
+    [[frame break full-bleed__frame|data-reveal="clip"]]
+    <div class="full-bleed__caption">Older homes updated with wiring and plumbing priced early.</div>
+  </section>
+
+  <!-- #7 proof -->
+  <section id="proof" class="section t-paper ledger-list" data-hook="reviews" data-ledger-pct="10">
+    <h2>Client reports — verified</h2>
+    <p class="section-lead">Dated entries from homeowners in {{biz.city}} and nearby towns.</p>
+    <ul class="ledger-reviews">
+      <!-- each proof.reviews 0:4 -->
+      <li class="ledger-review" data-reveal>
+        <div class="ledger-review__meta">
+          <span class="ledger-review__date">{{.service}}</span>
+          <span class="ledger-review__author">{{.name}}, {{.town}}</span>
+        </div>
+        <blockquote class="ledger-review__text">{{.text}}</blockquote>
+        [[sample Sample review]]
+        <span class="ledger-review__check" aria-hidden="true">[[i check]]</span>
+      </li>
+      <!-- /each -->
+    </ul>
+  </section>
+
+  <!-- #8 egress -->
+  <section id="egress" class="section t-deep split-50" data-hook="reveal" data-ledger-pct="8">
+    <div class="split-50__content">
+      <h2>Egress windows: legal bedrooms below grade</h2>
+      <p class="section-lead">A basement room needs an egress window to count as a bedroom. We cut the foundation, set the well with a drain and book the inspection.</p>
+      [[quote Basements btn-primary|Price egress window]]
+    </div>
+    <div class="split-50__media">
+      [[frame detail-egress|data-reveal="clip"]]
+    </div>
+  </section>
+
+  <!-- #9 zip-area -->
+  <section id="zip-area" class="section t-accent stack-center" data-hook="zip" data-ledger-pct="3">
+    <h2>Serving {{biz.city}} and {{biz.areas|list}}</h2>
+    <p class="section-lead">Enter your ZIP to confirm you are in our area.</p>
+    <div class="zip-checker" data-zip>
+      <label class="zip-checker__label">ZIP code
+        <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" data-zip-input aria-describedby="zip-result">
+      </label>
+      <div class="zip-checker__result" id="zip-result" aria-live="polite" data-zip-result></div>
+    </div>
+  </section>
+
+  <!-- #10 contact -->
+  <section id="contact" class="section t-deep stack-narrow" data-hook="form" data-lead>
+    <h2>Price it</h2>
+    <p class="section-lead">Tell us what you are planning. We will call you back to set up a visit.</p>
+    <form class="lead-form" data-lead novalidate>
+      <div class="lead-form__steps">
+        <div class="lead-form__step" data-step="1">
+          <fieldset>
+            <legend>What do you need?</legend>
+            <label class="lead-form__radio">
+              <input type="radio" name="service" value="Basements" required> Basement finishing
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="service" value="Egress windows"> Egress windows
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="service" value="Kitchens"> Kitchen remodel
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="service" value="Bathrooms"> Bathroom remodel
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="service" value="Additions"> Home addition
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="service" value="Older homes"> Older-home update
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="service" value="Accessible"> Accessible remodel
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="service" value="Other"> Something else
+            </label>
+          </fieldset>
+          <button type="button" class="btn btn-primary lead-form__next" data-next>Next</button>
+        </div>
+        <div class="lead-form__step" data-step="2" hidden>
+          <fieldset>
+            <legend>Tell us more</legend>
+            <label class="lead-form__field">Brief description
+              <textarea name="details" rows="3" required></textarea>
+            </label>
+            <label class="lead-form__field">Approximate size
+              <select name="size">
+                <option value="">Select</option>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </label>
+          </fieldset>
+          <div class="lead-form__nav">
+            <button type="button" class="btn btn-secondary lead-form__prev" data-prev>Back</button>
+            <button type="button" class="btn btn-primary lead-form__next" data-next>Next</button>
+          </div>
+        </div>
+        <div class="lead-form__step" data-step="3" hidden>
+          <fieldset>
+            <legend>When should we reach out?</legend>
+            <label class="lead-form__radio">
+              <input type="radio" name="when" value="morning" required> Morning (7 am – noon)
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="when" value="afternoon"> Afternoon (noon – 5 pm)
+            </label>
+            <label class="lead-form__radio">
+              <input type="radio" name="when" value="anytime"> Anytime during business hours
+            </label>
+          </fieldset>
+          <div class="lead-form__nav">
+            <button type="button" class="btn btn-secondary lead-form__prev" data-prev>Back</button>
+            <button type="button" class="btn btn-primary lead-form__next" data-next>Next</button>
+          </div>
+        </div>
+        <div class="lead-form__step" data-step="4" hidden>
+          <fieldset>
+            <legend>Your contact</legend>
+            <label class="lead-form__field">Name
+              <input type="text" name="name" autocomplete="name" required>
+            </label>
+            <label class="lead-form__field">Phone
+              <input type="tel" name="phone" autocomplete="tel" required>
+            </label>
+            <label class="lead-form__field">Email
+              <input type="email" name="email" autocomplete="email">
+            </label>
+            <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="t">
+          </fieldset>
+          <div class="lead-form__nav">
+            <button type="button" class="btn btn-secondary lead-form__prev" data-prev>Back</button>
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </div>
+      </div>
+      <div class="lead-form__thanks" data-thanks hidden>
+        <p>Thanks, {name}. In your version this goes straight to your phone and inbox.</p>
+      </div>
+      <p class="lead-form__micro">We'll call you back to set up a visit.</p>
+    </form>
+    <div class="contact-side">
+      [[tel]]
+      <span data-open-now>{{hours|today}}</span>
+    </div>
+  </section>
+
+</main>
+
+<!-- #11 footer -->
+<footer class="footer t-accent ledger-total" data-sw-signature data-ledger-pct="100">
+  <div class="ledger-total__rule">
+    <span class="ledger-total__label">TOTAL</span>
+    <span class="ledger-total__value">100%</span>
+  </div>
+  <p class="footer__promise">{{proof.guarantee}}</p>
+  <p class="footer__disclaimer">{{demo.disclaimer}}</p>
+  [[credits]]
+  <nav class="footer__nav" aria-label="Footer">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#proof">Reviews</a>
+    <a href="#contact">Price it</a>
+  </nav>
+  <p class="footer__copy">&copy; {{year}} {{biz.name}}</p>
+</footer>
+
+<div class="mobilebar t-light" data-mobilebar>
+  [[call btn-secondary]]
+  [[quote Kitchens btn-primary|Price it]]
+</div>

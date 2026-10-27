@@ -1,0 +1,61 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "dist/index.html hero: h1 'Madison remodeling budgets, open line by line.' is 7 words, trade+city+outcome clear. Proof line with hours, areas and sample rating present. Two buttons (Call + Price it) with phone visible. Ledger sample on right half demonstrates signature immediately. Deduction: next band does not peek because split-50 uses min-height calc(100svh - header-h) which may fill viewport exactly at some sizes (-0.5). No screenshot available to verify fold behavior at 390x844; scoring from CSS and HTML structure."
+    },
+    "distinctiveness": {
+      "score": 9,
+      "notes": "Ledger line + percent column signature appears in hero (sample budget), services (ledger-row with pct column at 640+), budget-tool section, proof (ledger-review entries with check marks), and footer (TOTAL 100% rule). Five sections carry the signature. Palette (cream/ink/signal red) and type pair (Space Grotesk + Karla + DM Mono) are unique per concept.json. Layout families: split-50 hero, ledger-list services, stack-center estimator, rail carousel, split-reverse permit, full-bleed break, stack-narrow contact. No sibling screenshots available to verify distinctiveness against A/C; scoring from HTML structure and concept delivery."
+    },
+    "type": {
+      "score": 9,
+      "notes": "Space Grotesk display with -0.03em tracking and 0.92 line-height; Karla body at clamp(1rem-1.125rem); DM Mono for data (percent column, sample tags, proof-line, tel-plain). Tabular-nums on ledger rows, estimator bars, and phone. Fluid scale with 7 sizes (--fs--1 through --fs-h1). Scale contrast moment: h1 at clamp(2.6rem-5rem) vs fs--1 kicker. Lead paragraph set apart with .lead class. No orphans detectable from HTML. Deduction: none observed; would need screenshot to confirm rag and measure at all viewports."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "11 sections with alternating tones (light/deep/paper/light/deep/paper/deep/accent/deep). Layout families: split-50, ledger-grid, stack-center, rail-horizontal, split-reverse, full-bleed, stack-narrow. Full-bleed break section provides visual breath. Asymmetric split-reverse for permit-check. Dense ledger-list services vs quiet stack-center estimator. Deduction: services section has 9 identical ledger-row items in sequence which reads as repetitive rhythm (-0.5). No screenshot to verify gap consistency or blank gaps at phone widths."
+    },
+    "photo": {
+      "score": 8,
+      "notes": "Images referenced: hero-B2.jpg, process-framing.jpg, process-rough-plumbing.jpg, process-drywall.jpg, process-cabinets.jpg, tools-tape-level.jpg, region-madison-foursquare.jpg, detail-egress-window.jpg. All alt text is descriptive and on-topic for Madison residential GC. Consistent filter applied (saturate .82, contrast 1.06, sepia .06). Each image used once. Width/height attributes present. Lazy loading on non-hero images. Deduction: no screenshot to verify grade consistency or object-position; placeholder integration cannot be assessed visually. Score capped at 8 without visual confirmation."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "Voice matches concept samples: specific trade nouns ('egress window', 'knob-and-tube wiring', 'frost line', 'change order'), plain contractor tone. Every review tagged 'Sample review'. Estimator tagged 'Sample pricing'. Rating tagged 'Sample rating'. Hours shown with open-now widget. Primary action consistently named 'Price it' across header, hero, mobile bar, footer nav, and service links. No banned phrases detected. Microcopy under form ('We'll call you back to set up a visit'). Deduction: none observed."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "Mobile bar with Call and Price it buttons at bottom (hidden at 900px+). Header collapses to menu button below 640px. Split-50 stacks (media order 1, content order 2 on mobile). Tap targets: buttons min-height 48px, rail nav buttons 48x48, checklist inputs 24px (border-box with padding likely reaches 48px touch target). ZIP input height 48px. Deduction: cannot verify 390x844 fold behavior or horizontal scroll without screenshot; scoring from CSS breakpoints. Ledger-row__pct hidden below 640px which is correct mobile adaptation."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "Skip link present. Focus visible with 3px outline in accent color and 3px offset. All form inputs have labels (fieldset/legend for radio groups, label elements for text inputs). aria-live on zip-result, estimator output, checklist result. aria-expanded and aria-controls on menu button. aria-hidden on decorative SVGs and ledger percent column. Reduced motion: CSS disables all animations and reveals content statically via .sw-motion gates. Forced colors handled for buttons, rules, compare handle. Deduction: cannot verify reduced-motion screenshot shows all content; heading order appears correct (one h1, h2 per section). No axe report available."
+    },
+    "motion": {
+      "score": 8,
+      "notes": "Hooks present: data-split='lines' on hero, data-reveal and data-reveal='clip' on images, data-carousel on process rail, data-estimator, data-checklist, data-zip. Intro uses split-text animation on hero h1. Scroll-triggered reveals with stagger. Running total bar (ledger-progress) driven by --ledger-total CSS var. Hover underline animation on primary buttons (scaleX 0->1, 200ms). Reduced motion respected via .sw-motion class gate. Deduction: fewer than 3 distinct hook behaviors beyond reveal visible in HTML structure alone (-1.0 cap consideration); cannot verify motion quality or timing without render.json or screenshots. Score reflects structural presence, not execution quality."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "Signature moment: the running ledger total that accumulates as you scroll, reaching 100% at footer. This is tied to the thesis (open-book budgets) and the trade (cost transparency). Tool: budget-split estimator with bar chart output drawn segment by segment. Output is designed in the signature language (DM Mono, tabular nums, accent-colored bars). Deduction: cannot verify the tool output renders as designed or that the running total animates smoothly without screenshots. Static fallback exists for reduced motion."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "SVG favicon and apple-touch-icon referenced. OG and Twitter meta tags with 1200x630 image. JSON-LD with GeneralContractor schema. Theme-color set. Print stylesheet present (hides nav, shows estimator only in print-est mode). Consistent 2px border-radius throughout. Icon stroke-width uniform at 2. Forced colors handled. Deduction: credits list has 8 identical '<a>Pexels</a>' links without href (static.json warning); this is a polish issue (-0.5). No console errors verifiable without browser."
+    }
+  },
+  "mustFix": [],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Break the 9-item ledger-row repetition in services by grouping into 3 sub-sections (Structural, Finishes, Specialty) with ruled dividers and sub-heads, creating density variation within the list while keeping the ledger signature"
+    },
+    {
+      "category": "motion",
+      "move": "Add a counter-driven number tick on the ledger-percent column values as each service row enters the viewport, so the signature animates with purpose beyond fade-up reveals and ties motion to the open-book thesis"
+    }
+  ],
+  "verdictHint": "ELEVATE"
+}

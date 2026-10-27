@@ -1,0 +1,77 @@
+{
+  "round": 3,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "1440-first.jpg: h1 7 words, trade+city+outcome, proof line with hours/areas/Sample rating, quiet Call + loud Price it, cost-sheet signature visible, services peeks ~120px; h1 sets in 4 lines at 1440 (-0.5); hero column at x~135 vs page at x~60. 390-first.jpg: h1 4 lines, both actions above fold."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: ledger signature in hero, services LINE column, estimator sheet, process LINE cards, review ticks, footer TOTAL 100%; differs fully from general-C 1440-first.jpg. Footer TOTAL rules invisible on cream (-0.5); mono micro-labels throughout 1440-first.jpg / 1440-scroll-50.jpg (-0.5 tell)."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "1440-first.jpg: Space Grotesk / Karla / DM Mono accent, tabular figures in cost sheet and estimator. 1440-scroll-25.jpg: service names set as small bold body, weaker than the LINE figure beside them; inverted hierarchy (-0.5)."
+    },
+    "layout": {
+      "score": 8,
+      "notes": "1440-full.jpg: 11 sections, tones alternate, full-bleed house drawing, asymmetric permits. 1440-scroll-25.jpg: 9 service rows over ~2000px with ~500px dead width per row, flat density (-0.5). 1440-full.jpg: estimator, reviews, areas, contact all centred narrow stacks (-0.5)."
+    },
+    "photo": {
+      "score": 8,
+      "notes": "1440-full.jpg / 390-full.jpg: no photographs on the page; drawn treatments share one stroke and palette (process cards, permit sheet, house elevation). 1440-scroll-75.jpg: egress diagram is loose and floats in an empty box; no image used in a way stock never is."
+    },
+    "copy": {
+      "score": 8,
+      "notes": "1440-scroll-75.jpg: strong trade nouns (knob-and-tube, frost line, change order), every review labelled Sample, Price it used consistently. mustFix: h2 'Client reports — verified' calls Sample reviews verified (invented claim); caps copy at 8."
+    },
+    "mobile": {
+      "score": 8,
+      "notes": "390-first.jpg: both actions above fold, mobile bar, no overflow per render.json. 390-full.jpg: estimator and swipe rail work. mustFix: #contact step 1 shows no visible Next button after the radios, so the form cannot advance; ZIP field has no action or hint."
+    },
+    "a11y": {
+      "score": 8,
+      "notes": "1440-rm-full.jpg / 390-rm-full.jpg show all content; labels, fieldsets, aria-live present in dist. mustFix: 1440-full.jpg / 390-full.jpg footer disclaimer and copyright are near-white on cream (~1.1:1), invisible."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "1440-scroll-25.jpg / 1440-scroll-50.jpg / 1440-scroll-75.jpg: running-total bar at the top grows 25/50/75% with scroll, the thesis in motion; dist hooks data-tick counters, data-split h1, carousel, estimator bars; reduced motion complete in 1440-rm-full.jpg. The bar never lands on the footer TOTAL."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "1440-full.jpg / 390-full.jpg: estimator output set as a cost sheet with Sample price, per-trade bars, red fee row, double rule, Total 100%. Footer TOTAL payoff visually broken in 1440-full.jpg, so the second moment does not land."
+    },
+    "polish": {
+      "score": 7.5,
+      "notes": "1440-full.jpg footer: t-accent footer renders on cream, white rules and muted text vanish, disclaimer and copyright off-centre (-0.5). 1440-first.jpg / 1440-scroll-50.jpg: drop shadows on static cost-sheet and permit-sheet cards (-0.5). Head, JSON-LD, print, clean checks otherwise."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "1440-scroll-75.jpg, #proof h2",
+      "problem": "'Client reports — verified' calls Sample-labelled fictional reviews verified (invented claim)",
+      "fix": "Replace with 'Client reports, line by line'; remove 'verified' from the page"
+    },
+    {
+      "where": "390-full.jpg and 1440-full.jpg, #contact step 1",
+      "problem": "No visible Next button after the 8 radios; the quote form cannot advance",
+      "fix": "Render .lead-form__step[data-step=1] .lead-form__next as a cream #F6F3ED button with ink text, min-height 48px, full width under 640px, directly under the fieldset"
+    },
+    {
+      "where": "1440-full.jpg, 390-full.jpg, 1440-rm-full.jpg, footer",
+      "problem": "Disclaimer and copyright near-white on cream (~1.1:1); demo disclosure unreadable; TOTAL rules invisible",
+      "fix": "Make the footer one tone: either paint .footer.t-accent #B8432F or switch it to t-light so --muted #5A6170 and --ink #1A2332 apply, with ledger-total rules in a visible colour"
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Break the run of four centred stacks: set the reviews as a two-column ledger (date and service in a margin column, quote in the body, tick in the percent column) and the contact as a split whose right side fills in a live cost sheet line by line as the visitor picks options"
+    },
+    {
+      "category": "polish",
+      "move": "Make the footer the designed close of the ledger: one tone (deep ink or real accent red), the TOTAL 100% set as the final row of the hero cost sheet with the same double rule, the running-total bar landing into it, and the disclaimer, nav and copyright aligned on that sheet's grid"
+    }
+  ],
+  "verdictHint": "NEEDS_HUMAN"
+}
