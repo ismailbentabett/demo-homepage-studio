@@ -1036,6 +1036,9 @@ SW.mod('media-fallback', function (SW) {
     var room = document.querySelector('[data-visit-room]');
     var box = document.querySelector('.visit-clock');
 
+    /* The markup rests on the finished visit (3:10, signed off) for JS-off and reduced motion; the story starts at 0:00. */
+    if (clock) clock.textContent = cards[0].dataset.time;
+    if (room) room.textContent = cards[0].dataset.room;
     rail.style.setProperty('--rail', '0');
     if (box) box.style.setProperty('--p', '0');
     ScrollTrigger.create({

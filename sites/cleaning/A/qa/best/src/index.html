@@ -13,7 +13,10 @@
 
 <header class="header t-paper" data-header>
   <div class="header__inner">
-    <a href="#hero" class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">
+      <span class="logo__mark" aria-hidden="true">{{biz.initials}}<svg class="logo__tick" viewBox="0 0 24 24" focusable="false"><path d="M4 12l5 5L20 7"/></svg></span>
+      <span class="logo__word" aria-hidden="true">{{biz.name}}</span>
+    </a>
     <nav class="nav" aria-label="Primary">
       <ul class="nav__list">
         <li><a href="#process-story">Process</a></li>
@@ -24,7 +27,7 @@
       </ul>
     </nav>
     <div class="header__actions">
-      <span class="open-now mono" data-open-now></span>
+      <span class="open-now" data-open-now></span>
       [[call btn-primary]]
       <button class="menu-btn" type="button" data-menu-btn aria-expanded="false" aria-controls="menu">
         [[i menu]]<span class="sr-only">Menu</span>
@@ -57,7 +60,6 @@
   <section id="hero" class="section hero t-paper" data-sw-signature="visit-timeline">
     <div class="container split hero__grid">
       <div class="hero__content">
-        <p class="kicker mono">Visit checklist: 3 bed / 2 bath</p>
         <h1>House Cleaning in {{biz.city}}, {{biz.state}}</h1>
         <p class="lead">See your visit time and sample price before you call. Same two people, same checklist, every other Tuesday.</p>
         <div class="hero__ctas">
@@ -70,15 +72,18 @@
         <div class="ph ph--counter">
           [[frame hero clipboard-frame hero-photo]]
           <svg class="ph__draw" viewBox="0 0 400 500" aria-hidden="true" focusable="false">
-            <path d="M20 360 H380" /><path d="M20 372 H380" class="thin"/>
-            <path d="M70 360 V250 Q70 236 84 236 H112 V214 H128 V236 Q150 240 150 262 V360" />
-            <path d="M112 214 Q110 196 128 194 L160 190 L160 204 L128 206" />
-            <path d="M84 270 H150" class="thin"/><path d="M84 300 H150" class="thin"/>
-            <path d="M200 360 Q196 330 222 326 H300 Q326 330 322 360" />
-            <path d="M214 326 Q230 300 262 304 Q294 300 308 326" class="thin"/>
-            <path d="M250 150 Q292 120 330 150 Q350 168 336 190" class="thin"/>
-            <circle cx="262" cy="108" r="3"/><circle cx="296" cy="96" r="2"/><circle cx="318" cy="118" r="2.5"/>
-            <path d="M40 430 H180" class="thin"/><path d="M220 430 H360" class="thin"/>
+            <path d="M40 50 H180 V210 H40 Z" /><path d="M110 50 V210 M40 130 H180" class="thin"/><path d="M30 212 H190" />
+            <path d="M96 186 H124 L120 212 H100 Z" /><path d="M110 186 Q98 160 84 156 M110 186 Q112 156 124 142 M110 186 Q128 170 140 168" class="thin"/>
+            <circle cx="206" cy="92" r="3"/><circle cx="226" cy="70" r="2"/><circle cx="242" cy="108" r="2.5"/>
+            <path d="M20 320 H380" /><path d="M20 332 H380" class="thin"/>
+            <path d="M200 320 L206 260 H344 L350 320 Z" /><path d="M240 260 V226 H310 V260" /><path d="M220 294 H330" class="thin"/>
+            <path d="M216 260 V196 Q216 186 226 186 H244 V170 H256 V186 Q266 188 266 200 V260" />
+            <path d="M244 170 Q242 156 258 154 L284 150 L284 162 L258 164" /><path d="M222 214 H260 M222 236 H260" class="thin"/>
+            <path d="M318 260 L336 194" /><path d="M326 198 L348 186 L358 202 L336 212 Z" class="thin"/>
+            <path d="M60 320 H170 V302 H60 Z" /><path d="M66 302 H164 V286 H66 Z" /><path d="M72 286 H158 V272 H72 Z" /><path d="M115 320 V302 M115 286 V272" class="thin"/>
+            <path d="M40 332 V450 M200 332 V450 M360 332 V450" class="thin"/><path d="M40 450 H360" class="thin"/>
+            <circle cx="188" cy="362" r="3"/><circle cx="212" cy="362" r="3"/>
+            <path d="M300 96 V116 M290 106 H310" class="dash"/>
           </svg>
         </div>
         <div class="visit-sheet" aria-hidden="true">
@@ -114,8 +119,8 @@
         <p class="lead">Dust falls before the mop. Every room has a start time and a list, and every line gets a tick.</p>
         <div class="visit-clock" aria-hidden="true">
           <span class="visit-clock__label mono">Visit clock</span>
-          <span class="visit-clock__time mono" data-visit-clock>0:00</span>
-          <span class="visit-clock__room mono" data-visit-room>Kitchen</span>
+          <span class="visit-clock__time mono" data-visit-clock>3:10</span>
+          <span class="visit-clock__room mono" data-visit-room>Signed off</span>
           <span class="visit-clock__bar"><span class="visit-clock__fill"></span></span>
         </div>
       </div>
@@ -133,6 +138,8 @@
               <li>Sink drain cleaned</li>
             </ul>
           </div>
+          <div class="room-sheet">
+          <span class="room-sheet__tape" aria-hidden="true"></span>
           <div class="ph ph--fan">
             [[frame process-1 room-thumb clipboard-frame]]
             <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
@@ -143,6 +150,9 @@
               <path d="M330 290 L262 132" /><path d="M248 118 Q262 100 284 116 Q290 136 268 140 Q246 138 248 118 Z" class="thin"/>
               <circle cx="120" cy="170" r="2"/><circle cx="140" cy="196" r="1.6"/><circle cx="104" cy="214" r="2.2"/><circle cx="160" cy="230" r="1.6"/>
             </svg>
+          </div>
+          <p class="room-sheet__cap">0:00 · fan blades before the counters</p>
+          <svg class="room-sheet__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           </div>
         </li>
         <li class="room-card" data-reveal data-room="Bathrooms" data-time="0:50">
@@ -156,8 +166,20 @@
               <li>Floor mopped last</li>
             </ul>
           </div>
-          <div class="ph">
+          <div class="room-sheet">
+          <span class="room-sheet__tape" aria-hidden="true"></span>
+          <div class="ph ph--glass">
             [[frame process-3 room-thumb clipboard-frame]]
+            <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
+              <path d="M40 20 V280 M40 280 H360" /><path d="M40 80 H200 M40 140 H200 M40 200 H200 M100 20 V280 M160 20 V280" class="thin"/>
+              <path d="M200 20 V280" /><path d="M210 30 H340 V270 H210 Z" class="thin"/>
+              <path d="M70 40 H120 V60" /><path d="M110 60 Q100 74 120 76 Q140 74 130 60 Z" class="thin"/>
+              <path d="M240 120 L330 112" /><path d="M285 116 L300 190" /><path d="M248 108 Q290 100 330 102" class="dash"/>
+              <circle cx="232" cy="150" r="2"/><circle cx="258" cy="176" r="1.6"/><circle cx="318" cy="160" r="2"/>
+            </svg>
+          </div>
+          <p class="room-sheet__cap">0:50 · glass squeegeed, then the grout</p>
+          <svg class="room-sheet__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           </div>
         </li>
         <li class="room-card" data-reveal data-room="Bedrooms" data-time="1:40">
@@ -170,6 +192,8 @@
               <li>Surfaces cleared and reset</li>
             </ul>
           </div>
+          <div class="room-sheet">
+          <span class="room-sheet__tape" aria-hidden="true"></span>
           <div class="ph ph--baseboard">
             [[frame process-2 room-thumb clipboard-frame]]
             <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
@@ -180,6 +204,9 @@
               <path d="M276 214 Q310 180 352 150" /><path d="M262 240 Q300 230 352 176" class="thin"/>
               <path d="M40 223 H130" class="dash"/>
             </svg>
+          </div>
+          <p class="room-sheet__cap">1:40 · baseboards, edge to edge</p>
+          <svg class="room-sheet__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           </div>
         </li>
         <li class="room-card" data-reveal data-room="Floors" data-time="2:30">
@@ -192,8 +219,20 @@
               <li>Entry mat shaken out</li>
             </ul>
           </div>
-          <div class="ph">
+          <div class="room-sheet">
+          <span class="room-sheet__tape" aria-hidden="true"></span>
+          <div class="ph ph--stairs">
             [[frame process-4 room-thumb clipboard-frame]]
+            <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
+              <path d="M40 280 H120 V230 H190 V180 H260 V130 H330 V80 H380" />
+              <path d="M40 290 H380" class="thin"/><path d="M120 280 V290" class="thin"/>
+              <path d="M50 262 H112 M128 212 H182 M198 162 H252 M268 112 H322" class="dash"/>
+              <path d="M60 248 H110 M136 198 H180 M206 148 H250" class="thin"/>
+              <path d="M300 20 V80 M380 20 V80" class="thin"/>
+            </svg>
+          </div>
+          <p class="room-sheet__cap">2:30 · vacuum lines, last thing in</p>
+          <svg class="room-sheet__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           </div>
         </li>
         <li class="room-card room-card--done" data-reveal data-room="Signed off" data-time="3:10">
@@ -211,11 +250,22 @@
       <div class="ph ph--pollen">
         [[frame break break-frame]]
         <svg class="ph__draw" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-          <path d="M0 150 H1200" /><path d="M0 172 H1200" class="thin"/>
-          <path d="M0 420 H1200" /><path d="M0 440 H1200" class="thin"/>
-          <path d="M80 172 V420 M200 172 V420 M320 172 V420 M440 172 V420 M560 172 V420 M680 172 V420 M800 172 V420 M920 172 V420 M1040 172 V420 M1160 172 V420"/>
-          <g class="pollen"><circle cx="60" cy="146" r="3"/><circle cx="130" cy="144" r="2"/><circle cx="210" cy="147" r="3.5"/><circle cx="290" cy="143" r="2"/><circle cx="350" cy="146" r="2.6"/><circle cx="430" cy="144" r="3"/><circle cx="520" cy="147" r="2"/><circle cx="880" cy="147" r="2.4"/><circle cx="960" cy="143" r="3"/><circle cx="1050" cy="146" r="2"/><circle cx="1130" cy="144" r="3.2"/><circle cx="160" cy="80" r="2"/><circle cx="420" cy="60" r="2.6"/><circle cx="740" cy="90" r="2"/><circle cx="1000" cy="50" r="2.4"/><circle cx="560" cy="110" r="1.8"/><circle cx="300" cy="260" r="1.8"/><circle cx="980" cy="300" r="2.2"/></g>
-          <path d="M600 140 H860" class="wipe"/>
+          <path d="M160 92 H1040 M160 122 H1040 M160 152 H1040 M160 182 H1040 M160 212 H1040 M160 242 H1040 M160 272 H1040" class="siding"/>
+          <path d="M0 40 H1200" /><path d="M0 58 H1200" class="thin"/>
+          <path d="M120 58 V420 M160 58 V420 M1040 58 V420 M1080 58 V420" /><path d="M110 70 H170 M1030 70 H1090" class="thin"/>
+          <path d="M240 120 H420 V280 H240 Z" class="mask"/><path d="M330 120 V280 M240 200 H420" class="thin"/>
+          <path d="M218 120 H240 V280 H218 Z M420 120 H442 V280 H420 Z" class="thin"/>
+          <path d="M520 110 H680 V420 H520 Z" class="mask"/><path d="M545 135 H655 V250 H545 Z" /><path d="M600 135 V250 M545 192 H655" class="thin"/>
+          <path d="M545 280 H655 V390 H545 Z" class="thin"/>
+          <path d="M340 58 V92" class="thin"/><path d="M316 92 Q340 116 364 92 Z" /><path d="M330 104 Q316 140 300 162 M340 108 Q340 150 336 178 M350 104 Q366 138 384 158" class="thin"/>
+          <path d="M800 330 H900 M810 330 L792 196 M886 330 L872 196 M792 196 H872" /><path d="M818 196 L830 330 M846 196 L852 330" class="thin"/>
+          <path d="M812 330 V384 M890 330 V384" class="thin"/><path d="M780 382 Q850 402 924 380" />
+          <path d="M0 300 H500 M700 300 H1200" /><path d="M0 316 H500 M700 316 H1200" class="thin"/>
+          <path d="M30 316 V420 M60 316 V420 M90 316 V420 M190 316 V420 M220 316 V420 M250 316 V420 M280 316 V420 M310 316 V420 M340 316 V420 M370 316 V420 M400 316 V420 M430 316 V420 M460 316 V420 M740 316 V420 M770 316 V420 M800 316 V420 M830 316 V420 M860 316 V420 M890 316 V420 M920 316 V420 M950 316 V420 M980 316 V420 M1010 316 V420 M1110 316 V420 M1140 316 V420 M1170 316 V420" class="thin"/>
+          <path d="M500 290 V420 M700 290 V420" /><path d="M0 420 H1200" /><path d="M490 446 H710 M480 472 H720" class="thin"/>
+          <path d="M0 295 H500 M700 295 H880" class="pollen-film"/>
+          <path d="M884 284 Q908 270 930 288 L922 308 Q902 298 888 308 Z" class="mask"/>
+          <g class="pollen"><circle cx="160" cy="80" r="2"/><circle cx="420" cy="76" r="2.6"/><circle cx="740" cy="90" r="2"/><circle cx="1000" cy="100" r="2.4"/><circle cx="470" cy="170" r="1.8"/><circle cx="720" cy="230" r="2.2"/><circle cx="960" cy="200" r="1.8"/><circle cx="210" cy="250" r="2"/></g>
         </svg>
       </div>
       <p class="break__stamp mono" data-reveal><svg class="break__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg><span>March to May: pollen film on a {{biz.city}} porch rail. Rails, sills and the porch door get wiped on every spring visit.</span></p>
@@ -258,7 +308,7 @@
             </div>
           </div>
           <p class="est-range" data-est-out aria-live="polite"></p>
-          <a class="btn btn-primary" href="#contact" data-service="Recurring">Price my visit</a>
+          <a class="btn btn-primary" href="#contact" data-service="Recurring">Book this visit</a>
         </div>
       </div>
     </div>
@@ -272,7 +322,7 @@
         <h2>Deep clean first, or straight to every other week?</h2>
         <p class="lead">Walk the house and tick what you see. The sheet tells you where to start.</p>
       </div>
-      <div class="chooser-sheet" data-checklist data-checklist-results="0:Tick what you see in your house.|1:{n} of {total}: an every-other-week visit keeps up with this.|3:{n} of {total}: start with a first deep clean, then every other week.">
+      <div class="chooser-sheet" data-checklist data-checklist-results="0:Start with: {{services.0.name}}. Tick what you see and the sheet updates.|1:{n} of {total}: an every-other-week visit keeps up with this.|3:{n} of {total}: start with a first deep clean, then every other week.">
         <fieldset class="chooser-sheet__list">
           <legend class="mono">What you see today</legend>
           <label><input type="checkbox"> Dust you can write in on the baseboards</label>
@@ -283,11 +333,12 @@
           <label><input type="checkbox"> Moving in or out this month</label>
         </fieldset>
         <div class="chooser-sheet__out">
+          <p class="chooser-sheet__label mono">The sheet says</p>
+          <p class="chooser-sheet__result" data-checklist-result>Start with: {{services.0.name}}. Tick what you see and the sheet updates.</p>
           <span class="chooser-sheet__meter" aria-hidden="true"><span></span></span>
-          <p class="chooser-sheet__result mono" data-checklist-result>Tick what you see in your house.</p>
           <div class="chooser-sheet__cta">
+            <a class="btn btn-primary" href="#contact" data-service="Deep clean">Book from this sheet</a>
             [[sample pricing]]
-            <a class="btn btn-primary" href="#contact" data-service="Deep clean">Price my visit</a>
           </div>
         </div>
       </div>
@@ -298,17 +349,17 @@
   <section id="services" class="section services t-light" data-sw-signature="visit-timeline">
     <div class="container services__grid">
       <div class="services__head">
-        <p class="kicker mono">The full list</p>
-        <h2>What we clean</h2>
-        <p class="lead">Every service runs the same top-down, dry-to-wet method. Each line gets its tick before we leave.</p>
+        <p class="kicker mono">Ten services, one method</p>
+        <h2>The full checklist</h2>
+        <p class="lead">Every service runs top to bottom, dry to wet. Each box below gets its tick before we lock up.</p>
       </div>
-      <ul class="svc-grid" data-reveal-stagger>
+      <ul class="svc-grid">
         <!-- each services -->
-        <li class="svc-card">
+        <li class="svc-card" data-reveal>
           <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>{{.name}}</h3>
           <p>{{.blurb}}</p>
-          <a class="btn btn-ghost" href="#contact" data-service="{{.short}}">Price my visit</a>
+          <a class="btn btn-ghost" href="#contact" data-service="{{.short}}">Price: {{.short}}</a>
         </li>
         <!-- /each -->
       </ul>
@@ -339,22 +390,49 @@
   <section id="area" class="section area t-deep">
     <div class="container split">
       <div class="area__info">
-        <h2>Serving {{biz.city}} and {{biz.areas|list}}</h2>
-        <p class="lead">Check your ZIP or call to confirm.</p>
-        <p class="mono">ZIPs: {{biz.zips|csv}}</p>
-        <div class="ph area__ph">[[frame area area-thumb clipboard-frame]]</div>
-        <p class="area__stamp mono">On the route every weekday</p>
+        <p class="kicker mono">Route sheet</p>
+        <h2>On the route around {{biz.city}}</h2>
+        <p class="lead">{{biz.city}} plus every town ticked below. Weekday visits, same two people each time.</p>
+        <ul class="route-list" aria-label="Towns on the route" data-reveal>
+          <li><svg class="tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>{{biz.city}}</li>
+          <!-- each biz.areas -->
+          <li><svg class="tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>{{.}}</li>
+          <!-- /each -->
+        </ul>
+        <p class="route-zips__label mono">ZIP codes on the sheet</p>
+        <ul class="route-zips mono">
+          <!-- each biz.zips -->
+          <li>{{.}}</li>
+          <!-- /each -->
+        </ul>
+        <p class="area__stamp mono">Route runs Monday to Friday</p>
       </div>
-      <div class="zip-tool" data-zip>
-        <h3>Do you serve my ZIP?</h3>
-        <form class="zip-form">
-          <label class="field">
-            <span>ZIP code</span>
-            <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="{{biz.zips.0}}" data-zip-input autocomplete="postal-code">
-          </label>
-          <button class="btn btn-primary" type="submit" data-zip-btn>Check</button>
-        </form>
-        <div class="zip-result mono" data-zip-result aria-live="polite"></div>
+      <div class="area__side">
+        <div class="zip-tool" data-zip data-zip-yes="{zip} is on the route. Pick a weekday and we'll put you on the sheet." data-zip-no="{zip} isn't on the route yet. Call {phone} and ask before you book.">
+          <h3>Is my ZIP on the sheet?</h3>
+          <form class="zip-form">
+            <label class="field">
+              <span>ZIP code</span>
+              <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="{{biz.zips.0}}" data-zip-input autocomplete="postal-code">
+            </label>
+            <button class="btn btn-primary" type="submit" data-zip-btn>Check my ZIP</button>
+          </form>
+          <div class="zip-result mono" data-zip-result aria-live="polite"></div>
+          <p class="zip-note">Not on the list? Call {{biz.phone}} and ask before you book.</p>
+        </div>
+        <div class="room-sheet room-sheet--area" data-reveal>
+          <span class="room-sheet__tape" aria-hidden="true"></span>
+          <div class="ph ph--house">
+            [[frame area area-thumb clipboard-frame]]
+            <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
+              <path d="M20 270 H380" /><path d="M110 270 V150 L200 80 L290 150 V270" /><path d="M90 166 L200 70 L310 166" class="thin"/>
+              <path d="M180 270 V200 H220 V270" /><path d="M128 170 H168 V210 H128 Z M232 170 H272 V210 H232 Z" class="thin"/>
+              <path d="M40 270 Q40 220 70 214 Q96 220 96 270" class="thin"/><path d="M200 270 V290" class="dash"/>
+            </svg>
+          </div>
+          <p class="room-sheet__cap">Next stop on the weekday route</p>
+          <svg class="room-sheet__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
+        </div>
       </div>
     </div>
   </section>
@@ -363,10 +441,11 @@
   <section id="contact" class="section contact t-accent">
     <div class="container form-wrap">
       <h2>Book a visit</h2>
-      <p class="lead">Four quick steps. Nothing leaves this page until you reskin it.</p>
-      <form class="lead-form" data-lead novalidate>
+      <p class="lead">Four quick steps. This is a sample form, so nothing is sent; call {{biz.phone}} to book.</p>
+      <form class="lead-form" data-lead method="dialog" novalidate>
+        <div class="form-progress" data-form-progress><span></span></div>
         <ol class="form-steps">
-          <li class="form-step is-active" data-step="1">
+          <li class="form-step" data-step="1" data-step-title="Visit type">
             <h3>Visit type</h3>
             <fieldset>
               <label><input type="radio" name="service" value="Recurring" checked> Every other week</label>
@@ -375,12 +454,12 @@
               <label><input type="radio" name="service" value="Move-in"> Move-in</label>
             </fieldset>
           </li>
-          <li class="form-step" data-step="2">
+          <li class="form-step" data-step="2" data-step-title="House size">
             <h3>House size</h3>
             <label class="field"><span>Bedrooms</span><select name="beds"><option>2</option><option selected>3</option><option>4</option><option>5+</option></select></label>
             <label class="field"><span>Bathrooms</span><select name="baths"><option>1</option><option selected>2</option><option>3</option></select></label>
           </li>
-          <li class="form-step" data-step="3">
+          <li class="form-step" data-step="3" data-step-title="Frequency">
             <h3>Frequency</h3>
             <fieldset>
               <label><input type="radio" name="freq" value="eow" checked> Every other week</label>
@@ -389,7 +468,7 @@
               <label><input type="radio" name="freq" value="once"> One-time</label>
             </fieldset>
           </li>
-          <li class="form-step" data-step="4">
+          <li class="form-step" data-step="4" data-step-title="Your details">
             <h3>Your details</h3>
             <label class="field field--check"><input type="checkbox" name="pets"> Pets at home</label>
             <label class="field"><span>Name</span><input type="text" name="name" required autocomplete="name"></label>
@@ -400,16 +479,17 @@
           </li>
         </ol>
         <div class="form-nav" data-form-nav>
-          <button class="btn btn-secondary" type="button" data-back disabled>Back</button>
-          <button class="btn btn-primary" type="button" data-next>Next</button>
-          <button class="btn btn-primary" type="submit" data-form-submit hidden>Send request</button>
-        </div>
-        <div class="form-thankyou" data-form-thankyou hidden>
-          <h3>Thanks, {name}.</h3>
-          <p>In your version this goes straight to your phone and inbox. This demo does not send anything.</p>
-          [[tel]]
+          <button class="btn btn-secondary" type="button" data-back>Back</button>
+          <button class="btn btn-primary" type="button" data-next>Next step</button>
+          <button class="btn btn-primary" type="submit" data-submit>Send request</button>
         </div>
       </form>
+      <div class="form-thankyou" data-thanks-box hidden tabindex="-1">
+        <svg class="form-thankyou__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
+        <h3>Thanks, {name}.</h3>
+        <p>This is a demo, nothing was sent. On the real site this goes to {{biz.short}}, and they call you back.</p>
+        [[tel]]
+      </div>
     </div>
   </section>
 
