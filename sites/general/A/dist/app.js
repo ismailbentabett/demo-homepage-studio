@@ -447,45 +447,6 @@ SW.mod('mobilebar', function (SW) {
 });
 
 ;
-/* kit: lenis */
-/* lenis: smooth scrolling when <html data-smooth> is set, window.Lenis is loaded and motion is allowed.
-   lerp .1, wheelMultiplier 1, driven by the GSAP ticker (and synced to ScrollTrigger) when GSAP is loaded.
-   Sets SW.lenis. Same-page anchor links scroll through Lenis and focus their target. */
-SW.mod('lenis', function (SW) {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-smooth') || SW.reduced || typeof window.Lenis !== 'function') return;
-  var lenis = new window.Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    // never hijack scrolling inside an open dialog or an element that scrolls itself
-    prevent: function (node) { return !!(node && node.closest && node.closest('[data-lenis-prevent], dialog[open]')); },
-  });
-  SW.lenis = lenis;
-
-  if (window.gsap && window.gsap.ticker) {
-    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
-    window.gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-    window.gsap.ticker.lagSmoothing(0);
-  } else {
-    var raf = function (time) { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var hash = a.getAttribute('href');
-    if (hash.length < 2) return;
-    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) return;
-    e.preventDefault();
-    SW.scrollTo(target);
-    if (history.pushState) history.pushState(null, '', hash);
-  });
-});
-
-;
 /* kit: split */
 /* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
    Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
@@ -559,56 +520,6 @@ SW.mod('split', function (SW) {
     else SW.inView(el, function () { el.classList.add('is-in'); }, { rootMargin: '0px 0px -10% 0px' });
   });
   window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('is-in'); }); });
-});
-
-;
-/* kit: video */
-/* video: <video data-video data-src="media/x.mp4" poster muted loop playsinline preload="none"> inside a figure
-   with a <button data-vid-btn aria-pressed="false">Pause background video</button> (the [[video]] macro writes both).
-   Loads data-src when it comes near the screen, plays muted, pauses off-screen and in a hidden tab.
-   The button keeps its label; aria-pressed="true" means paused. The figure gets data-state="playing|paused".
-   Under reduced motion nothing autoplays (the poster shows, the button starts pressed; a click plays). */
-SW.mod('video', function (SW) {
-  SW.$$('video[data-video]').forEach(function (v) {
-    var fig = v.closest('figure') || v.parentElement;
-    var btn = fig ? SW.$('[data-vid-btn]', fig) : null;
-    v.muted = true;
-    v.setAttribute('muted', '');
-    v.playsInline = true;
-    var userPaused = SW.reduced;
-    var near = false;
-
-    function load() {
-      if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; }
-    }
-    function play() {
-      load();
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { reflect(); });
-    }
-    function reflect() {
-      var playing = !v.paused && !v.ended;
-      if (btn) btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-      if (fig) fig.setAttribute('data-state', playing ? 'playing' : 'paused');
-    }
-    function sync() {
-      if (near && !userPaused && !document.hidden) play();
-      else if (!v.paused) v.pause();
-    }
-    v.addEventListener('play', reflect);
-    v.addEventListener('playing', reflect);
-    v.addEventListener('pause', reflect);
-    if (btn) {
-      btn.type = 'button';
-      btn.addEventListener('click', function () {
-        if (v.paused) { userPaused = false; play(); } else { userPaused = true; v.pause(); }
-        v.toggleAttribute('data-user-paused', userPaused);
-      });
-    }
-    SW.inView(v, function (inside) { near = inside; sync(); }, { once: false, rootMargin: '150px' });
-    document.addEventListener('visibilitychange', sync);
-    reflect();
-  });
 });
 
 ;
@@ -686,6 +597,33 @@ SW.mod('zip', function (SW) {
     }
     input.addEventListener('input', function () { input.removeAttribute('aria-invalid'); });
   });
+});
+
+;
+/* kit: prefill */
+/* prefill: any link or button with data-service="Leak repair" (outside the lead form) fills the form's
+   "service" field, scrolls to #contact and focuses that field. The [[quote]] macro writes these links
+   (href="#contact" so they still work without JS). The value can be a service name or its short name. */
+SW.mod('prefill', function (SW) {
+  // capture phase: runs before the smooth-scroll anchor handler
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var t = e.target.closest ? e.target.closest('[data-service]') : null;
+    if (!t || t.closest('form[data-lead]')) return;
+    var form = SW.$('form[data-lead]');
+    if (!form) return; // plain anchor behaviour
+    e.preventDefault();
+    var want = (t.getAttribute('data-service') || '').trim().toLowerCase();
+    var services = SW.fact('services') || [];
+    var hit = services.find(function (s) {
+      return String(s.name || '').toLowerCase() === want || String(s.short || '').toLowerCase() === want;
+    });
+    var name = hit ? hit.name : t.getAttribute('data-service');
+    SW.prefillForm(name ? { service: name } : {}, { focus: 'service' });
+    if (t.getAttribute('href') && t.getAttribute('href').charAt(0) === '#') {
+      try { history.pushState(null, '', t.getAttribute('href')); } catch (err) { /* file:// */ }
+    }
+  }, true);
 });
 
 ;
@@ -1019,99 +957,6 @@ SW.mod('checklist', function (SW) {
 });
 
 ;
-/* kit: estimator */
-/* estimator: shows the sample price ranges from facts proof.prices. It never does math on dollars.
-   <div data-estimator>
-     <label for="est-item">Job</label> <select id="est-item" data-est-item></select>   (filled from the prices when empty)
-     <label for="est-size">Size</label> <input id="est-size" type="range" min="0" max="2" value="1" data-est-size>   (optional)
-     <div data-est-sketch></div>      (optional; gets data-item / data-level / --est for a drawing)
-     <p data-est-out></p>             (aria-live; created when missing)
-     <button data-est-print>Print this price</button>   (optional)
-   </div>
-   The range only sets a level (low / mid / high) and --est 0..1 for the sketch; the shown range stays the facts' from-to.
-   Output: "Leak repair: $300 to $950", the note, and a .sample-tag "Sample price". */
-SW.mod('estimator', function (SW) {
-  var LEVELS = ['low', 'mid', 'high'];
-  SW.$$('[data-estimator]').forEach(function (box) {
-    var prices = SW.fact('proof.prices', 'prices') || [];
-    var sel = SW.$('[data-est-item]', box);
-    var size = SW.$('[data-est-size]', box);
-    var sketch = SW.$('[data-est-sketch]', box);
-    var out = SW.$('[data-est-out]', box);
-    var printBtn = SW.$('[data-est-print]', box);
-    if (!sel || !prices.length) { SW.warn('estimator: needs [data-est-item] and proof.prices', box); return; }
-    if (!out) { out = document.createElement('p'); out.setAttribute('data-est-out', ''); box.appendChild(out); }
-    out.setAttribute('aria-live', 'polite');
-    if (!sel.options.length) {
-      prices.forEach(function (p, i) {
-        var o = document.createElement('option');
-        o.value = String(i);
-        o.textContent = p.item;
-        sel.appendChild(o);
-      });
-    }
-    function money(v) {
-      if (typeof v === 'number') return '$' + v.toLocaleString('en-US');
-      return String(v);
-    }
-    function current() {
-      var v = sel.value;
-      var byIndex = /^\d+$/.test(v) ? prices[parseInt(v, 10)] : null;
-      return byIndex || prices.find(function (p) { return p.item.toLowerCase() === String(sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : v).toLowerCase(); }) || prices[0];
-    }
-    function update() {
-      var p = current();
-      var level = 1, k = 0.5;
-      if (size) {
-        var min = parseFloat(size.min) || 0, max = parseFloat(size.max) || 100, val = parseFloat(size.value);
-        k = max > min ? (val - min) / (max - min) : 0.5;
-        level = k < 1 / 3 ? 0 : k < 2 / 3 ? 1 : 2;
-        size.setAttribute('aria-valuetext', LEVELS[level] === 'low' ? 'Small job' : LEVELS[level] === 'mid' ? 'Typical job' : 'Large job');
-      }
-      box.style.setProperty('--est', k.toFixed(3));
-      box.setAttribute('data-level', LEVELS[level]);
-      if (sketch) {
-        sketch.setAttribute('data-item', p.item);
-        sketch.setAttribute('data-level', LEVELS[level]);
-        sketch.style.setProperty('--est', k.toFixed(3));
-      }
-      out.textContent = '';
-      var line = document.createElement('span');
-      line.className = 'sw-est-range';
-      line.textContent = p.item + ': ' + money(p.from) + ' to ' + money(p.to) + (p.unit ? ' ' + p.unit : '');
-      out.appendChild(line);
-      if (p.note) {
-        var note = document.createElement('span');
-        note.className = 'sw-est-note';
-        note.textContent = ' (' + p.note + ')';
-        out.appendChild(note);
-      }
-      out.appendChild(document.createTextNode(' '));
-      var tag = document.createElement('span');
-      tag.className = 'sample-tag';
-      tag.textContent = 'Sample price';
-      out.appendChild(tag);
-    }
-    sel.addEventListener('change', update);
-    if (size) size.addEventListener('input', update);
-    if (printBtn) {
-      printBtn.type = 'button';
-      printBtn.addEventListener('click', function () {
-        document.documentElement.classList.add('sw-print-est');
-        box.classList.add('is-printing');
-        window.print();
-      });
-      window.addEventListener('afterprint', function () {
-        document.documentElement.classList.remove('sw-print-est');
-        box.classList.remove('is-printing');
-      });
-    }
-    box.setAttribute('data-estimator-ready', '');
-    update();
-  });
-});
-
-;
 /* kit: opennow */
 /* opennow: <p data-open-now>Mon to Fri 7 am to 6 pm</p> becomes "Open now · until 6 pm" / "Closed · opens 7 am" /
    "Closed · opens Mon 7 am", worked out in the business time zone (facts biz.timezone) from facts biz.hours:
@@ -1204,33 +1049,6 @@ SW.mod('opennow', function (SW) {
 });
 
 ;
-/* kit: prefill */
-/* prefill: any link or button with data-service="Leak repair" (outside the lead form) fills the form's
-   "service" field, scrolls to #contact and focuses that field. The [[quote]] macro writes these links
-   (href="#contact" so they still work without JS). The value can be a service name or its short name. */
-SW.mod('prefill', function (SW) {
-  // capture phase: runs before the smooth-scroll anchor handler
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var t = e.target.closest ? e.target.closest('[data-service]') : null;
-    if (!t || t.closest('form[data-lead]')) return;
-    var form = SW.$('form[data-lead]');
-    if (!form) return; // plain anchor behaviour
-    e.preventDefault();
-    var want = (t.getAttribute('data-service') || '').trim().toLowerCase();
-    var services = SW.fact('services') || [];
-    var hit = services.find(function (s) {
-      return String(s.name || '').toLowerCase() === want || String(s.short || '').toLowerCase() === want;
-    });
-    var name = hit ? hit.name : t.getAttribute('data-service');
-    SW.prefillForm(name ? { service: name } : {}, { focus: 'service' });
-    if (t.getAttribute('href') && t.getAttribute('href').charAt(0) === '#') {
-      try { history.pushState(null, '', t.getAttribute('href')); } catch (err) { /* file:// */ }
-    }
-  }, true);
-});
-
-;
 /* kit: media-fallback */
 /* media-fallback: always on. The listener lives in core.js (it must catch errors that happen before the
    modules start); this module re-checks images that had already failed by the time the page was ready.
@@ -1244,102 +1062,108 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* general-A signature: crosstie track with advancing today-line */
+/* general-A · crosstie track: hero today-marker, scrubbed rail fill + DONE stamps, timeline builder. */
 (function () {
   if (typeof SW === 'undefined') return;
+  var motion = !SW.reduced && document.documentElement.classList.contains('sw-motion');
+  var hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+  if (hasGsap) gsap.registerPlugin(ScrollTrigger);
 
-  /* --- Signature moment: hero rails draw + h1 line-mask reveal --- */
-  SW.mod('signature', function () {
-    if (SW.reduced) return;
-    var hero = document.querySelector('.hero');
-    if (!hero) return;
+  /* ---- Timeline builder (works with or without motion) ---- */
+  var PLANS = {
+    addition: { svc: 'Additions', p: [['Permits & demo', 2], ['Footings', 3], ['Framing & dry-in', 4], ['Rough-in', 3], ['Insulation & drywall', 3], ['Finishes', 4], ['Walk-through', 1]] },
+    kitchen: { svc: 'Kitchens', p: [['Demo & protection', 1], ['Rough-in', 2], ['Inspection & drywall', 2], ['Cabinets & counters', 3], ['Finishes', 1], ['Walk-through', 1]] },
+    bath: { svc: 'Bathrooms', p: [['Demo', 1], ['Rough-in & waterproofing', 2], ['Tile', 2], ['Fixtures & finishes', 1], ['Walk-through', 1]] },
+    whole: { svc: 'Whole home', p: [['Permits & demo', 3], ['Structure & framing', 4], ['Rough-in', 4], ['Insulation & drywall', 4], ['Finishes', 6], ['Walk-through', 1]] },
+    second: { svc: 'Second story', p: [['Engineering & permits', 3], ['Roof off & framing', 5], ['Dry-in', 2], ['Rough-in', 4], ['Insulation & drywall', 3], ['Finishes', 5], ['Walk-through', 1]] },
+    porch: { svc: 'Porches', p: [['Permits & footings', 2], ['Framing & roof tie-in', 2], ['Screens & finishes', 2], ['Walk-through', 1]] }
+  };
 
-    gsap.set('.rail', { scaleY: 0, transformOrigin: 'top center' });
-    gsap.to('.rail', {
-      scaleY: 1,
-      duration: 0.9,
-      ease: 'power2.out',
-      delay: 0.1
-    });
+  SW.mod('timeline', function () {
+    var box = document.querySelector('[data-tl]');
+    var bars = document.querySelector('[data-tl-bars]');
+    if (!box || !bars) return;
+    var job = box.querySelector('[data-tl-job]');
+    var sizes = box.querySelectorAll('[data-tl-size]');
+    var weeksEl = document.querySelector('[data-tl-weeks]');
+    var labelEl = document.querySelector('[data-tl-label]');
+    var cta = document.querySelector('.tl__cta');
 
-    var lines = hero.querySelectorAll('[data-split="lines"] .line-inner');
-    if (lines.length) {
-      gsap.to(lines, {
-        y: 0,
-        duration: 0.7,
-        stagger: 0.07,
-        ease: 'power3.out',
-        delay: 0.4
+    function fill() {
+      if (!motion || !hasGsap) return;
+      gsap.fromTo(bars.querySelectorAll('.tl__bar'), { scaleX: 0 }, { scaleX: 1, duration: 0.6, stagger: 0.08, ease: 'power2.inOut', overwrite: true });
+    }
+
+    function render() {
+      var plan = PLANS[job.value] || PLANS.addition;
+      var mult = 1;
+      sizes.forEach(function (r) { if (r.checked) mult = parseFloat(r.value) || 1; });
+      var total = 0;
+      var rows = plan.p.map(function (ph, i) {
+        var w = i === plan.p.length - 1 ? ph[1] : Math.max(1, Math.round(ph[1] * mult));
+        total += w;
+        return [ph[0], w];
       });
+      bars.textContent = '';
+      bars.style.setProperty('--total', total);
+      rows.forEach(function (r) {
+        var li = document.createElement('li');
+        li.style.setProperty('--w', r[1]);
+        var bar = document.createElement('span'); bar.className = 'tl__bar';
+        var b = document.createElement('b'); b.textContent = r[0];
+        var s = document.createElement('span'); s.className = 'tnum'; s.textContent = r[1] + ' wk';
+        li.appendChild(bar); li.appendChild(b); li.appendChild(s);
+        bars.appendChild(li);
+      });
+      weeksEl.textContent = total;
+      labelEl.textContent = 'weeks, walk-through in week ' + total;
+      if (cta) cta.setAttribute('data-service', plan.svc);
+      fill();
+    }
+
+    job.addEventListener('change', render);
+    sizes.forEach(function (r) { r.addEventListener('change', render); });
+
+    if (motion && hasGsap) {
+      gsap.set(bars.querySelectorAll('.tl__bar'), { scaleX: 0 });
+      ScrollTrigger.create({ trigger: bars, start: 'top 80%', once: true, onEnter: fill });
     }
   });
 
-  /* --- Track story: today-line scrub on desktop, clip reveal on mobile --- */
+  if (!motion || !hasGsap) return;
+
+  /* ---- Signature intro: studs go up, today marker runs WK 01 → WK 06 (≤ 1.2 s) ---- */
+  SW.mod('signature-intro', function () {
+    var track = document.querySelector('.htrack');
+    var studs = document.querySelectorAll('.hero .studs line');
+    if (studs.length) {
+      gsap.from(studs, { scaleY: 0, transformOrigin: '50% 100%', duration: 0.5, stagger: 0.035, ease: 'power3.out', delay: 0.15 });
+    }
+    if (track) {
+      gsap.fromTo(track, { '--wk': 1 }, { '--wk': 6, duration: 1.0, ease: 'power2.inOut', delay: 0.2 });
+    }
+  });
+
+  /* ---- Track story: the amber line fills the rails; each tie it crosses is stamped DONE ---- */
   SW.mod('track-story', function () {
-    var section = document.querySelector('.track-story');
-    if (!section) return;
-
-    var ties = section.querySelectorAll('.tie');
-    var todayLine = section.querySelector('[data-today-line]');
-
-    if (!SW.reduced && window.matchMedia('(min-width: 640px)').matches && todayLine && ties.length) {
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.3,
-        onUpdate: function (self) {
-          var progress = self.progress;
-          todayLine.style.top = (progress * 100) + '%';
-
-          ties.forEach(function (tie) {
-            var rect = tie.getBoundingClientRect();
-            var sectionRect = section.getBoundingClientRect();
-            var tieProgress = (rect.top - sectionRect.top) / (sectionRect.height);
-            if (tieProgress < progress) {
-              tie.classList.add('is-done');
-            } else {
-              tie.classList.remove('is-done');
-            }
-          });
-        }
-      });
-    }
-
-    /* Mobile: clip reveal per tie via reveal module hook */
-    if (!SW.reduced) {
-      ties.forEach(function (tie) {
-        tie.setAttribute('data-reveal', 'clip');
-      });
-    }
-  });
-
-  /* --- Budget station: animate mini-track bars on estimator submit --- */
-  SW.mod('budget-station', function () {
-    if (SW.reduced) return;
-    var form = document.querySelector('[data-est-form]');
-    var output = document.querySelector('[data-est-output]');
-    if (!form || !output) return;
-
-    form.addEventListener('submit', function () {
-      setTimeout(function () {
-        if (output.hidden) return;
-        var bars = output.querySelectorAll('.mini-track__bar-fill');
-        if (!bars.length) return;
-        gsap.fromTo(bars,
-          { scaleX: 0, transformOrigin: 'left center' },
-          { scaleX: 1, duration: 0.9, stagger: 0.12, ease: 'power2.inOut' }
-        );
-      }, 50);
+    var ts = document.querySelector('.ts');
+    if (!ts) return;
+    var ties = ts.querySelectorAll('[data-tie]');
+    ts.classList.add('is-live');
+    ScrollTrigger.create({
+      trigger: ts,
+      start: 'top 60%',
+      end: 'bottom 60%',
+      scrub: 0.4,
+      onUpdate: function (self) { ts.style.setProperty('--fill', self.progress.toFixed(4)); }
+    });
+    ties.forEach(function (tie) {
+      ScrollTrigger.create({ trigger: tie, start: 'top 60%', toggleClass: { targets: tie, className: 'is-done' } });
     });
   });
 
-  /* --- Refresh ScrollTrigger after fonts load --- */
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () {
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.refresh();
-      }
-    });
+    document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   }
 })();
+

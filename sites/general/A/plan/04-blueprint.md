@@ -1,5 +1,28 @@
 # Blueprint — general-A (Crosstie Building Co.)
 
+## Round 2 (final fix)
+Elevate: (1) Photo 8.5 → every grey placeholder frame replaced by a drawn site plate (line-art section/elevation drawings in the creosote + work-light palette, stenciled with the week); (2) Distinctiveness/wow → the crosstie track now runs as a full-width hero track (WK 01–20, today marker slides to WK 06), a scrubbed rail fill + DONE stamps on every tie, branch-line rails in services, tie-headed proof cards and an amber buffer-stop footer. t-paper becomes real chalk paper (#ebe5d9) so deep/paper bands no longer read as one dark run. Fixes: kit-standard 4-step lead form with [data-form-nav]; kit tabs, checklist and ZIP markup; muted text ≥ 4.5:1 on every tone; data-layout on each section.
+
+| # | id | tone | purpose | layout | content | media | hooks | entrance |
+|---|---|---|---|---|---|---|---|---|
+| 1 | hero | t-deep | trade + city + Friday promise, call | track-hero | kicker, h1, lead, proof (hours/sample rating), call + price an addition, drawn elevation, WK 01–20 track | drawn | data-sw-signature | line-mask h1, today marker WK01→06 ≤1.2s |
+| 2 | promise | t-paper | "will I know what's happening?" | statement | report anatomy Done / Next / From you | — | — | none (quiet) |
+| 3 | track-story | t-deep | "will it double?" / "will they vanish?" | track-stack | 4 ties WK01/03/06/18 with drawn plates + report cards | drawn ×4 | data-sw-signature | rail fill scrub + DONE stamp per tie |
+| 4 | break | t-mid | breath: whole job on one line | full-bleed | 20 ties, phase brackets | drawn | — | clip |
+| 5 | services | t-paper | what they build | branch-line | repeater services ×8 | — | data-sw-signature | rise stagger |
+| 6 | timeline | t-deep | "how long?" → form | split-tool | timeline builder (sample) | — | data-hook="timeline" | bars fill |
+| 7 | weekly-report | t-accent | show the Friday report | tabs | kit tabs Done/Next/From you + drawn thumbs | drawn ×3 | data-tabs, data-hook | none |
+| 8 | live-in | t-paper | "can we live through it?" | checklist | kit checklist ×6 | — | data-checklist, data-hook | rise |
+| 9 | proof | t-deep | trust | telegram-grid | repeater reviews, Sample tags | — | data-sw-signature | stagger |
+| 10 | prices-area | t-paper | cost + area + hours | ledger-split | sample prices, guarantee (sample), ZIP, hours | — | data-zip, data-hook | rise |
+| 11 | contact | t-deep | conversion | form-panel | 4-step kit form, next steps | — | data-lead, data-hook | none |
+| — | footer | t-accent | buffer stop | rail-terminate | disclaimer, licence (sample), credits | — | data-sw-signature | static |
+
+Rhythm: deep/paper/deep/mid/paper/deep/accent/paper/deep/paper/deep/accent(footer): no dark pair touches, no 3 same in a row; 11 sections; 11 layout families, no neighbour repeats; t-deep ×5, colour band ×2, .break ×1; signature in hero, track-story, services, proof, footer (= concept.json). One #contact; every CTA → #contact or tel:.
+
+---
+## Round 1 blueprint (kept for history)
+
 ## Section list
 
 | # | ID | Tone | Purpose | Layout | Content tokens | Media slot | Hooks | Entrance |
