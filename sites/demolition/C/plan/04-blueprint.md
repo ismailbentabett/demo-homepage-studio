@@ -1,5 +1,8 @@
 # Blueprint — demolition-C
 
+## Round 3
+Motion + layout elevate: the ruler is one running "sq ft back to lawn" instrument (header meter ticks with the story, jumps to the estimator footprint, footer lands on the final value, 192 in HTML for no-JS/reduced motion, never counts from 0); #story is a sticky (pinned) plot that changes state per stage beside four tight captions with plot-state thumbnails (inactive text #4A6356, 5.8:1); #tools is a two-column sheet (tool + ZIP left, live field-book sketch with real dimensions right). Also: styled form Next/Submit, slider labels on the track, curly apostrophes and × via app.js, Yard restore card grid, compact phone service list, hours as rows.
+
 ## Round 2
 Photo 7.0 / Copy 8.5 elevate: every placeholder photo is replaced by drawn field-book plates (hero plot, story plot in 4 stages, ridge-line break) so no grey frames remain; the story is re-cut as ONE sample plot whose ruler + sq-ft count scrub with scroll (desktop) and the footer ruler counts up to the plot total; invented per-review sq-ft numbers are removed (service · town tags instead); estimator gets homeowner-scale microcopy; one CTA name ("Price it") everywhere; mobile bar, menu (inert focus trap) and tabs moved onto kit modules; duplicate credit lines gone (no media used).
 
