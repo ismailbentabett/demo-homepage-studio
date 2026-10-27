@@ -1,0 +1,26 @@
+{
+  "round": 3,
+  "categories": {
+    "firstScreen": { "score": 8.0, "notes": "1440-first.jpg: 6-word h1, trade+city kicker, Build my list + phone, Sample rating, next band peeks; 390-first.jpg: 3-line h1, both CTAs above fold, sticky bar. MustFix: hang-tags clipped at 1440 (TV MOUNT 1.5-2.5 H loses H) and 1024-first.jpg (reads '1.5-'). Mono middle-dot proof line orphans 'reviews' (-0.5)." },
+    "distinctiveness": { "score": 8.5, "notes": "1440-rm-full.jpg: pegboard + hang-tag system in hero, builder, story, sketch wall, footer; palette and face differ from siblings A/C 1440-first.jpg. Same '○ MONO EYEBROW' label on all 10 sections is the template tell (-0.5)." },
+    "type": { "score": 8.5, "notes": "1440-rm-full.jpg: Big Shoulders display strong, Outfit body readable, tabular hours. 1440-scroll-75.jpg: DM Mono on eyebrows, tags, service lines, Sample pills: 3+ tracked mono captions per card (-0.5). 1440-first.jpg orphan 'reviews'; area pills with no space under the paragraph (-0.5 shared with polish)." },
+    "layout": { "score": 8.0, "notes": "MustFix: 1440-scroll-50.jpg services and 1440-scroll-75.jpg reviews start at x=0 while headings sit at 124; 390-rm-full.jpg cards touch the screen edge. Four different left edges (124/64/244/0) across 1440-scroll-25.jpg and 1440-rm-full.jpg (-0.5). Empty dashed tray bar in the story (1440-scroll-25.jpg) and dead gold block under the builder grid (1440-rm-full.jpg) (-0.5). Tone alternation is good." },
+    "photo": { "score": 8.5, "notes": "1440-rm-full.jpg: drawn polaroid sketches on the brown pegboard share one line weight and palette, pinned and rotated with useful hang-tag captions; the footer honestly says drawings stand in. Nothing broken or blank. Identical grey inset boxes make them read as thumbnails." },
+    "copy": { "score": 9.0, "notes": "1440-rm-full.jpg: plain contractor voice ('Small jobs, square edges', 'Where the truck goes'); action-named buttons; Sample labels on rating, hours, pricing and reviews (1440-scroll-75.jpg); doubt microcopy at the tray; no claims outside facts.json." },
+    "mobile": { "score": 8.5, "notes": "390-first.jpg: good fold, sticky Call/Build bar. 390-rm-full.jpg: builder stacks cleanly, 48px controls, no overflow per render.json; review cards and service icons touch the left screen edge (covered by layout mustFix, -0.5); triage chips stack one per row, ~300px before the answer box." },
+    "a11y": { "score": 8.0, "notes": "1440-rm-full.jpg and 390-rm-full.jpg show all content with reduced motion. MustFix: 1440-scroll-25.jpg inactive story step body text measured ~3.5:1 (rgb 115,141,140 on #1C3A38), below 4.5:1 for 16px text." },
+    "motion": { "score": 8.5, "notes": "Motion-on full page ~2000px taller than 1440-rm-full.jpg: pinned scrubbed story; 1440-scroll-25.jpg shows step state advancing. Builder, triage, photo tabs and stepped form are real interactions. The story frame shows static tools over an empty tray, so the lift-into-tray payoff is not visible (-0.5)." },
+    "wow": { "score": 8.5, "notes": "1440-rm-full.jpg: punch-list builder + 'Your tray' receipt is an on-thesis tool, and the brown sketch wall is memorable. Both trays shown empty ('0 H', empty dashed bar in 1440-scroll-25.jpg), so first sight is a blank receipt (-0.5)." },
+    "polish": { "score": 8.0, "notes": "1440-first.jpg/1024-first.jpg clipped tags read unfinished; 1440-rm-full.jpg town pills with zero gap, 'reviews' orphan; 1440-scroll-50.jpg 'Price it' links at uneven heights. Favicon/OG/footer disclaimer clean." }
+  },
+  "mustFix": [
+    { "where": "1440-first.jpg, 1024-first.jpg, hero .tile__tag", "problem": "Hour hang-tags clipped by their tiles: 'TV MOUNT 1.5-2.5 H' and 'RE-CAULK 1.5-2.5 H' lose the H at 1440 and read '1.5-' at 1024", "fix": "Size tags to content (white-space:nowrap; width:max-content; no overflow:hidden on the tile); below 1100px break the hours onto a second tag line instead of truncating" },
+    { "where": "1440-scroll-50.jpg #services, 1440-scroll-75.jpg #reviews, 390-rm-full.jpg", "problem": "Left grid column starts at x=0: rules, icons and review cards touch the viewport edge while the h2 sits at 124px (20px on phone)", "fix": "Put both grids in the same container as their heading (max-width 1192px, margin-inline auto, padding-inline var(--gutter))" },
+    { "where": "1440-scroll-25.jpg #how story steps 02-04", "problem": "Inactive step body text measured ~3.5:1 on #1C3A38, below 4.5:1", "fix": "Stop dimming text with opacity; keep inactive text ≥4.5:1 (e.g. #B9C6BF) and mark the active step with the gold number or a rule" }
+  ],
+  "elevate": [
+    { "category": "firstScreen", "move": "Make the hero the tool itself: tapping a hero hang-tag lifts that tool off its peg and starts a running hours tally under the h1, so the first screen proves 'See the hours' instead of illustrating it." },
+    { "category": "layout", "move": "Put the whole page on one pegboard module: every band, card edge and services rule snaps to the same peg-hole columns, so the page reads as one workshop wall instead of bands with four different left edges." }
+  ],
+  "verdictHint": "FIX"
+}

@@ -1,0 +1,72 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 7.5,
+      "notes": "dist/index.html lines 1327-1341: h1 'Pick your jobs. See the hours.' is 6 words with trade+city in kicker. But static.json shows 6 hero mosaic images with src='media/undefined' (lines 1336-1341), rendering broken placeholders on the first screen. No screenshots available to verify mobile fold or next-band peek."
+    },
+    "distinctiveness": {
+      "score": 8.0,
+      "notes": "dist/index.html: peg-grid background (line 1325), hang-tag pills (lines 1367-1417), tool-outline SVGs in services (lines 1461-1514) and footer (line 1691). Signature in 4 sections. But every service and estimator item uses identical #i-hammer icon (lines 1365-1510) despite defining drill/wrench/tape/level/caulk/screwdriver/saw icons (lines 1706-1712). Services grid is 3-column template layout at 900px+."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "dist/index.html: fluid clamp() scale (lines 264-269), Big Shoulders display + Outfit text + DM Mono accent. Body >=16px. Display tracking -0.03em (line 389). Tabular-nums on data-count (line 133). But straight quotes in reviews (lines 1536-1557), 8 distinct font sizes visible including 0.65rem sample-tag and 0.7rem credits."
+    },
+    "layout": {
+      "score": 8.0,
+      "notes": "dist/index.html: alternating tones deep/paper/signal/paper/deep/paper/mid/paper/deep/signal. Varied section shapes (hero split, rail strip, estimator split, triage stack, break full-bleed, services grid, mosaic grid, reviews list, tabs stack, area split, contact stack). But services grid and photo-proof mosaic both use identical 3-column card patterns. No screenshots to verify density or blank gaps."
+    },
+    "photo": {
+      "score": 6.0,
+      "notes": "static.json blockers: all 15 images have src='media/undefined' (dist lines 1336-1341, 1452, 1521-1526). Zero photos render. Footer credits (line 1689) list 13x 'Photo by unknown on Pexels' with <a> tags lacking href. Consistent CSS filter applied but invisible. mustFix: replace all media/undefined paths."
+    },
+    "copy": {
+      "score": 9.0,
+      "notes": "dist/index.html: plain contractor voice ('Anchor holes, doorknob dents and moving damage patched, textured and painted to match', line 1485). No banned phrases. Buttons named for action ('Build my list', 'Price it', 'Text these to'). Sample labels on reviews (lines 1538-1557), rating (line 1532), pricing (line 1430). One consistent primary action name 'Price it'. Microcopy at doubt points."
+    },
+    "mobile": {
+      "score": 8.0,
+      "notes": "dist/index.html: breakpoints at 640px and 900px. Mobile bar with call + Price it buttons (lines 1697-1700, min-height 48px). Form inputs min-height 48px (line 1138). Nav hidden below 900px (line 569). But no screenshots at 390x844 or 320x640 to verify horizontal scroll, fold, or sticky estimator overlap."
+    },
+    "a11y": {
+      "score": 8.0,
+      "notes": "dist/index.html: skip-link CSS (line 75), focus outline 3px solid var(--focus) offset 3px (lines 406-409). Reduced-motion resets animations (lines 1290-1303). ARIA roles on tabs (lines 1567-1584). Live regions on ZIP msg and triage result (lines 1603, 1447). Heading order h1->h2 with no skips. But tabs missing aria-controls, form steps lack progress announcement, no reduced-motion screenshot to verify."
+    },
+    "motion": {
+      "score": 7.5,
+      "notes": "dist/index.html: reveal system with fade/clip/stagger (lines 1247-1287). Hover states on buttons (scale 0.97), nav links (underline scaleX), cards (translateY -2px). But concept promises peg-drop and hang-tag swing animations that are absent from built CSS. Fewer than 3 distinct hooks beyond entrance reveals. No scroll-driven storytelling. No screenshots at 25/50/75% to verify."
+    },
+    "wow": {
+      "score": 7.5,
+      "notes": "dist/index.html: punch-list estimator (lines 1357-1433) outputs total hours, visit fit, price band. Triage tool (lines 1435-1449) routes to specialist. Both tied to thesis. But estimator output is plain text dl/dd without signature design language. Triage result is unstyled div. Broken hero mosaic eliminates intended visual wow."
+    },
+    "polish": {
+      "score": 7.5,
+      "notes": "dist/index.html: SVG favicon + apple-touch-icon (lines 20-21), OG tags with dimensions (lines 13-19), JSON-LD schema (line 22), theme-color (line 9), print stylesheet (lines 245-254), forced-colors handling (lines 239-242). But transition:all on .triage-opt (line 815), hammer icon repeated everywhere despite 8 defined icons, malformed class attributes with HTML-encoded quotes (line 1336: class='frame &quot;mosaic-tile&quot;')."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "static.json blockers, dist lines 1336-1341, 1452, 1521-1526",
+      "problem": "All 15 images have src='media/undefined'. Zero photos render on the page.",
+      "fix": "Run tools/build.mjs handyman-B after fixing media plan to resolve image paths from niches/handyman/media/manifest.json. Verify src attributes point to valid files."
+    },
+    {
+      "where": "dist line 1689",
+      "problem": "Footer credits contain 13x '<a>Pexels</a>' links without href attributes.",
+      "fix": "Add href='#' or remove <a> tags entirely. Credits should read 'Photo by unknown on Pexels' as plain text since no attribution URL exists."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "photo",
+      "move": "Once media paths resolve, apply the peg-grid signature to photo frames: add a subtle dot-pattern overlay and hang-tag captions showing the job type, so photos feel like items hung on the workshop wall rather than stock inserts."
+    },
+    {
+      "category": "motion",
+      "move": "Implement the promised peg-drop animation for hero mosaic tiles (scale 0.98->1 with settle easing) and hang-tag swing-in (rotate -3deg->0) on service cards entering viewport, using GSAP ScrollTrigger with reduced-motion fallback to static visibility."
+    }
+  ],
+  "verdictHint": "FIX"
+}
