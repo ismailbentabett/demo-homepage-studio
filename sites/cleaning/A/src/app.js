@@ -1,70 +1,73 @@
-/* cleaning-A · Visit Timeline Tick signature + two scroll stories */
+/* cleaning-A · Visit Timeline Tick: the visit clock story + the estimator tick */
 (function () {
   if (typeof SW === 'undefined') return;
+  var root = document.documentElement;
+  if (SW.reduced || !root.classList.contains('sw-motion')) return;
 
-  /* Story 1: pinned timeline rail with advancing clock and room ticks (draw) */
-  SW.mod('timeline-story', function () {
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-    var rail = document.querySelector('.timeline-rail');
-    if (!rail || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
+  /* Story 1: the visit clock. The rail fills as you scroll, the sticky clock jumps to each room's start time,
+     and the room's dot fills when it becomes the current room. No pin: the clock is CSS sticky on desktop. */
+  SW.mod('visit-clock', function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
+    var rail = document.querySelector('.timeline-rail');
+    if (!rail) return;
+    var cards = Array.prototype.slice.call(rail.querySelectorAll('.room-card'));
+    var clock = document.querySelector('[data-visit-clock]');
+    var room = document.querySelector('[data-visit-room]');
+    var box = document.querySelector('.visit-clock');
 
-    var cards = rail.querySelectorAll('.room-card');
-    var times = ['0:00', '0:50', '1:40', '2:30', '3:10'];
-    var clockEl = document.createElement('div');
-    clockEl.className = 'timeline-clock mono';
-    clockEl.setAttribute('aria-hidden', 'true');
-    clockEl.textContent = '0:00';
-    rail.appendChild(clockEl);
-
-    var tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: rail,
-        start: 'top top+=80',
-        end: 'bottom bottom-=80',
-        scrub: 0.6,
-        pin: true,
-        matchMedia: '(min-width: 640px)'
+    rail.style.setProperty('--rail', '0');
+    if (box) box.style.setProperty('--p', '0');
+    ScrollTrigger.create({
+      trigger: rail,
+      start: 'top 65%',
+      end: 'bottom 65%',
+      onUpdate: function (self) {
+        var p = self.progress.toFixed(3);
+        rail.style.setProperty('--rail', p);
+        if (box) box.style.setProperty('--p', p);
       }
     });
 
-    cards.forEach(function (card, i) {
-      var tick = card.querySelector('.tick-line');
-      tl.to(clockEl, { textContent: times[i + 1] || times[i], duration: 0.4, snap: { textContent: 1 }, ease: 'none' }, i * 0.8);
-      if (tick) {
-        tl.to(tick, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, i * 0.8 + 0.1);
+    function setCurrent(card) {
+      cards.forEach(function (c) { c.classList.toggle('is-current', c === card); });
+      if (clock && clock.textContent !== card.dataset.time) {
+        clock.textContent = card.dataset.time;
+        if (room) room.textContent = card.dataset.room;
+        gsap.fromTo(clock, { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.35, ease: 'power3.out' });
       }
+    }
+    cards.forEach(function (card) {
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top 60%',
+        end: 'bottom 60%',
+        onToggle: function (self) { if (self.isActive) setCurrent(card); }
+      });
     });
-
-    ScrollTrigger.refresh();
   });
 
-  /* Story 2: estimator timeline bar fills to duration (dial) + tick signature at end */
-  SW.mod('estimator-story', function () {
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-    var sketch = document.querySelector('[data-est-sketch]');
-    if (!sketch || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    var fill = sketch.querySelector('.est-sketch__fill');
-    if (!fill) return;
-
-    var tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sketch,
-        start: 'top 85%',
-        end: 'top 40%',
-        scrub: 0.4
-      }
-    });
-
-    tl.fromTo(fill, { attr: { width: 0 } }, { attr: { width: 300 }, duration: 1, ease: 'none' });
-    tl.call(function () {
-      sketch.classList.toggle('is-complete', tl.scrollTrigger ? tl.scrollTrigger.direction > 0 : true);
-    }, null, '-=0.05');
+  /* Story 2: the estimator bar stretches with the house size, then the tick lands at the end of the visit. */
+  SW.mod('estimator-tick', function () {
+    var est = document.querySelector('[data-estimator]');
+    var bar = est && est.querySelector('.est-bar');
+    if (!bar) return;
+    var t;
+    function tick() {
+      bar.classList.remove('is-ticked');
+      clearTimeout(t);
+      t = setTimeout(function () { bar.classList.add('is-ticked'); }, 620);
+    }
+    est.addEventListener('change', tick);
+    est.addEventListener('input', tick);
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) { tick(); io.disconnect(); }
+      }, { rootMargin: '0px 0px -20% 0px' });
+      io.observe(bar);
+    } else { bar.classList.add('is-ticked'); }
   });
 
-  /* Signature intro: hero ticks draw sequentially (handled by CSS animation; ensure refresh after fonts) */
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () {
       if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();

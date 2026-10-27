@@ -6,7 +6,7 @@
   <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
   <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
-  <symbol id="i-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="tick-line" d="M4 12l5 5L20 7" stroke-dasharray="30" stroke-dashoffset="30"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7" pathLength="1"/></symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
@@ -55,15 +55,7 @@
 
   <!-- 1. HERO -->
   <section id="hero" class="section hero t-paper" data-sw-signature="visit-timeline">
-    <div class="container split">
-      <div class="hero__media">
-        [[frame hero clipboard-frame | data-fallback="Visit checklist on counter"]]
-        <div class="clipboard-ticks" aria-hidden="true">
-          <svg class="tick-svg"><use href="#i-tick"/></svg>
-          <svg class="tick-svg"><use href="#i-tick"/></svg>
-          <svg class="tick-svg"><use href="#i-tick"/></svg>
-        </div>
-      </div>
+    <div class="container split hero__grid">
       <div class="hero__content">
         <p class="kicker mono">Visit checklist: 3 bed / 2 bath</p>
         <h1>House Cleaning in {{biz.city}}, {{biz.state}}</h1>
@@ -74,126 +66,198 @@
         </div>
         <p class="proof-line mono">Licence # {{proof.license}} · [[sample licence]]</p>
       </div>
+      <div class="hero__media">
+        <div class="ph ph--counter">
+          [[frame hero clipboard-frame hero-photo]]
+          <svg class="ph__draw" viewBox="0 0 400 500" aria-hidden="true" focusable="false">
+            <path d="M20 360 H380" /><path d="M20 372 H380" class="thin"/>
+            <path d="M70 360 V250 Q70 236 84 236 H112 V214 H128 V236 Q150 240 150 262 V360" />
+            <path d="M112 214 Q110 196 128 194 L160 190 L160 204 L128 206" />
+            <path d="M84 270 H150" class="thin"/><path d="M84 300 H150" class="thin"/>
+            <path d="M200 360 Q196 330 222 326 H300 Q326 330 322 360" />
+            <path d="M214 326 Q230 300 262 304 Q294 300 308 326" class="thin"/>
+            <path d="M250 150 Q292 120 330 150 Q350 168 336 190" class="thin"/>
+            <circle cx="262" cy="108" r="3"/><circle cx="296" cy="96" r="2"/><circle cx="318" cy="118" r="2.5"/>
+            <path d="M40 430 H180" class="thin"/><path d="M220 430 H360" class="thin"/>
+          </svg>
+        </div>
+        <div class="visit-sheet" aria-hidden="true">
+          <svg class="visit-sheet__svg" viewBox="0 0 240 236" focusable="false">
+            <rect class="vs-board" x="1" y="10" width="238" height="224" rx="6"/>
+            <rect class="vs-clip" x="84" y="2" width="72" height="20" rx="4"/>
+            <text class="vs-head" x="20" y="46">TUE · 2 PEOPLE</text>
+            <g class="vs-row"><rect x="20" y="66" width="18" height="18" rx="3"/><path class="vs-tick" pathLength="1" d="M22 76l6 6 12-14"/><text x="50" y="80">Kitchen</text><text class="vs-time" x="220" y="80">0:00</text></g>
+            <g class="vs-row"><rect x="20" y="106" width="18" height="18" rx="3"/><path class="vs-tick" pathLength="1" d="M22 116l6 6 12-14"/><text x="50" y="120">Bathrooms</text><text class="vs-time" x="220" y="120">0:50</text></g>
+            <g class="vs-row"><rect x="20" y="146" width="18" height="18" rx="3"/><path class="vs-tick" pathLength="1" d="M22 156l6 6 12-14"/><text x="50" y="160">Bedrooms</text><text class="vs-time" x="220" y="160">1:40</text></g>
+            <g class="vs-row vs-row--open"><rect x="20" y="186" width="18" height="18" rx="3"/><text x="50" y="200">Floors last</text><text class="vs-time" x="220" y="200">2:30</text></g>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- 2. PROOF LINE -->
-  <section id="proof-line" class="section proof-line t-accent">
-    <div class="container statement">
-      <p class="statement__text mono">“{{proof.reviews.5.text}}”</p>
+  <section id="proof-line" class="section proof-line t-accent" data-sw-signature="visit-timeline">
+    <div class="container statement" data-reveal>
+      <svg class="statement__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
+      <p class="statement__text">“{{proof.reviews.5.text}}”</p>
       [[sample review]]
     </div>
   </section>
 
   <!-- 3. PROCESS STORY -->
   <section id="process-story" class="section process t-light" data-sw-signature="visit-timeline">
-    <div class="container">
-      <h2>The visit, minute by minute</h2>
-      <p class="lead">Top-down, dry-to-wet. Dust falls before the mop. Every room has a start time and a list.</p>
-      <div class="timeline-rail" data-reveal>
-        <div class="timeline-rail__track" aria-hidden="true"></div>
-        <article class="room-card" data-reveal>
-          <span class="room-card__time mono">0:00</span>
-          <h3>Kitchen</h3>
-          <ul class="checklist mono">
-            <li>High dust fan blades and light fixtures</li>
-            <li>Cabinet fronts and backsplash wiped</li>
-            <li>Stovetop grates scrubbed</li>
-            <li>Sink drain cleaned</li>
-          </ul>
-          [[frame process-1 room-thumb clipboard-frame | data-fallback="Duster reaching ceiling fan blade"]]
-        </article>
-        <article class="room-card" data-reveal>
-          <span class="room-card__time mono">0:50</span>
-          <h3>Bathrooms</h3>
-          <ul class="checklist mono">
-            <li>Shower glass squeegeed</li>
-            <li>Tub grout line hand-scrubbed</li>
-            <li>Vanity and mirror wiped</li>
-            <li>Floor mopped last</li>
-          </ul>
-          [[frame process-3 room-thumb clipboard-frame | data-fallback="Squeegee clearing shower glass"]]
-        </article>
-        <article class="room-card" data-reveal>
-          <span class="room-card__time mono">1:40</span>
-          <h3>Bedrooms &amp; Living</h3>
-          <ul class="checklist mono">
-            <li>Baseboards wiped edge to edge</li>
-            <li>Sills and blinds dusted</li>
-            <li>Surfaces cleared and reset</li>
-          </ul>
-          [[frame process-2 room-thumb clipboard-frame | data-fallback="Microfiber cloth wiping baseboard"]]
-        </article>
-        <article class="room-card" data-reveal>
-          <span class="room-card__time mono">2:30</span>
-          <h3>Floors (last)</h3>
-          <ul class="checklist mono">
-            <li>Vacuum lines across carpet</li>
-            <li>Hardwood swept then damp-mopped</li>
-            <li>Entry mat shaken out</li>
-          </ul>
-          [[frame process-4 room-thumb clipboard-frame | data-fallback="Vacuum lines across carpet"]]
-        </article>
+    <div class="container process__grid">
+      <div class="process__head">
+        <p class="kicker mono">Top-down, dry-to-wet</p>
+        <h2>The visit, minute by minute</h2>
+        <p class="lead">Dust falls before the mop. Every room has a start time and a list, and every line gets a tick.</p>
+        <div class="visit-clock" aria-hidden="true">
+          <span class="visit-clock__label mono">Visit clock</span>
+          <span class="visit-clock__time mono" data-visit-clock>0:00</span>
+          <span class="visit-clock__room mono" data-visit-room>Kitchen</span>
+          <span class="visit-clock__bar"><span class="visit-clock__fill"></span></span>
+        </div>
+      </div>
+      <div class="timeline-rail">
+        <span class="timeline-rail__track" aria-hidden="true"><span class="timeline-rail__fill"></span></span>
+        <ol class="timeline-rail__list">
+        <li class="room-card" data-reveal data-room="Kitchen" data-time="0:00">
+          <div class="room-card__body">
+            <p class="room-card__time mono"><span class="sr-only">Starts at </span>0:00</p>
+            <h3>Kitchen</h3>
+            <ul class="checklist mono">
+              <li>High dust: fan blades and light fixtures</li>
+              <li>Cabinet fronts and backsplash wiped</li>
+              <li>Stovetop grates scrubbed</li>
+              <li>Sink drain cleaned</li>
+            </ul>
+          </div>
+          <div class="ph ph--fan">
+            [[frame process-1 room-thumb clipboard-frame]]
+            <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
+              <path d="M20 30 H380" /><path d="M200 30 V96" />
+              <circle cx="200" cy="108" r="14"/>
+              <path d="M186 104 Q120 92 52 110 Q120 124 188 114" /><path d="M214 104 Q280 92 348 110 Q280 124 212 114" />
+              <path d="M200 122 V150" class="thin"/><path d="M190 150 Q200 168 210 150 Z" class="thin"/>
+              <path d="M330 290 L262 132" /><path d="M248 118 Q262 100 284 116 Q290 136 268 140 Q246 138 248 118 Z" class="thin"/>
+              <circle cx="120" cy="170" r="2"/><circle cx="140" cy="196" r="1.6"/><circle cx="104" cy="214" r="2.2"/><circle cx="160" cy="230" r="1.6"/>
+            </svg>
+          </div>
+        </li>
+        <li class="room-card" data-reveal data-room="Bathrooms" data-time="0:50">
+          <div class="room-card__body">
+            <p class="room-card__time mono"><span class="sr-only">Starts at </span>0:50</p>
+            <h3>Bathrooms</h3>
+            <ul class="checklist mono">
+              <li>Shower glass squeegeed</li>
+              <li>Tub grout line hand-scrubbed</li>
+              <li>Vanity and mirror wiped</li>
+              <li>Floor mopped last</li>
+            </ul>
+          </div>
+          <div class="ph">
+            [[frame process-3 room-thumb clipboard-frame]]
+          </div>
+        </li>
+        <li class="room-card" data-reveal data-room="Bedrooms" data-time="1:40">
+          <div class="room-card__body">
+            <p class="room-card__time mono"><span class="sr-only">Starts at </span>1:40</p>
+            <h3>Bedrooms &amp; living</h3>
+            <ul class="checklist mono">
+              <li>Baseboards wiped edge to edge</li>
+              <li>Sills and blinds dusted</li>
+              <li>Surfaces cleared and reset</li>
+            </ul>
+          </div>
+          <div class="ph ph--baseboard">
+            [[frame process-2 room-thumb clipboard-frame]]
+            <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
+              <path d="M20 40 V210" class="thin"/><path d="M20 210 H380" /><path d="M20 236 H380" /><path d="M20 246 H380" class="thin"/>
+              <path d="M20 280 H380" class="thin"/>
+              <path d="M150 238 Q160 196 210 190 Q262 186 276 214 Q282 236 262 240 Z" />
+              <path d="M170 214 Q200 204 236 212" class="thin"/><path d="M180 226 Q214 218 252 226" class="thin"/>
+              <path d="M276 214 Q310 180 352 150" /><path d="M262 240 Q300 230 352 176" class="thin"/>
+              <path d="M40 223 H130" class="dash"/>
+            </svg>
+          </div>
+        </li>
+        <li class="room-card" data-reveal data-room="Floors" data-time="2:30">
+          <div class="room-card__body">
+            <p class="room-card__time mono"><span class="sr-only">Starts at </span>2:30</p>
+            <h3>Floors, last</h3>
+            <ul class="checklist mono">
+              <li>Vacuum lines across carpet</li>
+              <li>Hardwood swept then damp-mopped</li>
+              <li>Entry mat shaken out</li>
+            </ul>
+          </div>
+          <div class="ph">
+            [[frame process-4 room-thumb clipboard-frame]]
+          </div>
+        </li>
+        <li class="room-card room-card--done" data-reveal data-room="Signed off" data-time="3:10">
+          <p class="room-card__time mono"><span class="sr-only">Finished at </span>3:10</p>
+          <p class="room-card__done"><svg class="done-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>Walk-through with you, then the sheet is signed.</p>
+        </li>
+        </ol>
       </div>
     </div>
   </section>
 
   <!-- 4. BREAK -->
-  <section class="section break t-deep">
-    [[frame break break-frame | data-fallback="Yellow pollen dust on porch rail"]]
-    <p class="break__caption mono">Pollen season on a {{biz.city}} porch rail</p>
+  <section class="section break t-deep" aria-label="Pollen season">
+    <div class="break__sheet">
+      <div class="ph ph--pollen">
+        [[frame break break-frame]]
+        <svg class="ph__draw" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <path d="M0 150 H1200" /><path d="M0 172 H1200" class="thin"/>
+          <path d="M0 420 H1200" /><path d="M0 440 H1200" class="thin"/>
+          <path d="M80 172 V420 M200 172 V420 M320 172 V420 M440 172 V420 M560 172 V420 M680 172 V420 M800 172 V420 M920 172 V420 M1040 172 V420 M1160 172 V420"/>
+          <g class="pollen"><circle cx="60" cy="146" r="3"/><circle cx="130" cy="144" r="2"/><circle cx="210" cy="147" r="3.5"/><circle cx="290" cy="143" r="2"/><circle cx="350" cy="146" r="2.6"/><circle cx="430" cy="144" r="3"/><circle cx="520" cy="147" r="2"/><circle cx="880" cy="147" r="2.4"/><circle cx="960" cy="143" r="3"/><circle cx="1050" cy="146" r="2"/><circle cx="1130" cy="144" r="3.2"/><circle cx="160" cy="80" r="2"/><circle cx="420" cy="60" r="2.6"/><circle cx="740" cy="90" r="2"/><circle cx="1000" cy="50" r="2.4"/><circle cx="560" cy="110" r="1.8"/><circle cx="300" cy="260" r="1.8"/><circle cx="980" cy="300" r="2.2"/></g>
+          <path d="M600 140 H860" class="wipe"/>
+        </svg>
+      </div>
+      <p class="break__stamp mono" data-reveal><svg class="break__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg><span>March to May: pollen film on a {{biz.city}} porch rail. Rails, sills and the porch door get wiped on every spring visit.</span></p>
+    </div>
   </section>
 
   <!-- 5. ESTIMATOR -->
-  <section id="estimator" class="section estimator t-paper">
+  <section id="estimator" class="section estimator t-paper" data-sw-signature="visit-timeline">
     <div class="container tool-layout">
       <div class="tool-layout__intro">
+        <p class="kicker mono">Estimator</p>
         <h2>Price it before you call</h2>
-        <p class="lead">Tell us beds, baths and visit type. Get a visit length and a sample range for a team of two.</p>
+        <p class="lead">Pick the visit and the house size. The bar shows how the visit runs, room by room, for a team of two.</p>
       </div>
       <div class="estimator-widget" data-estimator>
         <noscript>
-          <p class="mono">Sample pricing (JS off): Every-other-week 3 bed / 2 bath — {{proof.prices.0.from}}–{{proof.prices.0.to}} {{proof.prices.0.unit}}. First deep clean — {{proof.prices.1.from}}–{{proof.prices.1.to}} ({{proof.prices.1.note}}). [[sample pricing]]</p>
+          <p class="mono">Sample pricing: every other week, 3 bed / 2 bath, {{proof.prices.0.from}}–{{proof.prices.0.to}} {{proof.prices.0.unit}}. First deep clean, {{proof.prices.1.from}}–{{proof.prices.1.to}} ({{proof.prices.1.note}}). [[sample pricing]]</p>
         </noscript>
-        <form class="est-form">
-          <label class="field">
-            <span>Bedrooms</span>
-            <select name="beds" data-est-input>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-              <option value="4">4</option>
-              <option value="5">5+</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Bathrooms</span>
-            <select name="baths" data-est-input>
-              <option value="1">1</option>
-              <option value="2" selected>2</option>
-              <option value="3">3</option>
-            </select>
-          </label>
-          <label class="field">
+        <div class="est-form">
+          <label class="field" for="est-item">
             <span>Visit type</span>
-            <select name="type" data-est-input>
-              <option value="recurring">Every-other-week</option>
-              <option value="deep">First deep clean</option>
-              <option value="moveout">Move-out</option>
+            <select id="est-item" data-est-item>
+              <option value="0">Every other week</option>
+              <option value="1">First deep clean</option>
+              <option value="2">Move-out cleaning</option>
             </select>
           </label>
-          <label class="field field--check">
-            <input type="checkbox" name="pets" data-est-input> Pets at home
+          <label class="field" for="est-size">
+            <span>House size</span>
+            <input id="est-size" type="range" min="0" max="2" step="1" value="1" data-est-size>
           </label>
-        </form>
-        <div class="est-output" data-est-output aria-live="polite">
-          <p class="est-output__time mono">Visit time: <strong>—</strong></p>
-          <p class="est-output__price mono">Sample range: <strong>—</strong></p>
-          <svg class="est-sketch" data-est-sketch viewBox="0 0 300 24" role="img" aria-label="Visit timeline bar">
-            <rect class="est-sketch__bg" x="0" y="8" width="300" height="8" rx="4"/>
-            <rect class="est-sketch__fill" x="0" y="8" width="0" height="8" rx="4"/>
-            <svg class="est-tick" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tick"/></svg>
-          </svg>
-          [[sample pricing]]
+          <p class="est-scale mono" aria-hidden="true"><span>2 bed</span><span>3 bed</span><span>4+ bed</span></p>
+        </div>
+        <div class="est-output">
+          <div class="est-bar" data-est-sketch>
+            <p class="est-bar__label mono">Visit clock, two people: <span class="est-clock" data-for="low">about 2:20</span><span class="est-clock" data-for="mid">about 3:10</span><span class="est-clock" data-for="high">about 4:00</span></p>
+            <div class="est-bar__track" aria-hidden="true">
+              <span class="est-seg">Kitchen</span><span class="est-seg">Baths</span><span class="est-seg">Rooms</span><span class="est-seg">Floors</span>
+              <svg class="est-tick" viewBox="0 0 24 24" focusable="false"><path class="tick-line" pathLength="1" d="M4 12l5 5L20 7"/></svg>
+            </div>
+          </div>
+          <p class="est-range" data-est-out aria-live="polite"></p>
           <a class="btn btn-primary" href="#contact" data-service="Recurring">Price my visit</a>
         </div>
       </div>
@@ -202,52 +266,46 @@
 
   <!-- 6. CHOOSER -->
   <section id="chooser" class="section chooser t-mid">
-    <div class="container tool-layout">
-      <div class="tool-layout__intro">
-        <h2>Deep clean first, or recurring?</h2>
-        <p class="lead">Answer three quick questions and we recommend a plan with both sample ranges.</p>
+    <div class="container chooser__wrap">
+      <div class="chooser__head">
+        <p class="kicker mono">Walk-through</p>
+        <h2>Deep clean first, or straight to every other week?</h2>
+        <p class="lead">Walk the house and tick what you see. The sheet tells you where to start.</p>
       </div>
-      <div class="chooser-widget" data-checklist>
-        <noscript>
-          <p class="mono">If baseboards, grout or blinds have not been done in months, start with a first deep clean ({{proof.prices.1.from}}–{{proof.prices.1.to}}), then every-other-week ({{proof.prices.0.from}}–{{proof.prices.0.to}}). [[sample pricing]]</p>
-        </noscript>
-        <form class="cho-form">
-          <fieldset class="field">
-            <legend>Last professional clean?</legend>
-            <label><input type="radio" name="last" value="never" checked> Never / can't remember</label>
-            <label><input type="radio" name="last" value="months"> More than 3 months ago</label>
-            <label><input type="radio" name="last" value="recent"> Within the last month</label>
-          </fieldset>
-          <fieldset class="field">
-            <legend>Build-up to tackle?</legend>
-            <label><input type="checkbox" name="buildup" value="baseboards"> Baseboards</label>
-            <label><input type="checkbox" name="buildup" value="grout"> Grout lines</label>
-            <label><input type="checkbox" name="buildup" value="blinds"> Blinds / shutters</label>
-          </fieldset>
-          <fieldset class="field">
-            <legend>Moving?</legend>
-            <label><input type="radio" name="moving" value="no" checked> No</label>
-            <label><input type="radio" name="moving" value="out"> Moving out</label>
-            <label><input type="radio" name="moving" value="in"> Moving in</label>
-          </fieldset>
-        </form>
-        <div class="cho-output" data-checklist-output aria-live="polite">
-          <p class="cho-output__rec mono">Recommendation: <strong>—</strong></p>
-          [[sample pricing]]
-          <a class="btn btn-primary" href="#contact" data-service="Deep clean">Start with this plan</a>
+      <div class="chooser-sheet" data-checklist data-checklist-results="0:Tick what you see in your house.|1:{n} of {total}: an every-other-week visit keeps up with this.|3:{n} of {total}: start with a first deep clean, then every other week.">
+        <fieldset class="chooser-sheet__list">
+          <legend class="mono">What you see today</legend>
+          <label><input type="checkbox"> Dust you can write in on the baseboards</label>
+          <label><input type="checkbox"> Grey grout lines in the shower</label>
+          <label><input type="checkbox"> Blinds nobody has touched since last spring</label>
+          <label><input type="checkbox"> Yellow pollen film on the sills</label>
+          <label><input type="checkbox"> Soap haze on the shower glass</label>
+          <label><input type="checkbox"> Moving in or out this month</label>
+        </fieldset>
+        <div class="chooser-sheet__out">
+          <span class="chooser-sheet__meter" aria-hidden="true"><span></span></span>
+          <p class="chooser-sheet__result mono" data-checklist-result>Tick what you see in your house.</p>
+          <div class="chooser-sheet__cta">
+            [[sample pricing]]
+            <a class="btn btn-primary" href="#contact" data-service="Deep clean">Price my visit</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 7. SERVICES -->
-  <section id="services" class="section services t-light">
-    <div class="container">
-      <h2>What we clean</h2>
-      <p class="lead">Every service follows the same top-down, dry-to-wet method.</p>
+  <section id="services" class="section services t-light" data-sw-signature="visit-timeline">
+    <div class="container services__grid">
+      <div class="services__head">
+        <p class="kicker mono">The full list</p>
+        <h2>What we clean</h2>
+        <p class="lead">Every service runs the same top-down, dry-to-wet method. Each line gets its tick before we leave.</p>
+      </div>
       <ul class="svc-grid" data-reveal-stagger>
         <!-- each services -->
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>{{.name}}</h3>
           <p>{{.blurb}}</p>
           <a class="btn btn-ghost" href="#contact" data-service="{{.short}}">Price my visit</a>
@@ -261,11 +319,11 @@
   <section id="reviews" class="section reviews t-paper" data-sw-signature="visit-timeline">
     <div class="container">
       <h2>Notes from the checklist</h2>
-      <p class="lead mono">Sample rating {{proof.rating}} · {{proof.reviewCount}} reviews · [[sample rating]]</p>
+      <p class="reviews__meta mono">Sample rating {{proof.rating}} · {{proof.reviewCount}} reviews · [[sample rating]]</p>
       <ul class="review-stack" data-reveal-stagger>
         <!-- each proof.reviews 0:4 -->
         <li class="review-card">
-          <svg class="review-tick" aria-hidden="true"><use href="#i-tick"/></svg>
+          <svg class="review-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           <blockquote>
             <p>“{{.text}}”</p>
             <footer class="mono">{{.name}}, {{.town}} · {{.service}}</footer>
@@ -284,7 +342,8 @@
         <h2>Serving {{biz.city}} and {{biz.areas|list}}</h2>
         <p class="lead">Check your ZIP or call to confirm.</p>
         <p class="mono">ZIPs: {{biz.zips|csv}}</p>
-        [[frame area area-thumb | data-fallback="Neighborhood street view"]]
+        <div class="ph area__ph">[[frame area area-thumb clipboard-frame]]</div>
+        <p class="area__stamp mono">On the route every weekday</p>
       </div>
       <div class="zip-tool" data-zip>
         <h3>Do you serve my ZIP?</h3>
@@ -310,7 +369,7 @@
           <li class="form-step is-active" data-step="1">
             <h3>Visit type</h3>
             <fieldset>
-              <label><input type="radio" name="service" value="Recurring" checked> Every-other-week</label>
+              <label><input type="radio" name="service" value="Recurring" checked> Every other week</label>
               <label><input type="radio" name="service" value="Deep clean"> First deep clean</label>
               <label><input type="radio" name="service" value="Move-out"> Move-out</label>
               <label><input type="radio" name="service" value="Move-in"> Move-in</label>
@@ -340,9 +399,9 @@
             <input type="hidden" name="t">
           </li>
         </ol>
-        <div class="form-nav">
-          <button class="btn btn-secondary" type="button" data-form-prev disabled>Back</button>
-          <button class="btn btn-primary" type="button" data-form-next>Next</button>
+        <div class="form-nav" data-form-nav>
+          <button class="btn btn-secondary" type="button" data-back disabled>Back</button>
+          <button class="btn btn-primary" type="button" data-next>Next</button>
           <button class="btn btn-primary" type="submit" data-form-submit hidden>Send request</button>
         </div>
         <div class="form-thankyou" data-form-thankyou hidden>
@@ -357,8 +416,8 @@
 </main>
 
 <footer class="footer t-deep" data-sw-signature="visit-timeline">
-  <div class="container stack">
-    <svg class="final-tick" aria-hidden="true"><use href="#i-tick"/></svg>
+  <div class="container stack" data-reveal>
+    <svg class="final-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
     <p class="mono">Visit complete · 3:10</p>
     <p class="disclaimer">{{demo.disclaimer}}</p>
     [[credits]]

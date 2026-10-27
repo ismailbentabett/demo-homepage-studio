@@ -22,7 +22,6 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Ticklist House Cleaning","description":"Greenville house cleaning with the checklist shown, room by room and minute by minute. See what a visit covers and sample prices, then book a time.","telephone":"+18645550152","email":"hello@ticklist-cleaning.example","areaServed":[{"@type":"City","name":"Greenville"},{"@type":"City","name":"Greer"},{"@type":"City","name":"Simpsonville"},{"@type":"City","name":"Mauldin"},{"@type":"City","name":"Taylors"},{"@type":"City","name":"Travelers Rest"},{"@type":"City","name":"Easley"},{"@type":"City","name":"Fountain Inn"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"17:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/outfit/outfit-100-900-normal.woff2" crossorigin>
-<link rel="stylesheet" href="vendor/lenis.css">
 <style>
 @font-face{font-family:"Outfit";src:url("fonts/outfit/outfit-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Karla";src:url("fonts/karla/karla-200-800-normal.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
@@ -291,7 +290,7 @@ html.lenis, html.lenis body { height: auto; }
 
 /* Base */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; text-size-adjust: 100%; }
+html { text-size-adjust: 100%; }
 body { font-family: var(--ff-text); font-size: var(--fs-0); line-height: 1.5; color: var(--ink); background: var(--paper); text-wrap: pretty; -webkit-font-smoothing: antialiased; }
 h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0; letter-spacing: -0.03em; text-wrap: balance; color: var(--ink); }
 h1 { font-size: var(--fs-h1); line-height: 0.92; margin-bottom: var(--s-5); }
@@ -319,6 +318,8 @@ img, svg { display: block; max-width: 100%; height: auto; }
 .container { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: var(--s-4); }
 @media (min-width: 640px) { .container { padding-inline: var(--s-6); } }
 .split { display: grid; gap: var(--s-7); }
+.split > * { min-width: 0; }
+.area__info .mono { overflow-wrap: anywhere; }
 @media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; align-items: center; } }
 
 /* Components: Buttons */
@@ -349,9 +350,6 @@ legend { font-weight: 600; margin-bottom: var(--s-3); font-family: var(--ff-disp
 
 /* Components: Cards & Tags */
 .sample-tag { display: inline-block; font-family: var(--ff-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; background: var(--rule); color: var(--ink); padding: 2px 8px; border-radius: 999px; vertical-align: middle; margin-left: var(--s-2); }
-.frame { position: relative; overflow: hidden; border-radius: 3px; background: var(--rule); }
-.frame img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) contrast(1.05) sepia(0.08) brightness(1.02); }
-.frame.is-broken { display: flex; align-items: center; justify-content: center; min-height: 200px; font-family: var(--ff-mono); font-size: var(--fs--1); color: var(--muted); text-align: center; padding: var(--s-5); }
 
 /* Layout: Header */
 .header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); z-index: 100; transition: transform 300ms var(--ease-out), background 300ms; border-bottom: 1px solid var(--rule); }
@@ -388,134 +386,274 @@ legend { font-weight: 600; margin-bottom: var(--s-3); font-family: var(--ff-disp
 .section.tight { padding-block: var(--s-7); }
 .section.loose { padding-block: var(--s-9); }
 
+/* Photo frames + drawn placeholder treatment (a failed photo becomes a pencil sketch on ruled paper) */
+.ph { position: relative; }
+.ph__draw { display: none; }
+.frame.is-broken { background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, transparent 0 27px, color-mix(in srgb, #1a2b3c 9%, transparent) 27px 28px), linear-gradient(to right, transparent 0 46px, color-mix(in srgb, #c4883a 35%, transparent) 46px 47px, transparent 47px); }
+.frame.is-broken img { opacity: 0; }
+.frame.is-broken .frame-fallback { display: block; place-items: initial; position: absolute; inset: auto 14px 12px 60px; padding: 0; z-index: 2; font-family: var(--ff-mono); font-size: 0.75rem; letter-spacing: 0.02em; color: #5a6a7a; text-align: left; }
+.ph:has(.is-broken) .ph__draw { display: block; position: absolute; inset: 6% 5% 12%; width: 90%; height: 82%; z-index: 1; pointer-events: none; fill: none; stroke: #1a2b3c; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.ph__draw .thin { stroke-width: 1.3; opacity: 0.65; }
+.ph__draw .dash { stroke-dasharray: 6 8; stroke: #c4883a; }
+.ph__draw circle { fill: #c4883a; stroke: none; }
+.frame { position: relative; overflow: hidden; border-radius: 3px; background: var(--paper); }
+.frame img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) contrast(1.05) sepia(0.08) brightness(1.02); }
+.clipboard-frame { position: relative; display: block; overflow: hidden; border: 2px solid #1a2b3c; border-radius: 3px; padding: 6px; background: var(--paper); box-shadow: 3px 4px 0 color-mix(in srgb, #1a2b3c 16%, transparent); transform: rotate(-1deg); }
+.clipboard-frame::after { content: ''; position: absolute; inset: 6px; pointer-events: none; background: radial-gradient(circle at 20% 15%, rgba(247,245,240,0.18), transparent 55%); mix-blend-mode: soft-light; }
+.clipboard-frame img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+
 /* Hero */
-.hero { min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; padding-top: calc(var(--header-h) + var(--s-7)); }
-.hero__media { position: relative; }
-.clipboard-frame { aspect-ratio: 4/5; max-height: 600px; margin-inline: auto; }
-.clipboard-ticks { position: absolute; top: 20%; left: 10%; display: flex; flex-direction: column; gap: var(--s-5); }
-.tick-svg { width: 32px; height: 32px; color: var(--accent); opacity: 0; }
-.sw-motion .tick-svg { animation: tick-draw 0.3s var(--ease-out) forwards; }
-.sw-motion .tick-svg:nth-child(1) { animation-delay: 0.15s; }
-.sw-motion .tick-svg:nth-child(2) { animation-delay: 0.3s; }
-.sw-motion .tick-svg:nth-child(3) { animation-delay: 0.45s; }
-@keyframes tick-draw { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-.est-tick { width: 20px; height: 20px; position: absolute; right: -4px; top: 2px; color: var(--accent); opacity: 0; transition: opacity 300ms var(--ease-out); }
-.est-sketch.is-complete .est-tick { opacity: 1; }
-.tick-line { stroke-dasharray: 30; stroke-dashoffset: 30; transition: stroke-dashoffset 0.6s var(--ease-out); }
-.is-in .tick-line, .sw-motion .is-in .tick-line { stroke-dashoffset: 0; }
-.hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-4); margin-bottom: var(--s-5); }
-.proof-line { font-size: var(--fs--1); color: var(--muted); }
-
-/* Statement */
-.statement { text-align: center; max-width: 800px; margin-inline: auto; }
-.statement__text { font-size: var(--fs-2); font-style: italic; margin-bottom: var(--s-4); }
-
-/* Process / Timeline */
-.timeline-rail { position: relative; padding-left: var(--s-7); margin-top: var(--s-7); }
-.timeline-rail__track { position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--rule); }
-.room-card { position: relative; margin-bottom: var(--s-7); padding: var(--s-5); border: 1px solid var(--rule); border-radius: 3px; background: var(--bg); }
-.room-card__time { position: absolute; left: calc(-1 * var(--s-7)); top: var(--s-5); width: 48px; text-align: right; font-weight: 500; color: var(--accent); }
-.room-card__time::before { content: ''; position: absolute; right: -18px; top: 50%; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); transform: translateY(-50%); }
-.checklist li { position: relative; padding-left: var(--s-6); margin-bottom: var(--s-2); }
-.checklist li::before { content: ''; position: absolute; left: 0; top: 6px; width: 14px; height: 14px; border: 2px solid var(--rule); border-radius: 3px; }
-.is-in .checklist li::before { border-color: var(--accent); background: var(--accent); }
-.room-thumb { aspect-ratio: 16/9; margin-top: var(--s-4); }
-.clipboard-frame { position: relative; border: 2px solid var(--ink); border-radius: var(--radius-sm, 3px); padding: 6px; background: var(--paper); box-shadow: 2px 3px 0 color-mix(in srgb, var(--ink) 15%, transparent); transform: rotate(-1deg); display: block; overflow: hidden; }
-.clipboard-frame img { border-radius: 2px; display: block; width: 100%; height: auto; }
-@media (min-width: 640px) { .clipboard-frame:nth-child(even) { transform: rotate(1deg); } }
+.hero { min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; padding-top: calc(var(--header-h) + var(--s-6)); padding-bottom: var(--s-8); }
+.hero__grid { align-items: center; }
+.hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-5); }
+.proof-line { color: var(--muted); }
+.hero__media { position: relative; padding: 0 0 var(--s-6) var(--s-4); }
+.hero-photo { aspect-ratio: 4 / 3; width: 100%; transform: rotate(-1.5deg); }
+.visit-sheet { position: absolute; left: 0; bottom: 0; width: clamp(156px, 46%, 250px); transform: rotate(2.5deg); filter: drop-shadow(0 10px 18px rgba(26,43,60,0.18)); z-index: 3; }
+.visit-sheet__svg { width: 100%; height: auto; overflow: visible; }
+.vs-board { fill: #fffdf8; stroke: #1a2b3c; stroke-width: 2; }
+.vs-clip { fill: #1a2b3c; }
+.visit-sheet text { font-family: var(--ff-mono); font-size: 14px; fill: #1a2b3c; }
+.visit-sheet .vs-head { font-size: 11px; letter-spacing: 0.1em; fill: #5a7a5e; }
+.visit-sheet .vs-time { text-anchor: end; fill: #5a6a7a; }
+.vs-row rect { fill: none; stroke: #1a2b3c; stroke-width: 1.6; }
+.vs-tick { fill: none; stroke: #5a7a5e; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.vs-row--open text { fill: #5a6a7a; }
+.sw-motion .vs-tick { stroke-dashoffset: 1; animation: draw 0.32s var(--ease-out) forwards; }
+.sw-motion .vs-row:nth-child(4) .vs-tick { animation-delay: 0.25s; }
+.sw-motion .vs-row:nth-child(5) .vs-tick { animation-delay: 0.5s; }
+.sw-motion .vs-row:nth-child(6) .vs-tick { animation-delay: 0.75s; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@media (min-width: 640px) {
+  .hero__media { padding: 0 0 var(--s-7) var(--s-7); }
+  .hero-photo { aspect-ratio: 5 / 4; }
+}
 @media (min-width: 900px) {
-  .timeline-rail { padding-left: 120px; }
-  .room-card__time { left: 0; width: 100px; }
-  .room-card__time::before { right: -24px; }
+  .hero__grid { grid-template-columns: 1.05fr 1fr; gap: var(--s-8); }
+  .hero-photo { aspect-ratio: 4 / 5; max-height: min(66svh, 600px); width: auto; margin-left: auto; }
+  .visit-sheet { left: 0; bottom: 0; }
 }
 
-/* Break */
-.break { padding: 0; position: relative; min-height: 50svh; display: flex; align-items: flex-end; }
-.break-frame { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Shared tick (sprite <use> ticks inherit the dash from the svg) */
+.tk { fill: none; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 0.7s var(--ease-out) 0.2s; }
+.sw-motion .tk { stroke-dashoffset: 1; }
+.sw-motion .is-in .tk, .sw-motion .is-in.tk { stroke-dashoffset: 0; }
+
+/* Statement */
+.proof-line.section { padding-block: var(--s-7); }
+.statement { text-align: center; max-width: 860px; margin-inline: auto; display: flex; flex-direction: column; align-items: center; }
+.statement__tick { width: 40px; height: 40px; color: #f2d58a; margin-bottom: var(--s-4); }
+.statement__text { font-family: var(--ff-display); font-size: var(--fs-2); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; max-width: 36ch; text-wrap: balance; }
+
+/* Process story: sticky visit clock + room rail */
+.process__grid { display: grid; gap: var(--s-6); }
+.visit-clock { display: none; }
+.timeline-rail { position: relative; padding-left: 36px; }
+.timeline-rail__track { position: absolute; left: 8px; top: 8px; bottom: 8px; width: 2px; background: var(--rule); }
+.timeline-rail__fill { position: absolute; inset: 0; background: #c4883a; transform-origin: top; transform: scaleY(var(--rail, 1)); }
+.timeline-rail__list { display: grid; gap: var(--s-7); }
+.room-card { position: relative; display: grid; gap: var(--s-4); padding-top: var(--s-5); border-top: 1px solid var(--rule); min-width: 0; }
+.room-card::before { content: ''; position: absolute; left: -34px; top: calc(var(--s-5) + 4px); width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid #5a7a5e; transition: background 300ms; }
+.room-card.is-current::before, html:not(.sw-motion) .room-card::before { background: #5a7a5e; }
+.room-card__time { font-family: var(--ff-mono); font-size: var(--fs-1); font-weight: 500; color: #5a7a5e; margin-bottom: var(--s-2); letter-spacing: -0.02em; }
+.room-card h3 { font-size: var(--fs-3); }
+.checklist li { position: relative; padding-left: 30px; margin-bottom: var(--s-3); line-height: 1.45; }
+.checklist li::before { content: ''; position: absolute; left: 0; top: 1px; width: 18px; height: 18px; border: 2px solid #1a2b3c; border-radius: 3px; }
+.checklist li::after { content: ''; position: absolute; left: 6px; top: 3px; width: 6px; height: 11px; border: solid #5a7a5e; border-width: 0 3px 3px 0; transform: rotate(45deg) scale(1); transition: transform 260ms var(--ease-out), opacity 200ms; }
+.sw-motion .checklist li::after { transform: rotate(45deg) scale(0); opacity: 0; }
+.sw-motion .is-in .checklist li::after { transform: rotate(45deg) scale(1); opacity: 1; }
+.sw-motion .is-in .checklist li:nth-child(2)::after { transition-delay: 150ms; }
+.sw-motion .is-in .checklist li:nth-child(3)::after { transition-delay: 300ms; }
+.sw-motion .is-in .checklist li:nth-child(4)::after { transition-delay: 450ms; }
+.room-thumb { aspect-ratio: 4 / 3; width: 100%; }
+.ph:nth-child(even) .room-thumb, .room-card:nth-child(odd) .room-thumb { transform: rotate(1deg); }
+.room-card--done { display: block; border-top: 2px dashed #5a7a5e; }
+.room-card__done { display: flex; align-items: center; gap: var(--s-3); font-family: var(--ff-display); font-size: var(--fs-2); font-weight: 600; letter-spacing: -0.02em; max-width: 30ch; }
+.done-tick { flex: none; width: 40px; height: 40px; color: #c4883a; }
+@media (min-width: 640px) {
+  .room-card:not(.room-card--done) { grid-template-columns: 1.1fr 1fr; align-items: start; gap: var(--s-6); }
+}
+@media (min-width: 900px) {
+  .process__grid { grid-template-columns: minmax(280px, 0.8fr) 2fr; gap: var(--s-8); align-items: start; }
+  .process__head { position: sticky; top: calc(var(--header-h) + var(--s-6)); }
+  .visit-clock { display: grid; gap: var(--s-2); margin-top: var(--s-6); padding: var(--s-5); border: 2px solid #1a2b3c; border-radius: 3px; background: var(--paper); box-shadow: 3px 4px 0 color-mix(in srgb, #1a2b3c 14%, transparent); }
+  .visit-clock__label { text-transform: uppercase; letter-spacing: 0.08em; color: #5a7a5e; }
+  .visit-clock__time { font-size: var(--fs-4); font-weight: 500; line-height: 1; color: #1a2b3c; font-variant-numeric: tabular-nums; }
+  .visit-clock__room { color: var(--muted); font-size: var(--fs-0); }
+  .visit-clock__bar { display: block; height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; margin-top: var(--s-2); }
+  .visit-clock__fill { display: block; height: 100%; background: #c4883a; transform-origin: left; transform: scaleX(var(--p, 1)); }
+  .timeline-rail { padding-left: 48px; }
+  .room-card::before { left: -46px; }
+}
+
+/* Break: the pollen sheet */
+.break { padding: var(--s-6) var(--s-4) var(--s-8); }
+.break__sheet { position: relative; max-width: 1440px; margin-inline: auto; }
+.break-frame { height: 56svh; min-height: 300px; border: 8px solid var(--paper); border-radius: 3px; box-shadow: 0 18px 40px rgba(0,0,0,0.35); }
 .break-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
-.break__caption { position: relative; z-index: 1; padding: var(--s-5); background: linear-gradient(to top, rgba(30,45,36,0.9), transparent); width: 100%; color: var(--paper); }
+.ph--pollen .frame.is-broken { background-color: #26382d; background-image: repeating-linear-gradient(to bottom, transparent 0 27px, rgba(247,245,240,0.06) 27px 28px); }
+.ph--pollen:has(.is-broken) .ph__draw { inset: 0; width: 100%; height: 100%; stroke: rgba(247,245,240,0.75); stroke-width: 3; }
+.ph--pollen .ph__draw .thin { stroke-width: 1.6; }
+.ph--pollen .ph__draw circle { fill: #e2b84c; }
+.ph--pollen .ph__draw .wipe { stroke: #e2b84c; stroke-width: 6; opacity: 0.85; }
+.ph--pollen .frame.is-broken .frame-fallback { color: rgba(247,245,240,0.6); left: auto; right: 16px; text-align: right; }
+.break__stamp { position: relative; z-index: 3; display: flex; gap: var(--s-3); align-items: flex-start; max-width: 460px; margin: calc(-1 * var(--s-7)) 0 0 var(--s-4); padding: var(--s-4) var(--s-5); background: #fffdf8; color: #1a2b3c; border: 2px solid #1a2b3c; border-radius: 3px; transform: rotate(-1.2deg); box-shadow: 3px 4px 0 rgba(0,0,0,0.25); font-size: var(--fs--1); line-height: 1.5; }
+.break__tick { flex: none; width: 28px; height: 28px; color: #5a7a5e; }
+@media (min-width: 900px) {
+  .break { padding: var(--s-7) var(--s-6) var(--s-9); }
+  .break-frame { height: 64svh; }
+  .break__stamp { position: absolute; left: var(--s-7); bottom: calc(-1 * var(--s-6)); margin: 0; }
+}
 
-/* Tools (Estimator / Chooser) */
-.tool-layout { display: grid; gap: var(--s-7); }
-@media (min-width: 900px) { .tool-layout { grid-template-columns: 1fr 1.2fr; align-items: start; } }
-.est-form, .cho-form { display: grid; gap: var(--s-4); margin-bottom: var(--s-5); padding: var(--s-5); border: 1px solid var(--rule); border-radius: 3px; background: color-mix(in srgb, var(--bg) 95%, black); }
-.est-output, .cho-output { padding: var(--s-5); border: 2px dashed var(--rule); border-radius: 3px; text-align: center; }
-.est-output strong, .cho-output strong { font-size: var(--fs-2); display: block; margin-block: var(--s-2); color: var(--accent); }
-.est-sketch { width: 100%; height: 24px; margin: var(--s-4) 0; overflow: visible; }
-.est-sketch__bg { fill: var(--rule); }
-.est-sketch__fill { fill: var(--signal); transition: width 600ms var(--ease-out); }
-.est-tick { position: absolute; right: -4px; top: 2px; width: 20px; height: 20px; color: var(--accent); opacity: 0; transform: scale(0.6); transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out); }
-.est-sketch.is-complete .est-tick { opacity: 1; transform: scale(1); }
-.sw-motion .est-sketch.is-complete .tick-line { stroke-dashoffset: 0; transition: stroke-dashoffset 0.4s var(--ease-out) 0.1s; }
+/* Estimator */
+.tool-layout { display: grid; gap: var(--s-6); }
+@media (min-width: 900px) { .tool-layout { grid-template-columns: 1fr 1.25fr; gap: var(--s-8); align-items: start; } }
+.estimator-widget { display: grid; gap: var(--s-5); padding: var(--s-5); background: #fffdf8; border: 2px solid #1a2b3c; border-radius: 3px; box-shadow: 4px 5px 0 color-mix(in srgb, #1a2b3c 14%, transparent); }
+.est-form .field select { width: 100%; }
+.est-form input[type="range"] { height: 44px; padding: 0; border: 0; background: none; accent-color: #c4883a; width: 100%; }
+.est-scale { display: flex; justify-content: space-between; color: var(--muted); margin: calc(-1 * var(--s-3)) 0 0; max-width: none; }
+.est-output { display: grid; gap: var(--s-4); padding-top: var(--s-5); border-top: 2px dashed var(--rule); }
+.est-bar__label { color: var(--muted); margin-bottom: var(--s-3); }
+.est-clock { display: none; color: #1a2b3c; font-weight: 500; font-size: var(--fs-1); }
+.est-bar:not([data-level]) .est-clock[data-for="mid"], .est-bar[data-level="low"] .est-clock[data-for="low"], .est-bar[data-level="mid"] .est-clock[data-for="mid"], .est-bar[data-level="high"] .est-clock[data-for="high"] { display: inline; }
+.est-bar__track { position: relative; display: flex; height: 52px; width: calc(58% + var(--est, 0.5) * 34%); transition: width 600ms var(--ease-out); }
+.est-seg { flex: 1; display: flex; align-items: flex-end; padding: 0 6px 6px; font-family: var(--ff-mono); font-size: 0.7rem; color: #1a2b3c; background: color-mix(in srgb, #5a7a5e 22%, transparent); border-left: 2px solid #fffdf8; overflow: hidden; white-space: nowrap; }
+.est-seg:nth-child(2) { background: color-mix(in srgb, #5a7a5e 36%, transparent); }
+.est-seg:nth-child(3) { background: color-mix(in srgb, #5a7a5e 50%, transparent); }
+.est-seg:nth-child(4) { background: color-mix(in srgb, #c4883a 55%, transparent); }
+.est-bar[data-item^="First"] .est-seg, .est-bar[data-item^="Move"] .est-seg { background-image: repeating-linear-gradient(135deg, transparent 0 6px, rgba(26,43,60,0.12) 6px 7px); }
+.est-tick { position: absolute; right: -40px; top: 10px; width: 32px; height: 32px; }
+.est-tick .tick-line { fill: none; stroke: #5a7a5e; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 0.45s var(--ease-out); }
+.sw-motion .est-tick .tick-line { stroke-dashoffset: 1; }
+.sw-motion .est-bar.is-ticked .est-tick .tick-line { stroke-dashoffset: 0; }
+.est-range { font-size: var(--fs--1); color: var(--muted); max-width: none; margin: 0; }
+.est-range .sw-est-range { display: block; font-family: var(--ff-display); font-size: var(--fs-2); font-weight: 600; letter-spacing: -0.02em; color: #1a2b3c; margin-bottom: var(--s-2); }
+.est-output .btn { justify-self: start; }
 
-/* Services Grid */
-.svc-grid { display: grid; gap: var(--s-5); }
-@media (min-width: 640px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { .svc-grid { grid-template-columns: repeat(3, 1fr); } }
-.svc-card { padding: var(--s-5); border: 1px solid var(--rule); border-radius: 3px; display: flex; flex-direction: column; gap: var(--s-3); }
-.svc-card h3 { font-size: var(--fs-1); }
-.svc-card p { font-size: var(--fs--1); color: var(--muted); flex-grow: 1; }
+/* Chooser: one walk-through sheet, full width */
+.chooser__head { max-width: 760px; margin-bottom: var(--s-6); }
+.chooser-sheet { display: grid; gap: var(--s-5); padding: var(--s-5); background: #fffdf8; color: #1a2b3c; border-radius: 3px; border-top: 10px solid #1a2b3c; box-shadow: 0 14px 30px rgba(26,43,60,0.14); }
+.chooser-sheet__list { margin: 0; display: grid; }
+.chooser-sheet__list legend { text-transform: uppercase; letter-spacing: 0.08em; color: #5a7a5e; font-family: var(--ff-mono); font-weight: 500; font-size: var(--fs--1); }
+.chooser-sheet__list label { display: flex; align-items: center; gap: var(--s-3); min-height: 52px; padding-block: var(--s-2); border-bottom: 1px dashed #c9c4b8; cursor: pointer; }
+.chooser-sheet__list input { flex: none; width: 22px; height: 22px; accent-color: #5a7a5e; }
+.chooser-sheet__list label.is-checked { font-weight: 700; }
+.chooser-sheet__out { display: grid; gap: var(--s-4); align-content: start; }
+.chooser-sheet__meter { display: block; height: 10px; background: #e8e4da; border-radius: 5px; overflow: hidden; }
+.chooser-sheet__meter span { display: block; height: 100%; width: var(--checked-pct, 0%); background: #c4883a; transition: width 400ms var(--ease-out); }
+.chooser-sheet__result { font-size: var(--fs-1); line-height: 1.35; color: #1a2b3c; min-height: 3.4em; margin: 0; }
+.chooser-sheet__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+@media (min-width: 900px) {
+  .chooser-sheet { grid-template-columns: 1.7fr 1fr; gap: var(--s-7); padding: var(--s-7); }
+  .chooser-sheet__list { grid-template-columns: 1fr 1fr; column-gap: var(--s-6); }
+  .chooser-sheet__list legend { grid-column: 1 / -1; }
+  .chooser-sheet__out { padding-left: var(--s-6); border-left: 2px dashed #c9c4b8; }
+}
+
+/* Services: a ruled list, each line ticks */
+.services__grid { display: grid; gap: var(--s-6); }
+.svc-grid { display: grid; }
+.svc-card { position: relative; display: grid; grid-template-columns: 32px 1fr; column-gap: var(--s-4); padding: var(--s-5) 0; border-top: 1px solid var(--rule); }
+.svc-card > :not(.svc-tick) { grid-column: 2; }
+.svc-tick { grid-row: 1 / span 3; width: 28px; height: 28px; margin-top: 2px; }
+.svc-tick__box { fill: none; stroke: #1a2b3c; stroke-width: 1.6; }
+.svc-tick__line { fill: none; stroke: #5a7a5e; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 0.4s var(--ease-out); }
+.sw-motion .svc-tick__line { stroke-dashoffset: 1; }
+.sw-motion .svc-card:hover .svc-tick__line, .sw-motion .svc-card:focus-within .svc-tick__line { stroke-dashoffset: 0; }
+@media (hover: none) { .sw-motion .is-in > .svc-card .svc-tick__line { stroke-dashoffset: 0; transition-delay: calc(var(--i, 0) * 90ms + 300ms); } }
+.svc-card h3 { font-size: var(--fs-1); margin-bottom: var(--s-2); }
+.svc-card p { font-size: var(--fs-0); color: var(--muted); margin-bottom: var(--s-2); }
+.svc-card .btn-ghost { justify-self: start; color: #3f5c43; font-weight: 600; min-height: 44px; }
+.svc-card:hover h3 { color: #3f5c43; }
+@media (min-width: 640px) { .svc-grid { grid-template-columns: 1fr 1fr; column-gap: var(--s-6); } }
+@media (min-width: 900px) {
+  .services__grid { grid-template-columns: minmax(260px, 0.7fr) 2fr; gap: var(--s-8); align-items: start; }
+  .services__head { position: sticky; top: calc(var(--header-h) + var(--s-6)); }
+}
 
 /* Reviews */
+.reviews__meta { color: var(--muted); }
 .review-stack { display: grid; gap: var(--s-5); margin-top: var(--s-6); }
-.review-card { position: relative; padding: var(--s-6); border: 1px solid var(--rule); border-radius: 3px; background: var(--bg); }
-.review-tick { position: absolute; top: var(--s-4); right: var(--s-4); width: 24px; height: 24px; color: var(--accent); }
-.review-tick .tick-line { stroke-dashoffset: 0; }
-.review-card blockquote p { font-size: var(--fs-1); font-style: italic; margin-bottom: var(--s-4); }
-.review-card footer { font-size: var(--fs--1); color: var(--muted); }
+.review-card { position: relative; padding: var(--s-6) var(--s-5) var(--s-5); background: #fffdf8; border: 2px solid #1a2b3c; border-radius: 3px; box-shadow: 3px 4px 0 color-mix(in srgb, #1a2b3c 12%, transparent); }
+.review-card:nth-child(even) { transform: rotate(0.6deg); }
+.review-card:nth-child(odd) { transform: rotate(-0.4deg); }
+.review-tick { position: absolute; top: -18px; left: var(--s-5); width: 36px; height: 36px; padding: 4px; color: #5a7a5e; background: var(--paper); border-radius: 50%; }
+.review-card blockquote p { font-size: var(--fs-1); line-height: 1.45; margin-bottom: var(--s-4); }
+.review-card footer { font-size: var(--fs--1); color: var(--muted); margin-bottom: var(--s-2); }
+@media (min-width: 900px) {
+  .review-stack { grid-template-columns: 1fr 1fr; gap: var(--s-7) var(--s-6); }
+  .review-card:first-child { grid-column: 1 / -1; }
+  .review-card:first-child blockquote p { font-size: var(--fs-2); font-family: var(--ff-display); letter-spacing: -0.01em; }
+}
 
 /* Area & ZIP */
-.area-thumb { aspect-ratio: 4/3; margin-top: var(--s-5); }
-.zip-tool { padding: var(--s-6); border: 1px solid var(--rule); border-radius: 3px; background: color-mix(in srgb, var(--bg) 90%, white); align-self: center; }
-.zip-form { display: flex; gap: var(--s-3); margin: var(--s-4) 0; align-items: flex-end; }
-.zip-form .field { flex-grow: 1; margin-bottom: 0; }
-.zip-form .field span { display: block; margin-bottom: var(--s-2); }
+.area__ph { margin-top: var(--s-5); max-width: 520px; }
+.area-thumb { aspect-ratio: 4 / 3; transform: rotate(1.2deg); border-color: var(--paper); }
+.area__stamp { display: inline-block; margin-top: var(--s-4); padding: 4px 10px; border: 1px solid var(--rule); color: var(--muted); border-radius: 3px; }
+.area__info > .mono { overflow-wrap: anywhere; color: var(--muted); }
+.zip-tool { padding: var(--s-6); border: 2px solid #f7f5f0; border-radius: 3px; background: color-mix(in srgb, var(--bg) 88%, white); align-self: center; }
+.zip-tool h3 { margin-bottom: var(--s-4); }
+.zip-form { display: flex; flex-wrap: wrap; gap: var(--s-3); margin: var(--s-4) 0; align-items: flex-end; }
+.zip-form .field { flex: 1 1 160px; margin-bottom: 0; }
 .zip-form input { width: 100%; }
 .zip-result { min-height: 1.5em; font-weight: 500; }
 
 /* Contact Form */
 .form-wrap { max-width: 720px; margin-inline: auto; }
-.form-steps { counter-reset: step; }
-.form-step { display: none; padding: var(--s-6); border: 1px solid var(--rule); border-radius: 3px; background: color-mix(in srgb, var(--bg) 95%, black); margin-bottom: var(--s-5); }
+.form-step { display: none; padding: var(--s-6) var(--s-5); border: 2px solid #f7f5f0; border-radius: 3px; background: color-mix(in srgb, var(--bg) 88%, black); margin-bottom: var(--s-5); }
 .form-step.is-active { display: block; }
 .form-step h3 { font-size: var(--fs-1); margin-bottom: var(--s-4); padding-bottom: var(--s-3); border-bottom: 1px solid var(--rule); }
+.form-step fieldset label { display: flex; align-items: center; gap: var(--s-3); min-height: 44px; }
+.form-step fieldset input { width: 20px; height: 20px; accent-color: #c4883a; }
 .form-nav { display: flex; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-5); }
-.form-thankyou { text-align: center; padding: var(--s-8); }
-.form-thankyou h3 { font-size: var(--fs-2); color: var(--paper); margin-bottom: var(--s-4); }
-.form-thankyou p { color: var(--paper); margin-inline: auto; }
+.t-accent .btn-secondary { color: var(--paper); border-color: var(--paper); }
+.t-accent .btn-secondary:hover { background: var(--paper); color: #1a2b3c; }
+.form-thankyou { text-align: center; padding: var(--s-7) var(--s-4); }
+.form-thankyou h3 { font-size: var(--fs-2); margin-bottom: var(--s-4); }
+.form-thankyou p { margin-inline: auto; }
 
 /* Footer */
-.footer { padding-block: var(--s-8); text-align: center; border-top: 1px solid var(--rule); }
-.final-tick { width: 48px; height: 48px; margin: 0 auto var(--s-4); color: var(--signal); }
-.disclaimer { font-size: var(--fs--1); opacity: 0.8; margin-bottom: var(--s-5); }
-.credits { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3) var(--s-5); font-size: var(--fs--1); opacity: 0.7; margin-bottom: var(--s-5); }
+.footer { padding-block: var(--s-8) calc(var(--s-8) + 64px); text-align: center; border-top: 1px solid var(--rule); }
+.final-tick { width: 56px; height: 56px; margin: 0 auto var(--s-4); color: #c4883a; }
+.footer__done { font-size: var(--fs-1); margin-inline: auto; }
+.footer p { margin-inline: auto; }
+.disclaimer { font-size: var(--fs--1); opacity: 0.85; margin-bottom: var(--s-5); }
+.credits { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) var(--s-5); font-size: 0.8rem; opacity: 0.8; margin-bottom: var(--s-5); }
+.credits a { text-decoration: underline; text-underline-offset: 2px; }
 .footer__contact { margin-bottom: var(--s-4); }
-.copy { opacity: 0.6; }
+.copy { opacity: 0.7; }
+@media (min-width: 900px) { .footer { padding-bottom: var(--s-8); } }
 
 /* Mobile Bar */
-.mobilebar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 90; background: var(--paper); padding: var(--s-3) var(--s-4); display: flex; gap: var(--s-3); box-shadow: var(--shadow-float); border-top: 1px solid var(--rule); transform: translateY(100%); transition: transform 300ms var(--ease-out); }
+.mobilebar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 90; background: var(--paper); padding: var(--s-3) var(--s-4); display: flex; gap: var(--s-3); box-shadow: var(--shadow-float); border-top: 1px solid #d6d2c8; transform: translateY(100%); transition: transform 300ms var(--ease-out); }
 .mobilebar.is-visible { transform: translateY(0); }
-.mobilebar .btn { flex: 1; font-size: var(--fs--1); min-height: 44px; padding: 8px 12px; }
+.mobilebar .btn { flex: 1; font-size: var(--fs--1); min-height: 48px; padding: 8px 12px; }
+.mobilebar .btn-secondary { color: #1a2b3c; border-color: #1a2b3c; }
 @media (min-width: 900px) { .mobilebar { display: none; } }
 
-/* Motion & Reveal */
-[data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 520ms var(--ease-out), transform 520ms var(--ease-out); }
-[data-reveal].is-in { opacity: 1; transform: none; }
-[data-reveal="clip"] { clip-path: inset(0 0 100% 0); opacity: 1; transform: none; transition: clip-path 900ms var(--ease-io); }
-[data-reveal="clip"].is-in { clip-path: inset(0 0 0 0); }
-[data-reveal-stagger] > * { opacity: 0; transform: translateY(15px); transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out); }
-[data-reveal-stagger].is-in > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: none; }
-[data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: 60ms; opacity: 1; transform: none; }
-[data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: 120ms; opacity: 1; transform: none; }
-[data-reveal-stagger].is-in > *:nth-child(4) { transition-delay: 180ms; opacity: 1; transform: none; }
-[data-reveal-stagger].is-in > *:nth-child(5) { transition-delay: 240ms; opacity: 1; transform: none; }
-[data-reveal-stagger].is-in > *:nth-child(n+6) { transition-delay: 300ms; opacity: 1; transform: none; }
+/* Reveals: hidden states exist only under .sw-motion */
+.sw-motion [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 520ms var(--ease-out), transform 520ms var(--ease-out); }
+.sw-motion [data-reveal].is-in { opacity: 1; transform: none; }
+.sw-motion .room-card[data-reveal] { opacity: 1; transform: none; clip-path: inset(0 0 100% 0); transition: clip-path 800ms var(--ease-io); }
+.sw-motion .room-card[data-reveal].is-in { clip-path: inset(-20px -60px -20px -60px); }
+.sw-motion [data-reveal-stagger] > * { opacity: 0; transform: translateY(16px); transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out), clip-path 600ms var(--ease-io); transition-delay: calc(var(--i, 0) * 60ms); }
+.sw-motion .svc-grid > :nth-child(odd) { transform: translateX(-18px); }
+.sw-motion .svc-grid > :nth-child(even) { opacity: 1; transform: none; clip-path: inset(0 100% 0 0); }
+.sw-motion .review-stack > :nth-child(even) { transform: translateY(16px) rotate(2deg); }
+.sw-motion [data-reveal-stagger].is-in > * { opacity: 1; clip-path: inset(-20px -20px -20px -20px); }
+.sw-motion [data-reveal-stagger].is-in > :not(.review-card) { transform: none; }
+.sw-motion .review-stack.is-in > :nth-child(even) { transform: rotate(0.6deg); }
+.sw-motion .review-stack.is-in > :nth-child(odd) { transform: rotate(-0.4deg); }
 
-html:not(.sw-motion) [data-reveal],
-html:not(.sw-motion) [data-reveal="clip"],
-html:not(.sw-motion) [data-reveal-stagger] > * { opacity: 1; transform: none; clip-path: none; transition: none; }
-html:not(.sw-motion) .tick-svg { opacity: 1; animation: none; }
-html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
+/* Phone header: logo, call icon, menu */
+.room-card__done { line-height: 1.15; }
+.hero .frame.is-broken .frame-fallback { display: none; }
+@media (max-width: 639px) {
+  .header .open-now { display: none; }
+  .header .btn-call { min-width: 48px; padding: 10px 14px; }
+  .header .btn-call span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
 </style>
 </head>
 <body>
@@ -527,7 +665,7 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
   <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
   <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
-  <symbol id="i-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="tick-line" d="M4 12l5 5L20 7" stroke-dasharray="30" stroke-dashoffset="30"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 7" pathLength="1"/></symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
@@ -576,15 +714,7 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
 
   <!-- 1. HERO -->
   <section id="hero" class="section hero t-paper" data-sw-signature="visit-timeline">
-    <div class="container split">
-      <div class="hero__media">
-        <figure class="frame clipboard-frame" data-fallback="Visit checklist on a kitchen counter, morning light" data-fallback="Visit checklist on counter"><img src="media/hero-A1-1170.webp" srcset="media/hero-A1-1170.webp 1170w, media/hero-A1.webp 2340w" sizes="100vw" alt="Visit checklist on a kitchen counter, morning light" width="1170" height="1463" loading="lazy" decoding="async" data-photo="hero-A1" data-slot="hero"></figure>
-        <div class="clipboard-ticks" aria-hidden="true">
-          <svg class="tick-svg"><use href="#i-tick"/></svg>
-          <svg class="tick-svg"><use href="#i-tick"/></svg>
-          <svg class="tick-svg"><use href="#i-tick"/></svg>
-        </div>
-      </div>
+    <div class="container split hero__grid">
       <div class="hero__content">
         <p class="kicker mono">Visit checklist: 3 bed / 2 bath</p>
         <h1>House Cleaning in Greenville, SC</h1>
@@ -595,126 +725,198 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
         </div>
         <p class="proof-line mono">Licence # SAMPLE-SC-11873 · <span class="sample-tag">Sample licence</span></p>
       </div>
+      <div class="hero__media">
+        <div class="ph ph--counter">
+          <figure class="frame clipboard-frame hero-photo" data-fallback="Visit checklist on a kitchen counter, morning light"><img src="media/hero-A1-1170.webp" srcset="media/hero-A1-1170.webp 1170w, media/hero-A1.webp 2340w" sizes="100vw" alt="Visit checklist on a kitchen counter, morning light" width="1170" height="1463" loading="lazy" decoding="async" data-photo="hero-A1" data-slot="hero"></figure>
+          <svg class="ph__draw" viewBox="0 0 400 500" aria-hidden="true" focusable="false">
+            <path d="M20 360 H380" /><path d="M20 372 H380" class="thin"/>
+            <path d="M70 360 V250 Q70 236 84 236 H112 V214 H128 V236 Q150 240 150 262 V360" />
+            <path d="M112 214 Q110 196 128 194 L160 190 L160 204 L128 206" />
+            <path d="M84 270 H150" class="thin"/><path d="M84 300 H150" class="thin"/>
+            <path d="M200 360 Q196 330 222 326 H300 Q326 330 322 360" />
+            <path d="M214 326 Q230 300 262 304 Q294 300 308 326" class="thin"/>
+            <path d="M250 150 Q292 120 330 150 Q350 168 336 190" class="thin"/>
+            <circle cx="262" cy="108" r="3"/><circle cx="296" cy="96" r="2"/><circle cx="318" cy="118" r="2.5"/>
+            <path d="M40 430 H180" class="thin"/><path d="M220 430 H360" class="thin"/>
+          </svg>
+        </div>
+        <div class="visit-sheet" aria-hidden="true">
+          <svg class="visit-sheet__svg" viewBox="0 0 240 236" focusable="false">
+            <rect class="vs-board" x="1" y="10" width="238" height="224" rx="6"/>
+            <rect class="vs-clip" x="84" y="2" width="72" height="20" rx="4"/>
+            <text class="vs-head" x="20" y="46">TUE · 2 PEOPLE</text>
+            <g class="vs-row"><rect x="20" y="66" width="18" height="18" rx="3"/><path class="vs-tick" pathLength="1" d="M22 76l6 6 12-14"/><text x="50" y="80">Kitchen</text><text class="vs-time" x="220" y="80">0:00</text></g>
+            <g class="vs-row"><rect x="20" y="106" width="18" height="18" rx="3"/><path class="vs-tick" pathLength="1" d="M22 116l6 6 12-14"/><text x="50" y="120">Bathrooms</text><text class="vs-time" x="220" y="120">0:50</text></g>
+            <g class="vs-row"><rect x="20" y="146" width="18" height="18" rx="3"/><path class="vs-tick" pathLength="1" d="M22 156l6 6 12-14"/><text x="50" y="160">Bedrooms</text><text class="vs-time" x="220" y="160">1:40</text></g>
+            <g class="vs-row vs-row--open"><rect x="20" y="186" width="18" height="18" rx="3"/><text x="50" y="200">Floors last</text><text class="vs-time" x="220" y="200">2:30</text></g>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- 2. PROOF LINE -->
-  <section id="proof-line" class="section proof-line t-accent">
-    <div class="container statement">
-      <p class="statement__text mono">“Same two people every other Tuesday. They know the cat hides under the guest bed and they vacuum around her.”</p>
+  <section id="proof-line" class="section proof-line t-accent" data-sw-signature="visit-timeline">
+    <div class="container statement" data-reveal>
+      <svg class="statement__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
+      <p class="statement__text">“Same two people every other Tuesday. They know the cat hides under the guest bed and they vacuum around her.”</p>
       <span class="sample-tag">Sample review</span>
     </div>
   </section>
 
   <!-- 3. PROCESS STORY -->
   <section id="process-story" class="section process t-light" data-sw-signature="visit-timeline">
-    <div class="container">
-      <h2>The visit, minute by minute</h2>
-      <p class="lead">Top-down, dry-to-wet. Dust falls before the mop. Every room has a start time and a list.</p>
-      <div class="timeline-rail" data-reveal>
-        <div class="timeline-rail__track" aria-hidden="true"></div>
-        <article class="room-card" data-reveal>
-          <span class="room-card__time mono">0:00</span>
-          <h3>Kitchen</h3>
-          <ul class="checklist mono">
-            <li>High dust fan blades and light fixtures</li>
-            <li>Cabinet fronts and backsplash wiped</li>
-            <li>Stovetop grates scrubbed</li>
-            <li>Sink drain cleaned</li>
-          </ul>
-          <figure class="frame room-thumb clipboard-frame" data-fallback="Duster reaching a ceiling fan blade, hand only" data-fallback="Duster reaching ceiling fan blade"><img src="media/process-high-dust-1170.webp" srcset="media/process-high-dust-1170.webp 1170w, media/process-high-dust.webp 2340w" sizes="100vw" alt="Duster reaching a ceiling fan blade, hand only" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-high-dust" data-slot="process-1"></figure>
-        </article>
-        <article class="room-card" data-reveal>
-          <span class="room-card__time mono">0:50</span>
-          <h3>Bathrooms</h3>
-          <ul class="checklist mono">
-            <li>Shower glass squeegeed</li>
-            <li>Tub grout line hand-scrubbed</li>
-            <li>Vanity and mirror wiped</li>
-            <li>Floor mopped last</li>
-          </ul>
-          <figure class="frame room-thumb clipboard-frame" data-fallback="Squeegee clearing shower glass, clean streak visible" data-fallback="Squeegee clearing shower glass"><img src="media/process-shower-glass-1170.webp" srcset="media/process-shower-glass-1170.webp 1170w, media/process-shower-glass.webp 2340w" sizes="100vw" alt="Squeegee clearing shower glass, clean streak visible" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-shower-glass" data-slot="process-3"></figure>
-        </article>
-        <article class="room-card" data-reveal>
-          <span class="room-card__time mono">1:40</span>
-          <h3>Bedrooms &amp; Living</h3>
-          <ul class="checklist mono">
-            <li>Baseboards wiped edge to edge</li>
-            <li>Sills and blinds dusted</li>
-            <li>Surfaces cleared and reset</li>
-          </ul>
-          <figure class="frame room-thumb clipboard-frame" data-fallback="Microfiber cloth wiping a baseboard edge" data-fallback="Microfiber cloth wiping baseboard"><img src="media/process-baseboard-1170.webp" srcset="media/process-baseboard-1170.webp 1170w, media/process-baseboard.webp 2340w" sizes="100vw" alt="Microfiber cloth wiping a baseboard edge" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-baseboard" data-slot="process-2"></figure>
-        </article>
-        <article class="room-card" data-reveal>
-          <span class="room-card__time mono">2:30</span>
-          <h3>Floors (last)</h3>
-          <ul class="checklist mono">
-            <li>Vacuum lines across carpet</li>
-            <li>Hardwood swept then damp-mopped</li>
-            <li>Entry mat shaken out</li>
-          </ul>
-          <figure class="frame room-thumb clipboard-frame" data-fallback="Vacuum lines across a carpet, no brand logos" data-fallback="Vacuum lines across carpet"><img src="media/process-vacuum-1170.webp" srcset="media/process-vacuum-1170.webp 1170w, media/process-vacuum.webp 2340w" sizes="100vw" alt="Vacuum lines across a carpet, no brand logos" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-vacuum" data-slot="process-4"></figure>
-        </article>
+    <div class="container process__grid">
+      <div class="process__head">
+        <p class="kicker mono">Top-down, dry-to-wet</p>
+        <h2>The visit, minute by minute</h2>
+        <p class="lead">Dust falls before the mop. Every room has a start time and a list, and every line gets a tick.</p>
+        <div class="visit-clock" aria-hidden="true">
+          <span class="visit-clock__label mono">Visit clock</span>
+          <span class="visit-clock__time mono" data-visit-clock>0:00</span>
+          <span class="visit-clock__room mono" data-visit-room>Kitchen</span>
+          <span class="visit-clock__bar"><span class="visit-clock__fill"></span></span>
+        </div>
+      </div>
+      <div class="timeline-rail">
+        <span class="timeline-rail__track" aria-hidden="true"><span class="timeline-rail__fill"></span></span>
+        <ol class="timeline-rail__list">
+        <li class="room-card" data-reveal data-room="Kitchen" data-time="0:00">
+          <div class="room-card__body">
+            <p class="room-card__time mono"><span class="sr-only">Starts at </span>0:00</p>
+            <h3>Kitchen</h3>
+            <ul class="checklist mono">
+              <li>High dust: fan blades and light fixtures</li>
+              <li>Cabinet fronts and backsplash wiped</li>
+              <li>Stovetop grates scrubbed</li>
+              <li>Sink drain cleaned</li>
+            </ul>
+          </div>
+          <div class="ph ph--fan">
+            <figure class="frame room-thumb clipboard-frame" data-fallback="Duster reaching a ceiling fan blade, hand only"><img src="media/process-high-dust-1170.webp" srcset="media/process-high-dust-1170.webp 1170w, media/process-high-dust.webp 2340w" sizes="100vw" alt="Duster reaching a ceiling fan blade, hand only" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-high-dust" data-slot="process-1"></figure>
+            <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
+              <path d="M20 30 H380" /><path d="M200 30 V96" />
+              <circle cx="200" cy="108" r="14"/>
+              <path d="M186 104 Q120 92 52 110 Q120 124 188 114" /><path d="M214 104 Q280 92 348 110 Q280 124 212 114" />
+              <path d="M200 122 V150" class="thin"/><path d="M190 150 Q200 168 210 150 Z" class="thin"/>
+              <path d="M330 290 L262 132" /><path d="M248 118 Q262 100 284 116 Q290 136 268 140 Q246 138 248 118 Z" class="thin"/>
+              <circle cx="120" cy="170" r="2"/><circle cx="140" cy="196" r="1.6"/><circle cx="104" cy="214" r="2.2"/><circle cx="160" cy="230" r="1.6"/>
+            </svg>
+          </div>
+        </li>
+        <li class="room-card" data-reveal data-room="Bathrooms" data-time="0:50">
+          <div class="room-card__body">
+            <p class="room-card__time mono"><span class="sr-only">Starts at </span>0:50</p>
+            <h3>Bathrooms</h3>
+            <ul class="checklist mono">
+              <li>Shower glass squeegeed</li>
+              <li>Tub grout line hand-scrubbed</li>
+              <li>Vanity and mirror wiped</li>
+              <li>Floor mopped last</li>
+            </ul>
+          </div>
+          <div class="ph">
+            <figure class="frame room-thumb clipboard-frame" data-fallback="Walk-in white tiled shower with a clear glass panel and a handheld shower head"><img src="media/process-shower-glass-1170.webp" srcset="media/process-shower-glass-1170.webp 1170w, media/process-shower-glass.webp 2340w" sizes="100vw" alt="Walk-in white tiled shower with a clear glass panel and a handheld shower head" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-shower-glass" data-slot="process-3"></figure>
+          </div>
+        </li>
+        <li class="room-card" data-reveal data-room="Bedrooms" data-time="1:40">
+          <div class="room-card__body">
+            <p class="room-card__time mono"><span class="sr-only">Starts at </span>1:40</p>
+            <h3>Bedrooms &amp; living</h3>
+            <ul class="checklist mono">
+              <li>Baseboards wiped edge to edge</li>
+              <li>Sills and blinds dusted</li>
+              <li>Surfaces cleared and reset</li>
+            </ul>
+          </div>
+          <div class="ph ph--baseboard">
+            <figure class="frame room-thumb clipboard-frame" data-fallback="Microfiber cloth wiping a baseboard edge"><img src="media/process-baseboard-1170.webp" srcset="media/process-baseboard-1170.webp 1170w, media/process-baseboard.webp 2340w" sizes="100vw" alt="Microfiber cloth wiping a baseboard edge" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-baseboard" data-slot="process-2"></figure>
+            <svg class="ph__draw" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
+              <path d="M20 40 V210" class="thin"/><path d="M20 210 H380" /><path d="M20 236 H380" /><path d="M20 246 H380" class="thin"/>
+              <path d="M20 280 H380" class="thin"/>
+              <path d="M150 238 Q160 196 210 190 Q262 186 276 214 Q282 236 262 240 Z" />
+              <path d="M170 214 Q200 204 236 212" class="thin"/><path d="M180 226 Q214 218 252 226" class="thin"/>
+              <path d="M276 214 Q310 180 352 150" /><path d="M262 240 Q300 230 352 176" class="thin"/>
+              <path d="M40 223 H130" class="dash"/>
+            </svg>
+          </div>
+        </li>
+        <li class="room-card" data-reveal data-room="Floors" data-time="2:30">
+          <div class="room-card__body">
+            <p class="room-card__time mono"><span class="sr-only">Starts at </span>2:30</p>
+            <h3>Floors, last</h3>
+            <ul class="checklist mono">
+              <li>Vacuum lines across carpet</li>
+              <li>Hardwood swept then damp-mopped</li>
+              <li>Entry mat shaken out</li>
+            </ul>
+          </div>
+          <div class="ph">
+            <figure class="frame room-thumb clipboard-frame" data-fallback="Carpeted staircase rising between white walls, soft pile visible on each tread"><img src="media/process-vacuum-1170.webp" srcset="media/process-vacuum-1170.webp 1170w, media/process-vacuum.webp 2340w" sizes="100vw" alt="Carpeted staircase rising between white walls, soft pile visible on each tread" width="1170" height="836" loading="lazy" decoding="async" data-photo="process-vacuum" data-slot="process-4"></figure>
+          </div>
+        </li>
+        <li class="room-card room-card--done" data-reveal data-room="Signed off" data-time="3:10">
+          <p class="room-card__time mono"><span class="sr-only">Finished at </span>3:10</p>
+          <p class="room-card__done"><svg class="done-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>Walk-through with you, then the sheet is signed.</p>
+        </li>
+        </ol>
       </div>
     </div>
   </section>
 
   <!-- 4. BREAK -->
-  <section class="section break t-deep">
-    <figure class="frame break-frame" data-fallback="Yellow pollen dust on a porch rail after an April coat" data-fallback="Yellow pollen dust on porch rail"><img src="media/detail-pollen-1170.webp" srcset="media/detail-pollen-1170.webp 1170w, media/detail-pollen.webp 2340w" sizes="100vw" alt="Yellow pollen dust on a porch rail after an April coat" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-pollen" data-slot="break"></figure>
-    <p class="break__caption mono">Pollen season on a Greenville porch rail</p>
+  <section class="section break t-deep" aria-label="Pollen season">
+    <div class="break__sheet">
+      <div class="ph ph--pollen">
+        <figure class="frame break-frame" data-fallback="Yellow pollen dust on a porch rail after an April coat"><img src="media/detail-pollen-1170.webp" srcset="media/detail-pollen-1170.webp 1170w, media/detail-pollen.webp 2340w" sizes="100vw" alt="Yellow pollen dust on a porch rail after an April coat" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-pollen" data-slot="break"></figure>
+        <svg class="ph__draw" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <path d="M0 150 H1200" /><path d="M0 172 H1200" class="thin"/>
+          <path d="M0 420 H1200" /><path d="M0 440 H1200" class="thin"/>
+          <path d="M80 172 V420 M200 172 V420 M320 172 V420 M440 172 V420 M560 172 V420 M680 172 V420 M800 172 V420 M920 172 V420 M1040 172 V420 M1160 172 V420"/>
+          <g class="pollen"><circle cx="60" cy="146" r="3"/><circle cx="130" cy="144" r="2"/><circle cx="210" cy="147" r="3.5"/><circle cx="290" cy="143" r="2"/><circle cx="350" cy="146" r="2.6"/><circle cx="430" cy="144" r="3"/><circle cx="520" cy="147" r="2"/><circle cx="880" cy="147" r="2.4"/><circle cx="960" cy="143" r="3"/><circle cx="1050" cy="146" r="2"/><circle cx="1130" cy="144" r="3.2"/><circle cx="160" cy="80" r="2"/><circle cx="420" cy="60" r="2.6"/><circle cx="740" cy="90" r="2"/><circle cx="1000" cy="50" r="2.4"/><circle cx="560" cy="110" r="1.8"/><circle cx="300" cy="260" r="1.8"/><circle cx="980" cy="300" r="2.2"/></g>
+          <path d="M600 140 H860" class="wipe"/>
+        </svg>
+      </div>
+      <p class="break__stamp mono" data-reveal><svg class="break__tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg><span>March to May: pollen film on a Greenville porch rail. Rails, sills and the porch door get wiped on every spring visit.</span></p>
+    </div>
   </section>
 
   <!-- 5. ESTIMATOR -->
-  <section id="estimator" class="section estimator t-paper">
+  <section id="estimator" class="section estimator t-paper" data-sw-signature="visit-timeline">
     <div class="container tool-layout">
       <div class="tool-layout__intro">
+        <p class="kicker mono">Estimator</p>
         <h2>Price it before you call</h2>
-        <p class="lead">Tell us beds, baths and visit type. Get a visit length and a sample range for a team of two.</p>
+        <p class="lead">Pick the visit and the house size. The bar shows how the visit runs, room by room, for a team of two.</p>
       </div>
       <div class="estimator-widget" data-estimator>
         <noscript>
-          <p class="mono">Sample pricing (JS off): Every-other-week 3 bed / 2 bath — $140–$190 per visit. First deep clean — $260–$420 (by size and build-up). <span class="sample-tag">Sample pricing</span></p>
+          <p class="mono">Sample pricing: every other week, 3 bed / 2 bath, $140–$190 per visit. First deep clean, $260–$420 (by size and build-up). <span class="sample-tag">Sample pricing</span></p>
         </noscript>
-        <form class="est-form">
-          <label class="field">
-            <span>Bedrooms</span>
-            <select name="beds" data-est-input>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-              <option value="4">4</option>
-              <option value="5">5+</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Bathrooms</span>
-            <select name="baths" data-est-input>
-              <option value="1">1</option>
-              <option value="2" selected>2</option>
-              <option value="3">3</option>
-            </select>
-          </label>
-          <label class="field">
+        <div class="est-form">
+          <label class="field" for="est-item">
             <span>Visit type</span>
-            <select name="type" data-est-input>
-              <option value="recurring">Every-other-week</option>
-              <option value="deep">First deep clean</option>
-              <option value="moveout">Move-out</option>
+            <select id="est-item" data-est-item>
+              <option value="0">Every other week</option>
+              <option value="1">First deep clean</option>
+              <option value="2">Move-out cleaning</option>
             </select>
           </label>
-          <label class="field field--check">
-            <input type="checkbox" name="pets" data-est-input> Pets at home
+          <label class="field" for="est-size">
+            <span>House size</span>
+            <input id="est-size" type="range" min="0" max="2" step="1" value="1" data-est-size>
           </label>
-        </form>
-        <div class="est-output" data-est-output aria-live="polite">
-          <p class="est-output__time mono">Visit time: <strong>—</strong></p>
-          <p class="est-output__price mono">Sample range: <strong>—</strong></p>
-          <svg class="est-sketch" data-est-sketch viewBox="0 0 300 24" role="img" aria-label="Visit timeline bar">
-            <rect class="est-sketch__bg" x="0" y="8" width="300" height="8" rx="4"/>
-            <rect class="est-sketch__fill" x="0" y="8" width="0" height="8" rx="4"/>
-            <svg class="est-tick" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tick"/></svg>
-          </svg>
-          <span class="sample-tag">Sample pricing</span>
+          <p class="est-scale mono" aria-hidden="true"><span>2 bed</span><span>3 bed</span><span>4+ bed</span></p>
+        </div>
+        <div class="est-output">
+          <div class="est-bar" data-est-sketch>
+            <p class="est-bar__label mono">Visit clock, two people: <span class="est-clock" data-for="low">about 2:20</span><span class="est-clock" data-for="mid">about 3:10</span><span class="est-clock" data-for="high">about 4:00</span></p>
+            <div class="est-bar__track" aria-hidden="true">
+              <span class="est-seg">Kitchen</span><span class="est-seg">Baths</span><span class="est-seg">Rooms</span><span class="est-seg">Floors</span>
+              <svg class="est-tick" viewBox="0 0 24 24" focusable="false"><path class="tick-line" pathLength="1" d="M4 12l5 5L20 7"/></svg>
+            </div>
+          </div>
+          <p class="est-range" data-est-out aria-live="polite"></p>
           <a class="btn btn-primary" href="#contact" data-service="Recurring">Price my visit</a>
         </div>
       </div>
@@ -723,106 +925,109 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
 
   <!-- 6. CHOOSER -->
   <section id="chooser" class="section chooser t-mid">
-    <div class="container tool-layout">
-      <div class="tool-layout__intro">
-        <h2>Deep clean first, or recurring?</h2>
-        <p class="lead">Answer three quick questions and we recommend a plan with both sample ranges.</p>
+    <div class="container chooser__wrap">
+      <div class="chooser__head">
+        <p class="kicker mono">Walk-through</p>
+        <h2>Deep clean first, or straight to every other week?</h2>
+        <p class="lead">Walk the house and tick what you see. The sheet tells you where to start.</p>
       </div>
-      <div class="chooser-widget" data-checklist>
-        <noscript>
-          <p class="mono">If baseboards, grout or blinds have not been done in months, start with a first deep clean ($260–$420), then every-other-week ($140–$190). <span class="sample-tag">Sample pricing</span></p>
-        </noscript>
-        <form class="cho-form">
-          <fieldset class="field">
-            <legend>Last professional clean?</legend>
-            <label><input type="radio" name="last" value="never" checked> Never / can't remember</label>
-            <label><input type="radio" name="last" value="months"> More than 3 months ago</label>
-            <label><input type="radio" name="last" value="recent"> Within the last month</label>
-          </fieldset>
-          <fieldset class="field">
-            <legend>Build-up to tackle?</legend>
-            <label><input type="checkbox" name="buildup" value="baseboards"> Baseboards</label>
-            <label><input type="checkbox" name="buildup" value="grout"> Grout lines</label>
-            <label><input type="checkbox" name="buildup" value="blinds"> Blinds / shutters</label>
-          </fieldset>
-          <fieldset class="field">
-            <legend>Moving?</legend>
-            <label><input type="radio" name="moving" value="no" checked> No</label>
-            <label><input type="radio" name="moving" value="out"> Moving out</label>
-            <label><input type="radio" name="moving" value="in"> Moving in</label>
-          </fieldset>
-        </form>
-        <div class="cho-output" data-checklist-output aria-live="polite">
-          <p class="cho-output__rec mono">Recommendation: <strong>—</strong></p>
-          <span class="sample-tag">Sample pricing</span>
-          <a class="btn btn-primary" href="#contact" data-service="Deep clean">Start with this plan</a>
+      <div class="chooser-sheet" data-checklist data-checklist-results="0:Tick what you see in your house.|1:{n} of {total}: an every-other-week visit keeps up with this.|3:{n} of {total}: start with a first deep clean, then every other week.">
+        <fieldset class="chooser-sheet__list">
+          <legend class="mono">What you see today</legend>
+          <label><input type="checkbox"> Dust you can write in on the baseboards</label>
+          <label><input type="checkbox"> Grey grout lines in the shower</label>
+          <label><input type="checkbox"> Blinds nobody has touched since last spring</label>
+          <label><input type="checkbox"> Yellow pollen film on the sills</label>
+          <label><input type="checkbox"> Soap haze on the shower glass</label>
+          <label><input type="checkbox"> Moving in or out this month</label>
+        </fieldset>
+        <div class="chooser-sheet__out">
+          <span class="chooser-sheet__meter" aria-hidden="true"><span></span></span>
+          <p class="chooser-sheet__result mono" data-checklist-result>Tick what you see in your house.</p>
+          <div class="chooser-sheet__cta">
+            <span class="sample-tag">Sample pricing</span>
+            <a class="btn btn-primary" href="#contact" data-service="Deep clean">Price my visit</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 7. SERVICES -->
-  <section id="services" class="section services t-light">
-    <div class="container">
-      <h2>What we clean</h2>
-      <p class="lead">Every service follows the same top-down, dry-to-wet method.</p>
+  <section id="services" class="section services t-light" data-sw-signature="visit-timeline">
+    <div class="container services__grid">
+      <div class="services__head">
+        <p class="kicker mono">The full list</p>
+        <h2>What we clean</h2>
+        <p class="lead">Every service runs the same top-down, dry-to-wet method. Each line gets its tick before we leave.</p>
+      </div>
       <ul class="svc-grid" data-reveal-stagger>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>Every-other-week cleaning</h3>
           <p>The same checklist every visit, top to bottom and dry to wet, so nothing gets skipped.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Recurring">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>First deep clean</h3>
           <p>A longer first visit for baseboards, grout, blinds and the build-up that regular visits keep away.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Deep clean">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>Move-out cleaning</h3>
           <p>Empty house cleaned inside cabinets, oven and fridge, with photos sent when we lock up.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Move-out">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>Move-in cleaning</h3>
           <p>Shelves, drawers and closets wiped before your boxes arrive, so you unpack into clean.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Move-in">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>Kitchen detail</h3>
           <p>Cabinet fronts, backsplash, stovetop grates and the sink drain scrubbed, not just wiped.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Kitchen">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>Bathroom reset</h3>
           <p>Soap scum, hard-water spots and the grout line around the tub worked off by hand.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Bathrooms">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>Spring pollen clean</h3>
           <p>Yellow pollen dusted off sills, fans, screens and porch furniture after the April coat.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Pollen clean">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>Inside windows &amp; blinds</h3>
           <p>Inside glass, tracks and every blind slat wiped, room by room.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Windows &amp; blinds">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>After-renovation dust</h3>
           <p>Fine drywall dust vacuumed and wiped off every ledge, vent and cabinet top after the crew leaves.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Reno dust">Price my visit</a>
         </li>
         
         <li class="svc-card">
+          <svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="svc-tick__box" x="2" y="2" width="20" height="20" rx="3"/><path class="svc-tick__line" pathLength="1" d="M6 12l4 4 8-9"/></svg>
           <h3>Sheets &amp; laundry</h3>
           <p>Beds stripped and remade with fresh sheets, one load washed and folded while we clean.</p>
           <a class="btn btn-ghost" href="#contact" data-service="Laundry">Price my visit</a>
@@ -836,11 +1041,11 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
   <section id="reviews" class="section reviews t-paper" data-sw-signature="visit-timeline">
     <div class="container">
       <h2>Notes from the checklist</h2>
-      <p class="lead mono">Sample rating 4.9 · 187 reviews · <span class="sample-tag">Sample rating</span></p>
+      <p class="reviews__meta mono">Sample rating 4.9 · 187 reviews · <span class="sample-tag">Sample rating</span></p>
       <ul class="review-stack" data-reveal-stagger>
         
         <li class="review-card">
-          <svg class="review-tick" aria-hidden="true"><use href="#i-tick"/></svg>
+          <svg class="review-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           <blockquote>
             <p>“They left the checklist on the counter with every box ticked and two notes: the shower drain was slow, and a blind cord was frayed. It feels like having a house manager.”</p>
             <footer class="mono">Brooke N., Greer · Every-other-week cleaning</footer>
@@ -849,7 +1054,7 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
         </li>
         
         <li class="review-card">
-          <svg class="review-tick" aria-hidden="true"><use href="#i-tick"/></svg>
+          <svg class="review-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           <blockquote>
             <p>“The first deep clean took most of a day. The grout in the hall bath went from gray back to white, and the baseboards had not been that clean since we moved in.”</p>
             <footer class="mono">Hector A., Simpsonville · First deep clean</footer>
@@ -858,7 +1063,7 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
         </li>
         
         <li class="review-card">
-          <svg class="review-tick" aria-hidden="true"><use href="#i-tick"/></svg>
+          <svg class="review-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           <blockquote>
             <p>“Moving out of a rental in a hurry. They sent photos of every room, the oven and the inside of the fridge when they locked up. Got the full deposit back.”</p>
             <footer class="mono">Leah T., Mauldin · Move-out cleaning</footer>
@@ -867,7 +1072,7 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
         </li>
         
         <li class="review-card">
-          <svg class="review-tick" aria-hidden="true"><use href="#i-tick"/></svg>
+          <svg class="review-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
           <blockquote>
             <p>“April pollen turns our screened porch yellow. They wiped the furniture, fans and every sill, and the dog stopped leaving yellow paw prints inside.”</p>
             <footer class="mono">Frank J., Travelers Rest · Spring pollen clean</footer>
@@ -886,7 +1091,8 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
         <h2>Serving Greenville and Greer, Simpsonville, Mauldin, Taylors, Travelers Rest, Easley and Fountain Inn</h2>
         <p class="lead">Check your ZIP or call to confirm.</p>
         <p class="mono">ZIPs: 29601,29605,29607,29609,29615,29617,29650,29651,29680,29681,29662,29687,29690,29640</p>
-        <figure class="frame area-thumb" data-fallback="Brick bungalow on a tree-lined Greenville street" data-fallback="Neighborhood street view"><img src="media/home-greenville-1170.webp" srcset="media/home-greenville-1170.webp 1170w, media/home-greenville.webp 2340w" sizes="100vw" alt="Brick bungalow on a tree-lined Greenville street" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-greenville" data-slot="area"></figure>
+        <div class="ph area__ph"><figure class="frame area-thumb clipboard-frame" data-fallback="Craftsman bungalow gable with teal shingle siding, red trim and a brick chimney"><img src="media/home-greenville-1170.webp" srcset="media/home-greenville-1170.webp 1170w, media/home-greenville.webp 2340w" sizes="100vw" alt="Craftsman bungalow gable with teal shingle siding, red trim and a brick chimney" width="1170" height="878" loading="lazy" decoding="async" data-photo="home-greenville" data-slot="area"></figure></div>
+        <p class="area__stamp mono">On the route every weekday</p>
       </div>
       <div class="zip-tool" data-zip>
         <h3>Do you serve my ZIP?</h3>
@@ -912,7 +1118,7 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
           <li class="form-step is-active" data-step="1">
             <h3>Visit type</h3>
             <fieldset>
-              <label><input type="radio" name="service" value="Recurring" checked> Every-other-week</label>
+              <label><input type="radio" name="service" value="Recurring" checked> Every other week</label>
               <label><input type="radio" name="service" value="Deep clean"> First deep clean</label>
               <label><input type="radio" name="service" value="Move-out"> Move-out</label>
               <label><input type="radio" name="service" value="Move-in"> Move-in</label>
@@ -942,9 +1148,9 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
             <input type="hidden" name="t">
           </li>
         </ol>
-        <div class="form-nav">
-          <button class="btn btn-secondary" type="button" data-form-prev disabled>Back</button>
-          <button class="btn btn-primary" type="button" data-form-next>Next</button>
+        <div class="form-nav" data-form-nav>
+          <button class="btn btn-secondary" type="button" data-back disabled>Back</button>
+          <button class="btn btn-primary" type="button" data-next>Next</button>
           <button class="btn btn-primary" type="submit" data-form-submit hidden>Send request</button>
         </div>
         <div class="form-thankyou" data-form-thankyou hidden>
@@ -959,11 +1165,11 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
 </main>
 
 <footer class="footer t-deep" data-sw-signature="visit-timeline">
-  <div class="container stack">
-    <svg class="final-tick" aria-hidden="true"><use href="#i-tick"/></svg>
+  <div class="container stack" data-reveal>
+    <svg class="final-tick tk" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
     <p class="mono">Visit complete · 3:10</p>
     <p class="disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
-    <ul class="credits"><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li></ul>
+    <ul class="credits"><li>Photo by Government of the United States Virgin Islands on <a href="https://commons.wikimedia.org/wiki/File:USVI_IMG_5251_-_Clean_white_tiles_modern_shower_with_handheld_nozzle_and_glass_enclosure_neatly_arranged_toiletries_on_the_wall.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:USVI_IMG_5251_-_Clean_white_tiles_modern_shower_with_handheld_nozzle_and_glass_enclosure_neatly_arranged_toiletries_on_the_wall.jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by Tony Webster on <a href="https://commons.wikimedia.org/wiki/File:Stairway_-_Carpet_Freshly_Vacuumed_(54127454416).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Bmzuckerman on <a href="https://commons.wikimedia.org/wiki/File:Craftsman_Bungalow_-_Northfield,_MN_-_Union_Street_(320)_(2).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li></ul>
     <p class="footer__contact mono"><a class="tel-plain" href="tel:+18645550152">(864) 555-0152</a> · hello@ticklist-cleaning.example · Licence # SAMPLE-SC-11873 (<span class="sample-tag">Sample licence</span>)</p>
     <p class="copy mono">&copy; 2026 Ticklist House Cleaning</p>
   </div>
@@ -976,7 +1182,6 @@ html:not(.sw-motion) .tick-line { stroke-dashoffset: 0; }
 <script type="application/json" id="sw-facts">{"biz":{"name":"Ticklist House Cleaning","short":"Ticklist","phone":"(864) 555-0152","phoneE164":"+18645550152","sms":true,"email":"hello@ticklist-cleaning.example","city":"Greenville","state":"SC","timezone":"America/New_York","areas":["Greer","Simpsonville","Mauldin","Taylors","Travelers Rest","Easley","Fountain Inn"],"zips":["29601","29605","29607","29609","29615","29617","29650","29651","29680","29681","29662","29687","29690","29640"],"hours":{"mon":["08:00","17:00"],"tue":["08:00","17:00"],"wed":["08:00","17:00"],"thu":["08:00","17:00"],"fri":["08:00","17:00"],"sat":null,"sun":null},"emergency":false},"services":[{"name":"Every-other-week cleaning","short":"Recurring"},{"name":"First deep clean","short":"Deep clean"},{"name":"Move-out cleaning","short":"Move-out"},{"name":"Move-in cleaning","short":"Move-in"},{"name":"Kitchen detail","short":"Kitchen"},{"name":"Bathroom reset","short":"Bathrooms"},{"name":"Spring pollen clean","short":"Pollen clean"},{"name":"Inside windows & blinds","short":"Windows & blinds"},{"name":"After-renovation dust","short":"Reno dust"},{"name":"Sheets & laundry","short":"Laundry"}],"proof":{"label":"Sample","prices":[{"item":"Every-other-week visit, 3 bed / 2 bath","from":"$140","to":"$190","unit":"per visit"},{"item":"First deep clean","from":"$260","to":"$420","note":"by size and build-up"},{"item":"Move-out cleaning","from":"$300","to":"$520","note":"empty house, photos included"},{"item":"Inside the oven","from":"$35","to":"$50","unit":"add-on"},{"item":"Inside the fridge","from":"$35","to":"$50","unit":"add-on"}]},"hours":{"mon":["08:00","17:00"],"tue":["08:00","17:00"],"wed":["08:00","17:00"],"thu":["08:00","17:00"],"fri":["08:00","17:00"],"sat":null,"sun":null},"timezone":"America/New_York","zips":["29601","29605","29607","29609","29615","29617","29650","29651","29680","29681","29662","29687","29690","29640"],"areas":["Greer","Simpsonville","Mauldin","Taylors","Travelers Rest","Easley","Fountain Inn"],"phone":"(864) 555-0152","phoneE164":"+18645550152"}</script>
 <script defer src="vendor/gsap.min.js"></script>
 <script defer src="vendor/ScrollTrigger.min.js"></script>
-<script defer src="vendor/lenis.min.js"></script>
 <script defer src="app.js"></script>
 </body>
 </html>

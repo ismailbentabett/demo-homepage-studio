@@ -1,5 +1,9 @@
 # Blueprint — cleaning-A
 
+## Round 2 (fix)
+- Elevate photo: placeholder photos now fail into drawn pencil sketches on ruled visit-sheet paper (.ph__draw, shown via :has(.is-broken)); break became a paper-bordered pollen sheet with a stamped caption; area photo got the clipboard frame. Elevate distinctiveness: services became a ruled tick list (box + tick drawn on hover/focus, on reveal on touch); tick also in proof band, done card, break stamp, estimator bar. Chooser re-cut as a full-width walk-through sheet (kit checklist, meter + verdict) so it no longer mirrors the estimator. Estimator re-wired to the kit (data-est-item/size) with a room-segmented visit bar + clock + tick. Process story: sticky visit clock + scrubbed rail fill (no pin). Removed Lenis + smooth scroll (they broke reveals in captures). Chooser CTA = Price my visit; hyphenated radio labels → "Every other week".
+
+
 ## Section list
 
 1. **hero** · t-paper · Purpose: trade + town + checklist promise + CTA · Layout: split (clipboard left, type right on desktop; stacked mobile) · Content: h1 "House Cleaning in {{biz.city}}, {{biz.state}}", kicker "Visit checklist: 3 bed / 2 bath", [[call]], [[quote Recurring]] · Media: hero-A1 (clipboard) · Hook: data-sw-signature (intro ticks) · Entrance: text rise + clipboard rise + tick draw.

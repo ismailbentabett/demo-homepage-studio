@@ -447,171 +447,6 @@ SW.mod('mobilebar', function (SW) {
 });
 
 ;
-/* kit: lenis */
-/* lenis: smooth scrolling when <html data-smooth> is set, window.Lenis is loaded and motion is allowed.
-   lerp .1, wheelMultiplier 1, driven by the GSAP ticker (and synced to ScrollTrigger) when GSAP is loaded.
-   Sets SW.lenis. Same-page anchor links scroll through Lenis and focus their target. */
-SW.mod('lenis', function (SW) {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-smooth') || SW.reduced || typeof window.Lenis !== 'function') return;
-  var lenis = new window.Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    // never hijack scrolling inside an open dialog or an element that scrolls itself
-    prevent: function (node) { return !!(node && node.closest && node.closest('[data-lenis-prevent], dialog[open]')); },
-  });
-  SW.lenis = lenis;
-
-  if (window.gsap && window.gsap.ticker) {
-    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
-    window.gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-    window.gsap.ticker.lagSmoothing(0);
-  } else {
-    var raf = function (time) { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var hash = a.getAttribute('href');
-    if (hash.length < 2) return;
-    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) return;
-    e.preventDefault();
-    SW.scrollTo(target);
-    if (history.pushState) history.pushState(null, '', hash);
-  });
-});
-
-;
-/* kit: split */
-/* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
-   Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
-     words: .sw-word > .sw-word-in           (--i = word index)
-     lines: same markup, --i = line index    (recomputed on resize and after the fonts load)
-     chars: .sw-word > .sw-char              (--i = char index)
-   The element gets .is-in when it scrolls into view (at once under reduced motion). */
-SW.mod('split', function (SW) {
-  var els = SW.$$('[data-split]');
-  if (!els.length) return;
-
-  function piece(cls, text) {
-    var s = document.createElement('span');
-    s.className = cls;
-    s.textContent = text;
-    return s;
-  }
-  function splitText(textNode, mode) {
-    var frag = document.createDocumentFragment();
-    textNode.nodeValue.split(/(\s+)/).forEach(function (token) {
-      if (!token) return;
-      if (/^\s+$/.test(token)) { frag.appendChild(document.createTextNode(' ')); return; }
-      var word = document.createElement('span');
-      word.className = 'sw-word';
-      if (mode === 'chars') Array.from(token).forEach(function (ch) { word.appendChild(piece('sw-char', ch)); });
-      else word.appendChild(piece('sw-word-in', token));
-      frag.appendChild(word);
-    });
-    textNode.parentNode.replaceChild(frag, textNode);
-  }
-  function walk(node, mode) {
-    Array.prototype.slice.call(node.childNodes).forEach(function (child) {
-      if (child.nodeType === 3) splitText(child, mode);
-      else if (child.nodeType === 1 && !/^(BR|SVG|IMG|PICTURE)$/i.test(child.tagName)) walk(child, mode);
-    });
-  }
-  function numberLines(el) {
-    var top = null, line = -1;
-    SW.$$('.sw-word', el).forEach(function (w) {
-      var t = w.offsetTop;
-      if (top === null || Math.abs(t - top) > 2) { line++; top = t; }
-      w.style.setProperty('--i', line);
-    });
-    el.style.setProperty('--lines', line + 1);
-  }
-
-  els.forEach(function (el) {
-    if (el.hasAttribute('data-split-done')) return;
-    var mode = el.getAttribute('data-split') || 'words';
-    var text = el.textContent.replace(/\s+/g, ' ').trim();
-    if (!text) return;
-    var visual = document.createElement('span');
-    visual.className = 'sw-split';
-    visual.setAttribute('aria-hidden', 'true');
-    while (el.firstChild) visual.appendChild(el.firstChild);
-    walk(visual, mode);
-    el.appendChild(piece('sr-only', text));
-    el.appendChild(visual);
-    el.setAttribute('data-split-done', '');
-
-    if (mode === 'lines') {
-      numberLines(visual);
-      var timer;
-      window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(function () { numberLines(visual); }, 150); });
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { numberLines(visual); });
-    } else {
-      SW.$$(mode === 'chars' ? '.sw-char' : '.sw-word', visual).forEach(function (p, i) { p.style.setProperty('--i', i); });
-    }
-
-    if (SW.reduced) el.classList.add('is-in');
-    else SW.inView(el, function () { el.classList.add('is-in'); }, { rootMargin: '0px 0px -10% 0px' });
-  });
-  window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('is-in'); }); });
-});
-
-;
-/* kit: video */
-/* video: <video data-video data-src="media/x.mp4" poster muted loop playsinline preload="none"> inside a figure
-   with a <button data-vid-btn aria-pressed="false">Pause background video</button> (the [[video]] macro writes both).
-   Loads data-src when it comes near the screen, plays muted, pauses off-screen and in a hidden tab.
-   The button keeps its label; aria-pressed="true" means paused. The figure gets data-state="playing|paused".
-   Under reduced motion nothing autoplays (the poster shows, the button starts pressed; a click plays). */
-SW.mod('video', function (SW) {
-  SW.$$('video[data-video]').forEach(function (v) {
-    var fig = v.closest('figure') || v.parentElement;
-    var btn = fig ? SW.$('[data-vid-btn]', fig) : null;
-    v.muted = true;
-    v.setAttribute('muted', '');
-    v.playsInline = true;
-    var userPaused = SW.reduced;
-    var near = false;
-
-    function load() {
-      if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; }
-    }
-    function play() {
-      load();
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { reflect(); });
-    }
-    function reflect() {
-      var playing = !v.paused && !v.ended;
-      if (btn) btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-      if (fig) fig.setAttribute('data-state', playing ? 'playing' : 'paused');
-    }
-    function sync() {
-      if (near && !userPaused && !document.hidden) play();
-      else if (!v.paused) v.pause();
-    }
-    v.addEventListener('play', reflect);
-    v.addEventListener('playing', reflect);
-    v.addEventListener('pause', reflect);
-    if (btn) {
-      btn.type = 'button';
-      btn.addEventListener('click', function () {
-        if (v.paused) { userPaused = false; play(); } else { userPaused = true; v.pause(); }
-        v.toggleAttribute('data-user-paused', userPaused);
-      });
-    }
-    SW.inView(v, function (inside) { near = inside; sync(); }, { once: false, rootMargin: '150px' });
-    document.addEventListener('visibilitychange', sync);
-    reflect();
-  });
-});
-
-;
 /* kit: zip */
 /* zip: "Do you serve my area?" checker against facts biz.zips.
    <form data-zip>
@@ -1183,76 +1018,80 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* cleaning-A · Visit Timeline Tick signature + two scroll stories */
+/* cleaning-A · Visit Timeline Tick: the visit clock story + the estimator tick */
 (function () {
   if (typeof SW === 'undefined') return;
+  var root = document.documentElement;
+  if (SW.reduced || !root.classList.contains('sw-motion')) return;
 
-  /* Story 1: pinned timeline rail with advancing clock and room ticks (draw) */
-  SW.mod('timeline-story', function () {
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-    var rail = document.querySelector('.timeline-rail');
-    if (!rail || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
+  /* Story 1: the visit clock. The rail fills as you scroll, the sticky clock jumps to each room's start time,
+     and the room's dot fills when it becomes the current room. No pin: the clock is CSS sticky on desktop. */
+  SW.mod('visit-clock', function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
+    var rail = document.querySelector('.timeline-rail');
+    if (!rail) return;
+    var cards = Array.prototype.slice.call(rail.querySelectorAll('.room-card'));
+    var clock = document.querySelector('[data-visit-clock]');
+    var room = document.querySelector('[data-visit-room]');
+    var box = document.querySelector('.visit-clock');
 
-    var cards = rail.querySelectorAll('.room-card');
-    var times = ['0:00', '0:50', '1:40', '2:30', '3:10'];
-    var clockEl = document.createElement('div');
-    clockEl.className = 'timeline-clock mono';
-    clockEl.setAttribute('aria-hidden', 'true');
-    clockEl.textContent = '0:00';
-    rail.appendChild(clockEl);
-
-    var tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: rail,
-        start: 'top top+=80',
-        end: 'bottom bottom-=80',
-        scrub: 0.6,
-        pin: true,
-        matchMedia: '(min-width: 640px)'
+    rail.style.setProperty('--rail', '0');
+    if (box) box.style.setProperty('--p', '0');
+    ScrollTrigger.create({
+      trigger: rail,
+      start: 'top 65%',
+      end: 'bottom 65%',
+      onUpdate: function (self) {
+        var p = self.progress.toFixed(3);
+        rail.style.setProperty('--rail', p);
+        if (box) box.style.setProperty('--p', p);
       }
     });
 
-    cards.forEach(function (card, i) {
-      var tick = card.querySelector('.tick-line');
-      tl.to(clockEl, { textContent: times[i + 1] || times[i], duration: 0.4, snap: { textContent: 1 }, ease: 'none' }, i * 0.8);
-      if (tick) {
-        tl.to(tick, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, i * 0.8 + 0.1);
+    function setCurrent(card) {
+      cards.forEach(function (c) { c.classList.toggle('is-current', c === card); });
+      if (clock && clock.textContent !== card.dataset.time) {
+        clock.textContent = card.dataset.time;
+        if (room) room.textContent = card.dataset.room;
+        gsap.fromTo(clock, { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.35, ease: 'power3.out' });
       }
+    }
+    cards.forEach(function (card) {
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top 60%',
+        end: 'bottom 60%',
+        onToggle: function (self) { if (self.isActive) setCurrent(card); }
+      });
     });
-
-    ScrollTrigger.refresh();
   });
 
-  /* Story 2: estimator timeline bar fills to duration (dial) + tick signature at end */
-  SW.mod('estimator-story', function () {
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-    var sketch = document.querySelector('[data-est-sketch]');
-    if (!sketch || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    var fill = sketch.querySelector('.est-sketch__fill');
-    if (!fill) return;
-
-    var tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sketch,
-        start: 'top 85%',
-        end: 'top 40%',
-        scrub: 0.4
-      }
-    });
-
-    tl.fromTo(fill, { attr: { width: 0 } }, { attr: { width: 300 }, duration: 1, ease: 'none' });
-    tl.call(function () {
-      sketch.classList.toggle('is-complete', tl.scrollTrigger ? tl.scrollTrigger.direction > 0 : true);
-    }, null, '-=0.05');
+  /* Story 2: the estimator bar stretches with the house size, then the tick lands at the end of the visit. */
+  SW.mod('estimator-tick', function () {
+    var est = document.querySelector('[data-estimator]');
+    var bar = est && est.querySelector('.est-bar');
+    if (!bar) return;
+    var t;
+    function tick() {
+      bar.classList.remove('is-ticked');
+      clearTimeout(t);
+      t = setTimeout(function () { bar.classList.add('is-ticked'); }, 620);
+    }
+    est.addEventListener('change', tick);
+    est.addEventListener('input', tick);
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) { tick(); io.disconnect(); }
+      }, { rootMargin: '0px 0px -20% 0px' });
+      io.observe(bar);
+    } else { bar.classList.add('is-ticked'); }
   });
 
-  /* Signature intro: hero ticks draw sequentially (handled by CSS animation; ensure refresh after fonts) */
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () {
       if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
     });
   }
 })();
+
