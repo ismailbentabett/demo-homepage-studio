@@ -1,0 +1,8 @@
+# Strategy — general-C (Switchback Building Co.)
+
+1. **One job.** Asheville homeowner on a sloped lot lands, sees we build on mountains not flats, calls or texts to price an addition/ADU/porch within 8 seconds.
+2. **Homeowner first 5s.** H1: "Hillside builder in Asheville" + town kicker; primary CTA "Price it"; secondary "Call (828) 555-0124"; proof line "21 yrs · Sample rating 4.9 · Weaverville to Black Mountain".
+3. **Contractor first 5s.** The page is a topo map: every section sits on a contour band with an elevation tag, and the ZIP checker lives inside the map. Nobody else in Asheville shows slope as the organizing idea.
+4. **Objections → sections.** Slope cost → hero + lot-check tool; schedule → timeline tool; permits → timeline notes; water/drainage → story band; budget → estimator; living through it → live-in guide; trust → reviews with sample tag; area → map + ZIP.
+5. **Conversion paths.** Primary: "Price it" → quote form (#contact) with service prefilled from cards/tools. Secondary: sticky mobile bar with Call + Text; tool outputs end with "Price this job" button that pre-fills service + ZIP. Phone visible in header at 390px.
+6. **Not this.** A: does NOT use rail/crosstie rhythm, dark creosote tone, or weekly-report cards. B: does NOT use ledger lines, open-book budget columns, or paper-white field. C avoids process-track and spreadsheet metaphors entirely; signature is terrain, not time or money.

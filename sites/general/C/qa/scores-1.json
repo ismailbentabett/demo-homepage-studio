@@ -1,0 +1,72 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 8.0,
+      "notes": "dist/index.html lines 27-28 preload hero-C1.jpg and region-asheville-mountains.jpg but no SVG topo map is present; the hero promised in concept.json (heroFamily 15, map-embedded-tool) is not delivered. The h1 'Hillside Builders & Remodels in Asheville, NC' is 7 words and names trade+city+outcome, phone is in header and mobilebar. Without screenshots I cannot verify next-band peek or fold on 390x844; scored at the 8 anchor minus the missing signature-in-hero deduction."
+    },
+    "distinctiveness": {
+      "score": 7.5,
+      "notes": "concept.json promises contour bands with elevation tags in hero, story, services and footer. dist/index.html shows .contour-line SVGs and .elevation-tag CSS defined, but only the area section (line 1175) and footer (line 1192) carry data-sw-signature; hero and story sections lack it. The signature appears in 2 of the 4 required sections (-1.0). No sibling screenshots exist to confirm distinctiveness against A/B; palette (Blue Ridge Slate + Moss + Rust) and type pair (Zilla Slab / Source Serif 4 / DM Mono) are unique per concept."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "Three families loaded: Zilla Slab display, Source Serif 4 body, DM Mono accent (lines 31-39). Fluid scale --fs--1 through --fs-h1 (lines 274-280), body clamp 1rem-1.1875rem ≥ 16px, p max-width 65ch (line 351). Kicker uses DM Mono uppercase tracked (lines 353-360). Deduction: no evidence of tabular numerals in prices/hours/phone beyond font-variant-numeric on [data-count] (line 139); hours use en-dash ranges correctly (line 1182). No orphan check possible without screenshots."
+    },
+    "layout": {
+      "score": 8.0,
+      "notes": "Sections alternate t-deep/t-paper/t-mid/t-accent tones (lines 307-326), wrap grid with asymmetric area-grid and footer-grid. Contour lines provide rhythm breaks. Deduction: without screenshots I cannot verify that no two adjacent sections share tone or that the density map varies; the HTML structure suggests variety but the missing hero map and story wipe reduce layout families below the 3 required for a 9."
+    },
+    "photo": {
+      "score": 7.0,
+      "notes": "All images are placeholders: alt text reads 'Placeholder for crew-from-behind' etc. (line 1186), credits list 'Photo by unknown on Pexels' with bare <a> tags (line 1315, flagged in static.json as 9 warnings). Consistent filter applied via .frame img (line 444). No off-topic frames detectable from filenames, but placeholder integration is ugly and fails the 'one grade across every photo' anchor. Pass mark is 8.5; this is below floor for pass."
+    },
+    "copy": {
+      "score": 8.5,
+      "notes": "Voice matches concept's three sentences: reviews quote specific slope/flood/bungalow details from facts.json (lines 1144-1168). Services use homeowner language ('Hillside additions', 'Porch rebuilds'). Form thank-you is honest (line 1300). Deduction: mobilebar CTA says 'Price it' (line 1325) while form heading says 'Get a number for your project' (line 1195) — two names for the primary action (-0.5). Sample labels appear on prices via proof.prices but review cards lack explicit 'Sample' text in the rendered HTML (mustFix)."
+    },
+    "mobile": {
+      "score": 8.0,
+      "notes": "Mobilebar with call and anchor links (lines 1323-1326), min-height 48px on buttons (line 393), inputs min-height 48px (line 457). Header hides on scroll via data-header.is-hidden (line 198). Without 390x844 screenshots I cannot verify h1 line count, fold position, or whether the mobilebar covers the form; scored at 8 anchor pending render evidence."
+    },
+    "a11y": {
+      "score": 8.0,
+      "notes": "Skip link present (line 374-379), focus-visible outline 3px solid var(--focus) with 3px offset (line 367), forced-colors borders on interactive elements (lines 368-371, 246-248). Reduced-motion safety net disables all animation (lines 237-242). Honeypot and time-trap in form (lines 1198-1199). Deduction: nine <a> tags without href in credits (static.json warnings) are a11y failures; review stars use aria-label but SVG use href may fail if sprite missing. No reduced-motion screenshot to confirm all content visible."
+    },
+    "motion": {
+      "score": 7.5,
+      "notes": "Kit provides reveal, split-text, rotator, counter, marquee, compare hooks (base.css lines 99-162). GSAP and Lenis loaded deferred (lines 1328-1331). Concept promises SVG contour draw intro, elevation counter climb, plan-to-build wipe; none of these custom motions are visible in the HTML beyond data-reveal attributes. Fewer than 3 distinct hooks beyond plain reveals caps motion at 6 per rubric; bumped to 7.5 for kit infrastructure being present but signature motion undelivered."
+    },
+    "wow": {
+      "score": 7.0,
+      "notes": "Concept promises elevation counter climbing live + contour parallax as the wow moment. Neither is implemented in the shipped HTML; the estimator tool and lot-slope-check from concept.json tools list are absent from dist/index.html. The only interactive element is the multi-step form. Generic form does not meet the 8 anchor ('one interesting moment tied to the concept')."
+    },
+    "polish": {
+      "score": 8.0,
+      "notes": "SVG favicon and apple-touch-icon preloaded (lines 20-21), OG 1200x630 declared (lines 13-15), theme-color set (line 9), JSON-LD GeneralContractor with openingHoursSpecification (line 22), print stylesheet for estimator (lines 251-260), lazy images with width/height (line 1186). Deduction: credits <a> without href is a polish failure; mixed radius possible (--radius: 2px global, sample-tag uses 999px pill at line 413) (-0.5)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html line 1315, ul.credits > li > a",
+      "problem": "Nine photo credit links have no href attribute; static.json flags 9 warnings. These are broken interactive elements and an a11y failure.",
+      "fix": "Either add valid Pexels URLs to each <a> or replace <a>Pexels</a> with plain text <span>Pexels</span> since placeholder mode has no real credits."
+    },
+    {
+      "where": "dist/index.html lines 1144-1168, blockquote.review-card",
+      "problem": "Review cards do not display the word 'Sample' despite facts.json proof.label being 'Sample'. DEMO-RULES requires unlabeled reviews to be marked.",
+      "fix": "Add <span class='sample-tag'>Sample</span> inside each review-card footer or before the cite element."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "distinctiveness",
+      "move": "Deliver the contour-band signature in the hero and story sections as promised in concept.json: add data-sw-signature to the hero section, render the SVG topo map with elevation tags, and thread the elevation counter into the story so the signature appears in all 4 required sections."
+    },
+    {
+      "category": "wow",
+      "move": "Implement the elevation counter climb and at least one niche tool (lot-slope-check or cost-estimator) from concept.json tools list, using the signature's contour language for the tool output so the wow moment is tied to the thesis rather than being a generic form."
+    }
+  ],
+  "verdictHint": "FIX"
+}
