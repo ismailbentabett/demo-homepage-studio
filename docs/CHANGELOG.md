@@ -4,6 +4,18 @@ Workspace changes that affect how sites are made. Newest first. Site deliveries 
 and `data/design-registry.json`, not here. Add an entry whenever a doc, agent, skill, command or
 tool changes behaviour.
 
+## 2026-10-27: 17 new niches, phone groups G7-G10
+
+- New trades: tattoo, assembly (furniture assembly), autobody (auto body / collision and cosmetic
+  restoration), tile, mural, landclearing, excavation, septic, well, farm, nursery, pinestraw,
+  irrigation, junkremoval, selfstorage, consulting, cannabis. Registered in `data/demo-trades.json`
+  and `data/niche-order.json` (prospect niches tattoo, assembly, autobody first, then the 12 unbuilt
+  original niches, then the rest).
+- `tools/lib/niche.mjs`: the 555-0100..0199 range only holds 100 NNs and 90 were taken, so the
+  cross-niche check now compares the full number (area code + NN) instead of the NN alone. New groups
+  G7-G10 reuse NN ranges with city pools whose area codes no earlier group uses (docs/NICHE-TEMPLATE.md).
+  Every existing number was already unique, so no delivered site changes.
+
 ## 2026-10-25: workspace created
 
 - Pipeline: 30 niches × 3 directions (A process, B proof & tools, C local story), 12 stages per

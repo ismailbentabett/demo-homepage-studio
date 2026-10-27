@@ -169,7 +169,8 @@ slot into `media/pool/` and approves 1 into the manifest.
 ## City and phone pools (fixed, so no two sites collide)
 
 Each niche-writing agent picks 15 different cities from its group's pool (3 per niche, a different city for each
-direction) and uses the NN range of its group, one NN per site, never reused.
+direction) and uses the NN range of its group, one NN per site, never reused. G7-G10 reuse NN ranges with area codes no
+earlier group uses: what must be unique across the library is the full number (area code + 555-01NN).
 
 | Group | Niches | NN range | City pool (area code, IANA time zone) |
 |---|---|---|---|
@@ -179,5 +180,9 @@ direction) and uses the NN range of its group, one NN per site, never reused.
 | G4 | garagedoor, flooring, cleaning, pest, mason | 46-60 | Atlanta 404 (America/New_York); Dallas 214, New Orleans 504, Baton Rouge 225, Little Rock 501, Huntsville 256 (America/Chicago); Chattanooga 423, Knoxville 865, Greenville SC 864, Wilmington NC 910, Norfolk 757, Baltimore 410 (America/New_York); St. Louis 314 (America/Chicago); Cincinnati 513, Cleveland 216 (America/New_York); Omaha 402 (America/Chicago) |
 | G5 | drywall, insulation, carpenter, appliance, locksmith | 61-75 | Milwaukee 414, Des Moines 515, Sioux Falls 605, Fargo 701, Duluth 218 (America/Chicago); Rochester NY 585, Syracuse 315, Albany 518, Allentown 610, Harrisburg 717, Worcester 508, Manchester NH 603, Portland ME 207 (America/New_York); Spokane 509, Tacoma 253, Eugene 541 (America/Los_Angeles) |
 | G6 | moving, demolition, fireplace, mechanic, autotuneup | 76-90 | Burlington VT 802 (America/New_York); Bend 541 (America/Los_Angeles); Missoula 406, Billings 406, Cheyenne 307, Fort Collins 970, Boulder 303, Provo 801, Santa Fe 505 (America/Denver); Reno 775 (America/Los_Angeles); Anchorage 907 (America/Anchorage); Roanoke 540, Durham 919 (America/New_York); Lansing 517 (America/Detroit); Toledo 419, Akron 330 (America/New_York) |
+| G7 | tattoo, assembly, autobody, tile, mural | 01-15 | Chicago 773 (America/Chicago); Philadelphia 215, Brooklyn 718, Miami 305, Fort Lauderdale 954 (America/New_York); Los Angeles 323, Oakland 510, Long Beach 562, San Jose 408 (America/Los_Angeles); Detroit 313 (America/Detroit); New Haven 203, Jersey City 201, Washington DC 202, Arlington VA 703 (America/New_York); Corpus Christi 361 (America/Chicago); El Paso 915 (America/Denver) |
+| G8 | landclearing, excavation, septic, well, farm | 16-30 | Tyler 903, Lubbock 806, Waco 254, Springfield MO 417, Fayetteville AR 479, Jackson MS 601 (America/Chicago); Ocala 352 (America/New_York); Tallahassee 850 (America/New_York); Macon 478, Augusta GA 706, Columbia SC 803, Lynchburg 434 (America/New_York); Bowling Green KY 270, Dothan 334, Lafayette LA 337, Shreveport 318 (America/Chicago) |
+| G9 | nursery, pinestraw, irrigation, junkremoval, selfstorage | 31-45 | Mobile 251, Gulfport 228 (America/Chicago); Marietta 770, Valdosta 229, Daytona Beach 386, Lakeland 863, Port St. Lucie 772, West Palm Beach 561, Clearwater 727 (America/New_York); Bakersfield 661, Riverside 951, Irvine 949, Modesto 209, Santa Rosa 707 (America/Los_Angeles); McKinney 972, Katy 281 (America/Chicago) |
+| G10 | consulting, cannabis | 46-60 | Flagstaff 928 (America/Phoenix); Kalamazoo 269, Traverse City 231 (America/Detroit); Springfield IL 217, Peoria 309, Rockford 815, Columbia MO 573 (America/Chicago); Olympia 360, Santa Cruz 831, Palm Springs 760 (America/Los_Angeles); Las Cruces 575 (America/Denver); Northampton MA 413, Wilmington DE 302, Frederick MD 301, Dayton 937, Ithaca 607 (America/New_York) |
 
 Pick cities where the trade makes sense (pools in hot dry places, fireplaces in cold places, storm roofing in hail country).

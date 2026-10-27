@@ -15,6 +15,11 @@ export const GROUPS = {
   G4: { niches: ["garagedoor", "flooring", "cleaning", "pest", "mason"], from: 46, to: 60 },
   G5: { niches: ["drywall", "insulation", "carpenter", "appliance", "locksmith"], from: 61, to: 75 },
   G6: { niches: ["moving", "demolition", "fireplace", "mechanic", "autotuneup"], from: 76, to: 90 },
+  // G7-G10 reuse NN ranges with area codes no earlier group uses, so the full number stays unique.
+  G7: { niches: ["tattoo", "assembly", "autobody", "tile", "mural"], from: 1, to: 15 },
+  G8: { niches: ["landclearing", "excavation", "septic", "well", "farm"], from: 16, to: 30 },
+  G9: { niches: ["nursery", "pinestraw", "irrigation", "junkremoval", "selfstorage"], from: 31, to: 45 },
+  G10: { niches: ["consulting", "cannabis"], from: 46, to: 60 },
 };
 
 export function groupOf(trade) {
@@ -120,6 +125,8 @@ function briefDirections(md) {
 
 const words = (s) => String(s || "").trim().split(/\s+/).filter(Boolean).length;
 const nn = (phone) => /555-01(\d\d)$/.exec(phone || "")?.[1] || null;
+// Full number (area code + NN): two sites may share an NN only in different area codes.
+const fullPhone = (phone) => (nn(phone) ? String(phone).replace(/\D/g, "") : null);
 
 // Validate one niche. `cache` lets --all reuse loaded facts.
 export function validateNiche(trade, cache = {}) {
@@ -279,8 +286,8 @@ export function validateNiche(trade, cache = {}) {
     for (const [d, f] of Object.entries(ok)) {
       for (const [od, o] of Object.entries(of)) {
         if (!o || o === "invalid") continue;
-        const a = nn(f.biz?.phone), b = nn(o.biz?.phone);
-        if (a && a === b) report(`facts-${d}.json phone 555-01${a} is already used by ${other}-${od}. Every site needs its own NN.`);
+        const a = fullPhone(f.biz?.phone), b = fullPhone(o.biz?.phone);
+        if (a && a === b) report(`facts-${d}.json phone ${f.biz.phone} is already used by ${other}-${od}. Every site needs its own number.`);
         if (f.biz?.name && o.biz?.name && f.biz.name.toLowerCase() === o.biz.name.toLowerCase()) report(`facts-${d}.json business name "${f.biz.name}" is already used by ${other}-${od}.`);
         if (groupOf(other) === group && f.biz?.city && f.biz.city === o.biz?.city && f.biz.state === o.biz?.state) {
           report(`facts-${d}.json city ${f.biz.city} is already used by ${other}-${od} in ${group}. Each city once per group.`);

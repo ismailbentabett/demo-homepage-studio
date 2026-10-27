@@ -10,7 +10,7 @@ use another company's name. Every rule below is checked by `tools/check-static.m
 |---|---|---|
 | Name | Fictional, memorable, owned by nobody we know of. No real chain, franchise or brand name (no "Mr. Rooter", "ARS", "Roto-Rooter", "One Hour", "Home Depot"). No city name *inside* the brand when another site in the library already does that. Search your memory: if it sounds like a real national company, pick another. | `Ridgeline Roof Co.`, `Copperpipe & Daughter` |
 | City | A real US city from the niche group's pool (see the brief). Real nearby towns for the service area. | Tulsa, OK + Broken Arrow, Jenks, Bixby |
-| Phone | Real area code of that city + **555-01NN** (the range reserved for fiction). NN is unique across all 90 sites (pools in `docs/NICHE-TEMPLATE.md`). | `(918) 555-0104` |
+| Phone | Real area code of that city + **555-01NN** (the range reserved for fiction). The full number is unique across the library (pools in `docs/NICHE-TEMPLATE.md`). | `(918) 555-0104` |
 | Email | `hello@<brandslug>.example` (`.example` is reserved and can never be a real domain). | `hello@ridgeline-roof.example` |
 | Address | **No street address.** City + state only. JSON-LD uses `areaServed`, never `streetAddress`. | |
 | Owner | A first name (+ optional last initial). Never a full real-sounding person name combined with a real city as if it were a real person. | `Dana R.` |
