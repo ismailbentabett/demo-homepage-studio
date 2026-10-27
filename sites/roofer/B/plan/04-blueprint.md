@@ -1,8 +1,17 @@
 # Blueprint — roofer-B · Squarecount · "Counted before you sign" · Pinned Roof Plan
 
+## Round 2
+Type + photo elevate: the page now reads as a printed inspection report (mono only on F-numbers, sheet headers and figures; sentence-case Public Sans everywhere else; 15px #2b2f36 timeline in 4×2; one big display figure per band: 32.3 sq hero, count range, 707, sample price, rating), and the plates form a single F-01→F-07 inspection sequence (street → inside → deck chalk → hail square → under shingles → yard → ridge; no drawing repeats), with the wide break plate showing the finished roof with all seven pins ticked. Shoulds: hero ZIP removed so the next band peeks, the stray 29.8 sq replaced by 7 count pins, mobile price rows stacked, the deductible band split (statement + chapter-707 citation), coral swapped for white figures and system-red pins in #prices and the footer. Media swaps (critic-requested sequence): finding-1 home-brick-ranch, finding-3 tool-chalkline, finding-4 hands-pointing-damage, finding-5 process-tearoff, finding-6 process-cleanup, finding-7 process-ridge, break finished-roofline; detail-1/detail-2 removed.
+
+### Open issues
+- Marquee / rotate-word CSS in dist comes from the kit `base.css` that build.mjs injects wholesale. src has no such markup or hooks, and the builder may not edit the kit or tools.
+
+## Round 1
+Elevated photo + first screen: every photo slot is now an evidence frame (report border, F-tab, drawn blueprint detail under the img, red-pen circle on the defect, leader from the margin pin landing on it), and the hero is a two-page cover spread (cover: city, h1 with trade+place, actions, ZIP; page 1: pinned plan, tally, evidence tiles) with a live plan strip on the phone's first screen. Findings index deleted, one action name per path (Count my squares / Book my inspection), kickers sentence case, count labels Public Sans 15px, deep-band notes #bcc2ca + red button, break caption is now a sign-off card overlapping the roofline by 80px, deductible h2 is the full-width headline moment.
+
 | # | id | tone | purpose (objection / path) | layout family | content (tokens) | media keys | hooks | entrance |
 |---|---|---|---|---|---|---|---|---|
-| 1 | `#top` hero | t-paper (photo surface + white sheet) | 5-second answer: local, counts, call now | document | title block (city, state), h1 report title, lead, [[call]], Count my squares, sms, proof line `{{hours\|today}}` · `{{biz.city}}` · `{{proof.rating}}` Sample rating · `{{proof.reviewCount}}`; plan with 7 facet counts + 7 pin anchors; 3 thumbs; summary FIX 3 · WATCH 4 | hero, thumb-1, thumb-2, thumb-3 | `data-sw-signature="pinned-plan"` | sheet rises 40px (no opacity), pins drop, tally counts ≤ 1.2 s, skippable |
+| 1 | `#top` hero | t-deep surface + two t-light pages (cover spread) | 5-second answer: local, counts, call now | document | title block (city, state), h1 report title, lead, [[call]], Count my squares, sms, proof line `{{hours\|today}}` · `{{biz.city}}` · `{{proof.rating}}` Sample rating · `{{proof.reviewCount}}`; plan with 7 facet counts + 7 pin anchors; 3 thumbs; summary FIX 3 · WATCH 4 | hero, thumb-1, thumb-2, thumb-3 | `data-sw-signature="pinned-plan"` | sheet rises 40px (no opacity), pins drop, tally counts ≤ 1.2 s, skippable |
 | 2 | `#findings` | t-light | "One leak = whole roof?" (obj. 2) + every service listed | margin-rail | sticky dock plan (≥1024) · report index = all 8 services (repeater + [[quote]]) · F-01 inspection report (services.0) · F-02 leak (services.3, services.6 coating note) | finding-1, finding-2, detail-3 | `data-hook="leader-draw"` | leader draws pin → photo, pen circle on verdict; photos unclip |
 | 3 | `#count` | t-mid | "Three bids, three roof sizes" (obj. 4) → form | tool-split | F-03 · estimator: footprint / shape / pitch → math lines + squares range on the plan; Sample band `{{proof.prices.1.*}}`, Class 4 `{{proof.prices.2.*}}`, metal `{{proof.prices.3.*}}`; services.2/4/5; "Send me the real count" | finding-3 | `data-hook="square-count"` | facets fill 60ms stagger, total counts (numbers static under RM) |
 | 4 | `#claim` | t-paper | "Will insurance pay?" (obj. 3) | timeline | F-04 · services.1 · 8 pinned steps on one straight leader; deductible step red-circled; CTA quote Hail claim help | finding-4 | `data-hook="claim-line"` | still (quiet, readable) except leader draw once |
@@ -37,3 +46,8 @@
 
 ## Open issues
 - Roofer media library is still placeholder: build warns `OG photo "hero" could not be used (Input file has corrupt header: webp: unable to parse image); the OG image is a plain color.` Re-run build once real photos land under the same keys. Hero surface and thumbs render as flat fills until then.
+
+- (round 1) Niche photos are 43-byte placeholders: `.ev` frames hide the img until naturalWidth ≥ 64 (JS) and show the drawn blueprint detail. Pen-circle positions are tuned to the drawings; retune `transform` on each `.ev__mk .pen-circle` when real photos land. JS-off visitors see the stretched placeholder pixel.
+- (round 1) No typography filter exists in build.mjs: facts-derived text (prices.1.note range, review apostrophes) is wrapped in `data-typo` and fixed to en dash / curly quotes at runtime in app.js. A `|typo` build filter (or a facts edit) is the proper fix: orchestrator's call.
+- (round 1) `sw-marquee` / `sw-rotate-word` selectors in dist come from kit/base.css, not src; inert here.
+- (round 1) OG image is a plain colour until the hero photo is real.
