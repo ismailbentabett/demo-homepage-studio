@@ -1,0 +1,8 @@
+# Strategy — plumber-A (Wrench & Wren)
+
+1. **One job.** Homeowner in Indianapolis with a plumbing problem lands, understands the visit is ordered (find → fix → tag), and calls or prices it within 8 seconds.
+2. **Homeowner first 5s.** h1 "Find it. Fix it. Tag it." + kicker "Indianapolis plumbing, in order"; primary button "Price it"; secondary "Call (317) 555-0107"; proof line "Mon–Sat 7:30–6 · Sample rating 4.9". Cinematic strip of copper pipe + brass valve peeks below.
+3. **Contractor first 5s.** A copper pipe rail runs across every section; numbered brass tags hang from it marking each step of the visit. Nobody else shows the job as a tagged sequence.
+4. **Objections → section.** "Charge just to show up" → Price-it tool + sample ranges. "Dig my yard" → Camera inspection story. "Can't find shut-off" → Shut-off finder tool + tag system. "Upsell tankless" → Water heater life check. "Happen again" → Tagged valve + guarantee token (sample). "Who are you" → Proof band with sample reviews.
+5. **Conversion paths.** Primary: "Price it" → multi-step form (#contact). Secondary: sticky mobile bar with tel:. Tool hand-off: each tool ends with a prefilled "Price it" button carrying the selected service. Phone visible in header, hero, mobile bar, and footer.
+6. **Not this.** B's ledger/proof axis (dark-led, mono numerals, camera-footage counter). C's magazine/editorial axis (color-led, masthead, departments). This site avoids dark-led tone, mono-as-display, and editorial cover layout; it stays light-led, process-ordered, slab-serif + sans, with brass tags as the only recurring object.

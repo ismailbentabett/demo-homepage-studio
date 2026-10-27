@@ -1,0 +1,77 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "dist/index.html: h1 'Find it. / Fix it. / Tag it.' (6 words, 3 lines), trade+city in kicker, phone visible in header and hero CTA, proof line with hours and sample rating. Cannot verify next-band peek or 390 fold without screenshots (-0.5 uncertainty); hero image is placeholder so cinematic execution unconfirmed (-0.5)."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "dist/index.html: brass-tag + pipe-rail signature in hero, process, services, reviews, tools, footer (6 sections). Palette and type pair unique per concept.json. Cannot verify visual execution or compare against siblings without screenshots (-1.0 total uncertainty)."
+    },
+    "type": {
+      "score": 9,
+      "notes": "dist/index.html: Zilla Slab display -0.02em tracking, 0.92 line-height; Karla body clamp ≥16px; DM Mono for tags/prices/ZIPs. Fluid scale, tabular-nums on counters, lead class, p max-width 68ch. No orphans in stacked h1."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "dist/index.html: 9 sections + footer, tones alternate light/paper/deep/accent/light/deep/light/paper/light/deep, no two dark bands touch. Full-bleed break band, asymmetric hero grid 1.2fr/0.8fr. Process section uses same card shape 5 times (-0.5); cannot verify gap rhythm without screenshots (-0.5)."
+    },
+    "photo": {
+      "score": 7.5,
+      "notes": "dist/index.html: all media are placeholders (alt='Placeholder for...'). Consistent aspect ratios (21:9, 4:3, 3x2, 16x9). No duplicate photos. Cannot verify grade consistency, object-position, or crop quality (-1.0); no video element despite concept mentioning cinematic strip (-0.5)."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "dist/index.html: voice matches concept sentences, specific trade nouns throughout. Sample labels on reviews, pricing, licence, rating. Primary action consistently 'Price it' except break-band CTA says 'Get my number' (-0.5 inconsistent name). No banned phrases."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "dist/index.html: breakpoints at 640px and 900px, mobile bar with call+price-it buttons min-height 44px, tap targets ≥48px. Form inputs have inputmode and autocomplete. Cannot verify 390x844 rendering or mobile-bar hide behaviour without screenshots (-1.0 uncertainty)."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "dist/index.html: skip link, focus 3px solid var(--focus) offset 3px, all inputs labeled, ARIA tabs roles, live regions on ZIP/tool results, reduced-motion safety net, forced-colors borders, print stylesheet, heading order h1-h2-h3. Cannot verify reduced-motion screenshot shows all content (-0.5)."
+    },
+    "motion": {
+      "score": 8,
+      "notes": "dist/index.html: intro clip-path on hero strip, split-text line stagger 70ms/140ms, tag swing rotateZ -8→0 400ms, rail fill via --sw-p, staggered reveals 60ms. Hover underline on desktop nav. Same data-reveal translateY(24px) fade-up on most sections (-1.0); cannot verify timing/reversibility without screenshots (-0.5)."
+    },
+    "wow": {
+      "score": 8,
+      "notes": "dist/index.html: brass-tag system tied to thesis, three functional tools (shut-off finder, heater estimator, pressure check). Tool outputs are plain text divs rather than designed artifacts like printable sheet or SVG sketch (-1.0); cannot verify wow moment in reduced motion without screenshots (-0.5)."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "dist/index.html: SVG favicon + apple-touch-icon, OG 1200x630, JSON-LD Plumber type, theme-color, consistent 2px radius, print stylesheet, lazy images with dimensions, hero preload, forced-colors handled. Credits list repeats 'Photo by unknown on Pexels' 12 times (-0.5); cannot verify forced-colors/print rendering (-0.5)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "qa/screens/ (missing entirely)",
+      "problem": "No screenshots exist; render check has not been run. Cannot verify any visual claim.",
+      "fix": "Run node tools/check-render.mjs plumber-A to generate screenshots before round 2 scoring."
+    },
+    {
+      "where": "dist/index.html, #break CTA",
+      "problem": "Break-band button says 'Get my number' while every other CTA says 'Price it' — inconsistent primary action name.",
+      "fix": "Change button text to 'Price it' or 'Price a drain clear'."
+    },
+    {
+      "where": "dist/index.html, #tools tab panels",
+      "problem": "Concept promises printable tag card and SVG heater sketch; neither appears in markup. Tool outputs are plain text divs.",
+      "fix": "Add printable tag card markup inside #tool-shutoff and SVG sketch inside #tool-heater as specified in plan/02-concept.md Tools section."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Break the process-card repetition by introducing an asymmetric overlap — let one card's image bleed into the rail gutter and sit behind the next card's tag, creating depth and a scroll-driven parallax layer that makes the rail feel physical rather than decorative."
+    },
+    {
+      "category": "motion",
+      "move": "Replace uniform fade-up reveals with role-specific entrances: text rises, process images clip-wipe left-to-right matching the rail fill direction, service cards stamp in with a scale pulse echoing the brass-tag press, and the break band holds still as a breath."
+    }
+  ],
+  "verdictHint": "FIX"
+}
