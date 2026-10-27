@@ -34,3 +34,12 @@ Next fetch should target US residential CC sources or Pexels for these.
 - A: hero-A3 (only real one). A1 and A2 are still placeholders.
 - B: hero-B2 (only real one). B1 and B3 are still placeholders.
 - C: hero-C1 (fog), hero-C2 (clawfoot tub). C3 is still a placeholder.
+
+## Stub repair (2026-10-27): four keys used by live sites replaced in place
+These four keys pointed at 1x1 placeholder stubs. Each was replaced under the same key, as the orchestrator explicitly allowed for this repair. One extra Commons fetch was run: pollen and hero-A1 returned new frames, the baseboard fetch hung, and high-dust never ran.
+| key | candidate | why |
+|---|---|---|
+| detail-pollen | oc00154039413 | Real grit and dust on a painted wooden windowsill, with no faces and nothing readable. It shows dust, not visibly yellow pollen, and the alt says so. WEAK-ish. |
+| hero-A1 | o49cc5e235105 | Hands holding cut fruit over a white kitchen counter, with the face cropped out, no logo and soft light. It's not a checklist, so it's off-brief. WEAK. (ode2b01823bda was rejected because an Apple logo shows on the laptop. The military "checklist" frames were rejected.) |
+| process-baseboard | oc00111878749 | A B&W close-up of a grimy baseboard and window-trim corner, which reads as an honest "before" detail. There's no cloth or hand. WEAK-ish. |
+| process-high-dust | oc00022414551 | The least-bad honest frame: a generic "smoke outlet from basement" plaque in a stone wall. It names no company, but it is off-subject (no duster). The other candidates showed identifiable children in a barn and a nebula. WEAK: refetch later. |
