@@ -1,0 +1,8 @@
+# Strategy — carpenter-A (Scarf & Sash Carpentry)
+
+1. **The one job.** A Portland ME homeowner with an old house lands here and either calls or prices a repair within 10 seconds; the page proves this carpenter splices, matches and scribes instead of ripping out.
+2. **Homeowner first 5 seconds.** H1 "Old-house carpentry in {{biz.city}}" + kicker "{{biz.stateName}} · rot repair · matched trim · built-ins"; primary [[call]] button; secondary [[quote rot-repair]]; proof line "{{proof.years}} years splicing Maine porches · Sample".
+3. **Contractor first 5 seconds.** The page is a numbered cut list: every section is "Cut NN · part · dims · species" with dimension-line ticks and kerf dividers; nobody else in town shows the joint itself.
+4. **Objections → sections.** (1) "They'll rip out old trim" → Cut 03 Matched Trim story + detail-crown-corner. (2) "Deposit taken, no show" → Cut 06 Schedule + open-now + text promise. (3) "Paint over rot" → Cut 02 Rot Repair tool + material-rotten-wood photo. (4) "New won't match old" → Cut 03 Molding Profile picker + before/after detail. (5) "Is the porch safe?" → Cut 04 Porch Safety checklist tool. (6) "Price?" → Estimator + sample price block labelled Sample.
+5. **Conversion paths.** Primary: sticky mobile bar [[call]] + hero [[call]]; Secondary: [[quote *]] CTAs prefill form via data-service; Tool → form hand-off: rot-check and cut-list outputs end with "Send a photo / Get this drawn" linking to #contact with service prefilled. Phone always ≤ 1 thumb reach on 390.
+6. **What this is NOT.** (a) Not B's measured-story-pole ruler margin (no vertical ruler). (b) Not C's triple-decker stacked floor bands (no floor labels). (c) Not a glossy new-build gallery (no kitchen/deck hero, no smiling man with level).
