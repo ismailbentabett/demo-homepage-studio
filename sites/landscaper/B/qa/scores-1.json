@@ -1,0 +1,26 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": { "score": 6.5, "notes": "1440-first.jpg: h1 in a ~330px column runs 8 lines, primary button at the fold edge, secondary below; hero photo slot is a grey placeholder captioned hero-01; tool readout shows dashes. 390-first.jpg: h1 5 lines, content offset by overflow, call button clipped." },
+    "distinctiveness": { "score": 7.5, "notes": "1440-rm-full.jpg: zone tags in hero, services, tools, reviews, footer. 1440-full.jpg / 1440-scroll-75.jpg: services and reviews not rendered with motion on; three eyebrow+h2+card-grid bands; tracked caps eyebrow over every h2." },
+    "type": { "score": 7.5, "notes": "Space Grotesk/Albert Sans/DM Mono is a sound pairing. 1440-first.jpg: display h1 breaks after almost every word; 3+ tracked caps labels in one view (also 1440-scroll-50.jpg STEP boxes); cramped mono readout card." },
+    "layout": { "score": 6.5, "notes": "1440-first.jpg: lopsided hero grid, photo slot floating. 1440-full.jpg: full-bleed placeholder break ~1.5 screens; 1440-scroll-25.jpg entirely blank frame; 1440-scroll-75.jpg empty deep band. 1440-rm-full.jpg: accent quote band runs into deep footer." },
+    "photo": { "score": 4, "notes": "1440-full.jpg, 390-full.jpg: all 8 images are media/placeholder-*.jpg grey boxes with alt 'Placeholder for ...'; no photograph and no video on the page." },
+    "copy": { "score": 8, "notes": "1440-scroll-50.jpg: specific trade copy (caliche, deer pressure, laminated zone card); Sample labels present. 1440-first.jpg/390-first.jpg: primary action named Price my yard / Price it / Get this number / Get a real number; 5 em dashes; 'city ET' jargon." },
+    "mobile": { "score": 5.5, "notes": "render.json: overflow 629px at 390 and 623px at 320 from div.header__actions. 390-full.jpg captured 629 wide, layout shifted; 390-first.jpg h1 5 lines, overloaded header with clipped call button; services/reviews missing with motion on." },
+    "a11y": { "score": 7.5, "notes": "1440-rm-full.jpg and 390-rm-full.jpg show all content. dist/index.html: 8 images with alt 'Placeholder for ...'; 1440-first.jpg SAMPLE ESTIMATE tag in light grey looks under 4.5:1." },
+    "motion": { "score": 6, "notes": "1440-scroll-25.jpg blank, 1440-scroll-75.jpg reviews empty: reveal targets stay hidden in view with motion on (mustFix). 1440-first.jpg: data-count readout never counts, shows dashes; signature motion not visible." },
+    "wow": { "score": 6.5, "notes": "1440-first.jpg: hero water-budget tool is on-thesis but its output is dashes then a plain text line; 1440-rm-full.jpg: process wipe has only placeholders to wipe between." },
+    "polish": { "score": 6, "notes": "1440-full.jpg: placeholder boxes with debug captions (hero-01, region-austin-home); dist/index.html transition: all; 1440-rm-full.jpg credits 'Photo by unknown on Pexels' x8. Favicon, OG, JSON-LD, print present." }
+  },
+  "mustFix": [
+    { "where": "render.json, 390-first.jpg, div.header__actions", "problem": "Horizontal overflow at 390 (629px) and 320 (623px): open-now pill plus full-label call button do not fit the header", "fix": "Under 640px hide .open-now-pill in the header, collapse .btn-call to a 48x48 icon button with aria-label 'Call {{biz.phone}}', set .header__actions{min-width:0;flex-shrink:1}; re-run check-render with zero overflow" },
+    { "where": "1440-full.jpg, 390-full.jpg, every img in dist/index.html", "problem": "All 8 photos are media/placeholder-*.jpg grey boxes with alt 'Placeholder for ...'", "fix": "Place approved niche-library frames via [[img]] for every slot (hero-B1, crew, break, story-1, story-2, season-heat, plants-native, tools-hand) with descriptive alt and real credit hrefs" },
+    { "where": "1440-scroll-25.jpg, 1440-scroll-75.jpg, #services and #reviews", "problem": "Reveal targets stay invisible while in the viewport with motion on", "fix": "Make the reveal fire (start 'top 85%', once:true, ScrollTrigger.refresh after fonts and images load); keep the base state visible and apply the hidden state only under a class added when the trigger registers" }
+  ],
+  "elevate": [
+    { "category": "photo", "move": "Frame every real photo with the zone-rule as its caption bar (zone tag + gal/wk readout), cut a plan -> work -> result sequence across the process and natives frames, and grade all of them as one dry Hill-Country shoot" },
+    { "category": "mobile", "move": "Compose the phone as the controller's handheld: a compact zone-dial tool directly under a 3-line h1 with one big mono result line, services as a stacked zone list, the sticky bar as the controller's two buttons" }
+  ],
+  "verdictHint": "FIX"
+}
