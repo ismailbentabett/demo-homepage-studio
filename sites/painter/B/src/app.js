@@ -1,68 +1,107 @@
-/* painter-B — TintCard Painting Co. signature + glue */
+/* painter-B · gallon formula (tool), test-card pulls (signature), prep layers story, big test-card scrub. */
 (function () {
   'use strict';
-
   var SW = window.SW || {};
-  var reduced = SW.reduced || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
 
-  /* TintCard bar animation */
-  function initTintCardBars() {
-    var bars = document.querySelectorAll('.film-bar[data-tint-card-width]');
-    if (!bars.length) return;
+  /* ---- gallon calculator: works for everyone (it is a tool, not motion) ---- */
+  function initGallons() {
+    var form = document.querySelector('[data-gallons]');
+    if (!form) return;
+    var out = {
+      gal: form.querySelector('[data-g-gal]'),
+      area: form.querySelector('[data-g-area]'),
+      coats: form.querySelector('[data-g-coats]'),
+      buy: form.querySelector('[data-g-buy]'),
+      cans: form.querySelectorAll('.can')
+    };
+    function num(name, min, max, dflt) {
+      var el = form.elements[name];
+      var v = parseFloat(el && el.value);
+      if (!isFinite(v)) v = dflt;
+      return Math.min(max, Math.max(min, v));
+    }
+    function update() {
+      var L = num('length', 4, 60, 12), W = num('width', 4, 60, 12), H = num('height', 7, 20, 9);
+      var doors = num('doors', 0, 8, 1), wins = num('windows', 0, 12, 2), coats = Math.round(num('coats', 1, 3, 2));
+      var area = Math.max(0, Math.round(2 * (L + W) * H - doors * 21 - wins * 15));
+      var gal = Math.round((area * coats / 350) * 10) / 10;
+      var buy = Math.max(1, Math.ceil(gal));
+      out.gal.textContent = gal.toFixed(1);
+      out.area.textContent = String(area);
+      out.coats.textContent = String(coats);
+      out.buy.textContent = String(buy);
+      for (var i = 0; i < out.cans.length; i++) out.cans[i].classList.toggle('is-on', i < Math.min(out.cans.length, buy));
+    }
+    form.addEventListener('input', update);
+    form.addEventListener('submit', function (e) { e.preventDefault(); update(); });
+    update();
+  }
 
-    bars.forEach(function (bar) {
-      var w = parseFloat(bar.getAttribute('data-tint-card-width')) / 100;
-      bar.style.setProperty('--dw', String(w));
-    });
+  /* ---- motion (signature + stories) ---- */
+  function initMotion() {
+    if (SW.reduced || !root.classList.contains('sw-motion')) return;
 
-    if (reduced) {
-      bars.forEach(function (bar) { bar.classList.add('is-drawn'); });
-      return;
+    // pullcard films draw once when their ticket grid comes into view
+    var draws = document.querySelectorAll('[data-draw]');
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.02, rootMargin: '0px 0px -5% 0px' });
+      draws.forEach(function (d) { io.observe(d); });
+    } else {
+      draws.forEach(function (d) { d.classList.add('is-in'); });
     }
 
-    if (!('IntersectionObserver' in window)) {
-      bars.forEach(function (bar) { bar.classList.add('is-drawn'); });
-      return;
-    }
+    if (!window.gsap || !window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-drawn');
-          io.unobserve(entry.target);
-        }
+    // the big test card: the scroll pulls the paint across the test card (no pin, every width)
+    var big = document.querySelector('.bigpull');
+    if (big) {
+      var setCov = function (p) { big.style.setProperty('--cov', (28 + p * 68).toFixed(2) + '%'); };
+      ScrollTrigger.create({
+        trigger: big,
+        start: 'top 85%',
+        end: 'bottom 30%',
+        scrub: true,
+        onUpdate: function (self) { setCov(self.progress); },
+        onLeave: function () { setCov(1); }
       });
-    }, { threshold: 0.02, rootMargin: '0px 0px -5% 0px' });
-
-    bars.forEach(function (bar) { io.observe(bar); });
-  }
-
-  /* Hero h1 line-mask reveal */
-  function initLineMask() {
-    var masks = document.querySelectorAll('.line-mask');
-    if (!masks.length) return;
-
-    if (reduced || !document.documentElement.classList.contains('sw-motion')) {
-      masks.forEach(function (m) { m.classList.add('is-revealed'); });
-      return;
     }
 
-    var stagger = 70;
-    masks.forEach(function (m, i) {
-      setTimeout(function () {
-        m.classList.add('is-revealed');
-      }, 300 + i * stagger);
+    // prep story: layers stack on the board as the four steps pass (sticky on ≥ 900px only)
+    var track = document.querySelector('.prep__track');
+    var board = document.querySelector('.board');
+    ScrollTrigger.matchMedia({
+      '(min-width: 900px)': function () {
+        if (!track) return;
+        var st = ScrollTrigger.create({
+          trigger: track,
+          start: 'top top+=' + (parseFloat(getComputedStyle(root).getPropertyValue('--header-h')) || 68),
+          end: 'bottom bottom',
+          onUpdate: function (self) {
+            var n = Math.min(4, Math.floor(self.progress * 4) + 1);
+            if (track.getAttribute('data-active') !== String(n)) track.setAttribute('data-active', String(n));
+            if (board) board.style.setProperty('--prog', (n / 4).toFixed(2));
+          }
+        });
+        track.setAttribute('data-active', '1');
+        if (board) board.style.setProperty('--prog', '0.25');
+        st.refresh();
+        return function () {
+          track.removeAttribute('data-active');
+          if (board) board.style.removeProperty('--prog');
+        };
+      }
     });
+
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   }
 
-  /* Init on DOM ready */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      initTintCardBars();
-      initLineMask();
-    });
-  } else {
-    initTintCardBars();
-    initLineMask();
-  }
+  function start() { initGallons(); initMotion(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();

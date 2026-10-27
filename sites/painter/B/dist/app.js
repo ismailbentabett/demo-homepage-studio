@@ -249,40 +249,6 @@
 })();
 
 ;
-/* kit: reveal */
-/* reveal: adds .is-in when [data-reveal] / [data-reveal-stagger] elements enter the bottom 85% of the viewport.
-   Children of [data-reveal-stagger] get --i (0, 1, 2...) for the CSS delay. Without sw-motion everything is shown at once. */
-SW.mod('reveal', function (SW) {
-  var els = SW.$$('[data-reveal], [data-reveal-stagger]');
-  if (!els.length) return;
-  SW.$$('[data-reveal-stagger]').forEach(function (group) {
-    Array.prototype.forEach.call(group.children, function (child, i) { child.style.setProperty('--i', i); });
-  });
-  function show(el) { el.classList.add('is-in'); }
-  function showAll() { els.forEach(show); }
-  window.addEventListener('beforeprint', showAll);
-  if (SW.reduced || !('IntersectionObserver' in window)) { showAll(); return; }
-
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (en) {
-      if (en.isIntersecting) { show(en.target); io.unobserve(en.target); }
-    });
-  }, { rootMargin: '0px 0px -15% 0px' });
-  els.forEach(function (el) { io.observe(el); });
-
-  // a jump (anchor link, End key) can skip past elements without them ever intersecting: show what is above the fold
-  var pending = false;
-  function catchUp() {
-    pending = false;
-    els.forEach(function (el) {
-      if (!el.classList.contains('is-in') && el.getBoundingClientRect().bottom < 0) { show(el); io.unobserve(el); }
-    });
-  }
-  window.addEventListener('scroll', function () { if (!pending) { pending = true; requestAnimationFrame(catchUp); } }, { passive: true });
-  catchUp();
-});
-
-;
 /* kit: header */
 /* header: [data-header] gets .is-scrolled past 8px and .is-hidden while scrolling down past 160px
    (never while focus is inside it or the menu is open). [data-progress] gets --p (0..1) of the page read.
@@ -332,77 +298,6 @@ SW.mod('header', function (SW) {
 });
 
 ;
-/* kit: menu */
-/* menu: [data-menu-btn] opens/closes [data-menu] (full-screen or drawer).
-   Sets aria-controls / aria-expanded, .is-open on the menu, html.sw-menu-open, inert while closed,
-   traps focus, locks the page scroll; Esc, [data-menu-close] or a link click closes it and focus returns.
-   data-menu-mq="(max-width: 899px)" on the menu: it only acts as a menu while that media query matches
-   (for a nav that is a plain bar on wide screens). */
-SW.mod('menu', function (SW) {
-  var menu = SW.$('[data-menu]');
-  var btns = SW.$$('[data-menu-btn]');
-  if (!menu || !btns.length) return;
-  var root = document.documentElement;
-  var mqText = menu.getAttribute('data-menu-mq');
-  var mq = mqText ? window.matchMedia(mqText) : null;
-  var open = false, release = null, opener = null;
-
-  if (!menu.id) menu.id = 'sw-menu';
-  menu.setAttribute('data-lenis-prevent', '');
-  btns.forEach(function (b) {
-    b.setAttribute('aria-controls', menu.id);
-    b.setAttribute('aria-expanded', 'false');
-    b.addEventListener('click', function () { if (open) close(true); else show(b); });
-  });
-  function active() { return !mq || mq.matches; }
-  function setClosedState() { menu.inert = active(); }
-  setClosedState();
-  if (mq) {
-    var onChange = function () { if (open && !active()) close(false); setClosedState(); };
-    if (mq.addEventListener) mq.addEventListener('change', onChange); else mq.addListener(onChange);
-  }
-
-  function announce() { document.dispatchEvent(new CustomEvent('sw:menu', { detail: { open: open } })); }
-  function show(btn) {
-    if (open || !active()) return;
-    open = true; opener = btn || btns[0];
-    menu.inert = false;
-    menu.classList.add('is-open');
-    root.classList.add('sw-menu-open');
-    btns.forEach(function (b) { b.setAttribute('aria-expanded', 'true'); });
-    SW.lockScroll(true);
-    release = SW.trapFocus(menu, btns.filter(function (b) { return !menu.contains(b); }));
-    // wait a frame so a visibility change has applied before focusing
-    requestAnimationFrame(function () {
-      var first = SW.$('[data-menu-first]', menu) ||
-        SW.focusables(menu).filter(function (el) { return !el.hasAttribute('data-menu-close'); })[0];
-      SW.focusEl(first || menu);
-    });
-    announce();
-  }
-  function close(returnFocus) {
-    if (!open) return;
-    open = false;
-    menu.classList.remove('is-open');
-    root.classList.remove('sw-menu-open');
-    btns.forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
-    if (release) release();
-    release = null;
-    SW.lockScroll(false);
-    setClosedState();
-    if (returnFocus && opener) SW.focusEl(opener);
-    announce();
-  }
-  document.addEventListener('keydown', function (e) { if (open && e.key === 'Escape') { e.preventDefault(); close(true); } });
-  menu.addEventListener('click', function (e) {
-    var t = e.target.closest ? e.target.closest('[data-menu-close], a[href]') : null;
-    if (!t) return;
-    close(t.hasAttribute('data-menu-close')); // a link: let it navigate, its target takes focus
-  });
-  SW.menu = { open: show, close: close, get isOpen() { return open; } };
-});
-
-;
 /* kit: mobilebar */
 /* mobilebar: [data-mobilebar] (sticky call/quote bar; the site's CSS shows it under 900px).
    Gets .is-hidden + inert while scrolling down past 200px, while #contact / form[data-lead] / [data-mobilebar-hide]
@@ -447,220 +342,95 @@ SW.mod('mobilebar', function (SW) {
 });
 
 ;
-/* kit: lenis */
-/* lenis: smooth scrolling when <html data-smooth> is set, window.Lenis is loaded and motion is allowed.
-   lerp .1, wheelMultiplier 1, driven by the GSAP ticker (and synced to ScrollTrigger) when GSAP is loaded.
-   Sets SW.lenis. Same-page anchor links scroll through Lenis and focus their target. */
-SW.mod('lenis', function (SW) {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-smooth') || SW.reduced || typeof window.Lenis !== 'function') return;
-  var lenis = new window.Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    // never hijack scrolling inside an open dialog or an element that scrolls itself
-    prevent: function (node) { return !!(node && node.closest && node.closest('[data-lenis-prevent], dialog[open]')); },
-  });
-  SW.lenis = lenis;
+/* kit: opennow */
+/* opennow: <p data-open-now>Mon to Fri 7 am to 6 pm</p> becomes "Open now · until 6 pm" / "Closed · opens 7 am" /
+   "Closed · opens Mon 7 am", worked out in the business time zone (facts biz.timezone) from facts biz.hours:
+   { mon: ["07:00","18:00"], ..., sun: null }. A day can hold several ranges [["07:00","12:00"],["13:00","18:00"]];
+   "24:00" and overnight ranges ("20:00","02:00") work. If [data-open-now-text] is inside, only that child changes.
+   Sets data-state="open|closed" and .is-open / .is-closed; refreshes every minute.
+   Also marks the row for today in any [data-hours] or dl.hours list: the element with data-day="mon" etc. gets .is-today
+   and aria-current="date". The text written in the HTML is what shows without JS. */
+SW.mod('opennow', function (SW) {
+  var DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  var NAMES = { sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat' };
+  var hours = SW.fact('biz.hours', 'hours');
+  var tz = SW.fact('biz.timezone', 'timezone');
+  var els = SW.$$('[data-open-now]');
+  var rows = SW.$$('[data-hours] [data-day], dl.hours [data-day], .hours [data-day]');
+  if (!hours || (!els.length && !rows.length)) return;
 
-  if (window.gsap && window.gsap.ticker) {
-    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
-    window.gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-    window.gsap.ticker.lagSmoothing(0);
-  } else {
-    var raf = function (time) { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
+  function nowThere() {
+    var opts = { weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
+    if (tz) opts.timeZone = tz;
+    var parts;
+    try { parts = new Intl.DateTimeFormat('en-US', opts).formatToParts(new Date()); }
+    catch (e) { delete opts.timeZone; parts = new Intl.DateTimeFormat('en-US', opts).formatToParts(new Date()); }
+    var get = function (t) { var p = parts.find(function (x) { return x.type === t; }); return p ? p.value : ''; };
+    var day = DAYS.indexOf(get('weekday').slice(0, 3).toLowerCase());
+    var h = parseInt(get('hour'), 10) % 24, m = parseInt(get('minute'), 10);
+    return { day: day < 0 ? new Date().getDay() : day, min: h * 60 + m };
   }
-
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var hash = a.getAttribute('href');
-    if (hash.length < 2) return;
-    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) return;
-    e.preventDefault();
-    SW.scrollTo(target);
-    if (history.pushState) history.pushState(null, '', hash);
-  });
-});
-
-;
-/* kit: split */
-/* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
-   Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
-     words: .sw-word > .sw-word-in           (--i = word index)
-     lines: same markup, --i = line index    (recomputed on resize and after the fonts load)
-     chars: .sw-word > .sw-char              (--i = char index)
-   The element gets .is-in when it scrolls into view (at once under reduced motion). */
-SW.mod('split', function (SW) {
-  var els = SW.$$('[data-split]');
-  if (!els.length) return;
-
-  function piece(cls, text) {
-    var s = document.createElement('span');
-    s.className = cls;
-    s.textContent = text;
-    return s;
+  function toMin(s) { var p = String(s).split(':'); return parseInt(p[0], 10) * 60 + (parseInt(p[1], 10) || 0); }
+  function ranges(dayIdx) {
+    var r = hours[DAYS[(dayIdx + 7) % 7]];
+    if (!r || !r.length) return [];
+    if (!Array.isArray(r[0])) r = [r];
+    return r.map(function (x) { return { from: toMin(x[0]), to: toMin(x[1]) }; });
   }
-  function splitText(textNode, mode) {
-    var frag = document.createDocumentFragment();
-    textNode.nodeValue.split(/(\s+)/).forEach(function (token) {
-      if (!token) return;
-      if (/^\s+$/.test(token)) { frag.appendChild(document.createTextNode(' ')); return; }
-      var word = document.createElement('span');
-      word.className = 'sw-word';
-      if (mode === 'chars') Array.from(token).forEach(function (ch) { word.appendChild(piece('sw-char', ch)); });
-      else word.appendChild(piece('sw-word-in', token));
-      frag.appendChild(word);
-    });
-    textNode.parentNode.replaceChild(frag, textNode);
+  function clock(min) {
+    min = ((min % 1440) + 1440) % 1440;
+    var h = Math.floor(min / 60), m = min % 60;
+    if (h === 0 && m === 0) return 'midnight';
+    if (h === 12 && m === 0) return 'noon';
+    var suf = h < 12 ? 'am' : 'pm';
+    var h12 = h % 12 || 12;
+    return h12 + (m ? ':' + (m < 10 ? '0' : '') + m : '') + ' ' + suf;
   }
-  function walk(node, mode) {
-    Array.prototype.slice.call(node.childNodes).forEach(function (child) {
-      if (child.nodeType === 3) splitText(child, mode);
-      else if (child.nodeType === 1 && !/^(BR|SVG|IMG|PICTURE)$/i.test(child.tagName)) walk(child, mode);
-    });
-  }
-  function numberLines(el) {
-    var top = null, line = -1;
-    SW.$$('.sw-word', el).forEach(function (w) {
-      var t = w.offsetTop;
-      if (top === null || Math.abs(t - top) > 2) { line++; top = t; }
-      w.style.setProperty('--i', line);
-    });
-    el.style.setProperty('--lines', line + 1);
-  }
-
-  els.forEach(function (el) {
-    if (el.hasAttribute('data-split-done')) return;
-    var mode = el.getAttribute('data-split') || 'words';
-    var text = el.textContent.replace(/\s+/g, ' ').trim();
-    if (!text) return;
-    var visual = document.createElement('span');
-    visual.className = 'sw-split';
-    visual.setAttribute('aria-hidden', 'true');
-    while (el.firstChild) visual.appendChild(el.firstChild);
-    walk(visual, mode);
-    el.appendChild(piece('sr-only', text));
-    el.appendChild(visual);
-    el.setAttribute('data-split-done', '');
-
-    if (mode === 'lines') {
-      numberLines(visual);
-      var timer;
-      window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(function () { numberLines(visual); }, 150); });
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { numberLines(visual); });
-    } else {
-      SW.$$(mode === 'chars' ? '.sw-char' : '.sw-word', visual).forEach(function (p, i) { p.style.setProperty('--i', i); });
+  // open right now? returns closing minute (may be > 1440 for overnight) or null
+  function openUntil(n) {
+    var today = ranges(n.day), y = ranges(n.day - 1), i, r;
+    for (i = 0; i < y.length; i++) { r = y[i]; if (r.to <= r.from && n.min < r.to) return r.to; } // overnight from yesterday
+    for (i = 0; i < today.length; i++) {
+      r = today[i];
+      var end = r.to <= r.from ? r.to + 1440 : r.to;
+      if (n.min >= r.from && n.min < end) return end;
     }
-
-    if (SW.reduced) el.classList.add('is-in');
-    else SW.inView(el, function () { el.classList.add('is-in'); }, { rootMargin: '0px 0px -10% 0px' });
-  });
-  window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('is-in'); }); });
-});
-
-;
-/* kit: counters */
-/* counters: <span data-count="143">143 reviews</span> counts the first number in the text up from 0 once in view.
-   Write the final value in the HTML too (it is what shows without JS). Decimals follow the data-count value ("4.9").
-   data-count-duration in ms (default 1200). Screen readers get the final text; the moving copy is aria-hidden.
-   Static (final value) under reduced motion. */
-SW.mod('counters', function (SW) {
-  SW.$$('[data-count]').forEach(function (el) {
-    if (el.querySelector('.sw-count-num')) return;
-    var raw = el.getAttribute('data-count');
-    var target = parseFloat(String(raw).replace(/[^0-9.\-]/g, ''));
-    if (isNaN(target)) return;
-    var decimals = (String(raw).split('.')[1] || '').replace(/\D/g, '').length;
-    var fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-    var text = el.textContent;
-    var m = text.match(/\d[\d,]*(\.\d+)?/);
-    var before = m ? text.slice(0, m.index) : '';
-    var after = m ? text.slice(m.index + m[0].length) : text;
-    var finalText = fmt.format(target);
-
-    el.textContent = '';
-    var sr = document.createElement('span');
-    sr.className = 'sr-only';
-    sr.textContent = (before + finalText + after).trim();
-    var visual = document.createElement('span');
-    visual.setAttribute('aria-hidden', 'true');
-    var num = document.createElement('span');
-    num.className = 'sw-count-num';
-    visual.appendChild(document.createTextNode(before));
-    visual.appendChild(num);
-    visual.appendChild(document.createTextNode(after));
-    el.appendChild(sr);
-    el.appendChild(visual);
-
-    if (SW.reduced) { num.textContent = finalText; el.classList.add('is-counted'); return; }
-    num.textContent = fmt.format(0);
-    var duration = parseInt(el.getAttribute('data-count-duration'), 10) || 1200;
-    SW.inView(el, function () {
-      var t0 = performance.now();
-      function frame(now) {
-        var k = Math.min(1, (now - t0) / duration);
-        var eased = 1 - Math.pow(1 - k, 3);
-        num.textContent = fmt.format(target * eased);
-        if (k < 1) requestAnimationFrame(frame);
-        else { num.textContent = finalText; el.classList.add('is-counted'); }
+    return null;
+  }
+  function nextOpen(n) {
+    for (var d = 0; d < 8; d++) {
+      var rs = ranges(n.day + d).sort(function (a, b) { return a.from - b.from; });
+      for (var i = 0; i < rs.length; i++) {
+        if (d > 0 || rs[i].from > n.min) return { d: d, min: rs[i].from, day: DAYS[(n.day + d) % 7] };
       }
-      requestAnimationFrame(frame);
-    }, { threshold: 0.4 });
-    window.addEventListener('beforeprint', function () { num.textContent = finalText; });
-  });
-});
-
-;
-/* kit: video */
-/* video: <video data-video data-src="media/x.mp4" poster muted loop playsinline preload="none"> inside a figure
-   with a <button data-vid-btn aria-pressed="false">Pause background video</button> (the [[video]] macro writes both).
-   Loads data-src when it comes near the screen, plays muted, pauses off-screen and in a hidden tab.
-   The button keeps its label; aria-pressed="true" means paused. The figure gets data-state="playing|paused".
-   Under reduced motion nothing autoplays (the poster shows, the button starts pressed; a click plays). */
-SW.mod('video', function (SW) {
-  SW.$$('video[data-video]').forEach(function (v) {
-    var fig = v.closest('figure') || v.parentElement;
-    var btn = fig ? SW.$('[data-vid-btn]', fig) : null;
-    v.muted = true;
-    v.setAttribute('muted', '');
-    v.playsInline = true;
-    var userPaused = SW.reduced;
-    var near = false;
-
-    function load() {
-      if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; }
     }
-    function play() {
-      load();
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { reflect(); });
+    return null;
+  }
+  function render() {
+    var n = nowThere();
+    var until = openUntil(n);
+    var open = until !== null, text;
+    if (open) {
+      text = 'Open now · until ' + clock(until); // 24:00 reads "until midnight"
+    } else {
+      var nx = nextOpen(n);
+      text = !nx ? 'Closed' : 'Closed · opens ' + (nx.d === 0 ? '' : nx.d === 1 ? 'tomorrow ' : NAMES[nx.day] + ' ') + clock(nx.min);
     }
-    function reflect() {
-      var playing = !v.paused && !v.ended;
-      if (btn) btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-      if (fig) fig.setAttribute('data-state', playing ? 'playing' : 'paused');
-    }
-    function sync() {
-      if (near && !userPaused && !document.hidden) play();
-      else if (!v.paused) v.pause();
-    }
-    v.addEventListener('play', reflect);
-    v.addEventListener('playing', reflect);
-    v.addEventListener('pause', reflect);
-    if (btn) {
-      btn.type = 'button';
-      btn.addEventListener('click', function () {
-        if (v.paused) { userPaused = false; play(); } else { userPaused = true; v.pause(); }
-        v.toggleAttribute('data-user-paused', userPaused);
-      });
-    }
-    SW.inView(v, function (inside) { near = inside; sync(); }, { once: false, rootMargin: '150px' });
-    document.addEventListener('visibilitychange', sync);
-    reflect();
-  });
+    els.forEach(function (el) {
+      var target = SW.$('[data-open-now-text]', el) || el;
+      target.textContent = text;
+      el.setAttribute('data-state', open ? 'open' : 'closed');
+      el.classList.toggle('is-open', open);
+      el.classList.toggle('is-closed', !open);
+    });
+    rows.forEach(function (r) {
+      var on = r.getAttribute('data-day') === DAYS[n.day];
+      r.classList.toggle('is-today', on);
+      if (on) r.setAttribute('aria-current', 'date'); else r.removeAttribute('aria-current');
+    });
+  }
+  render();
+  setInterval(render, 60000);
 });
 
 ;
@@ -975,224 +745,30 @@ SW.mod('form', function (SW) {
 });
 
 ;
-/* kit: faq */
-/* faq: <div data-accordion> with <details><summary>Question</summary><div>Answer</div></details> items.
-   Native details/summary does the keyboard and ARIA work (works without JS); this adds a height animation
-   on the answer (the first element after <summary>). data-accordion="single" keeps only one open.
-   The <details> gets .is-opening / .is-closing while it moves. Under reduced motion the native toggle is left alone. */
-SW.mod('faq', function (SW) {
-  SW.$$('[data-accordion]').forEach(function (group) {
-    var single = group.getAttribute('data-accordion') === 'single';
-    var items = SW.$$('details', group);
-
-    function body(d) { return d.querySelector(':scope > summary ~ *'); }
-    function animate(d, open) {
-      var el = body(d);
-      if (d._swAnim) { d._swAnim.cancel(); d._swAnim = null; }
-      if (SW.reduced || !el || !el.animate) { d.open = open; return; }
-      if (open) d.open = true;
-      var h = el.scrollHeight;
-      d.classList.toggle('is-opening', open);
-      d.classList.toggle('is-closing', !open);
-      el.style.overflow = 'hidden';
-      var anim = el.animate(
-        { height: open ? ['0px', h + 'px'] : [h + 'px', '0px'], opacity: open ? [0, 1] : [1, 0] },
-        { duration: open ? 280 : 200, easing: 'cubic-bezier(.23,1,.32,1)' }
-      );
-      d._swAnim = anim;
-      anim.onfinish = function () {
-        d._swAnim = null;
-        if (!open) d.open = false;
-        el.style.overflow = '';
-        d.classList.remove('is-opening', 'is-closing');
-      };
-    }
-
-    items.forEach(function (d) {
-      var summary = d.querySelector('summary');
-      if (!summary) return;
-      summary.addEventListener('click', function (e) {
-        if (SW.reduced) return; // native toggle
-        e.preventDefault();
-        var opening = !d.open || d.classList.contains('is-closing');
-        if (opening && single) items.forEach(function (o) { if (o !== d && o.open) animate(o, false); });
-        animate(d, opening);
-      });
-      d.addEventListener('toggle', function () {
-        if (single && d.open) items.forEach(function (o) { if (o !== d && o.open && !o._swAnim) o.open = false; });
-      });
+/* kit: prefill */
+/* prefill: any link or button with data-service="Leak repair" (outside the lead form) fills the form's
+   "service" field, scrolls to #contact and focuses that field. The [[quote]] macro writes these links
+   (href="#contact" so they still work without JS). The value can be a service name or its short name. */
+SW.mod('prefill', function (SW) {
+  // capture phase: runs before the smooth-scroll anchor handler
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var t = e.target.closest ? e.target.closest('[data-service]') : null;
+    if (!t || t.closest('form[data-lead]')) return;
+    var form = SW.$('form[data-lead]');
+    if (!form) return; // plain anchor behaviour
+    e.preventDefault();
+    var want = (t.getAttribute('data-service') || '').trim().toLowerCase();
+    var services = SW.fact('services') || [];
+    var hit = services.find(function (s) {
+      return String(s.name || '').toLowerCase() === want || String(s.short || '').toLowerCase() === want;
     });
-  });
-});
-
-;
-/* kit: opennow */
-/* opennow: <p data-open-now>Mon to Fri 7 am to 6 pm</p> becomes "Open now · until 6 pm" / "Closed · opens 7 am" /
-   "Closed · opens Mon 7 am", worked out in the business time zone (facts biz.timezone) from facts biz.hours:
-   { mon: ["07:00","18:00"], ..., sun: null }. A day can hold several ranges [["07:00","12:00"],["13:00","18:00"]];
-   "24:00" and overnight ranges ("20:00","02:00") work. If [data-open-now-text] is inside, only that child changes.
-   Sets data-state="open|closed" and .is-open / .is-closed; refreshes every minute.
-   Also marks the row for today in any [data-hours] or dl.hours list: the element with data-day="mon" etc. gets .is-today
-   and aria-current="date". The text written in the HTML is what shows without JS. */
-SW.mod('opennow', function (SW) {
-  var DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-  var NAMES = { sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat' };
-  var hours = SW.fact('biz.hours', 'hours');
-  var tz = SW.fact('biz.timezone', 'timezone');
-  var els = SW.$$('[data-open-now]');
-  var rows = SW.$$('[data-hours] [data-day], dl.hours [data-day], .hours [data-day]');
-  if (!hours || (!els.length && !rows.length)) return;
-
-  function nowThere() {
-    var opts = { weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
-    if (tz) opts.timeZone = tz;
-    var parts;
-    try { parts = new Intl.DateTimeFormat('en-US', opts).formatToParts(new Date()); }
-    catch (e) { delete opts.timeZone; parts = new Intl.DateTimeFormat('en-US', opts).formatToParts(new Date()); }
-    var get = function (t) { var p = parts.find(function (x) { return x.type === t; }); return p ? p.value : ''; };
-    var day = DAYS.indexOf(get('weekday').slice(0, 3).toLowerCase());
-    var h = parseInt(get('hour'), 10) % 24, m = parseInt(get('minute'), 10);
-    return { day: day < 0 ? new Date().getDay() : day, min: h * 60 + m };
-  }
-  function toMin(s) { var p = String(s).split(':'); return parseInt(p[0], 10) * 60 + (parseInt(p[1], 10) || 0); }
-  function ranges(dayIdx) {
-    var r = hours[DAYS[(dayIdx + 7) % 7]];
-    if (!r || !r.length) return [];
-    if (!Array.isArray(r[0])) r = [r];
-    return r.map(function (x) { return { from: toMin(x[0]), to: toMin(x[1]) }; });
-  }
-  function clock(min) {
-    min = ((min % 1440) + 1440) % 1440;
-    var h = Math.floor(min / 60), m = min % 60;
-    if (h === 0 && m === 0) return 'midnight';
-    if (h === 12 && m === 0) return 'noon';
-    var suf = h < 12 ? 'am' : 'pm';
-    var h12 = h % 12 || 12;
-    return h12 + (m ? ':' + (m < 10 ? '0' : '') + m : '') + ' ' + suf;
-  }
-  // open right now? returns closing minute (may be > 1440 for overnight) or null
-  function openUntil(n) {
-    var today = ranges(n.day), y = ranges(n.day - 1), i, r;
-    for (i = 0; i < y.length; i++) { r = y[i]; if (r.to <= r.from && n.min < r.to) return r.to; } // overnight from yesterday
-    for (i = 0; i < today.length; i++) {
-      r = today[i];
-      var end = r.to <= r.from ? r.to + 1440 : r.to;
-      if (n.min >= r.from && n.min < end) return end;
+    var name = hit ? hit.name : t.getAttribute('data-service');
+    SW.prefillForm(name ? { service: name } : {}, { focus: 'service' });
+    if (t.getAttribute('href') && t.getAttribute('href').charAt(0) === '#') {
+      try { history.pushState(null, '', t.getAttribute('href')); } catch (err) { /* file:// */ }
     }
-    return null;
-  }
-  function nextOpen(n) {
-    for (var d = 0; d < 8; d++) {
-      var rs = ranges(n.day + d).sort(function (a, b) { return a.from - b.from; });
-      for (var i = 0; i < rs.length; i++) {
-        if (d > 0 || rs[i].from > n.min) return { d: d, min: rs[i].from, day: DAYS[(n.day + d) % 7] };
-      }
-    }
-    return null;
-  }
-  function render() {
-    var n = nowThere();
-    var until = openUntil(n);
-    var open = until !== null, text;
-    if (open) {
-      text = 'Open now · until ' + clock(until); // 24:00 reads "until midnight"
-    } else {
-      var nx = nextOpen(n);
-      text = !nx ? 'Closed' : 'Closed · opens ' + (nx.d === 0 ? '' : nx.d === 1 ? 'tomorrow ' : NAMES[nx.day] + ' ') + clock(nx.min);
-    }
-    els.forEach(function (el) {
-      var target = SW.$('[data-open-now-text]', el) || el;
-      target.textContent = text;
-      el.setAttribute('data-state', open ? 'open' : 'closed');
-      el.classList.toggle('is-open', open);
-      el.classList.toggle('is-closed', !open);
-    });
-    rows.forEach(function (r) {
-      var on = r.getAttribute('data-day') === DAYS[n.day];
-      r.classList.toggle('is-today', on);
-      if (on) r.setAttribute('aria-current', 'date'); else r.removeAttribute('aria-current');
-    });
-  }
-  render();
-  setInterval(render, 60000);
-});
-
-;
-/* kit: popup */
-/* popup: <dialog data-popup id="offer" data-popup-delay="12000" aria-labelledby="offer-title"> ... <button data-popup-close>No thanks</button></dialog>
-   Shown at most once per browser session (sessionStorage "sw-popup-<id>"), never on load: only after
-   max(8 s, data-popup-delay) and then on exit intent (mouse leaves the top of the window) or when the visitor
-   has scrolled 60% of the page. Not while the menu or another dialog is open, a field has focus, or the tab is hidden.
-   [data-popup-close], Esc, a click on the backdrop or on any "#..." link inside closes it; Tab stays inside;
-   focus returns to where it was. data-popup-scroll="0.6" changes the scroll trigger. */
-SW.mod('popup', function (SW) {
-  SW.$$('dialog[data-popup]').forEach(function (dlg, n) {
-    if (typeof dlg.showModal !== 'function') return;
-    var key = 'sw-popup-' + (dlg.id || n);
-    if (SW.store.get(key)) return;
-    var delay = Math.max(8000, parseInt(dlg.getAttribute('data-popup-delay'), 10) || 0);
-    var depth = parseFloat(dlg.getAttribute('data-popup-scroll')) || 0.6;
-    var armed = false, done = false, back = null, release = null;
-    dlg.setAttribute('data-lenis-prevent', '');
-
-    function canPop() {
-      if (done || !armed || document.hidden) return false;
-      if (document.documentElement.classList.contains('sw-menu-open')) return false;
-      if (SW.$('dialog[open]')) return false;
-      var a = document.activeElement;
-      if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return false;
-      return true;
-    }
-    function open() {
-      if (!canPop()) return;
-      done = true;
-      SW.store.set(key, '1');
-      back = document.activeElement;
-      dlg.showModal();
-      dlg.classList.add('is-open');
-      SW.lockScroll(true);
-      release = SW.trapFocus(dlg);
-      var first = SW.$('[data-popup-first]', dlg) || SW.focusables(dlg)[0];
-      SW.focusEl(first || dlg);
-      cleanup();
-    }
-    function close() { if (dlg.open) dlg.close(); }
-    dlg.addEventListener('close', function () {
-      dlg.classList.remove('is-open');
-      SW.lockScroll(false);
-      if (release) { release(); release = null; }
-      if (back && back.focus && document.contains(back)) back.focus();
-    });
-    dlg.addEventListener('click', function (e) {
-      var t = e.target;
-      if (t.closest('[data-popup-close]')) { close(); return; }
-      var link = t.closest('a[href^="#"]');
-      if (link) { close(); return; } // let the anchor scroll after closing
-      if (t === dlg) {
-        var r = dlg.getBoundingClientRect();
-        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) close();
-      }
-    });
-
-    function onLeave(e) { if (e.clientY <= 0 && !e.relatedTarget && SW.finePointer) open(); }
-    function onScroll() {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      if (max > 0 && window.scrollY / max >= depth) open();
-    }
-    function cleanup() {
-      document.removeEventListener('mouseout', onLeave);
-      window.removeEventListener('scroll', onScroll);
-    }
-    setTimeout(function () {
-      armed = true;
-      document.addEventListener('mouseout', onLeave);
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-    }, delay);
-    // test/demo hook: SW.popup.open('offer') ignores the wait, not the other guards
-    SW.popup = SW.popup || { open: function (id) { var d = id ? document.getElementById(id) : SW.$('dialog[data-popup]'); if (d && d._swOpen) d._swOpen(); } };
-    dlg._swOpen = function () { armed = true; open(); };
-  });
+  }, true);
 });
 
 ;
@@ -1363,71 +939,111 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* painter-B — TintCard Painting Co. signature + glue */
+/* painter-B · gallon formula (tool), test-card pulls (signature), prep layers story, big test-card scrub. */
 (function () {
   'use strict';
-
   var SW = window.SW || {};
-  var reduced = SW.reduced || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
 
-  /* TintCard bar animation */
-  function initTintCardBars() {
-    var bars = document.querySelectorAll('.film-bar[data-tint-card-width]');
-    if (!bars.length) return;
+  /* ---- gallon calculator: works for everyone (it is a tool, not motion) ---- */
+  function initGallons() {
+    var form = document.querySelector('[data-gallons]');
+    if (!form) return;
+    var out = {
+      gal: form.querySelector('[data-g-gal]'),
+      area: form.querySelector('[data-g-area]'),
+      coats: form.querySelector('[data-g-coats]'),
+      buy: form.querySelector('[data-g-buy]'),
+      cans: form.querySelectorAll('.can')
+    };
+    function num(name, min, max, dflt) {
+      var el = form.elements[name];
+      var v = parseFloat(el && el.value);
+      if (!isFinite(v)) v = dflt;
+      return Math.min(max, Math.max(min, v));
+    }
+    function update() {
+      var L = num('length', 4, 60, 12), W = num('width', 4, 60, 12), H = num('height', 7, 20, 9);
+      var doors = num('doors', 0, 8, 1), wins = num('windows', 0, 12, 2), coats = Math.round(num('coats', 1, 3, 2));
+      var area = Math.max(0, Math.round(2 * (L + W) * H - doors * 21 - wins * 15));
+      var gal = Math.round((area * coats / 350) * 10) / 10;
+      var buy = Math.max(1, Math.ceil(gal));
+      out.gal.textContent = gal.toFixed(1);
+      out.area.textContent = String(area);
+      out.coats.textContent = String(coats);
+      out.buy.textContent = String(buy);
+      for (var i = 0; i < out.cans.length; i++) out.cans[i].classList.toggle('is-on', i < Math.min(out.cans.length, buy));
+    }
+    form.addEventListener('input', update);
+    form.addEventListener('submit', function (e) { e.preventDefault(); update(); });
+    update();
+  }
 
-    bars.forEach(function (bar) {
-      var w = parseFloat(bar.getAttribute('data-tint-card-width')) / 100;
-      bar.style.setProperty('--dw', String(w));
-    });
+  /* ---- motion (signature + stories) ---- */
+  function initMotion() {
+    if (SW.reduced || !root.classList.contains('sw-motion')) return;
 
-    if (reduced) {
-      bars.forEach(function (bar) { bar.classList.add('is-drawn'); });
-      return;
+    // pullcard films draw once when their ticket grid comes into view
+    var draws = document.querySelectorAll('[data-draw]');
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.02, rootMargin: '0px 0px -5% 0px' });
+      draws.forEach(function (d) { io.observe(d); });
+    } else {
+      draws.forEach(function (d) { d.classList.add('is-in'); });
     }
 
-    if (!('IntersectionObserver' in window)) {
-      bars.forEach(function (bar) { bar.classList.add('is-drawn'); });
-      return;
-    }
+    if (!window.gsap || !window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-drawn');
-          io.unobserve(entry.target);
-        }
+    // the big test card: the scroll pulls the paint across the test card (no pin, every width)
+    var big = document.querySelector('.bigpull');
+    if (big) {
+      var setCov = function (p) { big.style.setProperty('--cov', (28 + p * 68).toFixed(2) + '%'); };
+      ScrollTrigger.create({
+        trigger: big,
+        start: 'top 85%',
+        end: 'bottom 30%',
+        scrub: true,
+        onUpdate: function (self) { setCov(self.progress); },
+        onLeave: function () { setCov(1); }
       });
-    }, { threshold: 0.02, rootMargin: '0px 0px -5% 0px' });
-
-    bars.forEach(function (bar) { io.observe(bar); });
-  }
-
-  /* Hero h1 line-mask reveal */
-  function initLineMask() {
-    var masks = document.querySelectorAll('.line-mask');
-    if (!masks.length) return;
-
-    if (reduced || !document.documentElement.classList.contains('sw-motion')) {
-      masks.forEach(function (m) { m.classList.add('is-revealed'); });
-      return;
     }
 
-    var stagger = 70;
-    masks.forEach(function (m, i) {
-      setTimeout(function () {
-        m.classList.add('is-revealed');
-      }, 300 + i * stagger);
+    // prep story: layers stack on the board as the four steps pass (sticky on ≥ 900px only)
+    var track = document.querySelector('.prep__track');
+    var board = document.querySelector('.board');
+    ScrollTrigger.matchMedia({
+      '(min-width: 900px)': function () {
+        if (!track) return;
+        var st = ScrollTrigger.create({
+          trigger: track,
+          start: 'top top+=' + (parseFloat(getComputedStyle(root).getPropertyValue('--header-h')) || 68),
+          end: 'bottom bottom',
+          onUpdate: function (self) {
+            var n = Math.min(4, Math.floor(self.progress * 4) + 1);
+            if (track.getAttribute('data-active') !== String(n)) track.setAttribute('data-active', String(n));
+            if (board) board.style.setProperty('--prog', (n / 4).toFixed(2));
+          }
+        });
+        track.setAttribute('data-active', '1');
+        if (board) board.style.setProperty('--prog', '0.25');
+        st.refresh();
+        return function () {
+          track.removeAttribute('data-active');
+          if (board) board.style.removeProperty('--prog');
+        };
+      }
     });
+
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   }
 
-  /* Init on DOM ready */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      initTintCardBars();
-      initLineMask();
-    });
-  } else {
-    initTintCardBars();
-    initLineMask();
-  }
+  function start() { initGallons(); initMotion(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();
+

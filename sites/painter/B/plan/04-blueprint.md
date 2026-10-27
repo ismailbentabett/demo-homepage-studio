@@ -1,3 +1,6 @@
+## Round 2 (fix, final)
+Base = the round-2 rebuild (qa/last/src). Distinctiveness: the hero is re-cut as a full-width two-line h1 masthead with the tint ticket below it on the LEFT (rotated -1°) and the copy/CTAs on the right, so it no longer mirrors painter-A's text-left/card-right cover. The chip fan is gone: the full-bleed break is a big test card whose paint the scroll pulls across (scrub, no pin), and every band opens with a 12px test-card pull in its own colour that stops at that band's "coverage" (data-draw wipe on entry; drawn with JS off/reduced motion). Type: the gallon result is a tint formula (Antonio tabular numerals, × ÷ = operators, Karla units) on a ticket; mono caps now live only in ticket <dt> fields, and kickers, heads, labels and meters are set in Karla sentence case. Shoulds: en-dash range in Karla, the hero lets ~80px of the facts band peek, the HIDING POWER label is removed, sheen = five strips flat→semi-gloss with "Our pick" and the result top-aligned, the area band is two columns (ZIP left, route ticket with towns + ZIPs right), square sheen tabs, the footer note is cut, and hours are one column.
+
 # Blueprint — painter-B (Drawdown Painting Co.)
 
 ## Rhythm map (tone sequence)
