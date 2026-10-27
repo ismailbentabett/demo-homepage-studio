@@ -1,0 +1,67 @@
+{
+  "round": 2,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 846-851: h1 7 words trade+city+concept, primary CTA + ghost call, phone visible, proof line with hours/areas/sample rating, next band peeks via sub-100svh hero. qa/render.json absent: cannot verify 390x844 fold or intro timing; cap at 8.5."
+    },
+    "distinctiveness": {
+      "score": 9,
+      "notes": "dist/index.html: signature nodes in 8 sections (hero, services-main, tool-panel-id, services-circuits, tool-ev-load, proof, contact, footer). app.js lines 1230-1241: DrawSVG trace animates continuously between nodes. Layout families: offset-frame, branch-grid, annotation-callout, split-rail, statement-stack, mosaic, map-check, form-single, ground-rule. Palette and type pair unique per registry."
+    },
+    "type": {
+      "score": 9,
+      "notes": "dist/index.html lines 258-269, 411-419: Archivo variable wdth 75 on h1/logo, Outfit body >=16px via clamp, DM Mono for kickers/prices/ZIP/tool results. Tabular-nums on price-range and hours. Lead paragraph set apart. Heading hierarchy h1>h2>h3 no skips. Tracking -0.03em on display."
+    },
+    "layout": {
+      "score": 9,
+      "notes": "dist/index.html: 9 sections each with one job. Tones alternate deep/paper/mid/paper/deep/accent/paper/mid/paper/deep. Full-bleed break at #break-process. Asymmetric annotation-callout--mirrored. Dense mosaic reviews. Quiet map-check. Section gap --sec-y clamp 96-120px exceeds card gap --s-5=24px."
+    },
+    "photo": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 854, 917, 959: 3 photos (hero-A1, equip-ev-charger, process-wire-strip) with data-fallback, consistent filter grade, width/height for CLS, fetchpriority high on hero/break. Improved from 2 to 3 photos in r2. Still only 3 frames across 9 sections; no video. Stays at 8.5 vs 9 anchor requiring art-directed sequence."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "dist/index.html: specific trade nouns (Federal Pacific, Zinsco, NEC 220.82, nameplate, lug). Sample labels on all prices, reviews, licence. Buttons named for action. Microcopy under form. Open-now hook present. Primary action consistent."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 590-598, 1220-1223: mobilebar with call+Price it, hidden on scroll/form/menu. Breakpoints at 640/768/900/1100px. Tap targets min-height 48px. qa/render.json absent: cannot verify 390x844 fold, h1 line count or mobilebar clearance; cap at 8.5."
+    },
+    "a11y": {
+      "score": 9,
+      "notes": "dist/index.html: skip-link, focus-visible 3px solid var(--focus) with 3px offset, reduced-motion media query forces visibility, JS-off fallbacks via html:not(.sw-js), aria-live polite on tool/zip/checklist results, aria-expanded/controls on menu, forced-colors borders, heading order h1>h2>h3, explicit form labels, honeypot hidden accessibly."
+    },
+    "motion": {
+      "score": 9,
+      "notes": "app.js lines 1230-1241: DrawSVG trace provides third distinct hook beyond plain reveals (signature draw, break clip-wipe, hero split). Intro under 1.2s budget. Reduced motion respected. Lenis lerp .1. No layout property animations. Improved from 8.5 to 9 due to signature draw hook resolving r1 deduction."
+    },
+    "wow": {
+      "score": 9,
+      "notes": "app.js lines 1345-1348: EV load tool outputs dynamic SVG diagram with bus bar, load bars, capacity line inside .tool-result, styled in signature's copper/chalk language. Two connected moments: scrolling trace and tool output share the same visual vocabulary. Improved from 8.5 to 9 due to visual diagram replacing plain text."
+    },
+    "polish": {
+      "score": 9,
+      "notes": "dist/index.html lines 20-22, 24-26: SVG favicon + apple-touch-icon preload, OG 1200x630, JSON-LD Electrician schema with openingHoursSpecification, theme-color, consistent radius 3px, print stylesheet for estimator, lazy images with width/height, hero poster preloaded, forced-colors handled, no transition:all."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "qa/render.json, qa/screens/",
+      "problem": "Render check has not been run. No screenshots exist to verify fold, intro timing, mobile tap targets, reduced-motion visibility or the actual visual execution of the DrawSVG trace and load diagram. All scores that depend on visual confirmation are capped.",
+      "fix": "Run node tools/check-render.mjs electrician-A to capture all viewports before delivery. Verify that the copper trace draws between nodes, the load diagram renders inside .tool-result, and reduced-motion shows all content without animation."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "firstScreen",
+      "move": "Capture render screenshots to verify the 390x844 fold and intro timing. If the h1 is <=4 lines and both CTAs are above the fold with the copper trace visible at 0ms (reduced motion) or by 400ms (motion on), firstScreen can move to 9. The design is already there; only evidence is missing."
+    },
+    {
+      "category": "mobile",
+      "move": "Same render gap. Once 390x844 screenshots confirm tap targets >=48px, h1 <=4 lines and mobilebar clears the form, mobile can move to 9. The CSS breakpoints and mobilebar logic are correct in code; visual proof is the blocker."
+    }
+  ],
+  "verdictHint": "FIX"
+}
