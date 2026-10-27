@@ -1,3 +1,6 @@
+## Round 3 (fix 4)
+Hero re-cut so the one-line diagram IS the layout (pole → service drop → meter → main → bus with proof as CKT 1-3, no card, no shadow) to leave sibling B's text-left/card-right family; every h2 now sits in a drafting title strip (Sheet E-2…E-8) as the single mono voice, rail captions/kickers removed; phone-specific break drawing and review swipe rail; copy-3 applied.
+
 # Blueprint — electrician-A (Lineside Electric)
 
 ## Round 2

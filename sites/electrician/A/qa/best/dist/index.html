@@ -22,9 +22,6 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Electrician","name":"Lineside Electric","description":"Columbus electrical work drawn like a one-line diagram: meter, panel, circuits, devices. Panel swaps, EV chargers and outlet updates nearby.","telephone":"+16145550110","email":"hello@lineside-electric.example","areaServed":[{"@type":"City","name":"Columbus"},{"@type":"City","name":"Upper Arlington"},{"@type":"City","name":"Worthington"},{"@type":"City","name":"Westerville"},{"@type":"City","name":"Dublin"},{"@type":"City","name":"Hilliard"},{"@type":"City","name":"Bexley"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:30","closes":"17:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"09:00","closes":"13:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/archivo/archivo-100-900-normal.woff2" crossorigin>
-<link rel="preload" as="image" href="media/hero-A1.jpg" fetchpriority="high">
-<link rel="preload" as="image" href="media/process-wire-strip.jpg" fetchpriority="high">
-<link rel="stylesheet" href="vendor/lenis.css">
 <style>
 @font-face{font-family:"Archivo";src:url("fonts/archivo/archivo-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Outfit";src:url("fonts/outfit/outfit-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
@@ -306,506 +303,590 @@ html.lenis, html.lenis body { height: auto; }
   /* Header */
   --header-h: 64px;
 
+  /* Drawing sheet */
+  --sheet: #0e2a2f;
+  --chalk: #f0ece4;
+  --copper: #cf6a2e;
+  --line-x: 14px;
+  --line-pad: 30px;
+
   /* Default tone (paper) */
   --bg: #f0ece4;
   --ink: #091c20;
   --muted: #3a5560;
   --rule: #c8c0b4;
   --accent: #cf6a2e;
-  --focus: #cf6a2e;
+  --accent-ink: #a14a18;
+  --focus: #a14a18;
   --btn-primary-bg: #091c20;
   --btn-primary-fg: #f0ece4;
   --btn-secondary-border: #091c20;
   --btn-secondary-fg: #091c20;
 }
 
-/* Tones */
+/* ---------- tones ---------- */
 .t-paper {
-  --bg: #f0ece4;
-  --ink: #091c20;
-  --muted: #3a5560;
-  --rule: #c8c0b4;
-  --accent: #cf6a2e;
-  --focus: #cf6a2e;
-  --btn-primary-bg: #091c20;
-  --btn-primary-fg: #f0ece4;
-  --btn-secondary-border: #091c20;
-  --btn-secondary-fg: #091c20;
+  --bg: #f0ece4; --ink: #091c20; --muted: #3a5560; --rule: #c8c0b4;
+  --accent: #cf6a2e; --accent-ink: #a14a18; --focus: #a14a18;
+  --btn-primary-bg: #091c20; --btn-primary-fg: #f0ece4;
+  --btn-secondary-border: #091c20; --btn-secondary-fg: #091c20;
+  --tint: rgba(207,106,46,.1);
 }
-
 .t-deep {
-  --bg: #091c20;
-  --ink: #f0ece4;
-  --muted: #8fa8ad;
-  --rule: #1b3d44;
-  --accent: #cf6a2e;
-  --focus: #e8b86d;
-  --btn-primary-bg: #cf6a2e;
-  --btn-primary-fg: #fff;
-  --btn-secondary-border: #f0ece4;
-  --btn-secondary-fg: #f0ece4;
+  --bg: #091c20; --ink: #f0ece4; --muted: #8fa8ad; --rule: #1f454c;
+  --accent: #cf6a2e; --accent-ink: #e08a52; --focus: #e8b86d;
+  --btn-primary-bg: #cf6a2e; --btn-primary-fg: #091c20;
+  --btn-secondary-border: rgba(240,236,228,.55); --btn-secondary-fg: #f0ece4;
+  --tint: rgba(207,106,46,.14);
 }
-
 .t-mid {
-  --bg: #1b3d44;
-  --ink: #f0ece4;
-  --muted: #8fa8ad;
-  --rule: #2a525a;
-  --accent: #e8b86d;
-  --focus: #e8b86d;
-  --btn-primary-bg: #e8b86d;
-  --btn-primary-fg: #091c20;
-  --btn-secondary-border: #f0ece4;
-  --btn-secondary-fg: #f0ece4;
+  --bg: #1b3d44; --ink: #f0ece4; --muted: #a9bfc3; --rule: #335d66;
+  --accent: #e8b86d; --accent-ink: #e8b86d; --focus: #e8b86d;
+  --btn-primary-bg: #e8b86d; --btn-primary-fg: #091c20;
+  --btn-secondary-border: rgba(240,236,228,.55); --btn-secondary-fg: #f0ece4;
+  --tint: rgba(232,184,109,.12);
 }
-
 .t-accent {
-  --bg: #cf6a2e;
-  --ink: #fff;
-  --muted: rgba(255,255,255,.7);
-  --rule: rgba(255,255,255,.3);
-  --accent: #091c20;
-  --focus: #091c20;
-  --btn-primary-bg: #091c20;
-  --btn-primary-fg: #f0ece4;
-  --btn-secondary-border: #fff;
-  --btn-secondary-fg: #fff;
+  --bg: #cf6a2e; --ink: #091c20; --muted: #2a1a10; --rule: rgba(9,28,32,.35);
+  --accent: #091c20; --accent-ink: #091c20; --focus: #091c20;
+  --btn-primary-bg: #091c20; --btn-primary-fg: #f0ece4;
+  --btn-secondary-border: #091c20; --btn-secondary-fg: #091c20;
+  --tint: rgba(9,28,32,.1);
 }
 
-/* Base */
+/* ---------- base ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; }
+[hidden] { display: none !important; }
+html { font-family: var(--ff-body); font-size: 100%; line-height: 1.5; background: #091c20; color: var(--ink); -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--ink); min-height: 100svh; overflow-x: clip; }
+img, video, svg { display: block; max-width: 100%; }
+p, li, dd, blockquote { text-wrap: pretty; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
-html {
-  font-family: var(--ff-body);
-  font-size: 100%;
-  line-height: 1.5;
-  text-wrap: pretty;
-  scroll-behavior: smooth;
-  background: var(--bg);
-  color: var(--ink);
-}
-
-body {
-  background: var(--bg);
-  color: var(--ink);
-  min-height: 100svh;
-}
-
-img, video, svg { display: block; max-width: 100%; height: auto; }
-
-a { color: inherit; text-decoration: none; }
-a:hover { text-decoration: underline; text-underline-offset: 3px; }
-
-:focus-visible {
-  outline: 3px solid var(--focus);
-  outline-offset: 3px;
-}
-
-@media (forced-colors: active) {
-  .btn, .card, input, select, textarea, .frame { border: 2px solid ButtonText; }
-  .one-line__node { border-color: ButtonText; }
-  :focus-visible { outline-color: Highlight; }
-}
-
-/* Typography */
-h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 700; line-height: .96; letter-spacing: -0.02em; text-wrap: balance; }
+h1, h2, h3 { font-family: var(--ff-display); font-weight: 700; line-height: .96; letter-spacing: -0.02em; text-wrap: balance; }
 h1 { font-size: var(--fs-h1); line-height: .92; letter-spacing: -0.03em; font-variation-settings: 'wdth' 75; }
-h2 { font-size: var(--fs-3); letter-spacing: -0.03em; }
-h3 { font-size: var(--fs-2); }
-
+h2 { font-size: var(--fs-4); letter-spacing: -0.03em; font-variation-settings: 'wdth' 75; }
+h3 { font-size: var(--fs-2); font-variation-settings: 'wdth' 87.5; }
 p { max-width: 65ch; }
-.lead { font-size: var(--fs-1); font-weight: 450; }
-.kicker { font-family: var(--ff-mono); font-size: var(--fs--1); text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: var(--s-3); }
-.mono-note { font-family: var(--ff-mono); font-size: var(--fs--1); color: var(--muted); }
+.lead { font-size: var(--fs-1); font-weight: 450; color: var(--muted); }
+.note { font-size: 0.9375rem; line-height: 1.5; color: var(--muted); margin-top: var(--s-5); padding-left: var(--s-4); border-left: 2px solid var(--rule); }
 
-.proof-line { font-size: var(--fs-0); color: var(--muted); margin-top: var(--s-4); }
-.proof-aggregate { font-size: var(--fs-0); color: var(--muted); margin-bottom: var(--s-6); }
-
+/* Drafting title strip: the sheet number is the one mono voice per section */
+.title-strip { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.title-strip__no { font-family: var(--ff-mono); font-size: 0.8125rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); padding: 10px 0 8px; border-bottom: 1px dashed var(--rule); font-variant-numeric: tabular-nums; }
+.title-strip h2 { padding: 14px 0 16px; }
+@media (min-width: 640px) {
+  .title-strip { grid-template-columns: auto minmax(0, 1fr); align-items: stretch; }
+  .title-strip__no { display: flex; align-items: flex-start; padding: 22px 20px 0 0; border-bottom: 0; border-right: 1px solid var(--rule); white-space: nowrap; }
+  .title-strip h2 { padding: 16px 0 18px 24px; }
+}
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-/* Icons */
-.i { width: 1.25em; height: 1.25em; fill: none; stroke: currentColor; stroke-width: 2; vertical-align: middle; }
-.i-lg { width: 3rem; height: 3rem; }
+.i { width: 1.15em; height: 1.15em; flex-shrink: 0; }
 
-/* Skip link */
-.skip-link {
-  position: absolute; left: -9999px; top: var(--s-4); z-index: 1000;
-  padding: var(--s-3) var(--s-5); background: var(--accent); color: #fff;
-  font-weight: 600; border-radius: var(--radius);
+.skip-link { position: absolute; left: -9999px; top: var(--s-3); z-index: 1000; padding: var(--s-3) var(--s-5); background: #f0ece4; color: #091c20; font-weight: 600; border-radius: var(--radius); }
+.skip-link:focus { left: var(--s-3); }
+
+/* ---------- containers + the line ---------- */
+.container { width: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: var(--sec-x); }
+.sec { position: relative; padding-block: var(--sec-y); background: var(--bg); color: var(--ink); }
+.sec > .container, .sec-footer > .container {
+  padding-left: max(var(--sec-x), calc(var(--line-x) + var(--line-pad) - max(0px, (100vw - var(--max-w)) / 2)));
 }
-.skip-link:focus { left: var(--s-4); }
+.sec-head { margin-bottom: var(--s-7); }
+.sec-head .lead { margin-top: var(--s-4); }
 
-/* Container */
-.container {
-  width: 100%; max-width: var(--max-w);
-  margin-inline: auto; padding-inline: var(--sec-x);
-}
-
-/* Sections */
-.sec {
-  position: relative;
-  padding-block: var(--sec-y);
-  background: var(--bg);
-  color: var(--ink);
-}
-
-.sec-hero { padding-block: 0; min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; }
-.sec-break { padding-block: 0; }
-.break-full { overflow: hidden; }
-
-/* One-line primitive */
-.one-line {
-  position: absolute; left: var(--margin-col); top: 0; bottom: 0;
-  width: 2px; background: var(--rule); pointer-events: none; z-index: 1;
-}
-.one-line--right { left: auto; right: var(--margin-col); }
-
-/* Copper trace overlay for draw animation */
-.one-line__trace {
-  position: absolute; left: var(--margin-col); top: 0; bottom: 0;
-  width: 2px; pointer-events: none; z-index: 2; overflow: visible;
-}
-.one-line__trace svg { width: 2px; height: 100%; display: block; overflow: visible; }
-.one-line__trace path { stroke: var(--accent); stroke-width: 2; fill: none; vector-effect: non-scaling-stroke; }
-.one-line--right + .one-line__trace, .one-line__trace--right { left: auto; right: var(--margin-col); }
-
+.one-line { position: absolute; left: var(--line-x); top: 0; bottom: 0; width: 2px; background: var(--rule); pointer-events: none; z-index: 1; }
+.one-line::after { content: ''; position: absolute; inset: 0; background: var(--accent); transform-origin: 50% 0; transform: scaleY(var(--sp, 1)); }
+.one-line--end { bottom: auto; height: calc(var(--sec-y) + 16px); }
 .one-line__node {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  width: 32px; height: 32px; border-radius: 50%;
-  border: 2px solid var(--rule); background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: border-color var(--dur-ui) var(--ease-out), background var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out);
+  position: absolute; left: 1px; top: calc(var(--sec-y) - 4px); transform: translateX(-50%); z-index: 2;
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  border: 2px solid var(--accent); background: var(--accent); color: var(--bg);
+  transition: background var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out), box-shadow var(--dur-page) var(--ease-out);
+  box-shadow: 0 0 0 5px var(--tint);
 }
-.one-line__node.is-active { border-color: var(--accent); background: var(--accent); color: #fff; box-shadow: 0 0 0 4px rgba(207,106,46,.25); }
 .one-line__node .i { width: 16px; height: 16px; }
+.sig-on .one-line { --sp: 0; }
+.sig-on .one-line__node:not(.is-lit) { background: var(--bg); color: var(--muted); border-color: var(--rule); box-shadow: none; }
+.sec-hero .one-line__node { top: calc(var(--header-h) + 40px); }
 
-/* Split-rail media slot */
-.split-rail__media { margin-block: var(--s-5); }
-.split-rail__photo img { aspect-ratio: 16/9; object-position: 50% 40%; }
-
-/* EV load diagram in tool result */
-.load-diagram { margin-top: var(--s-4); padding: var(--s-4); border: 1px dashed var(--rule); border-radius: var(--radius); background: rgba(255,255,255,.04); }
-.load-diagram svg { width: 100%; max-width: 320px; height: auto; display: block; margin-inline: auto; }
-.load-diagram text { font-family: var(--ff-mono); font-size: 10px; fill: currentColor; }
-.load-diagram .trace { stroke: var(--accent); stroke-width: 2; fill: none; }
-.load-diagram .bus { stroke: currentColor; stroke-width: 1.5; fill: none; }
-.load-diagram .load-bar { fill: var(--accent); opacity: .8; }
-.load-diagram .capacity { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 2; }
-.t-paper .load-diagram { background: rgba(9,28,32,.03); }
-
-@media (max-width: 767px) {
-  .one-line { left: 24px; }
-  .one-line--right { right: 24px; }
+@media (min-width: 768px) {
+  :root { --line-x: var(--margin-col); --line-pad: 48px; }
 }
 
-/* Buttons */
+/* ---------- buttons ---------- */
 .btn {
-  display: inline-flex; align-items: center; gap: var(--s-2);
-  min-height: 48px; padding: 12px 24px;
-  font-family: var(--ff-body); font-size: var(--fs-1); font-weight: 600;
-  border-radius: var(--radius); border: 2px solid transparent;
-  cursor: pointer; transition: transform var(--dur-press) var(--ease-out), background var(--dur-ui), color var(--dur-ui), border-color var(--dur-ui);
-  text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  min-height: 48px; padding: 10px 22px;
+  font-family: var(--ff-body); font-size: var(--fs-0); font-weight: 600; line-height: 1.2; text-decoration: none;
+  border-radius: var(--radius); border: 2px solid transparent; cursor: pointer;
+  transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out);
 }
 .btn:active { transform: scale(.97); }
-
 .btn-primary { background: var(--btn-primary-bg); color: var(--btn-primary-fg); border-color: var(--btn-primary-bg); }
-.btn-primary:hover { opacity: .9; }
-
 .btn-secondary, .btn-ghost { background: transparent; color: var(--btn-secondary-fg); border-color: var(--btn-secondary-border); }
-.btn-ghost { border-color: transparent; }
-.btn-ghost:hover { border-color: var(--btn-secondary-border); }
+@media (hover: hover) {
+  .btn-primary:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .btn-secondary:hover { border-color: var(--ink); background: var(--tint); }
+}
+.btn-line {
+  position: relative; display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0;
+  font-weight: 600; font-size: var(--fs-0); color: var(--ink); text-decoration: none; background: none; border: 0;
+}
+.btn-line::before { content: ''; width: 18px; height: 2px; background: var(--accent); }
+.btn-line::after { content: ''; position: absolute; left: 26px; right: 0; bottom: 8px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform var(--dur-ui) var(--ease-out); }
+@media (hover: hover) { .btn-line:hover::after { transform: scaleX(1); } }
 
-.btn-text { padding-inline: 0; min-height: auto; font-size: var(--fs-0); color: var(--accent); border: none; background: none; }
-.btn-text:hover { text-decoration: underline; }
-
-.btn-call .i { flex-shrink: 0; }
-
-/* Sample tag */
 .sample-tag {
-  display: inline-block; font-family: var(--ff-mono); font-size: var(--fs--1);
-  padding: 2px 8px; border-radius: var(--radius-pill);
-  background: rgba(212,120,60,.15); color: var(--accent);
-  vertical-align: middle; margin-left: var(--s-2);
+  display: inline-block; font-family: var(--ff-body); font-size: 0.8125rem; font-weight: 500; letter-spacing: .01em; line-height: 1.4;
+  padding: 1px 7px; border-radius: var(--radius-pill); border: 1px solid currentColor;
+  color: var(--accent-ink); vertical-align: middle; margin-left: 6px; white-space: nowrap;
 }
-.t-deep .sample-tag, .t-mid .sample-tag { background: rgba(255,255,255,.15); color: var(--accent); }
-.t-accent .sample-tag { background: rgba(9,28,32,.2); color: var(--accent); }
+.t-accent .sample-tag { color: #091c20; }
 
-/* Cards */
-.card {
-  border: 1px solid var(--rule); border-radius: var(--radius);
-  padding: var(--s-5); background: transparent;
-}
-.card h3 { margin-bottom: var(--s-3); }
-.card p { margin-bottom: var(--s-3); color: var(--muted); }
-.card .price-range { font-family: var(--ff-mono); font-size: var(--fs--1); font-variant-numeric: tabular-nums; color: var(--accent); }
-
-/* Frame / Photo grade */
-.frame { overflow: hidden; border-radius: var(--radius); position: relative; }
-.frame img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: saturate(.8) contrast(1.08) hue-rotate(-4deg);
-}
-.frame.is-broken { display: flex; align-items: center; justify-content: center; background: var(--rule); color: var(--muted); font-size: var(--fs--1); min-height: 200px; }
-
-/* Header */
-.header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  height: var(--header-h); background: transparent;
-  transition: background var(--dur-ui) var(--ease-out);
-}
-.header.is-scrolled { background: var(--bg); }
-.t-deep .header.is-scrolled { background: #091c20; }
-
-.header__inner {
-  display: flex; align-items: center; justify-content: space-between;
-  height: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: var(--sec-x);
-}
-
-.logo {
-  font-family: var(--ff-display); font-weight: 700; font-size: var(--fs-2);
-  letter-spacing: -0.03em; font-variation-settings: 'wdth' 75;
-}
-
+/* ---------- header ---------- */
+.header { position: fixed; inset: 0 0 auto; z-index: 100; height: var(--header-h); background: transparent; transition: background-color var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out); }
+.header.is-scrolled { background: rgba(9,28,32,.96); box-shadow: 0 1px 0 var(--rule); }
+.header__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); height: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: var(--sec-x); }
+.logo { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; text-decoration: none; color: var(--ink); }
+.logo__node { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--copper); color: #091c20; }
+.logo__node .i { width: 15px; height: 15px; }
+.logo__name { font-family: var(--ff-display); font-weight: 700; font-size: 1.45rem; letter-spacing: -0.02em; font-variation-settings: 'wdth' 75; }
+.logo__trade { font-family: var(--ff-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-left: -4px; }
 .nav-desktop { display: none; gap: var(--s-5); }
-.nav-desktop a { font-size: var(--fs-0); font-weight: 500; }
-@media (min-width: 900px) { .nav-desktop { display: flex; } .menu-btn { display: none; } }
+.nav-desktop a { position: relative; display: inline-flex; align-items: center; min-height: 44px; font-size: var(--fs-0); font-weight: 500; text-decoration: none; color: var(--ink); }
+.nav-desktop a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 8px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-ui) var(--ease-out); }
+@media (hover: hover) { .nav-desktop a:hover::after { transform: scaleX(1); } }
+.header__actions { display: flex; align-items: center; gap: var(--s-2); }
+.header__call { display: none; }
+.menu-btn { display: inline-grid; place-items: center; width: 48px; height: 48px; background: none; border: 1px solid var(--rule); border-radius: var(--radius); color: var(--ink); cursor: pointer; }
+.menu-btn .i { width: 22px; height: 22px; }
+.progress { position: absolute; bottom: 0; left: 0; height: 2px; width: 100%; background: var(--copper); transform-origin: left; transform: scaleX(var(--p, 0)); }
+@media (min-width: 640px) { .header__call { display: inline-flex; } }
+@media (min-width: 1000px) { .nav-desktop { display: flex; } .menu-btn { display: none; } }
 
-.header__actions { display: flex; align-items: center; gap: var(--s-3); }
+/* ---------- menu ---------- */
+.menu { position: fixed; inset: 0; z-index: 200; background: var(--bg); color: var(--ink); display: flex; align-items: center; justify-content: center; }
+html:not(.sw-js) .menu, html:not(.sw-js) .menu-btn { display: none; }
+.menu__inner { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-2); padding: var(--s-6); }
+.menu__inner a:not(.btn) { display: inline-flex; align-items: center; min-height: 48px; font-family: var(--ff-display); font-weight: 700; font-size: var(--fs-4); font-variation-settings: 'wdth' 75; text-decoration: none; }
+.menu__inner .btn { margin-top: var(--s-4); }
+.menu__close { position: absolute; top: 8px; right: var(--sec-x); width: 48px; height: 48px; display: grid; place-items: center; background: none; border: 1px solid var(--rule); border-radius: var(--radius); cursor: pointer; }
 
-.progress { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--accent); width: calc(var(--p, 0) * 100%); }
-
-/* Menu */
-.menu {
-  position: fixed; inset: 0; z-index: 200;
-  background: var(--bg); color: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-}
-.menu[hidden] { display: none; }
-.menu__inner { text-align: center; display: flex; flex-direction: column; gap: var(--s-5); }
-.menu__inner a { font-size: var(--fs-3); font-family: var(--ff-display); font-weight: 700; }
-.menu__close { position: absolute; top: var(--s-5); right: var(--s-5); background: none; border: none; color: inherit; cursor: pointer; }
-
-/* Mobile bar */
+/* ---------- mobile bar ---------- */
 .mobilebar {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
-  display: flex; gap: var(--s-3); padding: var(--s-3) var(--sec-x);
-  padding-bottom: calc(var(--s-3) + env(safe-area-inset-bottom, 0));
-  background: var(--bg); box-shadow: 0 -2px 12px rgba(9,28,32,.15);
+  position: fixed; inset: auto 0 0; z-index: 90; display: flex; gap: var(--s-2);
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: rgba(9,28,32,.97); box-shadow: 0 -1px 0 var(--rule);
 }
-.mobilebar .btn { flex: 1; justify-content: center; }
+.mobilebar .btn { flex: 1 1 0; min-width: 0; padding-inline: 10px; font-size: 0.95rem; }
+.mobilebar .btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (min-width: 900px) { .mobilebar { display: none; } }
-.mobilebar.is-hidden { transform: translateY(100%); }
+@media (max-width: 899px) { body { padding-bottom: 68px; } }
 
-/* Layout: offset-frame (hero) */
-.offset-frame__grid {
-  display: grid; gap: var(--s-7); align-items: center;
-  grid-template-columns: 1fr; padding-block: var(--sec-y);
+/* ---------- drawing sheets (placeholder-proof media) ---------- */
+.plate {
+  position: relative; overflow: hidden; border-radius: var(--radius);
+  background-color: var(--sheet);
+  background-image: linear-gradient(rgba(240,236,228,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(240,236,228,.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  box-shadow: inset 0 0 0 1px rgba(240,236,228,.14);
+  color: var(--chalk);
 }
-@media (min-width: 900px) {
-  .offset-frame__grid { grid-template-columns: 1.1fr .9fr; }
-  .offset-frame__media { position: relative; left: var(--s-7); }
+.plate__svg { width: 100%; height: 100%; }
+.plate .ln, .break__svg .box { fill: none; stroke: rgba(240,236,228,.78); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.plate .br { fill: none; stroke: rgba(240,236,228,.45); stroke-width: 1.4; }
+.plate .cu, .break__svg .cu { fill: none; stroke: var(--copper); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.plate .cu-dots { fill: var(--copper); }
+.plate .hotln { stroke: var(--copper); }
+.plate .lbl text, .break__svg .lbl text { font-family: var(--ff-mono); font-size: 14px; letter-spacing: .04em; fill: #a9bfc3; }
+.plate .tblock rect { fill: none; stroke: rgba(240,236,228,.4); }
+.plate .tblock text { font-family: var(--ff-mono); font-size: 14px; letter-spacing: .08em; fill: var(--chalk); }
+.plate .brick line { stroke: rgba(240,236,228,.2); }
+.plate .dash { fill: none; stroke: rgba(240,236,228,.4); stroke-dasharray: 4 4; }
+.plate .ln-fill { fill: var(--copper); }
+.art-frame { position: relative; }
+.art-frame .art-photo { position: absolute; inset: 0; margin: 0; opacity: 0; visibility: hidden; transition: opacity var(--dur-page) var(--ease-out); }
+.art-frame .art-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) contrast(1.08) hue-rotate(-4deg); }
+.art-frame.has-photo .art-photo { opacity: 1; visibility: visible; }
+.art-frame .frame-fallback { display: none !important; }
+
+/* ---------- 1 hero: the one-line diagram is the layout ---------- */
+.sec-hero {
+  position: relative; z-index: 2; min-height: calc(100svh - var(--header-h));
+  padding-block: calc(var(--header-h) + var(--s-4)) var(--s-6); display: flex; align-items: center;
+  background-image: linear-gradient(rgba(240,236,228,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(240,236,228,.045) 1px, transparent 1px);
+  background-size: 32px 32px; background-position: -1px -1px;
 }
-.offset-frame__photo img { aspect-ratio: 4/3; object-position: 60% 40%; }
+@media (max-width: 767px) { .sec-hero .one-line__node { display: none; } }
+.hero-sheet { --bus-x: 22px; --gap: var(--s-8); display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "dropa dropb" "text text" "bus bus"; align-items: start; }
+.hero-drop { display: flex; align-items: center; height: 56px; }
+.hero-drop--a { grid-area: dropa; gap: 10px; }
+.hero-drop--b { grid-area: dropb; }
+.pole { width: 30px; height: 44px; flex: none; fill: none; stroke: var(--chalk); stroke-width: 2; stroke-linecap: round; align-self: flex-start; margin-top: 4px; }
+.drop-lbl { flex: none; font-family: var(--ff-mono); font-size: 0.8125rem; letter-spacing: .06em; color: var(--muted); white-space: nowrap; }
+.drop-wire { flex: 1 1 auto; height: 3px; background: var(--copper); transform-origin: 0 50%; border-radius: 2px; }
+.meter { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--chalk); display: grid; place-items: center; font-family: var(--ff-mono); font-size: 0.8125rem; color: var(--chalk); background: var(--bg); position: relative; z-index: 1; }
+.hero-sheet__text { grid-area: text; padding-top: var(--s-5); }
+.hero-sheet__text h1 { max-width: 15ch; }
+.hero__lead { margin-top: var(--s-5); font-size: var(--fs-1); color: var(--muted); max-width: 40ch; }
 .cta-row { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+@media (max-width: 479px) { .cta-row .btn { flex: 1 1 100%; } }
 
-/* Layout: branch-grid */
-.branch-grid__inner { padding-left: var(--margin-col); }
-.branch-grid__cards { display: grid; gap: var(--s-5); grid-template-columns: 1fr; margin-top: var(--s-6); }
-@media (min-width: 640px) { .branch-grid__cards { grid-template-columns: repeat(3, 1fr); } }
+.hero-bus { grid-area: bus; position: relative; margin-top: var(--s-6); padding-left: var(--bus-x); }
+.hero-bus::before { content: ''; position: absolute; left: calc(var(--bus-x) - 1.5px); top: 0; bottom: 28px; width: 3px; background: var(--copper); transform-origin: 50% 0; border-radius: 2px; transform: scaleY(var(--bus-s, 1)); }
+.hero-bus__main { display: none; }
+.bus { margin: 0; }
+.bus__ckt { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); padding: 10px 0 10px 64px; border-bottom: 1px dashed var(--rule); }
+.bus__ckt::before { content: ''; position: absolute; left: 0; top: 50%; width: 22px; height: 3px; margin-top: -1.5px; background: var(--copper); transform-origin: 0 50%; }
+.bus__ckt dt { font-size: 0.875rem; color: var(--muted); line-height: 1.3; }
+.bus__ckt dd { font-size: 1.0625rem; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.35; margin-top: 2px; }
+.brk { position: absolute; left: 22px; top: 50%; width: 30px; height: 18px; margin-top: -9px; border: 2px solid var(--chalk); border-radius: 2px; }
+.brk::after { content: ''; position: absolute; left: 5px; top: 3px; width: 8px; height: 8px; background: var(--copper); border-radius: 1px; }
+.ckt-no { font-family: var(--ff-mono); font-size: 0.8125rem; color: var(--accent-ink); margin-right: 6px; font-variant-numeric: tabular-nums; }
+.bus__ckt .sample-tag { margin-left: 6px; }
+.hero-bus__end { display: flex; align-items: flex-start; gap: var(--s-4); padding-top: 4px; margin-left: calc(var(--bus-x) * -1); }
+.gnd { display: grid; place-items: center; width: 44px; color: var(--chalk); }
+.gnd .i { width: 28px; height: 28px; }
+.tblock { display: none; }
 
-/* Layout: annotation-callout */
-.annotation-callout__grid {
-  display: grid; gap: var(--s-7); align-items: start;
-  grid-template-columns: 1fr; padding-left: var(--margin-col);
+@media (min-width: 900px) {
+  .hero-sheet { grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); grid-template-areas: "dropa dropb" "text bus"; column-gap: var(--gap); }
+  .hero-drop--a .drop-wire { margin-right: calc(var(--gap) * -1); }
+  .hero-sheet__text { padding-top: var(--s-6); }
+  .hero-sheet__text h1 { max-width: none; font-size: clamp(2.6rem, min(5.6vw, 9svh), 5rem); }
+  .hero-bus { margin-top: 0; padding-top: 4px; }
+  .hero-bus::before { top: -6px; }
+  .hero-bus__main { display: flex; align-items: center; gap: 14px; margin: 0 0 6px calc(var(--bus-x) * -1); padding: 14px 0; max-width: none; }
+  .brk--main { position: relative; left: auto; top: auto; margin: 0 0 0 calc(var(--bus-x) - 13px); width: 26px; height: 34px; background: var(--bg); }
+  .brk--main::after { left: 9px; top: 4px; width: 4px; height: 22px; transform: rotate(-30deg); }
+  .bus-lbl { font-family: var(--ff-mono); font-size: 0.8125rem; color: var(--muted); letter-spacing: .04em; }
+  .bus__ckt { padding-block: 20px; }
+  .bus__ckt dt { font-size: 0.9375rem; }
+  .bus__ckt dd { font-size: 1.3125rem; }
+  .pole { width: 40px; height: 60px; margin-top: -8px; }
+  .meter { width: 52px; height: 52px; margin-left: -4px; }
+  .tblock { display: block; margin-left: auto; padding: 8px 12px; border: 1px solid var(--rule); font-family: var(--ff-mono); font-size: 0.8125rem; line-height: 1.5; letter-spacing: .04em; color: var(--chalk); }
+  .hero-bus__end { margin-top: var(--s-4); align-items: center; }
 }
+
+/* ---------- 2 services-main: branch-grid ---------- */
+.branch-grid__cards { display: grid; gap: var(--s-4); grid-template-columns: minmax(0, 1fr); }
+.card { border: 1px solid var(--rule); border-radius: var(--radius); padding: var(--s-5); background: transparent; }
+.svc-card { position: relative; display: flex; flex-direction: column; gap: var(--s-3); border-top: 3px solid var(--ink); }
+.svc-card__ref { font-family: var(--ff-mono); font-size: var(--fs--1); letter-spacing: .1em; color: var(--accent-ink); display: flex; align-items: center; gap: 8px; }
+.svc-card__ref::before { content: ''; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--accent); }
+.svc-card p { color: var(--muted); }
+.svc-card .btn-line { margin-top: auto; }
+.price-range { font-family: var(--ff-mono); font-size: var(--fs--1); font-variant-numeric: tabular-nums; color: var(--ink) !important; }
+.price-range--note { color: var(--muted) !important; }
 @media (min-width: 768px) {
-  .annotation-callout__grid { grid-template-columns: 1fr 1fr; }
-}
-.annotation-callout__grid--mirrored { padding-left: 0; padding-right: var(--margin-col); }
-@media (min-width: 768px) {
-  .annotation-callout__grid--mirrored { direction: rtl; }
-  .annotation-callout__grid--mirrored > * { direction: ltr; }
+  .branch-grid__cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--rule); border-radius: var(--radius); }
+  .branch-grid__cards .card { border: 0; border-radius: 0; border-top: 3px solid var(--ink); padding: var(--s-6); }
+  .branch-grid__cards .card + .card { border-left: 1px solid var(--rule); }
 }
 
-.tool-ui {
-  border: 1px solid var(--rule); border-radius: var(--radius);
-  padding: var(--s-6); background: var(--bg);
+/* ---------- 3 + 6 tools: annotation-callout ---------- */
+.annotation-callout__grid { display: grid; gap: var(--s-7); grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 900px) {
+  .annotation-callout__grid { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: var(--s-8); }
+  .annotation-callout__grid--mirrored { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); }
+  .annotation-callout__text { position: sticky; top: calc(var(--header-h) + 32px); }
 }
-.t-mid .tool-ui { background: rgba(255,255,255,.05); }
-.t-accent .tool-ui { background: rgba(9,28,32,.1); border-color: rgba(255,255,255,.3); }
+@media (max-width: 899px) { .annotation-callout__grid--mirrored .annotation-callout__text { order: -1; } }
+.tool-ui { position: relative; border: 1px solid var(--rule); border-radius: var(--radius); padding: var(--s-5); background: rgba(255,255,255,.04); }
+.tool-ui::before { content: ''; position: absolute; top: 28px; right: 100%; width: 28px; height: 2px; background: var(--accent); }
+.tool-ui fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.tool-ui legend { font-weight: 600; margin-bottom: var(--s-4); font-size: var(--fs-1); }
+.annotation-callout__text .title-strip { margin-bottom: var(--s-5); }
+@media (min-width: 640px) { .tool-ui { padding: var(--s-6); } }
 
-.tool-ui fieldset { border: none; padding: 0; margin: 0 0 var(--s-5); }
-.tool-ui legend { font-weight: 600; margin-bottom: var(--s-3); }
-.tool-option {
-  display: flex; align-items: center; gap: var(--s-3);
-  padding: var(--s-3) var(--s-4); border: 1px solid var(--rule);
-  border-radius: var(--radius); margin-bottom: var(--s-2); cursor: pointer;
-}
-.tool-option:has(input:checked) { border-color: var(--accent); background: rgba(207,106,46,.08); }
-.tool-option input { accent-color: var(--accent); }
+.panel-id__options { display: grid; gap: var(--s-2); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) { .panel-id__options { grid-template-columns: repeat(2, minmax(0, 1fr)); } .panel-opt:last-child { grid-column: 1 / -1; } }
+.panel-opt { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s-4); align-items: center; min-height: 72px; padding: var(--s-3) var(--s-4); border: 1px solid var(--rule); border-radius: var(--radius); cursor: pointer; transition: border-color var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out); }
+.panel-opt input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.panel-opt:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.panel-opt:has(input:checked) { border-color: var(--accent); background: var(--tint); box-shadow: inset 3px 0 0 var(--accent); }
+.panel-opt__svg { width: 40px; height: 52px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.panel-opt__svg .hot { fill: var(--accent); stroke: var(--accent); }
+.panel-opt__svg .tint { fill: rgba(240,236,228,.3); }
+.panel-opt__svg .gap { stroke-dasharray: 2 2; }
+.panel-opt__txt b { display: block; font-weight: 600; }
+.panel-opt__txt small { display: block; font-size: var(--fs--1); color: var(--muted); line-height: 1.4; margin-top: 2px; }
+.panel-id__result { margin: var(--s-5) 0; padding: var(--s-4); border: 1px dashed var(--rule); border-radius: var(--radius); min-height: 92px; }
+.pid-res { display: none; }
+.pid-res--none { display: block; color: var(--muted); }
+.panel-id:has(input:checked) .pid-res--none { display: none; }
+.panel-id:has(input[value="fpe"]:checked) .pid-res--fpe,
+.panel-id:has(input[value="zinsco"]:checked) .pid-res--zinsco,
+.panel-id:has(input[value="fuse"]:checked) .pid-res--fuse,
+.panel-id:has(input[value="split"]:checked) .pid-res--split,
+.panel-id:has(input[value="modern"]:checked) .pid-res--modern { display: block; }
+@supports not selector(:has(*)) { .pid-res { display: block; margin-bottom: var(--s-3); } .pid-res--none { display: none; } }
+.verdict { display: inline-block; font-family: var(--ff-body); font-weight: 600; font-size: 0.875rem; letter-spacing: .01em; padding: 3px 8px; margin-right: 8px; border: 1px solid currentColor; border-radius: 2px; color: var(--muted); }
+.verdict--hot { color: #091c20; background: #e8b86d; border-color: #e8b86d; }
+.verdict--warn { color: #e8b86d; }
+.verdict--ok { color: #a9d3c0; }
 
-.tool-result {
-  min-height: 1.5em; padding: var(--s-3) 0;
-  font-family: var(--ff-mono); font-size: var(--fs-0);
-  color: var(--accent);
-}
-
+/* EV tool: a paper sheet on the copper band */
+.tool-sheet__head { display: grid; gap: var(--s-5); margin-bottom: var(--s-7); }
+.tool-sheet__intro .lead { color: #091c20; }
+.tool-sheet__intro .lead + .note { margin-top: var(--s-4); }
+@media (min-width: 900px) { .tool-sheet__head { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s-8); align-items: end; } }
+.t-accent .title-strip { border-top-color: #091c20; border-bottom-color: rgba(9,28,32,.35); }
+.t-accent .title-strip__no { color: #091c20; border-color: rgba(9,28,32,.35); }
+.ev-tool.t-paper, .t-accent .ev-tool { background: #f0ece4; color: #091c20; border: 2px solid #091c20; }
+.t-accent .ev-tool { --bg: #f0ece4; --ink: #091c20; --muted: #3a5560; --rule: #c8c0b4; --accent: #cf6a2e; --accent-ink: #a14a18; --focus: #a14a18; --tint: rgba(207,106,46,.1); }
+.t-accent .tool-ui::before { background: #091c20; }
+.ev-tool { display: grid; gap: var(--s-5); }
+@media (min-width: 900px) { .ev-tool { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: var(--s-7); padding: var(--s-7); } .ev-tool__out { border-left: 1px solid #c8c0b4; padding-left: var(--s-7); } }
 .est-field { margin-bottom: var(--s-4); }
-.est-field label { display: block; font-weight: 600; margin-bottom: var(--s-2); }
-.est-field select { width: 100%; height: 48px; padding: 0 var(--s-4); border: 1px solid var(--rule); border-radius: var(--radius); background: var(--bg); color: var(--ink); font-size: var(--fs-0); }
-.est-loads { border: none; padding: 0; margin: 0 0 var(--s-4); }
-.est-loads legend { font-weight: 600; margin-bottom: var(--s-3); }
-.est-loads label { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) 0; }
+.est-field label { display: block; font-weight: 600; margin-bottom: var(--s-2); font-size: var(--fs-0); }
+.est-field select, .lead-form input, .lead-form textarea, .zip-row input {
+  width: 100%; min-height: 48px; padding: 0 var(--s-4); border: 1px solid #8a8378; border-radius: var(--radius);
+  background: #fbf9f5; color: #091c20; font-size: 1rem;
+}
+.est-loads { margin-bottom: var(--s-4) !important; }
+.est-loads legend { font-size: var(--fs-0) !important; margin-bottom: var(--s-2) !important; }
+.chk { display: flex; align-items: center; gap: var(--s-3); min-height: 44px; cursor: pointer; }
+.chk input, .pick input { width: 20px; height: 20px; accent-color: var(--copper); flex-shrink: 0; margin: 0; }
+.ev-tool__out { display: flex; flex-direction: column; gap: var(--s-3); align-items: flex-start; }
+.ev-diagram { width: 100%; }
+.ev-diagram:empty { display: none; }
+.ev-diagram svg { width: 100%; height: auto; }
+.ev-diagram text { font-family: var(--ff-mono); font-size: 17px; fill: #3a5560; }
+.ev-diagram .hd { fill: #091c20; font-size: 17px; font-weight: 500; }
+@media (min-width: 900px) { .ev-diagram text, .ev-diagram .hd { font-size: 14px; } }
+.ev-diagram .cap { fill: none; stroke: #091c20; stroke-width: 2; }
+.ev-diagram .lim { stroke: #091c20; stroke-width: 1; stroke-dasharray: 4 3; }
+.ev-diagram .seg { stroke: #f0ece4; stroke-width: 1.5; transition: y var(--dur-page) var(--ease-out), height var(--dur-page) var(--ease-out); }
+.ev-diagram .seg--base { fill: #8fa8ad; }
+.ev-diagram .seg--load { fill: #1b3d44; }
+.ev-diagram .seg--ev { fill: #cf6a2e; }
+.ev-diagram .over { fill: rgba(163,38,27,.14); }
+.ev-result { font-size: var(--fs-0); }
+.ev-result b { display: block; font-family: var(--ff-display); font-size: var(--fs-2); font-variation-settings: 'wdth' 75; line-height: 1; margin-bottom: 4px; }
+.ev-price { font-family: var(--ff-mono); font-size: var(--fs--1); font-variant-numeric: tabular-nums; }
+.t-accent .note { color: #091c20; border-left-color: rgba(9,28,32,.4); }
 
-/* Layout: split-rail */
-.split-rail__inner { padding-left: var(--margin-col); }
-.split-rail__cards { display: grid; gap: var(--s-5); grid-template-columns: 1fr; margin-top: var(--s-6); }
-@media (min-width: 768px) {
-  .split-rail__cards { grid-template-columns: 1fr 1fr; }
-  .split-rail__left { grid-column: 1; }
-  .split-rail__right { grid-column: 2; }
+/* ---------- 4 circuits: split-rail panel schedule ---------- */
+.split-rail__head { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); align-items: end; margin-bottom: var(--s-7); }
+.split-rail__head .sec-head { margin-bottom: 0; }
+.plate--ev { aspect-ratio: 480 / 280; }
+@media (min-width: 900px) { .split-rail__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); } }
+.schedule { list-style: none; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); border-top: 2px solid var(--ink); position: relative; }
+.ckt { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); padding: var(--s-5) 0; border-bottom: 1px solid var(--rule); }
+.ckt__no { font-family: var(--ff-mono); font-size: var(--fs--1); letter-spacing: .1em; color: var(--accent-ink); display: inline-flex; align-items: center; gap: 8px; }
+.ckt__no::after { content: ''; width: 24px; height: 2px; background: var(--accent); }
+.ckt__body h3 { margin-bottom: var(--s-2); }
+.ckt__body p { color: var(--muted); }
+.ckt__body .price-range { margin-top: var(--s-2); }
+@media (min-width: 900px) {
+  .schedule { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-8); }
+  .schedule::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; transform: translateX(-50%); background: var(--ink); }
+  .ckt { grid-template-columns: minmax(0, 1fr) auto; align-items: start; column-gap: var(--s-5); padding-block: var(--s-6); }
+  .ckt .ckt__no { grid-column: 1 / -1; }
+  .ckt:nth-child(odd) { grid-column: 1; }
+  .ckt:nth-child(even) { grid-column: 2; }
+  .ckt .btn-line { align-self: end; }
+  .ckt:nth-child(odd) .ckt__no { justify-content: flex-end; flex-direction: row; }
+  .ckt:nth-child(odd) .ckt__no::after { margin-right: calc(var(--s-8) / -2); width: calc(var(--s-8) / 2 + 8px); }
+  .ckt:nth-child(even) .ckt__no { flex-direction: row-reverse; justify-content: flex-end; }
+  .ckt:nth-child(even) .ckt__no::after { margin-left: calc(var(--s-8) / -2); width: calc(var(--s-8) / 2 + 8px); }
 }
 
-/* Layout: statement-stack (break) */
-.statement-stack__inner { position: relative; min-height: 60svh; display: flex; align-items: flex-end; justify-content: center; padding: var(--s-7); }
-.statement-stack__photo { position: absolute; inset: 0; z-index: 0; }
-.statement-stack__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
-.statement-stack__photo::after { content: ''; position: absolute; inset: 0; background: rgba(9,28,32,.4); }
-.statement-stack__caption {
-  position: relative; z-index: 1;
-  font-family: var(--ff-mono); font-size: var(--fs-0); color: #f0ece4;
-  text-align: center; max-width: 50ch;
+/* ---------- 5 break: statement-stack, full bleed ---------- */
+.sec-break { padding: 0; min-height: min(86svh, 760px); display: flex; align-items: flex-end; overflow: hidden; }
+.break__art { position: absolute; inset: 0; margin: 0; background: #091c20; }
+.break__svg { width: 100%; height: 100%; }
+.break__svg--tall { display: none; }
+.break__svg--tall .lbl text { font-size: 15px; }
+.break__svg--tall .cu { stroke-width: 4; }
+@media (max-width: 639px) {
+  .sec-break { display: flex; flex-direction: column; align-items: stretch; min-height: 0; }
+  .break__art { position: relative; inset: auto; padding: var(--s-6) var(--sec-x) 0 calc(var(--line-x) + var(--line-pad)); }
+  .break__art::after { display: none; }
+  .break__svg--wide { display: none; }
+  .break__svg--tall { display: block; width: 100%; height: auto; max-height: 420px; }
+  .statement-stack__inner { padding-block: var(--s-5) var(--s-8); }
+}
+.break__svg .lath line { stroke: rgba(240,236,228,.07); stroke-width: 10; }
+.break__svg .stud rect { fill: #0e2a2f; stroke: #1f454c; }
+.break__svg .cut rect { fill: rgba(9,28,32,.9); stroke: rgba(240,236,228,.7); stroke-dasharray: 5 4; stroke-width: 1.5; }
+.break__svg .cu { stroke-width: 5; }
+.break__svg .lbl text { font-size: 13px; }
+.break__art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(9,28,32,.95) 0%, rgba(9,28,32,.7) 34%, rgba(9,28,32,0) 64%); pointer-events: none; }
+.statement-stack__inner { position: relative; z-index: 2; padding-block: var(--sec-y) var(--s-8); }
+.statement { font-size: clamp(2.3rem, 1.2rem + 5vw, 5rem); line-height: .92; max-width: 14ch; font-variation-settings: 'wdth' 75; }
+.statement-stack__caption { margin-top: var(--s-5); font-size: var(--fs-1); color: #c9d6d8; max-width: 46ch; }
+
+/* ---------- 7 proof: mosaic ---------- */
+.mosaic__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s-5); margin-bottom: var(--s-7); }
+.mosaic__head .sec-head { margin-bottom: 0; }
+.proof-aggregate { display: flex; align-items: baseline; gap: var(--s-3); color: var(--muted); font-size: var(--fs-0); }
+.proof-aggregate__n { font-family: var(--ff-display); font-weight: 700; font-size: var(--fs-4); color: var(--ink); font-variation-settings: 'wdth' 75; font-variant-numeric: tabular-nums; }
+.mosaic__grid { display: grid; gap: var(--s-4); grid-template-columns: minmax(0, 1fr); grid-auto-flow: dense; }
+.mosaic__plate { aspect-ratio: 400 / 360; }
+.review-card { display: flex; flex-direction: column; gap: var(--s-4); background: #f7f4ee; }
+.review-card__head { display: flex; justify-content: space-between; gap: var(--s-3); font-size: 0.875rem; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--rule); padding-bottom: var(--s-3); max-width: none; }
+.review-stars { color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+.mosaic__grid:focus-visible { outline-offset: 6px; }
+@media (max-width: 639px) {
+  .mosaic__grid { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 85%; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; padding-bottom: var(--s-4); scrollbar-width: thin; }
+  .mosaic__grid > * { scroll-snap-align: start; }
+  .mosaic__plate { order: 99; aspect-ratio: auto; }
+  .mosaic__head::after { content: 'Swipe for all six notes →'; font-size: 0.875rem; color: var(--muted); }
+}
+.review-card blockquote p { font-size: var(--fs-0); line-height: 1.55; }
+.review-meta { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs--1); color: var(--muted); margin-top: auto; }
+.review-meta cite { font-style: normal; font-weight: 600; color: var(--ink); font-size: var(--fs-0); }
+.review-card .sample-tag { align-self: flex-start; margin-left: 0; }
+@media (min-width: 640px) {
+  .mosaic__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mosaic__plate { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+  .mosaic__plate .plate__svg { max-width: 560px; margin-inline: auto; }
+}
+@media (min-width: 1100px) {
+  .mosaic__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mosaic__plate { grid-column: 1; grid-row: 1 / span 2; aspect-ratio: auto; }
+  .mosaic__plate .plate__svg { max-width: none; }
+  .review-card:nth-child(2) { grid-column: 2 / span 2; }
+  .review-card:nth-child(2) blockquote p { font-family: var(--ff-display); font-size: var(--fs-2); line-height: 1.15; font-variation-settings: 'wdth' 87.5; font-weight: 500; }
 }
 
-/* Layout: mosaic */
-.mosaic__inner { padding-left: var(--margin-col); }
-.mosaic__grid { display: grid; gap: var(--s-5); grid-template-columns: 1fr; margin-top: var(--s-6); }
-@media (min-width: 640px) { .mosaic__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1100px) { .mosaic__grid { grid-template-columns: repeat(3, 1fr); } }
-
-.review-card blockquote { font-style: italic; margin-bottom: var(--s-4); }
-.review-stars { display: flex; gap: 2px; color: var(--accent); margin-bottom: var(--s-3); }
-.review-stars .i { width: 1rem; height: 1rem; fill: currentColor; stroke: none; }
-.review-meta { font-size: var(--fs--1); color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
-.review-meta cite { font-style: normal; font-weight: 600; color: var(--ink); }
-
-/* Layout: map-check */
-.map-check__grid { display: grid; gap: var(--s-7); grid-template-columns: 1fr; }
-@media (min-width: 768px) { .map-check__grid { grid-template-columns: 1fr 1fr; } }
-
-.area-map { width: 100%; height: auto; background: rgba(255,255,255,.03); border-radius: var(--radius); }
-
-.area-list { font-size: var(--fs-0); color: var(--muted); margin-bottom: var(--s-6); }
-
+/* ---------- 8 area: map-check ---------- */
+.map-check__grid { display: grid; gap: var(--s-7); grid-template-columns: minmax(0, 1fr); align-items: center; }
+@media (min-width: 900px) { .map-check__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s-8); } }
+.area-map { width: 100%; height: auto; border: 1px solid var(--rule); border-radius: var(--radius); background: rgba(9,28,32,.25); }
+.area-map .feed path { stroke: var(--accent); stroke-width: 2; fill: none; }
+.area-map .town circle { fill: #1b3d44; stroke: #f0ece4; stroke-width: 2; }
+.area-map .hub { fill: var(--accent); }
+.area-map .map-lbl text { font-family: var(--ff-mono); font-size: 12px; fill: #f0ece4; }
+.area-map .hub-lbl { font-weight: 500; fill: var(--accent) !important; font-size: 13px !important; }
+.area-map .map-note { font-family: var(--ff-mono); font-size: 10px; letter-spacing: .1em; fill: #a9bfc3; }
+.area-list { color: var(--muted); margin: var(--s-4) 0 var(--s-6); }
 .zip-checker { margin-bottom: var(--s-6); }
-.zip-checker label { display: block; font-weight: 600; margin-bottom: var(--s-3); }
-.zip-row { display: flex; gap: var(--s-3); }
-.zip-row input {
-  flex: 1; height: 48px; padding: 0 var(--s-4);
-  border: 1px solid var(--rule); border-radius: var(--radius);
-  background: var(--bg); color: var(--ink); font-size: var(--fs-0);
-  font-family: var(--ff-mono);
-}
-.zip-result { margin-top: var(--s-3); font-size: var(--fs-0); min-height: 1.5em; }
-.zip-result.is-yes { color: var(--accent); }
-.zip-result.is-no { color: #c44; }
-
+.zip-checker label { display: block; font-weight: 600; margin-bottom: var(--s-2); }
+.zip-row { display: flex; gap: var(--s-2); }
+.zip-row input { flex: 1 1 auto; min-width: 0; font-family: var(--ff-mono); letter-spacing: .1em; }
+.zip-row .btn { flex: 0 0 auto; }
+.zip-result { margin-top: var(--s-3); min-height: 1.5em; font-size: var(--fs-0); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
+.sw-zip-go, .sw-zip-call { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); border-radius: var(--radius); border: 2px solid var(--accent); background: transparent; color: var(--ink); font-weight: 600; cursor: pointer; text-decoration: none; }
 .hours-block h3 { margin-bottom: var(--s-3); }
-.hours { display: grid; grid-template-columns: auto 1fr; gap: var(--s-2) var(--s-4); font-size: var(--fs-0); }
+.hours { display: grid; grid-template-columns: auto 1fr; gap: 6px var(--s-5); font-size: var(--fs-0); max-width: 360px; }
+.hours > div { display: contents; }
 .hours dt { font-weight: 600; }
 .hours dd { color: var(--muted); font-variant-numeric: tabular-nums; }
-.open-now { margin-top: var(--s-3); font-family: var(--ff-mono); font-size: var(--fs--1); color: var(--accent); }
+.hours .is-today dt, .hours .is-today dd, .hours dt.is-today, .hours dd.is-today { color: var(--accent); }
+.open-now { margin-top: var(--s-4); font-family: var(--ff-mono); font-size: var(--fs--1); color: var(--accent); }
 
-/* Layout: form-single */
-.form-single__inner { max-width: 640px; margin-inline: auto; padding-left: var(--margin-col); }
+/* ---------- 9 contact: form-single ---------- */
+.form-single__inner { max-width: calc(760px + var(--line-x) + var(--line-pad)); }
+.form-card { border: 1px solid var(--rule); border-top: 3px solid var(--ink); border-radius: var(--radius); padding: var(--s-5); background: #f7f4ee; }
+@media (min-width: 640px) { .form-card { padding: var(--s-7); } }
+.form-progress { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: var(--s-6); position: relative; }
+.form-progress::before { content: ''; position: absolute; left: 12.5%; right: 12.5%; top: 9px; height: 2px; background: var(--rule); }
+.form-progress::after { content: ''; position: absolute; left: 12.5%; right: 12.5%; top: 9px; height: 2px; background: var(--accent); transform-origin: left; transform: scaleX(calc((var(--step, 1) - 1) / 3)); transition: transform var(--dur-page) var(--ease-out); }
+.lead-form { --step: 1; }
+.form-progress li { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.875rem; font-weight: 500; color: var(--muted); }
+.form-progress li::before { content: ''; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--rule); background: #f7f4ee; transition: background-color var(--dur-ui), border-color var(--dur-ui); }
+.lead-form[data-step-current="1"] .form-progress li:nth-child(-n+1)::before,
+.lead-form[data-step-current="2"] .form-progress li:nth-child(-n+2)::before,
+.lead-form[data-step-current="3"] .form-progress li:nth-child(-n+3)::before,
+.lead-form[data-step-current="4"] .form-progress li:nth-child(-n+4)::before { background: var(--accent); border-color: var(--accent); }
+.lead-form[data-step-current="1"] .form-progress li:nth-child(1),
+.lead-form[data-step-current="2"] .form-progress li:nth-child(2),
+.lead-form[data-step-current="3"] .form-progress li:nth-child(3),
+.lead-form[data-step-current="4"] .form-progress li:nth-child(4) { color: var(--ink); }
+html:not(.sw-js) .form-progress, html:not(.sw-js) [data-back], html:not(.sw-js) [data-next] { display: none; }
+.form-step { border: 0; padding: 0; margin: 0 0 var(--s-5); min-width: 0; }
+html:not(.sw-js) .form-step { margin-bottom: var(--s-7); }
+.form-step legend { font-family: var(--ff-display); font-weight: 700; font-size: var(--fs-3); font-variation-settings: 'wdth' 75; letter-spacing: -0.02em; margin-bottom: var(--s-5); }
+.lead-form label:not(.pick) { display: block; font-weight: 600; margin: var(--s-4) 0 var(--s-2); }
+.lead-form legend + label { margin-top: 0; }
+.lead-form textarea { padding: var(--s-3) var(--s-4); min-height: 112px; resize: vertical; }
+.opt { font-weight: 400; color: var(--muted); }
+.svc-pick, .when-pick { display: grid; gap: var(--s-2); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 560px) { .svc-pick { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pick { display: flex; align-items: center; gap: var(--s-3); min-height: 52px; padding: var(--s-2) var(--s-4); border: 1px solid var(--rule); border-radius: var(--radius); background: #fbf9f5; cursor: pointer; font-size: var(--fs-0); line-height: 1.3; transition: border-color var(--dur-ui), background-color var(--dur-ui); }
+.pick:has(input:checked) { border-color: var(--accent); background: var(--tint); box-shadow: inset 3px 0 0 var(--accent); }
+.form-nav { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
+.form-nav .btn { min-height: 52px; min-width: 120px; }
+.form-nav [data-next], .form-nav [data-submit] { flex: 1 1 auto; }
+.field-error { margin-top: var(--s-2); font-size: var(--fs--1); color: #a3261b; font-weight: 600; }
+[aria-invalid="true"] { border-color: #a3261b !important; }
+.form-status { min-height: 1.2em; font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-3); }
+.form-micro { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-2); }
+.form-micro .tel-plain { display: inline-block; padding-block: 12px; margin-block: -12px; font-weight: 600; color: var(--ink); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-thanks { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-4); padding: var(--s-5) 0; }
+.form-thanks__node { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #091c20; }
+.form-thanks p { font-family: var(--ff-display); font-weight: 700; font-size: var(--fs-3); line-height: 1.05; font-variation-settings: 'wdth' 75; }
 
-.lead-form { margin-top: var(--s-6); }
-.lead-form label { display: block; font-weight: 600; margin-bottom: var(--s-2); margin-top: var(--s-4); }
-.lead-form label:first-child { margin-top: 0; }
-.lead-form input, .lead-form select, .lead-form textarea {
-  width: 100%; height: 48px; padding: 0 var(--s-4);
-  border: 1px solid var(--rule); border-radius: var(--radius);
-  background: var(--bg); color: var(--ink); font-size: var(--fs-0); font-family: var(--ff-body);
-}
-.lead-form textarea { height: auto; padding: var(--s-4); resize: vertical; }
-.lead-form input:focus, .lead-form select:focus, .lead-form textarea:focus {
-  outline: 3px solid var(--focus); outline-offset: 3px; border-color: var(--accent);
-}
-
-.form-step [data-next], .form-step [data-prev] { margin-top: var(--s-5); }
-.form-nav { display: flex; gap: var(--s-3); margin-top: var(--s-5); }
-.form-micro { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-4); }
-
-.form-thanks { padding: var(--s-7); text-align: center; border: 1px solid var(--rule); border-radius: var(--radius); }
-.form-thanks p { font-size: var(--fs-2); font-weight: 600; }
-
-/* Layout: ground-rule (footer) */
-.ground-rule__inner { padding-left: var(--margin-col); }
-.ground-rule__symbol { margin-bottom: var(--s-6); color: var(--accent); }
-.ground-rule__cols { display: grid; gap: var(--s-7); grid-template-columns: 1fr; }
-@media (min-width: 768px) { .ground-rule__cols { grid-template-columns: 1fr 1fr 1fr; } }
-
-.footer-name { font-family: var(--ff-display); font-weight: 700; font-size: var(--fs-2); margin-bottom: var(--s-3); }
-.ground-rule__biz p { font-size: var(--fs-0); color: var(--muted); margin-bottom: var(--s-2); }
-.ground-rule__biz .tel-plain { color: var(--accent); }
-
-.ground-rule__links { display: flex; flex-direction: column; gap: var(--s-3); }
-.ground-rule__links a { font-size: var(--fs-0); }
-
+/* ---------- footer: ground-rule ---------- */
+.sec-footer { position: relative; padding-block: var(--s-8) calc(var(--s-7) + 8px); background: var(--bg); color: var(--ink); }
+.sec-footer::before { content: ''; position: absolute; left: var(--line-x); top: 0; height: 40px; width: 2px; background: var(--accent); }
+.ground-rule__symbol { position: absolute; left: calc(var(--line-x) - 15px); top: 36px; display: flex; align-items: center; gap: var(--s-3); color: var(--accent); }
+.ground-rule__symbol .i { width: 32px; height: 32px; }
+.ground-rule__symbol span { font-family: var(--ff-mono); font-size: 0.8125rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.ground-rule__cols { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); padding-top: var(--s-8); }
+@media (min-width: 768px) { .ground-rule__cols { grid-template-columns: 1.2fr .8fr 1.2fr; } }
+.footer-name { font-family: var(--ff-display); font-weight: 700; font-size: var(--fs-3); font-variation-settings: 'wdth' 75; margin-bottom: var(--s-3); }
+.ground-rule__biz p { color: var(--muted); margin-bottom: var(--s-2); font-size: var(--fs-0); }
+.ground-rule__biz a { display: inline-block; padding-block: 12px; margin-block: -12px; color: var(--ink); }
+.ground-rule__links { display: flex; flex-direction: column; }
+.ground-rule__links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-size: var(--fs-0); }
 .ground-rule__legal p { font-size: var(--fs--1); color: var(--muted); margin-bottom: var(--s-2); }
-.credits { list-style: none; padding: 0; margin-top: var(--s-4); }
-.credits li { font-size: var(--fs--1); color: var(--muted); margin-bottom: var(--s-1); }
-.credits a { text-decoration: underline; }
+.credits { list-style: none; padding: 0; margin-top: var(--s-3); font-size: var(--fs--1); color: var(--muted); }
+.credits li { margin-bottom: 4px; }
+.credits a { display: inline-block; padding-block: 12px; margin-block: -12px; }
 
-/* Reveal motion */
-.sw-motion [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-.sw-motion [data-reveal].is-in { opacity: 1; transform: none; }
-.sw-motion [data-reveal="clip"] { clip-path: inset(0 0 100% 0); opacity: 1; transform: none; transition: clip-path var(--dur-story) var(--ease-io); }
-.sw-motion [data-reveal="clip"].is-in { clip-path: inset(0 0 0 0); }
+/* ---------- reveal (hidden states only under .sw-motion, see kit/base.css) ---------- */
+.sw-motion [data-reveal="clip"] { transition: clip-path var(--dur-story) var(--ease-io); }
 
-.sw-motion [data-reveal-stagger] > * { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-.sw-motion [data-reveal-stagger].is-in > * { opacity: 1; transform: none; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(1) { transition-delay: 0ms; }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: calc(var(--stagger)); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: calc(var(--stagger) * 2); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(4) { transition-delay: calc(var(--stagger) * 3); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(5) { transition-delay: calc(var(--stagger) * 4); }
-.sw-motion [data-reveal-stagger].is-in > *:nth-child(6) { transition-delay: calc(var(--stagger) * 5); }
-
-/* Split text reveal */
-.sw-motion [data-split="lines"] .split-line { overflow: hidden; }
-.sw-motion [data-split="lines"] .split-line-inner { transform: translateY(100%); transition: transform var(--dur-page) var(--ease-out); }
-.sw-motion [data-split="lines"].is-in .split-line-inner { transform: none; }
-
-/* Reduced motion: everything visible, no animation */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  [data-reveal], [data-reveal="clip"], [data-reveal-stagger] > *, [data-split="lines"] .split-line-inner { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+@media (forced-colors: active) {
+  .btn, .card, .tool-ui, .pick, .panel-opt, input, select, textarea { border: 2px solid CanvasText; }
+  .one-line, .one-line::after { background: CanvasText; }
+  .plate { border: 1px solid CanvasText; }
 }
+
+@media print {
+  .header, .mobilebar, .one-line, .sec-break, .menu { display: none !important; }
+  .sec { padding-block: 24px; background: #fff; color: #000; }
+}
+
 </style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
   <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-  <symbol id="i-panel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="6" x2="12" y2="18"/><line x1="8" y1="6" x2="8" y2="6.01"/><line x1="16" y1="6" x2="16" y2="6.01"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="16" y1="14" x2="16" y2="14.01"/></symbol>
-  <symbol id="i-ev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-4V4h-4v6H6l6 8 6-8z"/><rect x="4" y="18" width="16" height="3" rx="1"/></symbol>
-  <symbol id="i-outlet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/><path d="M12 14v3"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
-  <symbol id="i-ground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="12"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/><line x1="10" y1="20" x2="14" y2="20"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="i-meter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 13a4 4 0 0 1 8 0"/><path d="M12 13l2-3"/></symbol>
+  <symbol id="i-panel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="1.5"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="8" y1="8" x2="10" y2="8"/><line x1="14" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="10" y2="12"/><line x1="14" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="10" y2="16"/><line x1="14" y1="16" x2="16" y2="16"/></symbol>
+  <symbol id="i-probe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M7 12h3l1-3 2 6 1-3h3"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="21"/><path d="M6 8h6a4 4 0 0 1 4 4v1"/><circle cx="16" cy="16" r="3"/></symbol>
+  <symbol id="i-ev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="10" height="18" rx="2"/><path d="M11 7l-3 5h4l-3 5"/><path d="M15 9h2a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="i-outlet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><line x1="9" y1="8" x2="9" y2="11"/><line x1="15" y1="8" x2="15" y2="11"/><path d="M10.5 16a1.5 1.5 0 0 1 3 0v1h-3z"/></symbol>
+  <symbol id="i-ground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="12"/><line x1="5" y1="12" x2="19" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/><line x1="10.5" y1="20" x2="13.5" y2="20"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
-  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-arrow"viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<header data-header class="header" aria-label="Site header">
+<header data-header class="header t-deep">
   <div class="header__inner">
-    <a href="#hero" class="logo" aria-label="Lineside Electric home">LE</a>
+    <a href="#hero" class="logo" aria-label="Lineside Electric, back to top">
+      <span class="logo__node" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bolt"/></svg></span>
+      <span class="logo__name">Lineside</span><span class="logo__trade">Electric</span>
+    </a>
     <nav class="nav-desktop" aria-label="Primary">
       <a href="#services-main">Services</a>
       <a href="#tool-panel-id">Panel check</a>
@@ -814,205 +895,342 @@ p { max-width: 65ch; }
       <a href="#area">Area</a>
     </nav>
     <div class="header__actions">
-      <a class="btn btn-call btn-primary" href="tel:+16145550110"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (614) 555-0110</span></a>
-      <button class="menu-btn" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Open menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg></button>
+      <a class="btn btn-call btn-primary header__call" href="tel:+16145550110"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (614) 555-0110</span></a>
+      <button class="menu-btn" type="button" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Open menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg></button>
     </div>
   </div>
-  <div class="progress" data-progress></div>
+  <div class="progress" data-progress aria-hidden="true"></div>
 </header>
 
-<nav id="menu" class="menu" data-menu aria-label="Mobile navigation" hidden>
+<nav id="menu" class="menu t-deep" data-menu aria-label="Mobile">
   <div class="menu__inner">
-    <button class="menu__close" data-menu-btn aria-label="Close menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
-    <a href="#hero">Home</a>
+    <button class="menu__close" type="button" data-menu-btn aria-label="Close menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
     <a href="#services-main">Services</a>
     <a href="#tool-panel-id">Panel check</a>
-    <a href="#tool-ev-load">EV load</a>
+    <a href="#tool-ev-load">EV load check</a>
     <a href="#proof">Reviews</a>
     <a href="#area">Service area</a>
-    <a href="#contact">Price your job</a>
+    <a href="#contact">Price my job</a>
     <a class="btn btn-call btn-primary" href="tel:+16145550110"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (614) 555-0110</span></a>
   </div>
 </nav>
 
 <main id="main">
 
-  <!-- Section 1: Hero -->
-  <section id="hero" class="sec t-deep sec-hero offset-frame" data-sw-signature>
-    <div class="one-line" aria-hidden="true"><div class="one-line__node is-active"><svg class="i"><use href="#i-bolt"/></svg></div></div>
-    <div class="container offset-frame__grid">
-      <div class="offset-frame__text">
-        <p class="kicker">From the pole to the plug</p>
-        <h1 data-split="lines">Columbus electrical work, drawn line by line.</h1>
-        <p class="proof-line"><span data-open-now>Mon–Fri 7:30 am – 5:30 pm · Sat 9 am – 1 pm</span> · Upper Arlington, Worthington, Westerville, Dublin, Hilliard and Bexley · 4.9 ★ (<span class="sample-tag">Sample rating</span>)</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#contact" data-service="Panels">Get a panel evaluation</a>
-          <a class="btn btn-call btn-ghost" href="tel:+16145550110"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (614) 555-0110</span></a>
+  <!-- 1 · Hero: the one-line diagram is the composition -->
+  <section id="hero" class="sec t-deep sec-hero" data-sw-signature aria-labelledby="hero-h">
+    <div class="one-line" aria-hidden="true"><span class="one-line__node"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bolt"/></svg></span></div>
+    <div class="container hero-sheet">
+      <div class="hero-drop hero-drop--a" aria-hidden="true">
+        <svg class="pole" viewBox="0 0 48 64" focusable="false"><line x1="24" y1="2" x2="24" y2="62"/><line x1="6" y1="14" x2="42" y2="14"/><circle cx="10" cy="9" r="3"/><circle cx="38" cy="9" r="3"/></svg>
+        <span class="drop-lbl">Utility · 240 V</span>
+        <span class="drop-wire"></span>
+      </div>
+      <div class="hero-drop hero-drop--b" aria-hidden="true">
+        <span class="meter">kWh</span>
+      </div>
+      <div class="hero-sheet__text">
+        <h1 id="hero-h" data-split="lines">A Columbus electrician who draws the job&nbsp;first.</h1>
+        <p class="hero__lead">Panels, service upgrades and EV chargers, planned on one sheet before a wire moves.</p>
+        <div class="cta-row" data-mobilebar-hide>
+          <a class="btn btn-primary" href="#contact" data-service="Panels">Price my job</a>
+          <a class="btn btn-call btn-secondary" href="tel:+16145550110"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (614) 555-0110</span></a>
         </div>
       </div>
-      <div class="offset-frame__media" data-reveal>
-        <figure class="frame offset-frame__photo" data-fallback="Placeholder for hero-A1"><img src="media/hero-A1.jpg" alt="Placeholder for hero-A1" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-A1" data-slot="hero-A1"></figure>
+      <div class="hero-bus">
+        <p class="hero-bus__main" aria-hidden="true"><span class="brk brk--main"></span><span class="bus-lbl">Main · 200 A</span></p>
+        <dl class="bus">
+          <div class="bus__ckt"><dt><span class="brk" aria-hidden="true"></span><span class="ckt-no" aria-hidden="true">CKT 1</span> Today</dt><dd><span data-open-now>Mon–Fri 7:30 am – 5:30 pm · Sat 9 am – 1 pm</span></dd></div>
+          <div class="bus__ckt"><dt><span class="brk" aria-hidden="true"></span><span class="ckt-no" aria-hidden="true">CKT 2</span> Area</dt><dd>Columbus + 6 suburbs</dd></div>
+          <div class="bus__ckt"><dt><span class="brk" aria-hidden="true"></span><span class="ckt-no" aria-hidden="true">CKT 3</span> Rating</dt><dd>4.9 / 5 <span class="sample-tag">Sample</span></dd></div>
+        </dl>
+        <div class="hero-bus__end" aria-hidden="true">
+          <span class="gnd"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ground"/></svg></span>
+          <span class="tblock">Sheet E-1 · One-line<br>Columbus, OH</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Section 2: Services — Main & Meter -->
-  <section id="services-main" class="sec t-paper sec-services branch-grid" data-sw-signature>
-    <div class="one-line" aria-hidden="true"><div class="one-line__node is-active"><svg class="i"><use href="#i-panel"/></svg></div></div>
-    <div class="container branch-grid__inner">
-      <h2>At the meter and main</h2>
+  <!-- 2 · Meter and main: branch-grid -->
+  <section id="services-main" class="sec t-paper sec-services branch-grid" data-sw-signature aria-labelledby="main-h">
+    <div class="one-line" aria-hidden="true"><span class="one-line__node"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-meter"/></svg></span></div>
+    <div class="container">
+      <div class="sec-head">
+        <div class="title-strip"><span class="title-strip__no">Sheet E-2</span><h2 id="main-h">At the meter and main</h2></div>
+        <p class="lead">Where the power enters the house. Get this part right and everything downstream has room.</p>
+      </div>
       <div class="branch-grid__cards" data-reveal-stagger>
         <article class="card svc-card">
+          <p class="svc-card__ref">M-01</p>
           <h3>Panel replacement</h3>
           <p>Federal Pacific, Zinsco and fuse panels replaced, with every circuit traced and labeled.</p>
           <p class="price-range">$2,600 – $5,600 <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn-text" href="#contact" data-service="Panels">Price it</a>
+          <a class="btn btn-line" href="#contact" data-service="Panels">Price my job</a>
         </article>
         <article class="card svc-card">
+          <p class="svc-card__ref">M-02</p>
           <h3>Service upgrades</h3>
           <p>100-amp services raised to 200 amps, with the utility and the inspector scheduled for you.</p>
-          <a class="btn btn-text" href="#contact" data-service="Service upgrades">Price it</a>
+          <p class="price-range price-range--note">Priced after a load check</p>
+          <a class="btn btn-line" href="#contact" data-service="Service upgrades">Price my job</a>
         </article>
         <article class="card svc-card">
+          <p class="svc-card__ref">M-03</p>
           <h3>Whole-home surge protection</h3>
           <p>A surge protector at the panel to shield furnaces, fridges and electronics from spikes.</p>
           <p class="price-range">$350 – $750 <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn-text" href="#contact" data-service="Surge protection">Price it</a>
+          <a class="btn btn-line" href="#contact" data-service="Surge protection">Price my job</a>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- Section 3: Tool — Old Panel Identifier -->
-  <section id="tool-panel-id" class="sec t-mid sec-tool annotation-callout" data-sw-signature>
-    <div class="one-line" aria-hidden="true"><div class="one-line__node is-active"><svg class="i"><use href="#i-check"/></svg></div></div>
+  <!-- 3 · Old panel identifier: annotation-callout -->
+  <section id="tool-panel-id" class="sec t-mid sec-tool annotation-callout" data-sw-signature aria-labelledby="pid-h">
+    <div class="one-line" aria-hidden="true"><span class="one-line__node"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-probe"/></svg></span></div>
     <div class="container annotation-callout__grid">
       <div class="annotation-callout__text">
-        <h2>What panel do you have?</h2>
-        <p class="lead">A photo of the label inside the door tells us. Pick the closest match.</p>
+        <div class="title-strip"><span class="title-strip__no">Sheet E-3</span><h2 id="pid-h">What panel do you have?</h2></div>
+        <p class="lead">Open the panel door and look at the label and the breakers. Pick the closest match for a straight answer.</p>
+        <p class="note">No photo upload, nothing sent. It runs in your browser.</p>
       </div>
       <div class="annotation-callout__tool" data-reveal="clip">
-        <form class="tool-ui" data-checklist aria-label="Panel identifier">
+        <form class="tool-ui panel-id" aria-labelledby="pid-legend">
           <fieldset>
-            <legend class="sr-only">Select your panel type</legend>
-            <label class="tool-option"><input type="radio" name="panel" value="fpe"> FPE Stab-Lok</label>
-            <label class="tool-option"><input type="radio" name="panel" value="zinsco"> Zinsco</label>
-            <label class="tool-option"><input type="radio" name="panel" value="fuse"> Fuse box</label>
-            <label class="tool-option"><input type="radio" name="panel" value="split"> Split-bus</label>
-            <label class="tool-option"><input type="radio" name="panel" value="modern"> Modern breaker</label>
+            <legend id="pid-legend">Which one looks like yours?</legend>
+            <div class="panel-id__options">
+              <label class="panel-opt"><input type="radio" name="panel" value="fpe">
+                <svg class="panel-opt__svg" viewBox="0 0 40 52" aria-hidden="true" focusable="false"><rect x="2" y="2" width="36" height="48" rx="2"/><rect x="8" y="9" width="10" height="4"/><rect x="22" y="9" width="10" height="4" class="hot"/><rect x="8" y="17" width="10" height="4" class="hot"/><rect x="22" y="17" width="10" height="4"/><rect x="8" y="25" width="10" height="4"/><rect x="22" y="25" width="10" height="4" class="hot"/><rect x="8" y="33" width="10" height="4"/><rect x="22" y="33" width="10" height="4"/></svg>
+                <span class="panel-opt__txt"><b>Federal Pacific</b><small>“Stab-Lok” on the label, thin breakers with red tips</small></span></label>
+              <label class="panel-opt"><input type="radio" name="panel" value="zinsco">
+                <svg class="panel-opt__svg" viewBox="0 0 40 52" aria-hidden="true" focusable="false"><rect x="2" y="2" width="36" height="48" rx="2"/><rect x="8" y="9" width="24" height="5" class="tint"/><rect x="8" y="17" width="24" height="5"/><rect x="8" y="25" width="24" height="5" class="tint"/><rect x="8" y="33" width="24" height="5"/><rect x="8" y="41" width="24" height="4" class="tint"/></svg>
+                <span class="panel-opt__txt"><b>Zinsco</b><small>Zinsco or Sylvania label, breakers in pastel colours</small></span></label>
+              <label class="panel-opt"><input type="radio" name="panel" value="fuse">
+                <svg class="panel-opt__svg" viewBox="0 0 40 52" aria-hidden="true" focusable="false"><rect x="2" y="2" width="36" height="48" rx="2"/><circle cx="13" cy="15" r="5"/><circle cx="27" cy="15" r="5"/><circle cx="13" cy="29" r="5"/><circle cx="27" cy="29" r="5"/><rect x="10" y="39" width="20" height="6"/></svg>
+                <span class="panel-opt__txt"><b>Fuse box</b><small>Round screw-in fuses instead of breakers</small></span></label>
+              <label class="panel-opt"><input type="radio" name="panel" value="split">
+                <svg class="panel-opt__svg" viewBox="0 0 40 52" aria-hidden="true" focusable="false"><rect x="2" y="2" width="36" height="48" rx="2"/><rect x="8" y="8" width="10" height="4" class="hot"/><rect x="22" y="8" width="10" height="4" class="hot"/><rect x="8" y="15" width="10" height="4" class="hot"/><rect x="22" y="15" width="10" height="4" class="hot"/><line x1="6" y1="25" x2="34" y2="25" class="gap"/><rect x="8" y="31" width="10" height="4"/><rect x="22" y="31" width="10" height="4"/><rect x="8" y="39" width="10" height="4"/><rect x="22" y="39" width="10" height="4"/></svg>
+                <span class="panel-opt__txt"><b>Split-bus</b><small>No single main: up to six breakers at the top shut the house off</small></span></label>
+              <label class="panel-opt"><input type="radio" name="panel" value="modern">
+                <svg class="panel-opt__svg" viewBox="0 0 40 52" aria-hidden="true" focusable="false"><rect x="2" y="2" width="36" height="48" rx="2"/><rect x="12" y="7" width="16" height="6" class="hot"/><line x1="20" y1="16" x2="20" y2="46"/><rect x="8" y="19" width="9" height="3"/><rect x="23" y="19" width="9" height="3"/><rect x="8" y="26" width="9" height="3"/><rect x="23" y="26" width="9" height="3"/><rect x="8" y="33" width="9" height="3"/><rect x="23" y="33" width="9" height="3"/><rect x="8" y="40" width="9" height="3"/><rect x="23" y="40" width="9" height="3"/></svg>
+                <span class="panel-opt__txt"><b>Modern breaker panel</b><small>One main breaker at the top, rows of labelled breakers</small></span></label>
+            </div>
           </fieldset>
-          <div class="tool-result" aria-live="polite"></div>
-          <a class="btn btn-primary" href="#contact" data-service="Panels">Book a panel evaluation</a>
+          <div class="panel-id__result" aria-live="polite">
+            <p class="pid-res pid-res--none"><span class="verdict">Waiting</span> Pick the panel that looks most like yours.</p>
+            <p class="pid-res pid-res--fpe"><span class="verdict verdict--hot">Replace</span> Stab-Lok breakers have a long record of not tripping under overload. We swap the panel, trace every circuit and label it in plain words.</p>
+            <p class="pid-res pid-res--zinsco"><span class="verdict verdict--hot">Replace</span> Zinsco breakers can fuse to the bus bar and stop tripping. Worth replacing before you add anything new.</p>
+            <p class="pid-res pid-res--fuse"><span class="verdict verdict--warn">Upgrade</span> Fuse boxes usually mean a small, older service. Talk to us about 100 or 200 amps before a charger, heat pump or new kitchen.</p>
+            <p class="pid-res pid-res--split"><span class="verdict verdict--warn">Look first</span> Split-bus panels are often original and full. We check the load and the bus before you add a big circuit.</p>
+            <p class="pid-res pid-res--modern"><span class="verdict verdict--ok">Likely fine</span> Keep it. If you are adding a charger or heat pump, run the load check below to see if it has room.</p>
+          </div>
+          <a class="btn btn-primary" href="#contact" data-service="Panels">Price my job</a>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- Section 4: Services — Circuits & Devices -->
-  <section id="services-circuits" class="sec t-paper sec-circuits split-rail">
-    <div class="one-line" aria-hidden="true"><div class="one-line__node is-active"><svg class="i"><use href="#i-outlet"/></svg></div></div>
-    <div class="container split-rail__inner">
-      <h2>Downstream: circuits and devices</h2>
-      <div class="split-rail__media" data-reveal>
-        <figure class="frame split-rail__photo" data-fallback="Placeholder for equip-ev-charger" EV charger installation detail><img src="media/equip-ev-charger.jpg" alt="Placeholder for equip-ev-charger" width="1170" height="780" loading="lazy" decoding="async" data-photo="equip-ev-charger" data-slot="equip-ev-charger" lazy></figure>
+  <!-- 4 · Circuits and devices: split-rail (a panel schedule) -->
+  <section id="services-circuits" class="sec t-paper sec-circuits split-rail" data-sw-signature aria-labelledby="ckt-h">
+    <div class="one-line" aria-hidden="true"><span class="one-line__node"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-branch"/></svg></span></div>
+    <div class="container">
+      <div class="split-rail__head">
+        <div class="sec-head">
+          <div class="title-strip"><span class="title-strip__no">Sheet E-4</span><h2 id="ckt-h">Downstream: circuits, breaker to device</h2></div>
+          <p class="lead">Every job below starts at a breaker and ends at a device. That is how we quote it and how we label it when we leave.</p>
+        </div>
+        <figure class="plate plate--ev art-frame" role="img" aria-label="Drawing of a garage wall: conduit runs from the panel along the wall to a Level 2 charger on its own 240-volt, 40-amp circuit.">
+          <svg class="art plate__svg" viewBox="0 0 480 280" aria-hidden="true" focusable="false">
+            <g class="ln">
+              <line x1="16" y1="250" x2="464" y2="250"/>
+              <rect x="40" y="70" width="70" height="120" rx="3"/><line x1="75" y1="82" x2="75" y2="178"/>
+              <line x1="52" y1="92" x2="68" y2="92"/><line x1="82" y1="92" x2="98" y2="92"/><line x1="52" y1="108" x2="68" y2="108"/><line x1="82" y1="108" x2="98" y2="108"/><line x1="52" y1="124" x2="68" y2="124"/><line x1="82" y1="124" x2="98" y2="124" class="hotln"/>
+              <rect x="350" y="84" width="64" height="96" rx="10"/><circle cx="382" cy="112" r="10"/><rect x="368" y="140" width="28" height="16" rx="3"/>
+              <path d="M414 150 C 450 170, 452 230, 400 236 C 360 240, 352 216, 380 206"/>
+            </g>
+            <path class="cu draw" d="M98 124 H120 V44 H382 V84"/>
+            <g class="lbl">
+              <text x="40" y="208">PANEL</text>
+              <text x="132" y="36">EMT CONDUIT · 6 AWG CU</text>
+              <text x="250" y="66">40 A · 240 V</text>
+              <text x="350" y="200">LEVEL 2</text>
+            </g>
+            <g class="tblock"><rect x="16" y="258" width="200" height="0.1"/><text x="16" y="274">DETAIL E-4.1 · EV CIRCUIT</text></g>
+          </svg>
+          <figure class="frame art-photo" data-fallback="Placeholder for equip-ev-charger" aria-hidden="true"><img src="media/equip-ev-charger.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="equip-ev-charger" data-slot="equip-ev-charger" alt=""></figure>
+        </figure>
       </div>
-      <div class="split-rail__cards" data-reveal-stagger>
-        <article class="card svc-card split-rail__left">
-          <h3>EV charger installation</h3>
-          <p>Level 2 chargers on their own 240-volt circuit, after a load check of your panel.</p>
-          <p class="price-range">$850 – $2,400 <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn-text" href="#contact" data-service="EV chargers">Price it</a>
-        </article>
-        <article class="card svc-card split-rail__right">
-          <h3>Heat pump circuits</h3>
-          <p>Dedicated circuits and disconnects for new heat pumps, sized to the unit&#39;s nameplate.</p>
-          <a class="btn btn-text" href="#contact" data-service="Heat pumps">Price it</a>
-        </article>
-        <article class="card svc-card split-rail__left">
-          <h3>GFCI and AFCI updates</h3>
-          <p>Kitchen, bath and basement outlets protected the way current code asks of new work.</p>
-          <p class="price-range">$160 – $320 <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn-text" href="#contact" data-service="GFCI / AFCI">Price it</a>
-        </article>
-        <article class="card svc-card split-rail__right">
-          <h3>Two-prong outlet updates</h3>
-          <p>Old two-hole outlets grounded or GFCI-protected, and the options explained in plain words.</p>
-          <a class="btn btn-text" href="#contact" data-service="Two-prong outlets">Price it</a>
-        </article>
-        <article class="card svc-card split-rail__left">
-          <h3>Lighting and ceiling fans</h3>
-          <p>Fixtures, recessed lights and ceiling fans hung on boxes rated for the weight.</p>
-          <a class="btn btn-text" href="#contact" data-service="Lighting">Price it</a>
-        </article>
-        <article class="card svc-card split-rail__right">
-          <h3>Troubleshooting and repairs</h3>
-          <p>Dead outlets, tripping breakers and flickering lights traced to the cause, then fixed.</p>
-          <a class="btn btn-text" href="#contact" data-service="Repairs">Price it</a>
-        </article>
-      </div>
+      <ol class="schedule" data-reveal-stagger aria-label="Circuit and device services">
+        <li class="ckt">
+          <span class="ckt__no">CKT 01</span>
+          <div class="ckt__body"><h3>EV charger installation</h3><p>Level 2 chargers on their own 240-volt circuit, after a load check of your panel.</p>
+            <p class="price-range">$850 – $2,400 <span class="sample-tag">Sample pricing</span></p></div>
+          <a class="btn btn-line" href="#contact" data-service="EV chargers">Price my job</a>
+        </li>
+        <li class="ckt">
+          <span class="ckt__no">CKT 02</span>
+          <div class="ckt__body"><h3>Heat pump circuits</h3><p>Dedicated circuits and disconnects for new heat pumps, sized to the unit&#39;s nameplate.</p></div>
+          <a class="btn btn-line" href="#contact" data-service="Heat pumps">Price my job</a>
+        </li>
+        <li class="ckt">
+          <span class="ckt__no">CKT 03</span>
+          <div class="ckt__body"><h3>GFCI and AFCI updates</h3><p>Kitchen, bath and basement outlets protected the way current code asks of new work.</p>
+            <p class="price-range">$160 – $320 per outlet <span class="sample-tag">Sample pricing</span></p></div>
+          <a class="btn btn-line" href="#contact" data-service="GFCI / AFCI">Price my job</a>
+        </li>
+        <li class="ckt">
+          <span class="ckt__no">CKT 04</span>
+          <div class="ckt__body"><h3>Two-prong outlet updates</h3><p>Old two-hole outlets grounded or GFCI-protected, and the options explained in plain words.</p></div>
+          <a class="btn btn-line" href="#contact" data-service="Two-prong outlets">Price my job</a>
+        </li>
+        <li class="ckt">
+          <span class="ckt__no">CKT 05</span>
+          <div class="ckt__body"><h3>Lighting and ceiling fans</h3><p>Fixtures, recessed lights and ceiling fans hung on boxes rated for the weight.</p></div>
+          <a class="btn btn-line" href="#contact" data-service="Lighting">Price my job</a>
+        </li>
+        <li class="ckt">
+          <span class="ckt__no">CKT 06</span>
+          <div class="ckt__body"><h3>Troubleshooting and repairs</h3><p>Dead outlets, tripping breakers and flickering lights traced to the cause, then fixed.</p></div>
+          <a class="btn btn-line" href="#contact" data-service="Repairs">Price my job</a>
+        </li>
+        <li class="ckt ckt--wide">
+          <span class="ckt__no">CKT 07</span>
+          <div class="ckt__body"><h3>Electrical inspections</h3><p>A full look for buyers, sellers and insurers, written up with photos of each finding.</p>
+            <p class="price-range">$150 – $325 <span class="sample-tag">Sample pricing</span></p></div>
+          <a class="btn btn-line" href="#contact" data-service="Inspections">Price my job</a>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <!-- Section 5: Break — Process Photo -->
-  <section id="break-process" class="sec t-deep sec-break statement-stack break-full break">
-    <div class="statement-stack__inner" data-reveal="clip">
-      <figure class="frame statement-stack__photo" data-fallback="Placeholder for process-wire-strip"><img src="media/process-wire-strip.jpg" alt="Placeholder for process-wire-strip" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="process-wire-strip" data-slot="process-wire-strip"></figure>
-      <p class="statement-stack__caption">Fishing new wire through small plaster cuts, then patching clean.</p>
+  <!-- 5 · Break: statement-stack, full bleed -->
+  <section id="break-process" class="sec t-deep sec-break statement-stack break" aria-labelledby="brk-h">
+    <figure class="break__art art-frame" role="img" aria-label="Section drawing of a plaster wall: a new cable is fished between the studs through four small cuts, from the basement panel up to a new outlet box.">
+      <svg class="art break__svg break__svg--wide" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <g class="lath">
+          <line x1="0" y1="60" x2="1200" y2="60"/><line x1="0" y1="140" x2="1200" y2="140"/><line x1="0" y1="220" x2="1200" y2="220"/><line x1="0" y1="300" x2="1200" y2="300"/><line x1="0" y1="380" x2="1200" y2="380"/><line x1="0" y1="460" x2="1200" y2="460"/>
+        </g>
+        <g class="stud">
+          <rect x="140" y="0" width="22" height="520"/><rect x="380" y="0" width="22" height="520"/><rect x="620" y="0" width="22" height="520"/><rect x="860" y="0" width="22" height="520"/><rect x="1100" y="0" width="22" height="520"/>
+        </g>
+        <g class="cut">
+          <rect x="128" y="352" width="46" height="34"/><rect x="368" y="262" width="46" height="34"/><rect x="608" y="190" width="46" height="34"/><rect x="848" y="128" width="46" height="34"/>
+        </g>
+        <rect class="box" x="1020" y="96" width="40" height="58" rx="3"/>
+        <rect class="box" x="40" y="430" width="70" height="90" rx="3"/>
+        <path class="cu draw" d="M75 430 C 90 380, 120 370, 151 369 C 260 366, 300 300, 391 279 C 480 260, 540 210, 631 207 C 720 204, 780 150, 871 145 C 960 140, 990 125, 1020 125"/>
+        <g class="lbl">
+          <text x="128" y="406">CUT A</text><text x="368" y="316">CUT B</text><text x="608" y="244">CUT C</text><text x="848" y="182">CUT D</text>
+          <text x="1066" y="90" text-anchor="end">NEW BOX</text><text x="40" y="420">PANEL</text>
+        </g>
+      </svg>
+      <svg class="art break__svg break__svg--tall" viewBox="0 0 360 400" aria-hidden="true" focusable="false">
+        <g class="lath"><line x1="0" y1="70" x2="360" y2="70"/><line x1="0" y1="150" x2="360" y2="150"/><line x1="0" y1="230" x2="360" y2="230"/><line x1="0" y1="310" x2="360" y2="310"/></g>
+        <g class="stud"><rect x="112" y="0" width="16" height="400"/><rect x="232" y="0" width="16" height="400"/></g>
+        <rect class="box" x="16" y="24" width="56" height="44" rx="3"/>
+        <g class="cut"><rect x="100" y="78" width="40" height="28"/><rect x="220" y="140" width="40" height="28"/><rect x="100" y="210" width="40" height="28"/><rect x="220" y="274" width="40" height="28"/></g>
+        <rect class="box" x="290" y="318" width="34" height="48" rx="3"/>
+        <path class="cu draw" d="M44 68 C 50 84, 80 92, 120 92 C 170 92, 200 150, 240 154 C 200 170, 160 210, 120 224 C 170 236, 200 280, 240 288 C 270 294, 290 300, 307 318"/>
+        <g class="lbl">
+          <text x="16" y="18">PANEL</text>
+          <text x="146" y="98">CUT A</text><text x="266" y="160" class="r">CUT B</text><text x="146" y="230">CUT C</text><text x="214" y="320" text-anchor="end">CUT D</text>
+          <text x="344" y="386" text-anchor="end">NEW BOX</text>
+        </g>
+      </svg>
+      <figure class="frame art-photo" data-fallback="Placeholder for process-wire-strip" aria-hidden="true"><img src="media/process-wire-strip.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="process-wire-strip" data-slot="process-wire-strip" alt=""></figure>
+    </figure>
+    <div class="container statement-stack__inner">
+      <h2 id="brk-h" class="statement">One new circuit, panel to box, through four small&nbsp;cuts.</h2>
+      <p class="statement-stack__caption">In old plaster the cable goes stud to stud through hand-sized openings, not an open wall. Each cut is patched before we pack up.</p>
     </div>
   </section>
 
-  <!-- Section 6: Tool — EV / Heat Pump Load Check -->
-  <section id="tool-ev-load" class="sec t-accent sec-tool annotation-callout annotation-callout--mirrored" data-sw-signature>
-    <div class="one-line one-line--right" aria-hidden="true"><div class="one-line__node is-active"><svg class="i"><use href="#i-ev"/></svg></div></div>
-    <div class="container annotation-callout__grid annotation-callout__grid--mirrored">
-      <div class="annotation-callout__tool" data-reveal="clip">
-        <form class="tool-ui tool-ui--dark" data-estimator aria-label="EV load calculator">
-          <h2>Will your panel fit a charger?</h2>
-          <p class="lead">Tell us your service size and big loads. We'll say whether a 240V circuit fits.</p>
-          <div class="est-field">
-            <label for="service-size">Service size</label>
-            <select id="service-size" name="service">
-              <option value="100">100 amp</option>
-              <option value="150">150 amp</option>
-              <option value="200">200 amp</option>
-            </select>
+  <!-- 6 · EV load check: tool-sheet (head strip over a full-width calculator) -->
+  <section id="tool-ev-load" class="sec t-accent sec-tool tool-sheet" data-sw-signature aria-labelledby="ev-h">
+    <div class="one-line" aria-hidden="true"><span class="one-line__node"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ev"/></svg></span></div>
+    <div class="container">
+      <div class="tool-sheet__head">
+        <div class="title-strip"><span class="title-strip__no">Sheet E-5</span><h2 id="ev-h">Will your panel fit a charger?</h2></div>
+        <div class="tool-sheet__intro">
+          <p class="lead">Set your service size and the big loads you already run. The bus fills in as you go.</p>
+          <p class="note">A rough check modelled on the NEC 220.82 method. The real calculation happens on site, before a permit is pulled.</p>
+        </div>
+      </div>
+      <div data-reveal="clip">
+        <form class="tool-ui ev-tool" data-ev-load aria-labelledby="ev-h">
+          <div class="ev-tool__inputs">
+            <div class="est-field">
+              <label for="ev-service">Service size (on the main breaker)</label>
+              <select id="ev-service" name="service">
+                <option value="100">100 amp</option>
+                <option value="150">150 amp</option>
+                <option value="200" selected>200 amp</option>
+              </select>
+            </div>
+            <fieldset class="est-loads">
+              <legend>Big electric loads you already have</legend>
+              <label class="chk"><input type="checkbox" name="loads" value="20" data-label="Central AC" checked> Central AC</label>
+              <label class="chk"><input type="checkbox" name="loads" value="24" data-label="Dryer"> Electric dryer</label>
+              <label class="chk"><input type="checkbox" name="loads" value="30" data-label="Range"> Electric range</label>
+              <label class="chk"><input type="checkbox" name="loads" value="19" data-label="Water heater"> Electric water heater</label>
+            </fieldset>
+            <div class="est-field">
+              <label for="ev-amps">Charger you want</label>
+              <select id="ev-amps" name="amps">
+                <option value="32">32 A Level 2</option>
+                <option value="40" selected>40 A Level 2</option>
+                <option value="48">48 A Level 2</option>
+              </select>
+            </div>
           </div>
-          <fieldset class="est-loads">
-            <legend>Existing big loads</legend>
-            <label><input type="checkbox" name="loads" value="ac"> Central AC</label>
-            <label><input type="checkbox" name="loads" value="dryer"> Electric dryer</label>
-            <label><input type="checkbox" name="loads" value="range"> Electric range</label>
-            <label><input type="checkbox" name="loads" value="waterheater"> Electric water heater</label>
-          </fieldset>
-          <div class="est-field">
-            <label for="charger-amps">Charger amps</label>
-            <select id="charger-amps" name="amps">
-              <option value="32">32A (Level 2)</option>
-              <option value="40">40A (Level 2)</option>
-              <option value="48">48A (Level 2)</option>
-            </select>
+          <div class="ev-tool__out">
+            <div class="ev-diagram" data-ev-diagram aria-hidden="true"></div>
+            <p class="ev-result" data-ev-result aria-live="polite">Rule of thumb: a 200-amp panel with gas heat usually fits a 40-amp charger. A 100-amp panel with central AC and an electric range usually does not.</p>
+            <p class="ev-price">Charger install $850 – $2,400 <span class="sample-tag">Sample pricing</span></p>
+            <a class="btn btn-primary" href="#contact" data-service="EV chargers">Price my job</a>
           </div>
-          <div class="tool-result" aria-live="polite"></div>
-          <a class="btn btn-primary" href="#contact" data-service="EV chargers">Get a charger quote</a>
         </form>
       </div>
-      <div class="annotation-callout__text annotation-callout__text--mirrored">
-        <p class="mono-note">Load calc uses NEC 220.82 method.</p>
-      </div>
     </div>
   </section>
 
-  <!-- Section 7: Proof — Reviews -->
-  <section id="proof" class="sec t-paper sec-proof mosaic" data-sw-signature>
-    <div class="one-line" aria-hidden="true"><div class="one-line__node is-active"><svg class="i"><use href="#i-star"/></svg></div></div>
-    <div class="container mosaic__inner">
-      <h2>What Columbus homeowners say</h2>
-      <p class="proof-aggregate">211 reviews · 4.9 ★ (<span class="sample-tag">Sample rating</span>)</p>
-      <div class="mosaic__grid" data-reveal-stagger>
+  <!-- 7 · Reviews: mosaic -->
+  <section id="proof" class="sec t-paper sec-proof mosaic" data-sw-signature aria-labelledby="proof-h">
+    <div class="one-line" aria-hidden="true"><span class="one-line__node"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span></div>
+    <div class="container">
+      <div class="mosaic__head">
+        <div class="sec-head">
+          <div class="title-strip"><span class="title-strip__no">Sheet E-6</span><h2 id="proof-h">What Columbus homeowners say</h2></div>
+        </div>
+        <p class="proof-aggregate"><span class="proof-aggregate__n">4.9</span><span>/ 5 from 211 reviews <span class="sample-tag">Sample rating</span></span></p>
+      </div>
+      <div class="mosaic__grid" data-reveal-stagger role="region" aria-label="Sample reviews" tabindex="0">
+        <figure class="plate plate--house art-frame mosaic__plate" role="img" aria-label="Elevation drawing of a brick two-storey house: the service drop reaches a mast and meter on the side wall, and the panel sits in the basement.">
+          <svg class="art plate__svg" viewBox="0 0 400 360" aria-hidden="true" focusable="false">
+            <g class="ln">
+              <line x1="10" y1="290" x2="390" y2="290"/>
+              <line x1="30" y1="60" x2="30" y2="290"/><line x1="14" y1="78" x2="46" y2="78"/>
+              <path d="M70 150 L200 70 L330 150"/><rect x="86" y="146" width="228" height="144"/>
+              <rect x="250" y="88" width="20" height="40"/>
+              <rect x="110" y="170" width="34" height="44"/><rect x="176" y="170" width="34" height="44"/><rect x="110" y="236" width="34" height="44"/><rect x="186" y="230" width="30" height="60"/>
+              <line x1="304" y1="120" x2="304" y2="190"/><circle cx="304" cy="204" r="10"/>
+            </g>
+            <g class="brick"><line x1="86" y1="162" x2="314" y2="162"/><line x1="86" y1="226" x2="314" y2="226"/><line x1="86" y1="258" x2="314" y2="258"/><line x1="86" y1="194" x2="314" y2="194"/></g>
+            <rect class="dash" x="86" y="290" width="228" height="56"/>
+            <rect class="ln-fill" x="280" y="304" width="18" height="28" rx="2"/>
+            <path class="cu draw" d="M46 78 C 140 80, 250 100, 304 120 M304 214 V304"/>
+            <g class="lbl">
+              <text x="310" y="114">MAST</text><text x="320" y="208">METER</text><text x="240" y="340">BASEMENT PANEL</text>
+              <text x="40" y="54">SERVICE DROP</text>
+            </g>
+          </svg>
+          <figure class="frame art-photo" data-fallback="Placeholder for home-columbus-brick" aria-hidden="true"><img src="media/home-columbus-brick.jpg" width="1170" height="780" loading="lazy" decoding="async" data-photo="home-columbus-brick" data-slot="home-columbus-brick" alt=""></figure>
+        </figure>
         
         <article class="card review-card">
-          <div class="review-stars" aria-label="5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></div>
-          <blockquote>"Our inspector flagged the Federal Pacific panel in our Clintonville house. They drew the whole line from the meter to the outlets on one sheet, swapped the panel in a day, and labeled every breaker in plain words."</blockquote>
+          <p class="review-card__head"><span>Note 01</span><span class="review-stars">5 / 5 <span aria-hidden="true">★</span></span></p>
+          <blockquote><p>Our inspector flagged the Federal Pacific panel in our Clintonville house. They drew the whole line from the meter to the outlets on one sheet, swapped the panel in a day, and labeled every breaker in plain words.</p></blockquote>
           <footer class="review-meta">
             <cite>Grace H., Columbus</cite>
             <span class="review-service">Panel replacement</span>
@@ -1021,8 +1239,8 @@ p { max-width: 65ch; }
         </article>
         
         <article class="card review-card">
-          <div class="review-stars" aria-label="5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></div>
-          <blockquote>"We wanted an EV charger and assumed we&#39;d need a new service. The load check said our 200-amp panel had room. The charger went in on a 40-amp circuit, permit and all, in one afternoon."</blockquote>
+          <p class="review-card__head"><span>Note 02</span><span class="review-stars">5 / 5 <span aria-hidden="true">★</span></span></p>
+          <blockquote><p>We wanted an EV charger and assumed we&#39;d need a new service. The load check said our 200-amp panel had room. The charger went in on a 40-amp circuit, permit and all, in one afternoon.</p></blockquote>
           <footer class="review-meta">
             <cite>Owen B., Dublin</cite>
             <span class="review-service">EV charger installation</span>
@@ -1031,8 +1249,8 @@ p { max-width: 65ch; }
         </article>
         
         <article class="card review-card">
-          <div class="review-stars" aria-label="5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></div>
-          <blockquote>"Every outlet upstairs was two-prong. They explained the three options, ran grounds where the walls allowed and used GFCI protection where they didn&#39;t. Each outlet has a clear label now."</blockquote>
+          <p class="review-card__head"><span>Note 03</span><span class="review-stars">5 / 5 <span aria-hidden="true">★</span></span></p>
+          <blockquote><p>Every outlet upstairs was two-prong. They explained the three options, ran grounds where the walls allowed and used GFCI protection where they didn&#39;t. Each outlet has a clear label now.</p></blockquote>
           <footer class="review-meta">
             <cite>Lena K., Upper Arlington</cite>
             <span class="review-service">Two-prong outlet updates</span>
@@ -1041,8 +1259,8 @@ p { max-width: 65ch; }
         </article>
         
         <article class="card review-card">
-          <div class="review-stars" aria-label="5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></div>
-          <blockquote>"Kitchen lights flickered whenever the fridge kicked on. It turned out to be a loose neutral in the panel. Found and fixed in under an hour, and they showed me the burned lug."</blockquote>
+          <p class="review-card__head"><span>Note 04</span><span class="review-stars">5 / 5 <span aria-hidden="true">★</span></span></p>
+          <blockquote><p>Kitchen lights flickered whenever the fridge kicked on. It turned out to be a loose neutral in the panel. Found and fixed in under an hour, and they showed me the burned lug.</p></blockquote>
           <footer class="review-meta">
             <cite>Sam T., Worthington</cite>
             <span class="review-service">Troubleshooting and repairs</span>
@@ -1051,8 +1269,8 @@ p { max-width: 65ch; }
         </article>
         
         <article class="card review-card">
-          <div class="review-stars" aria-label="5 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></div>
-          <blockquote>"The heat pump installers needed a new circuit and disconnect before they could start. Lineside came out two days later and had it ready for them. Good coordination with the HVAC crew."</blockquote>
+          <p class="review-card__head"><span>Note 05</span><span class="review-stars">5 / 5 <span aria-hidden="true">★</span></span></p>
+          <blockquote><p>The heat pump installers needed a new circuit and disconnect before they could start. Lineside came out two days later and had it ready for them. Good coordination with the HVAC crew.</p></blockquote>
           <footer class="review-meta">
             <cite>Beth R., Westerville</cite>
             <span class="review-service">Heat pump circuits</span>
@@ -1061,8 +1279,8 @@ p { max-width: 65ch; }
         </article>
         
         <article class="card review-card">
-          <div class="review-stars" aria-label="4 stars"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></div>
-          <blockquote>"The surge protector went in fine, but scheduling took longer than I expected because of a permit backlog. They kept me updated by text the whole time."</blockquote>
+          <p class="review-card__head"><span>Note 06</span><span class="review-stars">4 / 5 <span aria-hidden="true">★</span></span></p>
+          <blockquote><p>The surge protector went in fine, but scheduling took longer than I expected because of a permit backlog. They kept me updated by text the whole time.</p></blockquote>
           <footer class="review-meta">
             <cite>Carl M., Hilliard</cite>
             <span class="review-service">Whole-home surge protection</span>
@@ -1074,159 +1292,170 @@ p { max-width: 65ch; }
     </div>
   </section>
 
-  <!-- Section 8: Service Area + ZIP Checker -->
-  <section id="area" class="sec t-mid sec-area map-check">
+  <!-- 8 · Area + ZIP: map-check -->
+  <section id="area" class="sec t-mid sec-area map-check" aria-labelledby="area-h">
     <div class="container map-check__grid">
       <div class="map-check__map" data-reveal>
-        <svg class="area-map" viewBox="0 0 400 300" role="img" aria-label="Map of Columbus metro service area">
-          <rect x="20" y="20" width="360" height="260" rx="8" fill="none" stroke="var(--rule)" stroke-width="1"/>
-          <circle cx="200" cy="150" r="6" fill="var(--accent)"/><text x="200" y="140" text-anchor="middle" fill="var(--ink)" font-size="12">Columbus</text>
-          <circle cx="140" cy="100" r="4" fill="var(--muted)"/><text x="140" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">Upper Arlington</text>
-          <circle cx="260" cy="90" r="4" fill="var(--muted)"/><text x="260" y="82" text-anchor="middle" fill="var(--muted)" font-size="10">Worthington</text>
-          <circle cx="280" cy="160" r="4" fill="var(--muted)"/><text x="280" y="152" text-anchor="middle" fill="var(--muted)" font-size="10">Westerville</text>
-          <circle cx="120" cy="170" r="4" fill="var(--muted)"/><text x="120" y="162" text-anchor="middle" fill="var(--muted)" font-size="10">Dublin</text>
-          <circle cx="100" cy="130" r="4" fill="var(--muted)"/><text x="100" y="122" text-anchor="middle" fill="var(--muted)" font-size="10">Hilliard</text>
-          <circle cx="240" cy="200" r="4" fill="var(--muted)"/><text x="240" y="192" text-anchor="middle" fill="var(--muted)" font-size="10">Bexley</text>
+        <svg class="area-map" viewBox="0 0 400 320" role="img" aria-label="Feeder map: lines run from Columbus out to Upper Arlington, Worthington, Westerville, Dublin, Hilliard and Bexley." focusable="false">
+          <g class="feed">
+            <path d="M200 176 L150 130"/><path d="M200 176 L204 72"/><path d="M200 176 L316 86"/><path d="M200 176 L96 92"/><path d="M200 176 L70 190"/><path d="M200 176 L300 210"/>
+          </g>
+          <g class="town">
+            <circle cx="150" cy="130" r="6"/><circle cx="204" cy="72" r="6"/><circle cx="316" cy="86" r="6"/><circle cx="96" cy="92" r="6"/><circle cx="70" cy="190" r="6"/><circle cx="300" cy="210" r="6"/>
+          </g>
+          <rect class="hub" x="186" y="162" width="28" height="28" rx="3"/>
+          <g class="map-lbl">
+            <text x="140" y="154" text-anchor="end">Upper Arlington</text>
+            <text x="204" y="58" text-anchor="middle">Worthington</text>
+            <text x="316" y="72" text-anchor="middle">Westerville</text>
+            <text x="96" y="78" text-anchor="middle">Dublin</text>
+            <text x="70" y="214" text-anchor="middle">Hilliard</text>
+            <text x="300" y="234" text-anchor="middle">Bexley</text>
+            <text x="200" y="212" text-anchor="middle" class="hub-lbl">Columbus</text>
+          </g>
+          <text x="16" y="304" class="map-note">FEEDER MAP · NOT TO SCALE</text>
         </svg>
       </div>
       <div class="map-check__info">
-        <h2>Serving Columbus and nearby</h2>
-        <p class="area-list">Upper Arlington, Worthington, Westerville, Dublin, Hilliard and Bexley</p>
-        <div class="zip-checker" data-zip>
+        <div class="title-strip"><span class="title-strip__no">Sheet E-7</span><h2 id="area-h">Serving Columbus and nearby</h2></div>
+        <p class="area-list">Upper Arlington, Worthington, Westerville, Dublin, Hilliard and Bexley.</p>
+        <form class="zip-checker" data-zip data-zip-yes="Yes, {zip} is on our map." data-zip-no="{zip} is outside our usual map. Call and we’ll tell you straight.">
           <label for="zip-input">Check your ZIP</label>
           <div class="zip-row">
-            <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. ZIP" autocomplete="postal-code">
-            <button type="button" class="btn btn-primary" data-zip-btn>Check</button>
+            <input id="zip-input" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="5 digits">
+            <button type="submit" class="btn btn-primary">Check</button>
           </div>
-          <div class="zip-result" aria-live="polite"></div>
-        </div>
+          <p class="zip-result" data-zip-result></p>
+        </form>
         <div class="hours-block">
           <h3>Hours</h3>
           <dl class="hours"><div><dt>Mon</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Tue</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Wed</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Thu</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Fri</dt><dd>7:30 am – 5:30 pm</dd></div><div><dt>Sat</dt><dd>9 am – 1 pm</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
-          <p data-open-now class="open-now"></p>
+          <p data-open-now class="open-now">Mon to Fri 7:30 am to 5:30 pm</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Section 9: Contact Form -->
-  <section id="contact" class="sec t-paper sec-contact form-single">
-    <div class="one-line" aria-hidden="true"><div class="one-line__node is-active"><svg class="i"><use href="#i-bolt"/></svg></div></div>
+  <!-- 9 · Contact: form-single -->
+  <section id="contact" class="sec t-paper sec-contact form-single" data-sw-signature aria-labelledby="contact-h">
+    <div class="one-line one-line--end" aria-hidden="true"><span class="one-line__node"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-outlet"/></svg></span></div>
     <div class="container form-single__inner">
-      <h2>Price your job</h2>
-      <p class="lead">Tell us what's wrong. We'll reply with a range and a time window.</p>
-      <form class="lead-form" data-lead novalidate>
-        <input type="hidden" name="website2" tabindex="-1" autocomplete="off">
-        <input type="hidden" name="t" value="">
-        <div class="form-step" data-step="1">
-          <label for="svc-select">What do you need?</label>
-          <select id="svc-select" name="service" required>
-            <option value="">Choose a service…</option>
-            
-            <option value="Panels">Panel replacement</option>
-            
-            <option value="Service upgrades">Service upgrades</option>
-            
-            <option value="EV chargers">EV charger installation</option>
-            
-            <option value="Heat pumps">Heat pump circuits</option>
-            
-            <option value="GFCI / AFCI">GFCI and AFCI updates</option>
-            
-            <option value="Two-prong outlets">Two-prong outlet updates</option>
-            
-            <option value="Surge protection">Whole-home surge protection</option>
-            
-            <option value="Repairs">Troubleshooting and repairs</option>
-            
-            <option value="Lighting">Lighting and ceiling fans</option>
-            
-            <option value="Inspections">Electrical inspections</option>
-            
-            <option value="Other">Something else</option>
-          </select>
-          <button type="button" class="btn btn-primary" data-next>Next</button>
-        </div>
-        <div class="form-step" data-step="2" hidden>
-          <label for="details">Describe the job</label>
-          <textarea id="details" name="details" rows="3" placeholder="Age of home, what's happening, anything we should know"></textarea>
-          <div class="form-nav">
-            <button type="button" class="btn btn-ghost" data-prev>Back</button>
-            <button type="button" class="btn btn-primary" data-next>Next</button>
+      <div class="sec-head">
+        <div class="title-strip"><span class="title-strip__no">Sheet E-8</span><h2 id="contact-h">Price my job</h2></div>
+        <p class="lead">Four short steps. Priya S. replies with a range and a time window.</p>
+      </div>
+      <div class="form-card">
+        <form class="lead-form" data-lead novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to Lineside.">
+          <ol class="form-progress" data-form-progress aria-label="Form progress">
+            <li><span>Job</span></li><li><span>Details</span></li><li><span>When</span></li><li><span>You</span></li>
+          </ol>
+          <fieldset class="form-step" data-step data-step-title="What needs doing">
+            <legend>What needs doing?</legend>
+            <div class="svc-pick">
+              
+              <label class="pick"><input type="radio" name="service" value="Panel replacement" required data-error="Pick the closest job."> <span>Panel replacement</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="Service upgrades" required data-error="Pick the closest job."> <span>Service upgrades</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="EV charger installation" required data-error="Pick the closest job."> <span>EV charger installation</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="Heat pump circuits" required data-error="Pick the closest job."> <span>Heat pump circuits</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="GFCI and AFCI updates" required data-error="Pick the closest job."> <span>GFCI and AFCI updates</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="Two-prong outlet updates" required data-error="Pick the closest job."> <span>Two-prong outlet updates</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="Whole-home surge protection" required data-error="Pick the closest job."> <span>Whole-home surge protection</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="Troubleshooting and repairs" required data-error="Pick the closest job."> <span>Troubleshooting and repairs</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="Lighting and ceiling fans" required data-error="Pick the closest job."> <span>Lighting and ceiling fans</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="Electrical inspections" required data-error="Pick the closest job."> <span>Electrical inspections</span></label>
+              
+              <label class="pick"><input type="radio" name="service" value="Something else"> <span>Something else</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="form-step" data-step data-step-title="Job details">
+            <legend>Tell us about the house</legend>
+            <label for="f-zip">ZIP code</label>
+            <input id="f-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code">
+            <label for="f-details">What is happening? <span class="opt">(optional)</span></label>
+            <textarea id="f-details" name="details" rows="3" placeholder="Age of the house, what trips, what you want to add"></textarea>
+          </fieldset>
+          <fieldset class="form-step" data-step data-step-title="When">
+            <legend>When should we come by?</legend>
+            <div class="when-pick">
+              <label class="pick"><input type="radio" name="when" value="This week" checked> <span>This week</span></label>
+              <label class="pick"><input type="radio" name="when" value="Next couple of weeks"> <span>Next couple of weeks</span></label>
+              <label class="pick"><input type="radio" name="when" value="Just planning"> <span>Just planning</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="form-step" data-step data-step-title="Contact">
+            <legend>Where do we send the number?</legend>
+            <label for="f-name">Your name</label>
+            <input id="f-name" name="name" type="text" required autocomplete="name">
+            <label for="f-phone">Phone</label>
+            <input id="f-phone" name="phone" type="tel" required autocomplete="tel">
+            <label for="f-email">Email <span class="opt">(optional)</span></label>
+            <input id="f-email" name="email" type="email" autocomplete="email">
+          </fieldset>
+          <div class="hp" aria-hidden="true"><label>Website <input name="website2" tabindex="-1" autocomplete="off"></label></div>
+          <input type="hidden" name="t" value="">
+          <div class="form-nav" data-form-nav>
+            <button type="button" class="btn btn-secondary" data-back>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+            <button type="submit" class="btn btn-primary" data-submit>Send it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
           </div>
+          <p class="form-status" data-form-status></p>
+          <p class="form-micro">No spam. Only Priya S. reads this. Rather talk? <a class="tel-plain" href="tel:+16145550110">(614) 555-0110</a></p>
+        </form>
+        <div class="form-thanks" data-thanks-box hidden tabindex="-1">
+          <span class="form-thanks__node" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span>
+          <p>Thanks. This is a demo, nothing was sent. On the real site this goes to Lineside.</p>
         </div>
-        <div class="form-step" data-step="3" hidden>
-          <label for="timing">When works best?</label>
-          <select id="timing" name="timing">
-            <option value="morning">Morning (7–12)</option>
-            <option value="afternoon">Afternoon (12–5)</option>
-            <option value="flexible">Flexible</option>
-          </select>
-          <div class="form-nav">
-            <button type="button" class="btn btn-ghost" data-prev>Back</button>
-            <button type="button" class="btn btn-primary" data-next>Next</button>
-          </div>
-        </div>
-        <div class="form-step" data-step="4" hidden>
-          <label for="name">Your name</label>
-          <input id="name" name="name" type="text" required autocomplete="name">
-          <label for="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" required autocomplete="tel">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required autocomplete="email">
-          <div class="form-nav">
-            <button type="button" class="btn btn-ghost" data-prev>Back</button>
-            <button type="submit" class="btn btn-primary">Send it</button>
-          </div>
-          <p class="form-micro">No spam. Your info stays between you and Priya S..</p>
-        </div>
-        <div class="form-thanks" hidden>
-          <p>Thanks, {name}. In your version this goes straight to your phone and inbox.</p>
-        </div>
-      </form>
+      </div>
     </div>
   </section>
 
 </main>
 
-<footer id="footer" class="sec t-deep sec-footer ground-rule" data-sw-signature>
+<footer id="footer" class="t-deep sec-footer ground-rule" data-sw-signature>
   <div class="container ground-rule__inner">
-    <div class="ground-rule__symbol" aria-hidden="true">
-      <svg class="i i-lg"><use href="#i-ground"/></svg>
-    </div>
+    <div class="ground-rule__symbol" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ground"/></svg><span>Line ends here. Grounded.</span></div>
     <div class="ground-rule__cols">
       <div class="ground-rule__biz">
         <p class="footer-name">Lineside Electric</p>
-        <p>Columbus, OH</p>
+        <p>Columbus, OH · Upper Arlington, Worthington, Westerville, Dublin, Hilliard and Bexley</p>
         <p><a class="tel-plain" href="tel:+16145550110">(614) 555-0110</a></p>
-        <p>hello@lineside-electric.example</p>
+        <p><a href="mailto:hello@lineside-electric.example">hello@lineside-electric.example</a></p>
       </div>
-      <div class="ground-rule__links">
+      <nav class="ground-rule__links" aria-label="Footer">
         <a href="#services-main">Services</a>
+        <a href="#tool-panel-id">Panel check</a>
+        <a href="#tool-ev-load">EV load check</a>
         <a href="#proof">Reviews</a>
         <a href="#area">Service area</a>
-        <a href="#contact">Price your job</a>
-      </div>
+        <a href="#contact">Price my job</a>
+      </nav>
       <div class="ground-rule__legal">
-        <p>Licence # SAMPLE-OH-EC-48211 (<span class="sample-tag">Sample licence</span>)</p>
+        <p>Licence # SAMPLE-OH-EC-48211 <span class="sample-tag">Sample licence</span></p>
         <p>Sample website by Site Sledge. Business details are illustrative.</p>
-        <p>© 2026</p>
-        <ul class="credits"><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li><li>Photo by unknown on <span>Pexels</span></li></ul>
+        <p>© 2026 Lineside Electric</p>
+        <ul class="credits"></ul>
       </div>
     </div>
   </div>
 </footer>
 
-<div class="mobilebar" data-mobilebar>
-  <a class="btn btn-call btn-primary" href="tel:+16145550110"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (614) 555-0110</span></a>
-  <a class="btn btn-secondary" href="#contact" data-service="Panels">Price it</a>
+<div class="mobilebar t-deep" data-mobilebar>
+  <a class="btn btn-call btn-secondary" href="tel:+16145550110"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (614) 555-0110</span></a>
+  <a class="btn btn-primary" href="#contact" data-service="Panels">Price my job</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Lineside Electric","short":"Lineside","phone":"(614) 555-0110","phoneE164":"+16145550110","sms":true,"email":"hello@lineside-electric.example","city":"Columbus","state":"OH","timezone":"America/New_York","areas":["Upper Arlington","Worthington","Westerville","Dublin","Hilliard","Bexley"],"zips":["43201","43202","43205","43206","43209","43212","43214","43215","43221","43220","43085","43081","43016","43026"],"hours":{"mon":["07:30","17:30"],"tue":["07:30","17:30"],"wed":["07:30","17:30"],"thu":["07:30","17:30"],"fri":["07:30","17:30"],"sat":["09:00","13:00"],"sun":null},"emergency":true},"services":[{"name":"Panel replacement","short":"Panels"},{"name":"Service upgrades","short":"Service upgrades"},{"name":"EV charger installation","short":"EV chargers"},{"name":"Heat pump circuits","short":"Heat pumps"},{"name":"GFCI and AFCI updates","short":"GFCI / AFCI"},{"name":"Two-prong outlet updates","short":"Two-prong outlets"},{"name":"Whole-home surge protection","short":"Surge protection"},{"name":"Troubleshooting and repairs","short":"Repairs"},{"name":"Lighting and ceiling fans","short":"Lighting"},{"name":"Electrical inspections","short":"Inspections"}],"proof":{"label":"Sample","prices":[{"item":"Panel replacement","from":"$2,600","to":"$5,600","note":"100-200 amp, permit included"},{"item":"EV charger installation","from":"$850","to":"$2,400","note":"Level 2, depends on distance to the panel"},{"item":"GFCI outlet","from":"$160","to":"$320","unit":"per outlet","note":"installed and tested"},{"item":"Whole-home surge protector","from":"$350","to":"$750","note":"mounted at the main panel"},{"item":"Electrical inspection","from":"$150","to":"$325","note":"written report with photos"}]},"hours":{"mon":["07:30","17:30"],"tue":["07:30","17:30"],"wed":["07:30","17:30"],"thu":["07:30","17:30"],"fri":["07:30","17:30"],"sat":["09:00","13:00"],"sun":null},"timezone":"America/New_York","zips":["43201","43202","43205","43206","43209","43212","43214","43215","43221","43220","43085","43081","43016","43026"],"areas":["Upper Arlington","Worthington","Westerville","Dublin","Hilliard","Bexley"],"phone":"(614) 555-0110","phoneE164":"+16145550110"}</script>
 <script defer src="vendor/gsap.min.js"></script>
 <script defer src="vendor/ScrollTrigger.min.js"></script>
-<script defer src="vendor/SplitText.min.js"></script>
 <script defer src="vendor/DrawSVGPlugin.min.js"></script>
-<script defer src="vendor/lenis.min.js"></script>
 <script defer src="app.js"></script>
 </body>
 </html>

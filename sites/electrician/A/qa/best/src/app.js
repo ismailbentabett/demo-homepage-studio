@@ -1,144 +1,135 @@
-/* electrician-A signature: one-line trace + scroll stories */
+/* electrician-A: the one-line diagram trace, two drawn stories, and the EV load check */
 (function () {
-  if (!window.SW) return;
+  var root = document.documentElement;
+  var motion = !(window.SW && SW.reduced) && root.classList.contains('sw-motion');
 
-  /* Signature: copper line draw + node activation via ScrollTrigger */
-  SW.mod('signature', function () {
-    var nodes = document.querySelectorAll('.one-line__node');
-    var sections = document.querySelectorAll('[data-sw-signature]');
-    if (!nodes.length || !sections.length) return;
+  /* Photos are optional on top of the drawings: show one only when it really loaded */
+  document.querySelectorAll('.art-frame .art-photo img').forEach(function (img) {
+    var frame = img.closest('.art-frame');
+    function check() { if (img.naturalWidth > 8) frame.classList.add('has-photo'); }
+    if (img.complete) check(); else img.addEventListener('load', check);
+  });
 
-    /* Inject trace SVG into each one-line container for DrawSVG animation */
-    var hasMotion = !SW.reduced && document.documentElement.classList.contains('sw-motion');
-    var hasDrawSVG = hasMotion && typeof gsap !== 'undefined' && typeof DrawSVGPlugin !== 'undefined';
-
-    if (hasDrawSVG) {
-      gsap.registerPlugin(DrawSVGPlugin);
-      document.querySelectorAll('.one-line').forEach(function (line) {
-        var trace = document.createElement('div');
-        trace.className = 'one-line__trace' + (line.classList.contains('one-line--right') ? ' one-line__trace--right' : '');
-        trace.innerHTML = '<svg preserveAspectRatio="none"><path d="M0,0 L0,100%"/></svg>';
-        line.parentNode.insertBefore(trace, line.nextSibling);
-        var path = trace.querySelector('path');
-        gsap.set(path, { drawSVG: '0%' });
-
-        /* Find which section this line belongs to by walking up or matching index */
-        var parentSec = line.closest('.sec');
-        if (parentSec) {
-          ScrollTrigger.create({
-            trigger: parentSec,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            scrub: 0.5,
-            onUpdate: function (self) {
-              gsap.to(path, { drawSVG: (self.progress * 100) + '%', duration: 0.1, overwrite: true });
-            }
-          });
-        }
+  /* EV load check: works with or without motion */
+  var ev = document.querySelector('[data-ev-load]');
+  if (ev) {
+    var out = ev.querySelector('[data-ev-result]');
+    var dia = ev.querySelector('[data-ev-diagram]');
+    var BASE = 30;
+    var calc = function () {
+      var svc = parseInt(ev.querySelector('#ev-service').value, 10) || 200;
+      var amps = parseInt(ev.querySelector('#ev-amps').value, 10) || 40;
+      var loads = [];
+      ev.querySelectorAll('[name="loads"]:checked').forEach(function (c) {
+        loads.push({ a: parseInt(c.value, 10) || 0, l: c.getAttribute('data-label') || '' });
       });
-    }
+      var other = loads.reduce(function (s, x) { return s + x.a; }, 0);
+      var total = BASE + other + amps;
+      var safe = Math.round(svc * 0.8);
+      var verdict, why;
+      if (total <= safe) {
+        verdict = 'Likely fits.';
+        why = 'About ' + total + ' A of steady load against an 80% line of ' + safe + ' A on a ' + svc + ' A service. We confirm with a load calculation before we pull the permit.';
+      } else if (total <= svc) {
+        verdict = 'Tight. Ask about load management.';
+        why = 'About ' + total + ' A against ' + safe + ' A. A smaller charger or a load-sharing switch often makes it fit without a new service.';
+      } else {
+        verdict = 'Likely needs a service upgrade.';
+        why = 'About ' + total + ' A is more than a ' + svc + ' A service carries. A 200 A upgrade or a load-managed charger are the two routes.';
+      }
+      out.innerHTML = '<b>' + verdict + '</b>' + why;
 
-    /* Node activation: toggle is-active as sections enter view */
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var idx = Array.prototype.indexOf.call(sections, entry.target);
-          nodes.forEach(function (n, i) {
-            n.classList.toggle('is-active', i <= idx);
-          });
-        }
+      /* stacked bar drawing */
+      var W = 440, H = 260, top = 30, bot = 222, x = 170, w = 96;
+      var max = Math.max(svc, total) * 1.05;
+      var sc = (bot - top) / max;
+      var y = bot, segs = '';
+      var parts = [{ a: BASE, l: 'House', c: 'seg--base' }].concat(loads.map(function (p) { return { a: p.a, l: p.l, c: 'seg--load' }; }));
+      parts.push({ a: amps, l: 'EV ' + amps + ' A', c: 'seg--ev' });
+      parts.forEach(function (p) {
+        var h = p.a * sc; y -= h;
+        segs += '<rect class="seg ' + p.c + '" x="' + x + '" y="' + y.toFixed(1) + '" width="' + w + '" height="' + h.toFixed(1) + '"/>';
+        if (h > 16) segs += '<text x="' + (x + w + 10) + '" y="' + (y + h / 2 + 5).toFixed(1) + '">' + p.l + '</text>';
       });
-    }, { threshold: 0.3 });
+      var capY = bot - svc * sc, limY = bot - safe * sc;
+      dia.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '">' +
+        (total > svc ? '<rect class="over" x="' + (x - 6) + '" y="' + y.toFixed(1) + '" width="' + (w + 12) + '" height="' + (capY - y).toFixed(1) + '"/>' : '') +
+        segs +
+        '<line class="cap" x1="20" y1="' + capY.toFixed(1) + '" x2="' + (x + w + 6) + '" y2="' + capY.toFixed(1) + '"/>' +
+        '<text class="hd" x="20" y="' + (capY - 6).toFixed(1) + '">' + svc + ' A service</text>' +
+        '<line class="lim" x1="20" y1="' + limY.toFixed(1) + '" x2="' + (x + w + 6) + '" y2="' + limY.toFixed(1) + '"/>' +
+        '<text x="20" y="' + (limY + 18).toFixed(1) + '">80% · ' + safe + ' A</text>' +
+        '<line class="cap" x1="20" y1="' + bot + '" x2="' + (W - 10) + '" y2="' + bot + '"/>' +
+        '<text x="20" y="' + (bot + 22) + '">Total ≈ ' + total + ' A</text>' +
+        '</svg>';
+    };
+    ev.addEventListener('change', calc);
+    ev.addEventListener('submit', function (e) { e.preventDefault(); calc(); });
+    calc();
+  }
 
-    sections.forEach(function (s) { observer.observe(s); });
-  });
+  if (!motion) return;
 
-  /* Scroll story: hero entrance (GSAP) */
-  SW.mod('hero-story', function () {
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  /* Signature: the copper line fills each section as you scroll, nodes light as they pass */
+  var lines = Array.prototype.slice.call(document.querySelectorAll('.one-line'));
+  if (lines.length) {
+    root.classList.add('sig-on');
+    var ticking = false;
+    var update = function () {
+      ticking = false;
+      var vh = window.innerHeight;
+      lines.forEach(function (ln) {
+        var r = ln.getBoundingClientRect();
+        var p = r.height ? (vh * 0.62 - r.top) / r.height : 0;
+        p = Math.max(0, Math.min(1, p));
+        ln.style.setProperty('--sp', p.toFixed(3));
+        var node = ln.querySelector('.one-line__node');
+        if (node) node.classList.toggle('is-lit', node.getBoundingClientRect().top < vh * 0.7);
+      });
+    };
+    var req = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', req);
+    update();
+  }
 
-    gsap.registerPlugin(ScrollTrigger);
+  if (typeof gsap === 'undefined') return;
+  if (typeof DrawSVGPlugin !== 'undefined') gsap.registerPlugin(DrawSVGPlugin);
+  if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+  var canDraw = typeof DrawSVGPlugin !== 'undefined';
 
-    document.fonts.ready.then(function () {
-      ScrollTrigger.refresh();
+  /* Intro (≤ 1.2 s): the hero diagram draws itself; the h1 is readable from frame one */
+  /* the service drop runs pole → meter, down the bus, then each proof circuit branches off */
+  var wires = document.querySelectorAll('.sec-hero .drop-wire');
+  var bus = document.querySelector('.hero-bus');
+  if (wires.length && bus) {
+    var tl = gsap.timeline({ delay: 0.1 });
+    tl.from(wires, { scaleX: 0, duration: 0.4, ease: 'power2.inOut' })
+      .from('.hero-sheet .meter', { scale: 0.6, opacity: 0, duration: 0.25, ease: 'back.out(2)' }, 0.32)
+      .fromTo(bus, { '--bus-s': 0 }, { '--bus-s': 1, duration: 0.4, ease: 'power2.inOut' }, 0.45)
+      .from('.hero-bus .brk, .hero-bus .ckt-no', { opacity: 0, x: -6, duration: 0.25, stagger: 0.05 }, 0.75);
+  }
 
-      var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  if (typeof ScrollTrigger === 'undefined') return;
 
-      /* Photo slides in from right */
-      var photo = document.querySelector('.offset-frame__media');
-      if (photo) {
-        gsap.set(photo, { x: 60, opacity: 0 });
-        tl.to(photo, { x: 0, opacity: 1, duration: 0.6 }, 0);
-      }
-
-      /* h1 line-mask reveal handled by split module + CSS; just trigger is-in */
-      var h1 = document.querySelector('#hero h1');
-      if (h1) {
-        tl.add(function () { h1.classList.add('is-in'); }, 0.2);
-      }
+  /* Story 1: the fished wire runs through the wall cuts as the break scrolls past */
+  document.querySelectorAll('.break__svg--wide .draw').forEach(function (wire) {
+    if (!canDraw) return;
+    gsap.fromTo(wire, { drawSVG: '0%' }, {
+      drawSVG: '100%', ease: 'none',
+      scrollTrigger: { trigger: wire.closest('svg'), start: 'top 80%', end: 'bottom 55%', scrub: 0.6 }
     });
   });
 
-  /* Scroll story: break photo unclip */
-  SW.mod('break-story', function () {
-    if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    var breakPhoto = document.querySelector('#break-process .statement-stack__photo');
-    if (!breakPhoto) return;
-
-    ScrollTrigger.create({
-      trigger: '#break-process',
-      start: 'top 85%',
-      once: true,
-      onEnter: function () {
-        breakPhoto.classList.add('is-in');
-      }
+  /* Story 2: each sheet drawing traces its copper run when it enters */
+  if (canDraw) {
+    document.querySelectorAll('.plate--ev .draw, .plate--house .draw').forEach(function (p) {
+      gsap.fromTo(p, { drawSVG: '0%' }, {
+        drawSVG: '100%', duration: 1, ease: 'power2.out',
+        scrollTrigger: { trigger: p.closest('figure'), start: 'top 78%', once: true }
+      });
     });
-  });
+  }
 
-  /* EV Load Estimator: render SVG diagram in result */
-  SW.mod('ev-diagram', function () {
-    var form = document.querySelector('[data-estimator]');
-    if (!form) return;
-    var resultEl = form.querySelector('.tool-result');
-    if (!resultEl) return;
-
-    /* Observe mutations to inject diagram after kit populates text */
-    var mo = new MutationObserver(function () {
-      var text = resultEl.textContent || '';
-      if (!text || resultEl.querySelector('.load-diagram')) return;
-
-      /* Parse capacity info from result text */
-      var serviceMatch = text.match(/(\d+)\s*amp/i);
-      var serviceSize = serviceMatch ? parseInt(serviceMatch[1], 10) : 200;
-      var fits = /likely fits/i.test(text);
-      var needsUpgrade = /needs upgrade|may need/i.test(text);
-
-      /* Calculate visual load bars */
-      var loads = form.querySelectorAll('[name="loads"]:checked');
-      var loadCount = loads.length;
-      var chargerAmps = parseInt(form.querySelector('[name="amps"]').value, 10) || 32;
-      var totalLoadPct = Math.min(100, Math.round(((loadCount * 15) + chargerAmps) / serviceSize * 100));
-      var barColor = fits ? 'var(--accent)' : (needsUpgrade ? '#c0392b' : 'var(--muted)');
-
-      var svg = '<div class="load-diagram">' +
-        '<svg viewBox="0 0 200 120" role="img" aria-label="Load calculation diagram showing ' + totalLoadPct + '% of ' + serviceSize + ' amp capacity">' +
-        '<line class="bus" x1="20" y1="10" x2="20" y2="110"/>' +
-        '<text x="8" y="8" text-anchor="middle">' + serviceSize + 'A</text>' +
-        '<rect class="load-bar" x="30" y="' + (110 - totalLoadPct) + '" width="40" height="' + totalLoadPct + '" fill="' + barColor + '"/>' +
-        '<text x="50" y="' + (105 - totalLoadPct) + '" text-anchor="middle">' + totalLoadPct + '%</text>' +
-        '<line class="capacity" x1="25" y1="' + (110 - 80) + '" x2="75" y2="' + (110 - 80) + '"/>' +
-        '<text x="80" y="' + (114 - 80) + '">80% safe</text>' +
-        '<line class="trace" x1="70" y1="' + (110 - totalLoadPct / 2) + '" x2="120" y2="' + (110 - totalLoadPct / 2) + '"/>' +
-        '<circle cx="130" cy="' + (110 - totalLoadPct / 2) + '" r="8" fill="' + barColor + '"/>' +
-        '<text x="145" y="' + (114 - totalLoadPct / 2) + '">' + (fits ? 'Fits' : (needsUpgrade ? 'Upgrade' : 'Check')) + '</text>' +
-        '</svg></div>';
-
-      resultEl.insertAdjacentHTML('beforeend', svg);
-    });
-
-    mo.observe(resultEl, { childList: true, subtree: true, characterData: true });
-  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
 })();
