@@ -88,3 +88,6 @@ roofer-B was a test fixture (11-byte stub, worker t2) force-delivered at 8.88. I
 
 ## 2026-10-26: scoring counts render errors
 `tools/lib/scoring.mjs` `checkState` read `qa/render.json` (the capture output, which lists problems under `errors`) as if it were a check report, so horizontal overflow, page errors and text hidden under reduced motion never counted as blockers. It now counts `render.json.errors` as blockers and adds the blockers and warnings from `render-check.json` when that report is at least as new.
+
+## 2026-10-27: check-static sample-label match ignores clock times
+The sample-labels check matched a numeric fact (such as a rating of `4.8` or a count of `30`) anywhere in visible text, so opening hours like `5:30 pm` or `7 a.m.` were flagged as an unlabelled fact. The word-boundary regex now skips a match that follows a colon or is followed by `am/pm` or `:NN`. Real facts like `4.8` and `30 years` still match (tested on 9 cases). The check only got narrower, so no delivered site can start failing.

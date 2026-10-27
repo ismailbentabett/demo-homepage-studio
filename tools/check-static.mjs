@@ -334,7 +334,8 @@ if (p.rating !== undefined) needLabel.push({ needle: String(p.rating), what: "ra
 for (const s of priceStrings) { const m = s.match(DOLLAR_RE); if (m) needLabel.push({ needle: m[0], what: "price" }); }
 if (p.license) needLabel.push({ needle: String(p.license), what: "licence number" });
 for (const n of needLabel) {
-  const re = n.word ? new RegExp(`(?<![\\d.])${esc(n.needle)}(?![\\d])`) : null;
+  // A whole-number rating ("5") must not match clock times like "5 pm", "5:00" or "8–5 pm".
+  const re = n.word ? new RegExp(`(?<![\\d.:])${esc(n.needle)}(?![\\d])(?!\\s*(?:[ap]\\.?\\s?m\\b|:\\d))`, "i") : null;
   for (const blk of blockList) {
     const hit = re ? re.test(blk.text) : blk.text.includes(n.needle);
     if (!hit) continue;
