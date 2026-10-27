@@ -1,0 +1,72 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 9.0,
+      "notes": "dist/index.html: h1='GONE' (1 word, type-mask); kicker has trade+city; lead has outcome; phone in header+hero CTA; proof line with Sample label; two distinct CTAs; next band peeks via sec-trust padding. Mobile h1 ≤4 lines guaranteed."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "dist/index.html: ruler signature in hero (ruler--hero), story (ruler--story), reviews (sq-ft numerals), footer (ruler--footer). Anton+Crimson Pro+DM Mono unique in niche. Services use generic check icons instead of promised footprint outlines (-0.5). Reviews lack explicit ruler ticks (-0.5)."
+    },
+    "type": {
+      "score": 9.0,
+      "notes": "dist/index.html: Anton display, Crimson Pro variable body ≥16px, DM Mono for labels/nums. Fluid scale 7 sizes. Tabular nums on counters. Lead set apart. Display tracking -0.02em. Body measure 62ch. No orphans in DOM headings."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "dist/index.html: 9 sections with distinct jobs. Alternating tones deep/paper/mid/deep/paper/accent/paper/mid/deep. Full-bleed break. Asymmetric story at ≥640px. Dense tools tabs. Quiet FAQ. Services grid uniform 3-col (-0.5). Trust bar standard strip (-0.5)."
+    },
+    "photo": {
+      "score": 7.0,
+      "notes": "dist/index.html: all frames are placeholders (media/placeholder-*.jpg) with descriptive alt text. Consistent aspect ratios and filter. Width/height/lazy present. Cannot judge grade consistency or art direction without real media (-1.5 expected in placeholder mode)."
+    },
+    "copy": {
+      "score": 9.0,
+      "notes": "dist/index.html: voice matches concept samples. Specific trade nouns (rail first, footings pulled, zippered entry). All reviews/prices marked Sample. No banned phrases. Buttons named for action. Microcopy under form. Minor CTA name variation Price a shed vs Price it (-0.5)."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "dist/index.html: mobile bar with call+price CTAs min-height 44px. Header collapses at <900px. Story stacks below 640px. Services 1→2→3 col. Form fields 48px. ZIP input labeled. No horizontal scroll. Cannot verify 390 composition or bar hide logic without render (-0.5 precautionary)."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "dist/index.html: skip link, focus visible 3px, all inputs labeled, honeypot hidden, native details accordion, tabs with ARIA roles, ZIP aria-live, reduced motion disables all animation, forced colors handled. Heading skip h2→h3 in story section (-0.5). Menu focus trap unverifiable without render (-0.5 precautionary)."
+    },
+    "motion": {
+      "score": 8.0,
+      "notes": "dist/index.html: line-mask hero reveal, clip-path frames, staggered reveals, counters, tabs, accordion, hover scaleX underline, press scale on buttons. Reduced motion respected. Only 3 hook types borderline (-0.5). Ruler draw animation not wired beyond static markup (-1.0)."
+    },
+    "wow": {
+      "score": 8.0,
+      "notes": "dist/index.html: space-back ruler tool tied to thesis and trade. Output is text-only sample range without designed artifact (-1.0). Ruler as wow moment reads as static decoration without working scroll-driven animation (-1.0)."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "dist/index.html: SVG favicon + apple-touch-icon, OG tags with dimensions, theme-color, JSON-LD GeneralContractor, print stylesheet, forced colors, consistent radius 2px, one icon stroke width, designed footer with ruler end-tick. Credits list 5 identical lines (-0.5). Favicon/OG file existence unverifiable (-0.5 precautionary)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html line ~735, #story section",
+      "problem": "Heading level skip: story section lacks h2, steps jump from h2 (break) directly to h3",
+      "fix": "Add <h2>How we reclaim your yard</h2> inside .sec__head before .story__steps"
+    },
+    {
+      "where": "dist/index.html .svc-card__icon, services section",
+      "problem": "Ruler signature not functional in services: concept promises footprint outlines scaled to ruler but DOM shows generic i-check icons",
+      "fix": "Replace i-check with per-service footprint SVGs (shed/garage/deck/carport outlines) that visually tie to the ruler system, or update concept.json to remove this claim"
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Turn the services grid into a parcel map where each card is an irregular polygon sized to its typical footprint (shed=small rect, garage=larger rect, deck=L-shape), with the ruler running vertically through the grid as a shared axis so the signature does real work in a section where it currently sits idle"
+    },
+    {
+      "category": "motion",
+      "move": "Wire the ruler running total to scroll progress via GSAP ScrollTrigger scrub tied to --sw-p custom property so the footer 12,480 sq ft counts up as the visitor reaches the bottom with intermediate ticks appearing at each story step, making the signature moment describable as the yard grows as you scroll"
+    }
+  ],
+  "verdictHint": "FIX"
+}
