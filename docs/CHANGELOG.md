@@ -103,3 +103,6 @@ roofer-B was a test fixture (11-byte stub, worker t2) force-delivered at 8.88. I
 
 ## 2026-10-27: check-static sample-label match ignores clock times
 The sample-labels check matched a numeric fact (such as a rating of `4.8` or a count of `30`) anywhere in visible text, so opening hours like `5:30 pm` or `7 a.m.` were flagged as an unlabelled fact. The word-boundary regex now skips a match that follows a colon or is followed by `am/pm` or `:NN`. Real facts like `4.8` and `30 years` still match (tested on 9 cases). The check only got narrower, so no delivered site can start failing.
+
+## 2026-10-27: city pool reads every group
+- `tools/lib/niche.mjs` `cityPool()` only parsed table rows G1-G6, so every G7-G10 city failed validation. It now reads any `G<n>` row. The check was wrong, not the data.

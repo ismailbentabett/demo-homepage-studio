@@ -48,7 +48,7 @@ export function cityPool() {
   poolCache = {};
   const md = fs.readFileSync(path.join(ROOT, "docs", "NICHE-TEMPLATE.md"), "utf8");
   for (const line of md.split(/\r?\n/)) {
-    const m = /^\|\s*(G[1-6])\s*\|[^|]*\|[^|]*\|([^|]+)\|/.exec(line);
+    const m = /^\|\s*(G\d+)\s*\|[^|]*\|[^|]*\|([^|]+)\|/.exec(line);
     if (!m) continue;
     const cities = [];
     // "Oklahoma City 405, Tulsa 918 (America/Chicago); Phoenix 602 (America/Phoenix); ..."
