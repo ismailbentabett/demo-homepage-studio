@@ -1,4 +1,10 @@
+## Round 5
+Form wired to kit hooks (data-form-nav/back/next/submit, data-thanks-box) so there is one Next and no stray default button; elevate mobile: the quote form became a 4 day-card stepper with a film-build progress bar gaining a layer per card; elevate polish: one 2px stamped-tag system (Sample, area chips, step numbers, kicker) and 1.5px rules on the cards; stamps renumbered 00 Cover → 01 Plan → 02–04 Prep → 05 Services → 06 Older houses → 07 Reviews → 08 Area → 09 Call → 10 Done; h1 now 3 lines at 1440; process h2/note, form intro copy, guarantee column, and street sashes fixed.
+
 # Blueprint — painter-A (Cutline Painting Co.)
+
+## Round 4 (elevate + fix)
+Photo + wow: every placeholder photo replaced by one drawn system (a Fan-rowhouse elevation symbol, coat cross-sections, a painted street break), so there's no grey frame anywhere. The Coat Schedule is now a working paper sheet (job, start day, pre-1978/wood/rain options → a weekday calendar with weekends off, film-build bar, print). Signature: each section carries one more film layer (left edge) plus a right-edge page-long stripe. Reveals vary: the h1 is split into lines, cross-sections clip in, the calendar cells stagger, the street paints house by house, and the hero cut line pulls across. Services became a ledger, the old-house check became a working kit checklist, and the 390/320 overflow and the stale placeholder render warning are fixed.
 
 ## Rhythm check
 - 10 sections total.
