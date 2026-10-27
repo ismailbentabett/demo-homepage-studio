@@ -115,7 +115,7 @@ textarea { resize: vertical; }
 @media (min-width: 640px) { .filmstrip__frame { flex: 0 0 360px; } }
 .filmstrip__frame img { aspect-ratio: 3/2; object-fit: cover; width: 100%; filter: saturate(0.85) contrast(1.05) sepia(0.08) brightness(0.98); }
 .filmstrip__cap { font-size: var(--fs--1); color: var(--muted); margin-top: var(--s-2); display: flex; gap: var(--s-2); }
-.filmstrip__num { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); }
+.filmstrip__num { font-family: "DM Mono", monospace; font-weight: 500; color: var(--signal); white-space: nowrap; }
 
 /* Sections generic */
 .section { padding-block: var(--s-8); }
@@ -195,7 +195,7 @@ textarea { resize: vertical; }
 .estimator__label { font-family: 'DM Mono', monospace; font-size: var(--fs--1); text-transform: uppercase; letter-spacing: 0.05em; }
 .estimator__output { padding: var(--s-4); background: rgba(255,255,255,0.05); font-family: 'DM Mono', monospace; font-size: var(--fs-0); min-height: 48px; margin-bottom: var(--s-4); }
 .estimator__note { font-size: var(--fs--1); color: var(--muted); margin-bottom: var(--s-4); }
-.guarantee { margin-top: var(--s-7); padding-top: var(--s-5); border-top: 1px solid var(--rule); font-size: var(--fs-0); font-style: italic; color: var(--muted); }
+.guarantee { margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--rule); font-size: var(--fs-0); font-style: italic; color: var(--muted); max-width: 34ch; }
 
 /* Area */
 .zip-check { margin-top: var(--s-5); }
@@ -277,10 +277,6 @@ symbol .leaf { stroke: var(--pl-dim); fill: var(--pl-wash); stroke-width: 1.2; }
 .filmstrip__track { padding-bottom: var(--s-2); }
 .filmstrip__track:focus-visible { outline-offset: -3px; }
 /* break plate: wide elevation, fixed height */
-.break .plate--wide { aspect-ratio: auto; height: clamp(320px, 52vw, 620px); }
-.break .plate--wide .plate__draw { padding: 4% 4% 10%; }
-.break .plate__cap { max-width: none; margin: 0; padding-inline: var(--s-4); }
-@media (min-width: 640px) { .break .plate__cap { padding-inline: var(--s-6); } }
 .porch-safety .plate, .area .plate { max-width: 460px; width: 100%; justify-self: center; }
 .proof__stats .plate { margin-top: var(--s-5); }
 .card .plate { margin-bottom: var(--s-4); }
@@ -387,18 +383,10 @@ symbol .leaf { stroke: var(--pl-dim); fill: var(--pl-wash); stroke-width: 1.2; }
 .proof__head { margin-bottom: var(--s-6); }
 .proof__rating { font-size: clamp(4rem, 3rem + 4vw, 7rem); line-height: .85; letter-spacing: -.04em; color: var(--accent); }
 .proof__of { font-size: .4em; color: var(--ink); letter-spacing: 0; }
-.proof { padding-bottom: calc(var(--s-6) + 72px); }
 .proof { position: relative; z-index: 1; }
-@media (min-width: 900px) { .proof .guarantee { padding-right: calc(52% + var(--s-6)); } }
-@media (min-width: 900px) { .proof { padding-bottom: 128px; } }
 
-/* the one off-grid moment: the finished scarf plate straddles the navy/paper seam */
-.area { padding-top: 0; }
-.area__seam { position: relative; z-index: 2; margin-top: -72px; }
-.plate--seam { aspect-ratio: 2 / 1; width: min(100%, 620px); margin-left: auto; box-shadow: 0 0 0 1px var(--rule), 14px 14px 0 rgba(27,38,49,.12); --pl-bg: #ebe2d1; }
-.plate--seam .plate__draw { padding: 8px 8px 52px; --dt-fs: 13px; }
-@media (min-width: 900px) { .area__seam { margin-top: -150px; } .plate--seam { width: min(52%, 660px); margin-right: 8%; transform: rotate(-1.2deg); } }
-.area .cut-rule { margin-top: var(--s-5); }
+.area { padding-top: var(--s-5); }
+.area > .cut-rule:first-child { margin-top: 0; }
 .area__grid { align-items: start; }
 @media (min-width: 900px) { .area__grid { grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); } .area .plate--tall { max-width: 420px; justify-self: end; } }
 .area__hours { margin-top: var(--s-6); padding-top: var(--s-4); border-top: 1px solid var(--rule); }
@@ -410,7 +398,7 @@ symbol .leaf { stroke: var(--pl-dim); fill: var(--pl-wash); stroke-width: 1.2; }
 .zip-check__row .btn { min-height: 48px; }
 
 /* break: the porch elevation keeps a readable crop on phones */
-@media (max-width: 639px) { .break .plate--wide { height: 340px; } .break .plate--wide .plate__draw { padding: 12px 8px 64px; --dt-fs: 13px; } }
+
 
 /* contact */
 .contact__form { min-width: 0; }
@@ -442,6 +430,49 @@ symbol .leaf { stroke: var(--pl-dim); fill: var(--pl-wash); stroke-width: 1.2; }
 
 /* cut-head number: stamped in once the heading arrives (motion only; JS-off and reduced show it at once) */
 .cut-head__n { display: inline-block; }
+
+/* ---------- Round 5: three voices. Display numerals, serif reading, small mono spec in mixed case; tracked caps only on the CUT token ---------- */
+.kicker, .btn, .header__links a, .checklist legend, .estimator__label, .zip-check__label, .lead-step__title, .lead-field__label, .sample-tag, .cutlist__total, .cut-rule__label, .est-ticket__lbl { text-transform: none; letter-spacing: .02em; }
+.kicker { font-size: 14px; }
+.btn { font-size: 15px; }
+.btn-sm { font-size: 14px; }
+.sample-tag { font-size: 12px; padding: 4px 9px; }
+.cut-rule__label, .est-ticket__lbl { font-size: 14px; }
+.cut-rule--sm .cut-rule__label { font-size: 12px; }
+.cut-tok { font-weight: 500; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
+.t-paper .cut-rule__label, .t-mid .cut-rule__label { color: var(--muted); }
+.t-paper .cut-tok, .t-mid .cut-tok { color: var(--signal); }
+.t-deep .cut-rule__label { color: #c8d3da; }
+symbol .dt { letter-spacing: .02em; }
+.sc-t { letter-spacing: .02em; }
+
+/* ---------- PL 04: the page's one off-grid moment. The whole elevation, at its own ratio, hangs over into the porch check ---------- */
+.break { position: relative; z-index: 2; display: flow-root; padding: var(--s-5) 0 0; }
+.break > .cut-rule:first-child { margin: 0 0 var(--s-5); }
+.break .plate--wide { aspect-ratio: auto; overflow: visible; width: calc(100% - 2 * var(--s-4)); margin: 0 auto -56px; background: var(--pl-bg); box-shadow: 0 0 0 1px rgba(244,239,230,.16), 12px 12px 0 rgba(27,38,49,.16); }
+.break .plate--wide .plate__draw { position: relative; inset: auto; width: 100%; height: auto; overflow: visible; }
+.break .elev--full { display: none; aspect-ratio: 600 / 240; padding: 2.5% 3% 1.5%; }
+.break .elev--crop { aspect-ratio: 298 / 200; padding: 12px 10px 8px; --dt-fs: 12px; overflow: hidden; }
+.break .plate__cap { position: relative; }
+.break .plate.has-photo .plate__draw { display: none; }
+.porch-safety { padding-top: calc(56px + var(--s-7)); }
+@media (min-width: 640px) {
+  .break .elev--full { display: block; }
+  .break .elev--crop { display: none; }
+  .break .plate--wide { width: min(88%, 1180px); margin: 0 4% -112px auto; }
+  .porch-safety { padding-top: calc(112px + var(--s-8)); }
+}
+@media (min-width: 1200px) { .break .plate--wide { margin-right: max(4%, calc((100% - 1280px) / 2 - 24px)); } .porch-safety { padding-top: calc(112px + var(--s-9)); } }
+.break .plate--wide > img { position: absolute; inset: 0; }
+.break .plate--wide.has-photo { aspect-ratio: 21 / 9; overflow: hidden; }
+.break .plate--wide.has-photo .plate__cap { position: absolute; }
+
+/* ---------- Proof: the big 4.9 anchors a column; the guarantee and the finished joint hang under it ---------- */
+.proof__stats { display: grid; align-content: start; gap: 0; }
+.proof__stats .proof__count { margin-bottom: 0; }
+.proof__stats .plate--sill { --pl-bg: #ebe2d1; --pl-ln: #1b2631; --pl-dim: #8b3a3a; --pl-wash: rgba(201,162,77,.38); aspect-ratio: 4 / 3; margin-top: var(--s-5); max-width: 420px; }
+.plate--sill .plate__draw { padding: 4px 6px 64px; --dt-fs: 13px; }
+@media (min-width: 900px) { .proof__reviews { padding-left: var(--s-5); border-left: 1px solid var(--rule); } }
 
 /* Forced Colors */
 @media (forced-colors: active) {

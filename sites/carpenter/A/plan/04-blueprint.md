@@ -1,5 +1,8 @@
 # Blueprint — carpenter-A
 
+## Round 5 (answering critique 4)
+Layout: PL 04 is now the page's one off-grid moment. The whole elevation, at its own 600×240 ratio (meet, with a porch-only crop on phones), sits offset right and hangs 112px over into the porch-check band. The PL 07 seam overlap is gone. #proof now anchors its left column with the 4.9, the Sample guarantee and the PL 07 finished joint, and the reviews hang from a rule. Type: three voices. Tracked caps are kept only for the CUT nn token; every other label (kicker, buttons, drawing dimensions, form labels, Sample chips) is mixed-case mono at .02em. PL 05 label is end-anchored and inset.
+
 ## Round 3 (fix + elevate)
 Type: every h2 now sits under a large Young Serif cut number (01–09) against a small mono spec, and all dimensions use one ½ ¼ ¾ glyph style. Layout: the footer is now paper and gathers CUT 00–09 into one finished cut list; the finished-scarf plate (PL 07) overlaps the proof/area seam. The story is now scrubbed without a pin (no spacer gap), reveals and counters are gone (no blank capture), services are an accordion under 640px, the estimator starts on the selected job, and the form uses the kit [data-form-nav] markup.
 

@@ -1278,15 +1278,6 @@ SW.mod('media-fallback', function (SW) {
       onEnter: function () { gsap.fromTo(n, { yPercent: 35, rotation: -4 }, { yPercent: 0, rotation: 0, duration: 0.7, ease: 'back.out(1.6)' }); } });
   });
 
-  /* The seam plate settles onto the boundary between the proof band and the area band */
-  var seam = document.querySelector('.plate--seam');
-  if (seam) {
-    ScrollTrigger.matchMedia({ '(min-width: 900px)': function () {
-      gsap.fromTo(seam, { rotation: 2.5, y: -24 }, { rotation: -1.2, y: 0, ease: 'none',
-        scrollTrigger: { trigger: seam, start: 'top 95%', end: 'top 45%', scrub: 0.5 } });
-    } });
-  }
-
   /* Tool moment: the price draws itself like a cut line, each time the job changes */
   var ticket = document.querySelector('.est-ticket');
   var sel = document.querySelector('[data-est-item]');
