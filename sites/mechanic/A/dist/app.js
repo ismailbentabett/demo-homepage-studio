@@ -447,359 +447,30 @@ SW.mod('mobilebar', function (SW) {
 });
 
 ;
-/* kit: lenis */
-/* lenis: smooth scrolling when <html data-smooth> is set, window.Lenis is loaded and motion is allowed.
-   lerp .1, wheelMultiplier 1, driven by the GSAP ticker (and synced to ScrollTrigger) when GSAP is loaded.
-   Sets SW.lenis. Same-page anchor links scroll through Lenis and focus their target. */
-SW.mod('lenis', function (SW) {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-smooth') || SW.reduced || typeof window.Lenis !== 'function') return;
-  var lenis = new window.Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    // never hijack scrolling inside an open dialog or an element that scrolls itself
-    prevent: function (node) { return !!(node && node.closest && node.closest('[data-lenis-prevent], dialog[open]')); },
-  });
-  SW.lenis = lenis;
-
-  if (window.gsap && window.gsap.ticker) {
-    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
-    window.gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-    window.gsap.ticker.lagSmoothing(0);
-  } else {
-    var raf = function (time) { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-
+/* kit: prefill */
+/* prefill: any link or button with data-service="Leak repair" (outside the lead form) fills the form's
+   "service" field, scrolls to #contact and focuses that field. The [[quote]] macro writes these links
+   (href="#contact" so they still work without JS). The value can be a service name or its short name. */
+SW.mod('prefill', function (SW) {
+  // capture phase: runs before the smooth-scroll anchor handler
   document.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var hash = a.getAttribute('href');
-    if (hash.length < 2) return;
-    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) return;
+    var t = e.target.closest ? e.target.closest('[data-service]') : null;
+    if (!t || t.closest('form[data-lead]')) return;
+    var form = SW.$('form[data-lead]');
+    if (!form) return; // plain anchor behaviour
     e.preventDefault();
-    SW.scrollTo(target);
-    if (history.pushState) history.pushState(null, '', hash);
-  });
-});
-
-;
-/* kit: split */
-/* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
-   Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
-     words: .sw-word > .sw-word-in           (--i = word index)
-     lines: same markup, --i = line index    (recomputed on resize and after the fonts load)
-     chars: .sw-word > .sw-char              (--i = char index)
-   The element gets .is-in when it scrolls into view (at once under reduced motion). */
-SW.mod('split', function (SW) {
-  var els = SW.$$('[data-split]');
-  if (!els.length) return;
-
-  function piece(cls, text) {
-    var s = document.createElement('span');
-    s.className = cls;
-    s.textContent = text;
-    return s;
-  }
-  function splitText(textNode, mode) {
-    var frag = document.createDocumentFragment();
-    textNode.nodeValue.split(/(\s+)/).forEach(function (token) {
-      if (!token) return;
-      if (/^\s+$/.test(token)) { frag.appendChild(document.createTextNode(' ')); return; }
-      var word = document.createElement('span');
-      word.className = 'sw-word';
-      if (mode === 'chars') Array.from(token).forEach(function (ch) { word.appendChild(piece('sw-char', ch)); });
-      else word.appendChild(piece('sw-word-in', token));
-      frag.appendChild(word);
+    var want = (t.getAttribute('data-service') || '').trim().toLowerCase();
+    var services = SW.fact('services') || [];
+    var hit = services.find(function (s) {
+      return String(s.name || '').toLowerCase() === want || String(s.short || '').toLowerCase() === want;
     });
-    textNode.parentNode.replaceChild(frag, textNode);
-  }
-  function walk(node, mode) {
-    Array.prototype.slice.call(node.childNodes).forEach(function (child) {
-      if (child.nodeType === 3) splitText(child, mode);
-      else if (child.nodeType === 1 && !/^(BR|SVG|IMG|PICTURE)$/i.test(child.tagName)) walk(child, mode);
-    });
-  }
-  function numberLines(el) {
-    var top = null, line = -1;
-    SW.$$('.sw-word', el).forEach(function (w) {
-      var t = w.offsetTop;
-      if (top === null || Math.abs(t - top) > 2) { line++; top = t; }
-      w.style.setProperty('--i', line);
-    });
-    el.style.setProperty('--lines', line + 1);
-  }
-
-  els.forEach(function (el) {
-    if (el.hasAttribute('data-split-done')) return;
-    var mode = el.getAttribute('data-split') || 'words';
-    var text = el.textContent.replace(/\s+/g, ' ').trim();
-    if (!text) return;
-    var visual = document.createElement('span');
-    visual.className = 'sw-split';
-    visual.setAttribute('aria-hidden', 'true');
-    while (el.firstChild) visual.appendChild(el.firstChild);
-    walk(visual, mode);
-    el.appendChild(piece('sr-only', text));
-    el.appendChild(visual);
-    el.setAttribute('data-split-done', '');
-
-    if (mode === 'lines') {
-      numberLines(visual);
-      var timer;
-      window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(function () { numberLines(visual); }, 150); });
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { numberLines(visual); });
-    } else {
-      SW.$$(mode === 'chars' ? '.sw-char' : '.sw-word', visual).forEach(function (p, i) { p.style.setProperty('--i', i); });
+    var name = hit ? hit.name : t.getAttribute('data-service');
+    SW.prefillForm(name ? { service: name } : {}, { focus: 'service' });
+    if (t.getAttribute('href') && t.getAttribute('href').charAt(0) === '#') {
+      try { history.pushState(null, '', t.getAttribute('href')); } catch (err) { /* file:// */ }
     }
-
-    if (SW.reduced) el.classList.add('is-in');
-    else SW.inView(el, function () { el.classList.add('is-in'); }, { rootMargin: '0px 0px -10% 0px' });
-  });
-  window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('is-in'); }); });
-});
-
-;
-/* kit: counters */
-/* counters: <span data-count="143">143 reviews</span> counts the first number in the text up from 0 once in view.
-   Write the final value in the HTML too (it is what shows without JS). Decimals follow the data-count value ("4.9").
-   data-count-duration in ms (default 1200). Screen readers get the final text; the moving copy is aria-hidden.
-   Static (final value) under reduced motion. */
-SW.mod('counters', function (SW) {
-  SW.$$('[data-count]').forEach(function (el) {
-    if (el.querySelector('.sw-count-num')) return;
-    var raw = el.getAttribute('data-count');
-    var target = parseFloat(String(raw).replace(/[^0-9.\-]/g, ''));
-    if (isNaN(target)) return;
-    var decimals = (String(raw).split('.')[1] || '').replace(/\D/g, '').length;
-    var fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-    var text = el.textContent;
-    var m = text.match(/\d[\d,]*(\.\d+)?/);
-    var before = m ? text.slice(0, m.index) : '';
-    var after = m ? text.slice(m.index + m[0].length) : text;
-    var finalText = fmt.format(target);
-
-    el.textContent = '';
-    var sr = document.createElement('span');
-    sr.className = 'sr-only';
-    sr.textContent = (before + finalText + after).trim();
-    var visual = document.createElement('span');
-    visual.setAttribute('aria-hidden', 'true');
-    var num = document.createElement('span');
-    num.className = 'sw-count-num';
-    visual.appendChild(document.createTextNode(before));
-    visual.appendChild(num);
-    visual.appendChild(document.createTextNode(after));
-    el.appendChild(sr);
-    el.appendChild(visual);
-
-    if (SW.reduced) { num.textContent = finalText; el.classList.add('is-counted'); return; }
-    num.textContent = fmt.format(0);
-    var duration = parseInt(el.getAttribute('data-count-duration'), 10) || 1200;
-    SW.inView(el, function () {
-      var t0 = performance.now();
-      function frame(now) {
-        var k = Math.min(1, (now - t0) / duration);
-        var eased = 1 - Math.pow(1 - k, 3);
-        num.textContent = fmt.format(target * eased);
-        if (k < 1) requestAnimationFrame(frame);
-        else { num.textContent = finalText; el.classList.add('is-counted'); }
-      }
-      requestAnimationFrame(frame);
-    }, { threshold: 0.4 });
-    window.addEventListener('beforeprint', function () { num.textContent = finalText; });
-  });
-});
-
-;
-/* kit: checklist */
-/* checklist: a self-check list ("Signs you need a new roof").
-   <div data-checklist data-checklist-results="0:Tick what you see.|1:One sign: worth a free look.|3:{n} of {total}: time to call.">
-     <label><input type="checkbox"> Shingles curling</label> ...
-     <p data-checklist-result></p>   (aria-live; created when missing)
-   </div>
-   The result line uses the highest threshold that n reaches. Sets data-checked="n" and --checked / --total on the box. */
-SW.mod('checklist', function (SW) {
-  SW.$$('[data-checklist]').forEach(function (box) {
-    var boxes = SW.$$('input[type="checkbox"]', box);
-    if (!boxes.length) return;
-    var out = SW.$('[data-checklist-result]', box);
-    if (!out) { out = document.createElement('p'); out.setAttribute('data-checklist-result', ''); box.appendChild(out); }
-    out.setAttribute('aria-live', 'polite');
-    var rules = (box.getAttribute('data-checklist-results') || '0:{n} of {total} checked.')
-      .split('|').map(function (r) {
-        var i = r.indexOf(':');
-        return { min: parseInt(r.slice(0, i), 10) || 0, text: r.slice(i + 1).trim() };
-      }).sort(function (a, b) { return a.min - b.min; });
-    function update() {
-      var n = boxes.filter(function (b) { return b.checked; }).length;
-      var rule = rules.filter(function (r) { return n >= r.min; }).pop() || rules[0];
-      box.setAttribute('data-checked', String(n));
-      box.style.setProperty('--checked', n);
-      box.style.setProperty('--total', boxes.length);
-      box.style.setProperty('--checked-pct', (n / boxes.length * 100).toFixed(1) + '%');
-      out.textContent = rule.text.replace(/\{n\}/g, n).replace(/\{total\}/g, boxes.length);
-      boxes.forEach(function (b) { var l = b.closest('label'); if (l) l.classList.toggle('is-checked', b.checked); });
-    }
-    boxes.forEach(function (b) { b.addEventListener('change', update); });
-    update();
-  });
-});
-
-;
-/* kit: estimator */
-/* estimator: shows the sample price ranges from facts proof.prices. It never does math on dollars.
-   <div data-estimator>
-     <label for="est-item">Job</label> <select id="est-item" data-est-item></select>   (filled from the prices when empty)
-     <label for="est-size">Size</label> <input id="est-size" type="range" min="0" max="2" value="1" data-est-size>   (optional)
-     <div data-est-sketch></div>      (optional; gets data-item / data-level / --est for a drawing)
-     <p data-est-out></p>             (aria-live; created when missing)
-     <button data-est-print>Print this price</button>   (optional)
-   </div>
-   The range only sets a level (low / mid / high) and --est 0..1 for the sketch; the shown range stays the facts' from-to.
-   Output: "Leak repair: $300 to $950", the note, and a .sample-tag "Sample price". */
-SW.mod('estimator', function (SW) {
-  var LEVELS = ['low', 'mid', 'high'];
-  SW.$$('[data-estimator]').forEach(function (box) {
-    var prices = SW.fact('proof.prices', 'prices') || [];
-    var sel = SW.$('[data-est-item]', box);
-    var size = SW.$('[data-est-size]', box);
-    var sketch = SW.$('[data-est-sketch]', box);
-    var out = SW.$('[data-est-out]', box);
-    var printBtn = SW.$('[data-est-print]', box);
-    if (!sel || !prices.length) { SW.warn('estimator: needs [data-est-item] and proof.prices', box); return; }
-    if (!out) { out = document.createElement('p'); out.setAttribute('data-est-out', ''); box.appendChild(out); }
-    out.setAttribute('aria-live', 'polite');
-    if (!sel.options.length) {
-      prices.forEach(function (p, i) {
-        var o = document.createElement('option');
-        o.value = String(i);
-        o.textContent = p.item;
-        sel.appendChild(o);
-      });
-    }
-    function money(v) {
-      if (typeof v === 'number') return '$' + v.toLocaleString('en-US');
-      return String(v);
-    }
-    function current() {
-      var v = sel.value;
-      var byIndex = /^\d+$/.test(v) ? prices[parseInt(v, 10)] : null;
-      return byIndex || prices.find(function (p) { return p.item.toLowerCase() === String(sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : v).toLowerCase(); }) || prices[0];
-    }
-    function update() {
-      var p = current();
-      var level = 1, k = 0.5;
-      if (size) {
-        var min = parseFloat(size.min) || 0, max = parseFloat(size.max) || 100, val = parseFloat(size.value);
-        k = max > min ? (val - min) / (max - min) : 0.5;
-        level = k < 1 / 3 ? 0 : k < 2 / 3 ? 1 : 2;
-        size.setAttribute('aria-valuetext', LEVELS[level] === 'low' ? 'Small job' : LEVELS[level] === 'mid' ? 'Typical job' : 'Large job');
-      }
-      box.style.setProperty('--est', k.toFixed(3));
-      box.setAttribute('data-level', LEVELS[level]);
-      if (sketch) {
-        sketch.setAttribute('data-item', p.item);
-        sketch.setAttribute('data-level', LEVELS[level]);
-        sketch.style.setProperty('--est', k.toFixed(3));
-      }
-      out.textContent = '';
-      var line = document.createElement('span');
-      line.className = 'sw-est-range';
-      line.textContent = p.item + ': ' + money(p.from) + ' to ' + money(p.to) + (p.unit ? ' ' + p.unit : '');
-      out.appendChild(line);
-      if (p.note) {
-        var note = document.createElement('span');
-        note.className = 'sw-est-note';
-        note.textContent = ' (' + p.note + ')';
-        out.appendChild(note);
-      }
-      out.appendChild(document.createTextNode(' '));
-      var tag = document.createElement('span');
-      tag.className = 'sample-tag';
-      tag.textContent = 'Sample price';
-      out.appendChild(tag);
-    }
-    sel.addEventListener('change', update);
-    if (size) size.addEventListener('input', update);
-    if (printBtn) {
-      printBtn.type = 'button';
-      printBtn.addEventListener('click', function () {
-        document.documentElement.classList.add('sw-print-est');
-        box.classList.add('is-printing');
-        window.print();
-      });
-      window.addEventListener('afterprint', function () {
-        document.documentElement.classList.remove('sw-print-est');
-        box.classList.remove('is-printing');
-      });
-    }
-    box.setAttribute('data-estimator-ready', '');
-    update();
-  });
-});
-
-;
-/* kit: tabs */
-/* tabs:
-   <div data-tabs>
-     <div data-tablist aria-label="Services"> <button data-tab>Repair</button> <button data-tab>Replace</button> </div>
-     <section data-tabpanel> <h3>Repair</h3> ... </section>
-     <section data-tabpanel> <h3>Replace</h3> ... </section>
-   </div>
-   Tabs and panels pair by order. Adds role=tablist/tab/tabpanel, ids, aria-controls/selected/labelledby, roving tabindex.
-   Arrow keys (Left/Right, Up/Down), Home and End move and select. data-tabs-start="1" picks the first open tab (0-based).
-   Without JS base.css hides [data-tablist] and every panel shows (each with its own heading). */
-SW.mod('tabs', function (SW) {
-  var n = 0;
-  SW.$$('[data-tabs]').forEach(function (root) {
-    var list = SW.$('[data-tablist]', root);
-    var tabs = list ? SW.$$('[data-tab]', list) : [];
-    var panels = SW.$$('[data-tabpanel]', root).filter(function (p) { return p.closest('[data-tabs]') === root; });
-    if (!tabs.length || tabs.length !== panels.length) { SW.warn('tabs: need as many [data-tab] as [data-tabpanel]', root); return; }
-    var id = root.id || 'sw-tabs-' + (++n);
-    list.setAttribute('role', 'tablist');
-    tabs.forEach(function (t, i) {
-      var p = panels[i];
-      if (t.tagName === 'BUTTON') t.type = 'button';
-      t.id = t.id || id + '-tab-' + i;
-      p.id = p.id || id + '-panel-' + i;
-      t.setAttribute('role', 'tab');
-      t.setAttribute('aria-controls', p.id);
-      p.setAttribute('role', 'tabpanel');
-      p.setAttribute('aria-labelledby', t.id);
-      p.setAttribute('tabindex', '0');
-      t.addEventListener('click', function () { select(i, false); });
-      t.addEventListener('keydown', function (e) {
-        var k = e.key, next = null;
-        if (k === 'ArrowRight' || k === 'ArrowDown') next = (i + 1) % tabs.length;
-        else if (k === 'ArrowLeft' || k === 'ArrowUp') next = (i - 1 + tabs.length) % tabs.length;
-        else if (k === 'Home') next = 0;
-        else if (k === 'End') next = tabs.length - 1;
-        if (next === null) return;
-        e.preventDefault();
-        select(next, true);
-      });
-    });
-    function select(i, focus) {
-      tabs.forEach(function (t, j) {
-        var on = j === i;
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-        t.setAttribute('tabindex', on ? '0' : '-1');
-        t.classList.toggle('is-active', on);
-        panels[j].hidden = !on;
-        panels[j].classList.toggle('is-active', on);
-      });
-      root.style.setProperty('--tab', i);
-      if (focus) tabs[i].focus();
-      root.dispatchEvent(new CustomEvent('sw:tab', { detail: { index: i } }));
-    }
-    var start = parseInt(root.getAttribute('data-tabs-start'), 10) || 0;
-    select(Math.min(Math.max(0, start), tabs.length - 1), false);
-    root.setAttribute('data-tabs-ready', '');
-  });
+  }, true);
 });
 
 ;
@@ -1219,90 +890,202 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* mechanic-A · app.js */
+/* mechanic-A · app.js : the two tools (always on) + the repair-order motion (guarded) */
 (function () {
-  if (typeof SW === 'undefined') return;
+  var root = document.documentElement;
 
-  /* Signature intro: line 01 chip flips waiting → doing, clock starts */
-  SW.mod('signature-intro', function () {
-    if (SW.reduced) return;
-    var card = document.querySelector('.hero .ro-card');
-    if (!card) return;
-    var line01 = card.querySelector('.ro-line:first-child');
-    if (!line01) return;
-    var chip = line01.querySelector('.chip');
-    var clock = line01.querySelector('.ro-line__clock');
-    if (!chip || !clock) return;
+  /* ---------- Tool 1: dashboard light decoder ---------- */
+  var LIGHTS = {
+    ce:    { s: 'safe', c: 'Safe to drive', n: 'Check engine, steady', svc: 'Check engine',
+             m: 'The engine computer logged a fault. Often it is a loose gas cap, a sensor or a vacuum leak.',
+             d: 'Usually yes, for now. Book a diagnosis this week.',
+             f: 'The stored code, then the hoses and sensor it points to, before naming any part.' },
+    cef:   { s: 'stop', c: 'Pull over', n: 'Check engine, flashing', svc: 'Check engine',
+             m: 'The engine is misfiring hard enough to overheat the catalytic converter.',
+             d: 'No. Ease off, park when safe, and call us before driving further.',
+             f: 'Plugs, coils and injectors on the misfiring cylinder, with the code to back it.' },
+    oil:   { s: 'stop', c: 'Stop now', n: 'Oil pressure', svc: 'Check engine',
+             m: 'The engine is not getting enough oil pressure. Minutes of driving can ruin it.',
+             d: 'No. Turn the engine off and check the dipstick. Call before restarting.',
+             f: 'The oil level, the pressure sender, then a gauge test of real pressure.' },
+    bat:   { s: 'soon', c: 'Drive to us', n: 'Battery', svc: 'Battery & charging',
+             m: 'The charging system is not keeping up. It is often the alternator, not the battery.',
+             d: 'Short trips only. Skip the radio and heater and come straight in.',
+             f: 'A load test of the battery and an output test of the alternator, side by side.' },
+    temp:  { s: 'stop', c: 'Pull over', n: 'Temperature', svc: 'Overheating',
+             m: 'The engine is running hot. Driving on can warp the head.',
+             d: 'No. Park, let it cool, and never open a hot radiator cap.',
+             f: 'Coolant level, a pressure test for leaks, then the fan and thermostat.' },
+    brake: { s: 'stop', c: 'Call first', n: 'Brake', svc: 'Brakes',
+             m: 'Low brake fluid or a hydraulic problem. Also lights up when the parking brake is on.',
+             d: 'Only if the pedal feels normal and the parking brake is off. Call us first.',
+             f: 'Fluid level, then pads and lines for the leak or wear that dropped it.' },
+    abs:   { s: 'safe', c: 'Safe to drive', n: 'ABS', svc: 'Brakes',
+             m: 'Your normal brakes still work. The anti-lock system has switched itself off.',
+             d: 'Yes, gently. Leave more room on wet roads until it is checked.',
+             f: 'The stored ABS code, then the wheel speed sensor it names.' },
+    tire:  { s: 'safe', c: 'Check tires', n: 'Tire pressure', svc: '',
+             m: 'One tire is at least a quarter low on air, or a sensor battery has run down.',
+             d: 'Yes, to the nearest air pump. Fill to the number on the door sticker.',
+             f: 'Each tire for a slow leak, then the sensor if the pressure holds.' }
+  };
 
-    gsap.set(chip, { opacity: 0, scale: 0.8 });
-    gsap.set(clock, { opacity: 0 });
+  function decoder() {
+    var btns = document.querySelectorAll('[data-light]');
+    var box = document.querySelector('[data-readout]');
+    if (!btns.length || !box) return;
+    var chip = box.querySelector('[data-ro-chip]');
+    var name = box.querySelector('[data-ro-name]');
+    var mean = box.querySelector('[data-ro-mean]');
+    var drive = box.querySelector('[data-ro-drive]');
+    var first = box.querySelector('[data-ro-first]');
+    var cta = box.querySelector('[data-ro-cta]');
+    function show(key) {
+      var L = LIGHTS[key];
+      if (!L) return;
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.light === key ? 'true' : 'false'); });
+      chip.dataset.status = L.s; chip.textContent = L.c;
+      name.textContent = L.n; mean.textContent = L.m; drive.textContent = L.d; first.textContent = L.f;
+      if (L.svc) { cta.setAttribute('data-service', L.svc); cta.textContent = 'Book this check'; }
+      else { cta.removeAttribute('data-service'); cta.textContent = 'Book a tire check'; }
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.light); }); });
+  }
 
-    var tl = gsap.timeline({ delay: 0.3 });
-    tl.to(chip, { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' })
-      .to(clock, { opacity: 1, duration: 0.3, ease: 'power2.out' }, '-=0.2');
-  });
+  /* ---------- Tool 2: brake pad gauge ---------- */
+  function brakes() {
+    var wrap = document.querySelector('[data-brake]');
+    if (!wrap) return;
+    var input = wrap.querySelector('[data-brake-input]');
+    var fig = wrap.querySelector('.plate--brake');
+    var mmEl = wrap.querySelector('[data-brake-mm]');
+    var svgT = wrap.querySelector('[data-brake-svg]');
+    var chip = wrap.querySelector('[data-brake-chip]');
+    var text = wrap.querySelector('[data-brake-text]');
+    if (!input) return;
+    function level(mm) {
+      if (mm >= 9) return ['new', 'safe', 'Plenty left', 'Pads are close to new. Nothing to do.'];
+      if (mm >= 6) return ['half', 'soon', 'Half worn', 'Plan on pads in the next few months. No rush, and no reason to wait for the grinding.'];
+      if (mm >= 3) return ['low', 'stop', 'Low', 'Book pads soon, before the rotors take damage.'];
+      return ['metal', 'stop', 'Metal on metal', 'That grinding is metal on metal. Drive it in gently and call first.'];
+    }
+    function update() {
+      var mm = parseInt(input.value, 10) || 6;
+      var L = level(mm);
+      wrap.style.setProperty('--k', (mm / 12).toFixed(3));
+      if (fig) fig.dataset.level = L[0];
+      mmEl.textContent = mm + ' mm';
+      if (svgT) svgT.textContent = mm + ' mm';
+      chip.dataset.status = L[1]; chip.textContent = L[2];
+      text.textContent = L[3];
+      input.setAttribute('aria-valuetext', mm + (mm === 1 ? ' millimetre, ' : ' millimetres, ') + L[2].toLowerCase());
+    }
+    input.addEventListener('input', update);
+    update();
+  }
 
-  /* Process story: lines write in via clip-path wipe on scroll */
-  SW.mod('process-story', function () {
-    if (SW.reduced) return;
-    var lines = document.querySelectorAll('.ro-line--story');
-    if (!lines.length) return;
+  decoder();
+  brakes();
 
-    ScrollTrigger.matchMedia({
-      '(min-width: 640px)': function () {
-        lines.forEach(function (line) {
-          var media = line.nextElementSibling;
-          var targets = [line];
-          if (media && media.classList.contains('ro-line__media')) targets.push(media);
+  /* ---------- Motion (signature + story), only with motion on ---------- */
+  var reduced = (typeof SW !== 'undefined' && SW.reduced) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced || !root.classList.contains('sw-motion') || typeof gsap === 'undefined') return;
+  if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
 
-          gsap.set(targets, { clipPath: 'inset(0 0 100% 0)' });
-
-          ScrollTrigger.create({
-            trigger: line,
-            start: 'top 85%',
-            once: true,
-            onEnter: function () {
-              gsap.to(targets, {
-                clipPath: 'inset(0 0 0% 0)',
-                duration: 0.9,
-                ease: 'power2.out',
-                stagger: 0.1
-              });
-            }
-          });
-        });
-      }
-    });
-  });
-
-  /* Service cards stagger */
-  SW.mod('services-stagger', function () {
-    if (SW.reduced) return;
-    var list = document.querySelector('.svc-list');
-    if (!list) return;
-    var items = list.querySelectorAll('.ro-line--svc');
-    if (!items.length) return;
-
-    ScrollTrigger.create({
-      trigger: list,
-      start: 'top 85%',
-      once: true,
-      onEnter: function () {
-        gsap.from(items, {
-          opacity: 0,
-          y: 20,
-          duration: 0.5,
-          stagger: 0.06,
-          ease: 'power2.out'
-        });
-      }
-    });
-  });
-
-  /* Refresh ScrollTrigger after fonts load */
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () {
-      ScrollTrigger.refresh();
+  /* Signature intro: line 01 stamps from Waiting to Doing (≤ 1.2 s, h1 untouched) */
+  var introChip = document.querySelector('[data-intro-chip]');
+  if (introChip) {
+    var lines = document.querySelectorAll('.hero__sheet .ro-line');
+    introChip.textContent = 'Waiting';
+    introChip.classList.add('is-pre');
+    gsap.from(lines, { opacity: 0, x: -12, duration: .45, stagger: .06, ease: 'power3.out', delay: .1, clearProps: 'opacity,transform' });
+    gsap.delayedCall(.8, function () {
+      introChip.classList.remove('is-pre');
+      introChip.textContent = 'Doing';
+      gsap.fromTo(introChip, { scale: 1.25 }, { scale: 1, duration: .35, ease: 'back.out(3)', clearProps: 'transform' });
     });
   }
+
+  if (typeof ScrollTrigger === 'undefined') return;
+
+  /* Story: the summary order on the sticky aside advances line by line (desktop) */
+  var steps = document.querySelectorAll('.step[data-step-i]');
+  var sums = document.querySelectorAll('[data-sum]');
+  var clock = document.querySelector('[data-story-clock]');
+  var bar = document.querySelector('[data-story-bar]');
+  var LABEL = { done: 'Done', doing: 'Doing', waiting: 'Waiting', gate: 'Needed', locked: 'Locked' };
+
+  function setLine(i) {
+    sums.forEach(function (li, k) {
+      var chip = li.querySelector('.chip');
+      var st;
+      if (k < i) st = 'done';
+      else if (k === i) st = (k === 3 ? 'gate' : 'doing');
+      else st = (k === 3 ? 'gate' : (k === 4 && i < 3 ? 'locked' : 'waiting'));
+      chip.dataset.status = st === 'locked' ? 'waiting' : st;
+      chip.textContent = k === 3 && k === i ? 'Your yes' : (k === 3 && k < i ? 'Yes' : LABEL[st]);
+    });
+    if (clock) clock.textContent = 'Line 0' + (i + 1) + ' of 06';
+  }
+
+  ScrollTrigger.matchMedia({
+    '(min-width: 900px)': function () {
+      if (!steps.length || !sums.length) return;
+      setLine(0);
+      steps.forEach(function (step, i) {
+        ScrollTrigger.create({
+          trigger: step, start: 'top 55%', end: 'bottom 55%',
+          onEnter: function () { setLine(i); },
+          onEnterBack: function () { setLine(i); }
+        });
+      });
+      if (bar) {
+        gsap.fromTo(bar, { scaleX: 0 }, {
+          scaleX: 1, ease: 'none',
+          scrollTrigger: { trigger: '.steps', start: 'top 55%', end: 'bottom 55%', scrub: true }
+        });
+      }
+      return function () { gsap.set(bar, { clearProps: 'transform' }); };
+    },
+    '(max-width: 899px)': function () {
+      /* phone: each step's number stamps in as it arrives */
+      steps.forEach(function (step) {
+        var n = step.querySelector('.step__num span, .gate-card__num');
+        if (!n) return;
+        gsap.from(n, { scale: 1.6, opacity: 0, duration: .4, ease: 'back.out(2.5)',
+          scrollTrigger: { trigger: step, start: 'top 80%', once: true }, clearProps: 'opacity,transform' });
+      });
+    }
+  });
+
+  /* The hinge: line 04 tears open across the page, then the chip turns to Yes */
+  var gateStep = document.querySelector('.step--gate');
+  var hingeLine = document.querySelector('[data-hinge-line]');
+  var gateChip = document.querySelector('[data-gate-chip]');
+  if (gateStep && hingeLine) {
+    gsap.fromTo(hingeLine, { scaleX: 0 }, {
+      scaleX: 1, ease: 'none',
+      scrollTrigger: { trigger: gateStep, start: 'top 70%', end: 'bottom 50%', scrub: true }
+    });
+  }
+  if (gateStep && gateChip) {
+    ScrollTrigger.create({
+      trigger: gateStep, start: 'bottom 50%',
+      onEnter: function () {
+        gateChip.dataset.status = 'done'; gateChip.textContent = 'Yes, go ahead';
+        gsap.fromTo(gateChip, { scale: 1.2 }, { scale: 1, duration: .35, ease: 'back.out(3)', clearProps: 'transform' });
+      },
+      onLeaveBack: function () { gateChip.dataset.status = 'gate'; gateChip.textContent = 'Your yes'; }
+    });
+  }
+
+  /* Footer: closed lines tick off in sequence */
+  var closed = document.querySelectorAll('.closed li');
+  if (closed.length) {
+    gsap.from(closed, { opacity: 0, y: 10, duration: .4, stagger: .08, ease: 'power2.out',
+      scrollTrigger: { trigger: '.closed', start: 'top 90%', once: true }, clearProps: 'opacity,transform' });
+  }
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
 })();
+
