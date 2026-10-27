@@ -1,0 +1,72 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 574-590: h1 'Measured before it is priced' states outcome but trade+city only in kicker; phone visible in header and hero CTA; two distinct CTAs with hierarchy; proof line with Sample tag present; offset-frame-overlap layout per concept; next band peek unverified without screenshots (-0.5); h1 lacks explicit trade/city (-0.5); placeholder hero prevents visual verification of dimension callout alignment (-0.5)."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 558-567: story-pole ruler with ticks at 0/9/36/42/84/132 inches; signature in hero (dim callouts), services (height-tags 01-09), tools (mono outputs), proof (tolerance pills), footer (license); palette Graphite Vellum + Pencil Mark differs from siblings A/C; three layout families (offset-frame, split-grid, full-bleed). Ruler hidden below 900px so mobile loses signature (-0.5); 9 uniform service cards flatten rhythm (-0.5); cover-the-logo test unverified without screenshots (-0.5)."
+    },
+    "type": {
+      "score": 9,
+      "notes": "dist/index.html lines 27-31, 262-267, 307-317: Anybody display (wdth 75, wght 700), Figtree text, DM Mono accent; fluid clamp scale; body >=16px; measure capped 65ch; tabular-nums on prices/counters; display tracking -0.03em; kicker uppercase 0.08em; <=5 sizes. Straight quotes in tolerance-pill 'miters < 1/32in' (-0.5); rag and line-height rendering unverified without screenshots (-0.5)."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "dist/index.html sections 1-10: paper/mid/paper/deep/accent/paper/mid/paper/deep/paper tone alternation; offset-frame hero, split-grid tools, full-bleed break; asymmetric hero; dense services then quiet splits. Three consecutive tool sections use identical split-grid layout (-0.5); services grid has flat internal density (-0.5); blank gaps and grid usage at 1440 unverified without screenshots (-0.5)."
+    },
+    "photo": {
+      "score": 7,
+      "notes": "dist/index.html lines 584, 701, 710, 719, 761: all images are placeholders from niche media pool; alt text describes frame content; width/height attributes present; lazy loading and async decoding applied; consistent CSS filter treatment. All photos are placeholders so one-grade anchor cannot be met (-1.0); alt text says 'Placeholder for...' which reads unfinished (-0.5); crop ratios and object-position unverified without screenshots (-0.5). Expected in placeholder mode."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "dist/index.html throughout: voice matches thesis with measurements/tolerances/sample prices; specific trade nouns (miters, profile gauge, dutchman, newel); no banned phrases; buttons named for action (Price it, Send a photo, Bring a 6-inch offcut); Sample tags on all prices/reviews/guarantee/license; primary action consistently 'Price it'; reviews cite specific neighborhoods. Hero lead slightly generic (-0.5); identical tolerance pill repeated across all four reviews (-0.5)."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 487-505, 930-933: breakpoints at 640px and 900px; mobile bar with Call + Price it; tap targets >=48px; overflow-x hidden; story pole hidden below 900px; grids collapse properly. Story pole completely hidden on mobile so signature vanishes (-0.5); mobile bar lacks scroll-direction hiding logic in DOM (-0.5); h1 line count at 390x844 unverified without screenshots (-0.5)."
+    },
+    "a11y": {
+      "score": 9,
+      "notes": "dist/index.html lines 528, 324, 695, 812: skip link present; focus 3px solid accent 3px offset; all inputs labeled; fieldset/legend on radio groups; aria-live on ZIP and checklist outputs; aria-expanded on menu; reduced motion disables animations and shows content; JS-off fallbacks defined; heading order h1-h2-h3 no skips. Story pole aria-hidden with no sr-only alternative for section heights (-0.5); five credit links missing href attribute (-0.5)."
+    },
+    "motion": {
+      "score": 8,
+      "notes": "dist/index.html lines 470-485, 576, 583: clip-path wipe on hero frame; reveal stagger on services 60ms; split text on h1; reduced motion fully respected; motion tokens with purposeful easing. Only 3 hook types visible (reveal, clip, split) so borderline on >=3 beyond plain reveals (-1.0); same reveal pattern on nearly every section (-0.5); intro timing and skippability unverified without render.json (-0.5)."
+    },
+    "wow": {
+      "score": 8,
+      "notes": "dist/index.html lines 558-567, 680-698, 725-738: story-pole ruler concept distinctive and trade-tied; repair-or-replace checklist practical; built-in planner outputs bay count; tolerance pills connect signature to proof. Tool outputs are plain text readouts not designed artifacts (-0.5); wow moment on mobile absent since ruler hidden (-0.5); reduced-motion static form unverified without screenshots (-0.5)."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 9-22, 243-252, 237-240: SVG favicon; apple-touch-icon; OG image 1200x630; theme-color; JSON-LD HomeAndConstructionBusiness; print stylesheet with estimator isolation; lazy images with dimensions; consistent 2px radius; forced colors handled; no transition:all. Five credit links missing href (-0.5); favicon/OG rendering unverified without screenshots (-0.5); print output untested (-0.5)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html line 918, footer credits",
+      "problem": "Five <a> elements without href attribute; semantically broken links that fail HTML validation and confuse assistive technology.",
+      "fix": "Either add valid hrefs to Pexels attribution pages or convert to <span> elements since these are credits, not navigation."
+    },
+    {
+      "where": "dist/index.html lines 777, 783, 789, 795, tolerance-pill elements",
+      "problem": "Identical tolerance text 'miters < 1/32in' repeated verbatim across all four reviews; reads as templated rather than job-specific.",
+      "fix": "Vary tolerance pills per review service: e.g. 'gaps < 1/16in' for built-ins, 'rail deflection < 1/4in' for stairs, 'scribe gap < 1/32in' for trim."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "motion",
+      "move": "Drive the story-pole tick highlight with ScrollTrigger so the active tick physically slides to each section's height mark as the visitor scrolls, and tie the clip-wipe direction on tool images to the ruler's vertical axis (top-to-bottom reveals instead of generic left-to-right). This makes the signature the motion language rather than a static decoration, and adds a fourth distinct hook type beyond reveal/clip/split."
+    },
+    {
+      "category": "wow",
+      "move": "Replace the plain-text estimator output with a small SVG elevation drawing that updates in real time as inputs change — for the built-in planner, draw the wall with bay divisions and shelf lines; for the molding picker, show the profile silhouette scaled to the entered perimeter. The output becomes a designed artifact in the story-pole's drafting language, something a homeowner would screenshot or print, and connects the tool directly to the signature's visual vocabulary."
+    }
+  ],
+  "verdictHint": "FIX"
+}

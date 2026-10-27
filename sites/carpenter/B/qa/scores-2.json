@@ -1,0 +1,67 @@
+{
+  "round": 2,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "dist/index.html line 591: h1 'Albany carpentry, measured before priced' states trade+city+outcome in 5 words. Phone visible in header (line 552) and hero CTA (line 594). No screenshots in qa/screens/ to verify next-band peek or offset-frame-overlap composition; CSS min-height suggests peek but visual confirmation absent."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "dist/index.html lines 569-578: story-pole ruler with ticks at 0/9/36/42/84/132 inches present in DOM. Signature appears in hero (dim-callouts), services (height-tag 01-09), tools (mono estimator outputs), proof (tolerance-pill), footer (license mono). Ruler display:none below 900px (line 509) removes signature on mobile. Services grid uses 9 identical card shapes."
+    },
+    "type": {
+      "score": 9,
+      "notes": "dist/index.html lines 262-267: fluid scale with clamp. Anybody display wdth 75 wght 700, Figtree text, DM Mono accent. Body >=16px (fs-0). Measure capped 65ch (line 315). Tabular-nums on prices (line 131). Display tracking -0.03em (line 310). Straight quote in tolerance-pill (line 795) is minor typographic miss."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "dist/index.html: 10 sections with alternating tones paper/mid/paper/deep/accent/paper/mid/paper/deep/paper. Three layout families: offset-frame-overlap hero, split-grid tools, full-bleed break. Three consecutive tool sections (lines 690, 731, 759) use identical split-grid shape (-0.5). Services grid uniform density."
+    },
+    "photo": {
+      "score": 7,
+      "notes": "dist/index.html: all images are placeholders (placeholder-hero-B1.webp etc.). Alt text describes frame. Width/height/lazy/async present. Consistent CSS filter. Placeholder alt text reads unfinished. Cannot verify crop ratios or signature integration without screenshots. Above floor (6) but below pass mark (8.5); expected in placeholder mode."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "dist/index.html: voice matches thesis with trade nouns (miters, profile gauge, dutchman, newel). Buttons named for action (Price it, Send a photo, Bring a 6-inch offcut). Sample tags on all prices/reviews/guarantee/license. Tolerance pills now vary per review (lines 795/800/805/810) fixing round-1 mustFix. Primary action consistently 'Price it'."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "dist/index.html: breakpoints at 640px and 900px. Mobile bar with Call+Price it (line 944). Tap targets >=48px. Story pole hidden below 900px (line 509) removes signature on phones. Mobile bar lacks scroll-direction hiding logic in DOM attributes. Cannot verify h1 line count at 390x844 without screenshots."
+    },
+    "a11y": {
+      "score": 9,
+      "notes": "dist/index.html: skip link (line 539), focus 3px solid accent 3px offset (line 324), all inputs labeled, fieldset/legend on radios, aria-live on ZIP/checklist outputs, aria-expanded on menu, reduced motion handled (line 522), heading order correct, sr-only ruler live region (line 582). Footer credit <a> elements lack href (line 932)."
+    },
+    "motion": {
+      "score": 8,
+      "notes": "dist/index.html: clip-path wipe on hero frame (data-reveal=clip), reveal stagger on services (data-reveal-stagger), split text on h1 (data-split=lines). Reduced motion respected. Only 3 hook types visible; story-pole tick slide from concept.json not evident in DOM. Same reveal pattern on most sections. Cannot verify intro timing without render.json."
+    },
+    "wow": {
+      "score": 8,
+      "notes": "dist/index.html: story-pole ruler concept is distinctive and trade-tied. Repair-or-replace checklist is practical tool. Built-in planner outputs bay count. Tool outputs are text-only readouts (data-est-out divs). Ruler hidden on mobile removes primary wow moment on phones. Cannot verify reduced-motion static form without screenshots."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "dist/index.html: SVG favicon (line 20), apple-touch-icon (line 21), OG 1200x630 (lines 13-15), theme-color (line 9), JSON-LD HomeAndConstructionBusiness (line 22), print stylesheet (lines 243-252), lazy images with dimensions, consistent 2px radius, forced colors handled (lines 237-240). Footer credit links missing href (line 932). Cannot verify rendering without screenshots."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html line 932, footer credits",
+      "problem": "Five <a> elements without href attribute. Semantically broken links that fail HTML validation and confuse assistive technology. Not fixed from round 1.",
+      "fix": "Convert to <span> elements since these are credits not navigation, or add valid hrefs to Pexels attribution pages."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "motion",
+      "move": "Drive the story-pole tick highlight with ScrollTrigger so the active tick physically slides to each section's height mark as the visitor scrolls, and tie the clip-wipe direction on tool images to the ruler's vertical axis. This makes the signature the motion language rather than a static decoration, adding a fourth distinct hook type."
+    },
+    {
+      "category": "wow",
+      "move": "Replace the plain-text estimator output with a small SVG elevation drawing that updates in real time as inputs change — for the built-in planner draw the wall with bay divisions and shelf lines, for the molding picker show the profile silhouette scaled to perimeter. The output becomes a designed artifact in the story-pole's drafting language."
+    }
+  ],
+  "verdictHint": "FIX"
+}
