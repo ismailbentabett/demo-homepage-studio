@@ -1,10 +1,14 @@
 // Builds library/index.html: one readable page that shows every delivered homepage,
 // grouped by trade, with screenshots, score, concept and a link to open the site.
-// Usage: node tools/build-showcase.mjs
+// Usage: node tools/build-showcase.mjs            -> library/index.html (links into the repo folders)
+//        node tools/build-showcase.mjs --deploy D  -> D/index.html (links to /<id>/, shots/ and fonts/ inside D;
+//                                                     tools/build-deploy.mjs copies those files)
 import { readFileSync, readdirSync, existsSync, writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 const ROOT = process.cwd();
+const di = process.argv.indexOf('--deploy');
+const DEPLOY = di > -1 ? (process.argv[di + 1] || 'deploy') : null;
 const read = p => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -25,7 +29,8 @@ for (const trade of readdirSync(join(ROOT, 'sites')).sort()) {
     const facts = existsSync(join(ROOT, base, 'facts.json')) ? read(`${base}/facts.json`) : {};
     const concept = existsSync(join(ROOT, base, 'plan/concept.json')) ? read(`${base}/plan/concept.json`) : {};
     const score = site.deliveredScore ?? site.best?.weighted ?? null;
-    const shot = f => existsSync(join(ROOT, base, 'qa/screens', f)) ? `../${base}/qa/screens/${f}` : null;
+    const shot = (f, tag) => !existsSync(join(ROOT, base, 'qa/screens', f)) ? null
+      : DEPLOY ? `shots/${site.id}-${tag}.jpg` : `../${base}/qa/screens/${f}`;
     const pal = concept.palette || {};
     sites.push({
       id: site.id, trade, dir,
@@ -40,9 +45,9 @@ for (const trade of readdirSync(join(ROOT, 'sites')).sort()) {
       swatches: ['paper', 'ink', 'deep', 'accent', 'signal'].map(k => pal[k]).filter(c => /^#[0-9a-f]{3,8}$/i.test(c || '')),
       tone: concept.tone || '',
       tools: concept.tools || [],
-      href: `../${base}/dist/index.html`,
-      desk: shot('1440-first.jpg') || (existsSync(join(ROOT, 'library/cards', `${site.id}.jpg`)) ? `cards/${site.id}.jpg` : null),
-      phone: shot('390-first.jpg'),
+      href: DEPLOY ? `${site.id}/` : `../${base}/dist/index.html`,
+      desk: shot('1440-first.jpg', 'desk') || (!DEPLOY && existsSync(join(ROOT, 'library/cards', `${site.id}.jpg`)) ? `cards/${site.id}.jpg` : null),
+      phone: shot('390-first.jpg', 'phone'),
     });
   }
 }
@@ -56,7 +61,7 @@ const fontFile = fam => {
   const d = join(ROOT, 'assets/fonts', fam);
   if (!existsSync(d)) return null;
   const f = readdirSync(d).find(x => x.endsWith('normal.woff2'));
-  return f ? `../assets/fonts/${fam}/${f}` : null;
+  return f ? (DEPLOY ? `fonts/${fam}-${f}` : `../assets/fonts/${fam}/${f}`) : null;
 };
 const sans = fontFile('instrument-sans'), mono = fontFile('dm-mono') || fontFile('jetbrains-mono');
 
@@ -96,6 +101,7 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Homepage Library</title>
+${DEPLOY ? '<meta name="robots" content="noindex, nofollow">' : ''}
 <meta name="description" content="Every demo homepage in the studio, grouped by trade, with score, concept and a link to open it.">
 <style>
 ${sans ? `@font-face{font-family:"Showcase Sans";src:url("${sans}") format("woff2");font-weight:400 700;font-display:swap}` : ''}
@@ -231,7 +237,7 @@ ${groups.map(g => `    <section class="trade" id="t-${esc(g.trade)}" aria-labell
   <p class="empty" id="empty" hidden>No homepage matches that search.</p>
 </main>
 
-<footer><div class="wrap">Fictional businesses for sales demos. Built ${new Date().toISOString().slice(0, 10)} by <code>node tools/build-showcase.mjs</code>. Gold score = passed the 9.0 bar; grey = passed at the round cap (8.8–8.99).</div></footer>
+<footer><div class="wrap">Fictional businesses for sales demos. Built ${new Date().toISOString().slice(0, 10)}. Gold score = passed the 9.0 bar; grey = passed at the round cap (8.8–8.99).</div></footer>
 
 <script>
 (() => {
@@ -265,6 +271,7 @@ ${groups.map(g => `    <section class="trade" id="t-${esc(g.trade)}" aria-labell
 </html>
 `;
 
-mkdirSync(join(ROOT, 'library'), { recursive: true });
-writeFileSync(join(ROOT, 'library/index.html'), html);
-console.log(`library/index.html: ${sites.length} homepages, ${groups.length} trades, avg ${avg}`);
+const outDir = DEPLOY || 'library';
+mkdirSync(join(ROOT, outDir), { recursive: true });
+writeFileSync(join(ROOT, outDir, 'index.html'), html);
+console.log(`${outDir}/index.html: ${sites.length} homepages, ${groups.length} trades, avg ${avg}`);

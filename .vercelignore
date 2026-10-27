@@ -1,0 +1,37 @@
+# Vercel only needs what tools/build-deploy.mjs reads: each site's dist/, site.json, facts.json,
+# plan/concept.json and two screenshots, plus data/demo-trades.json, assets/fonts and the two build tools.
+# Everything else stays out of the upload (niches/ alone is ~500 MB of stock photo pools).
+node_modules
+.git
+/.tmp
+/.remember
+/.claude
+/deploy
+/niches
+/reference
+/vendor
+/kit
+/docs
+/library
+/out
+*.log
+*.tmp
+*.tmp.mjs
+verify-*.sh
+/$*
+/placeholder-$*
+
+# Per site: drop the source, plans and QA history, keep only the two showcase screenshots.
+sites/*/*/src
+sites/*/*/DELIVERY.md
+sites/*/*/plan/*
+!sites/*/*/plan/concept.json
+sites/*/*/qa/*
+!sites/*/*/qa/screens
+sites/*/*/qa/screens/*
+!sites/*/*/qa/screens/1440-first.jpg
+!sites/*/*/qa/screens/390-first.jpg
+
+# Fonts: the showcase only uses three families; each site's dist/ already carries its own fonts.
+assets/*
+!assets/fonts
