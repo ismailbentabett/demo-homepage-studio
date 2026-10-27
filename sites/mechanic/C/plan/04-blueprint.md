@@ -1,5 +1,11 @@
 # Blueprint — mechanic-C (Frost Heave Auto Repair)
 
+## Round 2
+Stub photos replaced by drawn two-tone season art (photo elevate). Winter, breakup and summer became magazine spreads with a huge Bodoni temperature across the gutter, alternating bleed side and width (layout elevate). The thermo rail is now a fixed spine on desktop and a header chip on phones. Kit hooks fixed (form-nav back/next, tabs, filter, estimator, zip). Accent band moved to #2F6E90 for AA contrast.
+
+## Open issues
+- The OG image falls back to a plain colour because the hero slot is a stub JPEG (same as mechanic-A).
+
 ## Section list
 
 | # | ID | Tone | Purpose | Layout | Content tokens | Media slot | Hooks | Entrance |

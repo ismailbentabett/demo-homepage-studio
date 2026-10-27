@@ -447,45 +447,6 @@ SW.mod('mobilebar', function (SW) {
 });
 
 ;
-/* kit: lenis */
-/* lenis: smooth scrolling when <html data-smooth> is set, window.Lenis is loaded and motion is allowed.
-   lerp .1, wheelMultiplier 1, driven by the GSAP ticker (and synced to ScrollTrigger) when GSAP is loaded.
-   Sets SW.lenis. Same-page anchor links scroll through Lenis and focus their target. */
-SW.mod('lenis', function (SW) {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-smooth') || SW.reduced || typeof window.Lenis !== 'function') return;
-  var lenis = new window.Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    // never hijack scrolling inside an open dialog or an element that scrolls itself
-    prevent: function (node) { return !!(node && node.closest && node.closest('[data-lenis-prevent], dialog[open]')); },
-  });
-  SW.lenis = lenis;
-
-  if (window.gsap && window.gsap.ticker) {
-    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
-    window.gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-    window.gsap.ticker.lagSmoothing(0);
-  } else {
-    var raf = function (time) { lenis.raf(time); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var hash = a.getAttribute('href');
-    if (hash.length < 2) return;
-    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) return;
-    e.preventDefault();
-    SW.scrollTo(target);
-    if (history.pushState) history.pushState(null, '', hash);
-  });
-});
-
-;
 /* kit: split */
 /* split: [data-split="lines|words|chars"] splits plain text (inline tags like <em> are kept, <br> and <svg> are left alone).
    Screen readers get one sr-only copy of the text; the pieces sit in an aria-hidden .sw-split wrapper:
@@ -559,419 +520,6 @@ SW.mod('split', function (SW) {
     else SW.inView(el, function () { el.classList.add('is-in'); }, { rootMargin: '0px 0px -10% 0px' });
   });
   window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('is-in'); }); });
-});
-
-;
-/* kit: counters */
-/* counters: <span data-count="143">143 reviews</span> counts the first number in the text up from 0 once in view.
-   Write the final value in the HTML too (it is what shows without JS). Decimals follow the data-count value ("4.9").
-   data-count-duration in ms (default 1200). Screen readers get the final text; the moving copy is aria-hidden.
-   Static (final value) under reduced motion. */
-SW.mod('counters', function (SW) {
-  SW.$$('[data-count]').forEach(function (el) {
-    if (el.querySelector('.sw-count-num')) return;
-    var raw = el.getAttribute('data-count');
-    var target = parseFloat(String(raw).replace(/[^0-9.\-]/g, ''));
-    if (isNaN(target)) return;
-    var decimals = (String(raw).split('.')[1] || '').replace(/\D/g, '').length;
-    var fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-    var text = el.textContent;
-    var m = text.match(/\d[\d,]*(\.\d+)?/);
-    var before = m ? text.slice(0, m.index) : '';
-    var after = m ? text.slice(m.index + m[0].length) : text;
-    var finalText = fmt.format(target);
-
-    el.textContent = '';
-    var sr = document.createElement('span');
-    sr.className = 'sr-only';
-    sr.textContent = (before + finalText + after).trim();
-    var visual = document.createElement('span');
-    visual.setAttribute('aria-hidden', 'true');
-    var num = document.createElement('span');
-    num.className = 'sw-count-num';
-    visual.appendChild(document.createTextNode(before));
-    visual.appendChild(num);
-    visual.appendChild(document.createTextNode(after));
-    el.appendChild(sr);
-    el.appendChild(visual);
-
-    if (SW.reduced) { num.textContent = finalText; el.classList.add('is-counted'); return; }
-    num.textContent = fmt.format(0);
-    var duration = parseInt(el.getAttribute('data-count-duration'), 10) || 1200;
-    SW.inView(el, function () {
-      var t0 = performance.now();
-      function frame(now) {
-        var k = Math.min(1, (now - t0) / duration);
-        var eased = 1 - Math.pow(1 - k, 3);
-        num.textContent = fmt.format(target * eased);
-        if (k < 1) requestAnimationFrame(frame);
-        else { num.textContent = finalText; el.classList.add('is-counted'); }
-      }
-      requestAnimationFrame(frame);
-    }, { threshold: 0.4 });
-    window.addEventListener('beforeprint', function () { num.textContent = finalText; });
-  });
-});
-
-;
-/* kit: video */
-/* video: <video data-video data-src="media/x.mp4" poster muted loop playsinline preload="none"> inside a figure
-   with a <button data-vid-btn aria-pressed="false">Pause background video</button> (the [[video]] macro writes both).
-   Loads data-src when it comes near the screen, plays muted, pauses off-screen and in a hidden tab.
-   The button keeps its label; aria-pressed="true" means paused. The figure gets data-state="playing|paused".
-   Under reduced motion nothing autoplays (the poster shows, the button starts pressed; a click plays). */
-SW.mod('video', function (SW) {
-  SW.$$('video[data-video]').forEach(function (v) {
-    var fig = v.closest('figure') || v.parentElement;
-    var btn = fig ? SW.$('[data-vid-btn]', fig) : null;
-    v.muted = true;
-    v.setAttribute('muted', '');
-    v.playsInline = true;
-    var userPaused = SW.reduced;
-    var near = false;
-
-    function load() {
-      if (!v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; }
-    }
-    function play() {
-      load();
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { reflect(); });
-    }
-    function reflect() {
-      var playing = !v.paused && !v.ended;
-      if (btn) btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-      if (fig) fig.setAttribute('data-state', playing ? 'playing' : 'paused');
-    }
-    function sync() {
-      if (near && !userPaused && !document.hidden) play();
-      else if (!v.paused) v.pause();
-    }
-    v.addEventListener('play', reflect);
-    v.addEventListener('playing', reflect);
-    v.addEventListener('pause', reflect);
-    if (btn) {
-      btn.type = 'button';
-      btn.addEventListener('click', function () {
-        if (v.paused) { userPaused = false; play(); } else { userPaused = true; v.pause(); }
-        v.toggleAttribute('data-user-paused', userPaused);
-      });
-    }
-    SW.inView(v, function (inside) { near = inside; sync(); }, { once: false, rootMargin: '150px' });
-    document.addEventListener('visibilitychange', sync);
-    reflect();
-  });
-});
-
-;
-/* kit: zip */
-/* zip: "Do you serve my area?" checker against facts biz.zips.
-   <form data-zip>
-     <label for="zip-in">Your ZIP code</label> <input id="zip-in" name="zip" inputmode="numeric" autocomplete="postal-code">
-     <button type="submit">Check</button>
-     <p data-zip-result></p>          (aria-live; created when missing)
-   </form>
-   Text can be set with data-zip-yes / data-zip-no ({zip}, {phone}, {city} are replaced).
-   A yes shows a button "Get a price for {zip}" that fills the lead form (SW.prefillForm({zip})).
-   A no shows a call link. Anything but 5 digits: "Enter a 5-digit ZIP code." with aria-invalid. Never sends anything. */
-SW.mod('zip', function (SW) {
-  SW.$$('[data-zip]').forEach(function (box) {
-    var input = SW.$('input', box);
-    if (!input) return;
-    var out = SW.$('[data-zip-result]', box);
-    if (!out) { out = document.createElement('p'); out.setAttribute('data-zip-result', ''); box.appendChild(out); }
-    out.setAttribute('aria-live', 'polite');
-    out.setAttribute('role', 'status');
-    out.id = out.id || (input.id || 'sw-zip') + '-result';
-    input.setAttribute('aria-describedby', ((input.getAttribute('aria-describedby') || '') + ' ' + out.id).trim());
-    var form = box.tagName === 'FORM' ? box : null;
-    if (form) { form.setAttribute('novalidate', ''); form.setAttribute('method', 'dialog'); }
-
-    function fill(tpl, zip) {
-      return tpl.replace(/\{zip\}/g, zip).replace(/\{phone\}/g, SW.fact('biz.phone') || '').replace(/\{city\}/g, SW.fact('biz.city') || '');
-    }
-    function check() {
-      var zip = (input.value || '').replace(/\D/g, '');
-      input.value = zip;
-      out.textContent = '';
-      box.removeAttribute('data-zip-state');
-      if (zip.length !== 5) {
-        input.setAttribute('aria-invalid', 'true');
-        out.textContent = 'Enter a 5-digit ZIP code.';
-        box.setAttribute('data-zip-state', 'invalid');
-        input.focus();
-        return;
-      }
-      input.removeAttribute('aria-invalid');
-      var zips = (SW.fact('biz.zips', 'zips') || []).map(String);
-      var yes = zips.indexOf(zip) >= 0;
-      box.setAttribute('data-zip-state', yes ? 'yes' : 'no');
-      var msg = document.createElement('span');
-      msg.className = 'sw-zip-msg';
-      msg.textContent = fill(box.getAttribute(yes ? 'data-zip-yes' : 'data-zip-no') ||
-        (yes ? 'Yes, we work in {zip}.' : 'We don’t usually cover {zip}. Call us and we’ll tell you straight.'), zip);
-      out.appendChild(msg);
-      out.appendChild(document.createTextNode(' '));
-      if (yes) {
-        var go = document.createElement('button');
-        go.type = 'button';
-        go.className = 'sw-zip-go';
-        go.textContent = 'Get a price for ' + zip;
-        go.addEventListener('click', function () { SW.prefillForm({ zip: zip }); });
-        out.appendChild(go);
-      } else {
-        var phone = SW.fact('biz.phone'), e164 = SW.fact('biz.phoneE164');
-        if (phone) {
-          var a = document.createElement('a');
-          a.className = 'sw-zip-call';
-          a.href = 'tel:' + (e164 || phone.replace(/[^\d+]/g, ''));
-          a.textContent = 'Call ' + phone;
-          out.appendChild(a);
-        }
-      }
-    }
-    if (form) form.addEventListener('submit', function (e) { e.preventDefault(); check(); });
-    else {
-      var btn = SW.$('button', box);
-      if (btn) { btn.type = 'button'; btn.addEventListener('click', check); }
-      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); check(); } });
-    }
-    input.addEventListener('input', function () { input.removeAttribute('aria-invalid'); });
-  });
-});
-
-;
-/* kit: form */
-/* form: the 4-step lead form. It NEVER sends anything (no fetch, XHR or beacon); it shows the thank-you.
-   <form data-lead method="dialog" novalidate data-thanks="Thanks, {name}. ...">
-     <fieldset data-step><legend>Service</legend> ...radios name="service" required... </fieldset>
-     <fieldset data-step><legend>Job details</legend> ... name="zip", name="details" ... </fieldset>
-     <fieldset data-step><legend>When</legend> ... name="when" ... </fieldset>
-     <fieldset data-step><legend>Contact</legend> name="name" required, name="phone" type="tel" required, name="email" type="email" </fieldset>
-     <div class="hp" aria-hidden="true"><label>Website <input name="website2" tabindex="-1" autocomplete="off"></label></div>
-     <input type="hidden" name="t">
-     <button type="submit">Send my request</button>
-   </form>
-   Optional hooks: [data-form-progress] (role=progressbar, created when missing), [data-form-nav] holding
-   [data-back] / [data-next] / [data-submit] buttons (created when missing; an existing submit button is reused),
-   [data-form-status] (live region, created when missing), [data-thanks-box] (shown after sending, {name} replaced).
-   Sets --step (1-based), --steps, --progress (0..1) and data-step-current on the form.
-   Validation per step: required fields, one choice per required radio group, email shape, phone 10+ digits.
-   Errors: p.field-error linked by aria-describedby, aria-invalid on the field, focus on the first problem.
-   Spam: a filled website2 shows the thank-you and does nothing; sending in under 3 s (hidden t) asks to try again.
-   Without JS every step shows at once (method="dialog" keeps a no-JS submit from going anywhere). */
-SW.mod('form', function (SW) {
-  SW.$$('form[data-lead]').forEach(function (form, formIndex) {
-    var steps = SW.$$('[data-step]', form);
-    if (!steps.length) steps = [form];
-    var total = steps.length;
-    var cur = 0;
-    var uid = form.id || 'sw-lead-' + formIndex;
-    form.setAttribute('method', 'dialog');
-    form.setAttribute('novalidate', '');
-    form.removeAttribute('action');
-
-    // time trap
-    var tField = SW.$('input[name="t"]', form);
-    if (!tField) { tField = document.createElement('input'); tField.type = 'hidden'; tField.name = 't'; form.appendChild(tField); }
-    var bornAt = Date.now();
-    tField.value = String(bornAt);
-
-    function make(tag, attr, text) {
-      var el = document.createElement(tag);
-      Object.keys(attr || {}).forEach(function (k) { el.setAttribute(k, attr[k]); });
-      if (text) el.textContent = text;
-      return el;
-    }
-    function titleOf(i) {
-      var s = steps[i];
-      if (s === form) return '';
-      var l = s.getAttribute('data-step-title') || (s.querySelector('legend') ? s.querySelector('legend').textContent : '') || s.getAttribute('data-step');
-      return (l || '').trim();
-    }
-
-    // progress
-    var progress = SW.$('[data-form-progress]', form);
-    if (!progress && total > 1) { progress = make('div', { 'data-form-progress': '' }); form.insertBefore(progress, form.firstChild); }
-    if (progress) {
-      progress.setAttribute('role', 'progressbar');
-      progress.setAttribute('aria-valuemin', '1');
-      progress.setAttribute('aria-valuemax', String(total));
-      if (!progress.hasAttribute('aria-label')) progress.setAttribute('aria-label', 'Form progress');
-    }
-
-    // buttons
-    var submitBtn = SW.$('[data-submit]', form) || SW.$('button[type="submit"], input[type="submit"]', form);
-    var nav = SW.$('[data-form-nav]', form);
-    if (!nav) {
-      nav = make('div', { 'data-form-nav': '' });
-      if (submitBtn && submitBtn.parentElement !== form) submitBtn.parentElement.appendChild(nav); else form.appendChild(nav);
-    }
-    if (!submitBtn) submitBtn = make('button', { type: 'submit' }, form.getAttribute('data-submit-label') || 'Send my request');
-    submitBtn.setAttribute('data-submit', '');
-    var backBtn = SW.$('[data-back]', form) || make('button', { type: 'button', 'data-back': '' }, 'Back');
-    var nextBtn = SW.$('[data-next]', form) || make('button', { type: 'button', 'data-next': '' }, 'Next');
-    backBtn.type = 'button';
-    nextBtn.type = 'button';
-    if (!nav.contains(backBtn)) nav.appendChild(backBtn);
-    if (!nav.contains(nextBtn)) nav.appendChild(nextBtn);
-    if (!nav.contains(submitBtn)) nav.appendChild(submitBtn);
-
-    // status
-    var status = SW.$('[data-form-status]', form);
-    if (!status) { status = make('p', { 'data-form-status': '' }); nav.parentElement.insertBefore(status, nav.nextSibling); }
-    status.setAttribute('role', 'status');
-    status.setAttribute('aria-live', 'polite');
-
-    function say(msg) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 30); }
-
-    function show(i, focus) {
-      cur = Math.max(0, Math.min(total - 1, i));
-      steps.forEach(function (s, j) {
-        if (s === form) return;
-        s.hidden = j !== cur;
-        s.classList.toggle('is-current', j === cur);
-      });
-      var last = cur === total - 1;
-      backBtn.hidden = cur === 0;
-      nextBtn.hidden = last;
-      submitBtn.hidden = !last;
-      form.style.setProperty('--step', cur + 1);
-      form.style.setProperty('--steps', total);
-      form.style.setProperty('--progress', ((cur + 1) / total).toFixed(3));
-      form.setAttribute('data-step-current', String(cur + 1));
-      if (progress) {
-        progress.setAttribute('aria-valuenow', String(cur + 1));
-        progress.setAttribute('aria-valuetext', 'Step ' + (cur + 1) + ' of ' + total + (titleOf(cur) ? ': ' + titleOf(cur) : ''));
-      }
-      if (focus) {
-        var f = SW.focusables(steps[cur])[0];
-        SW.focusEl(f || steps[cur]);
-        if (total > 1) say('Step ' + (cur + 1) + ' of ' + total + (titleOf(cur) ? ': ' + titleOf(cur) : ''));
-      }
-    }
-
-    // ---- validation ----
-    function labelFor(f) {
-      var l = (f.id && SW.$('label[for="' + f.id + '"]', form)) || f.closest('label');
-      var txt = f.getAttribute('data-label') || (l ? l.textContent : '') || f.getAttribute('aria-label') || f.name || 'this field';
-      return txt.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
-    }
-    function errorHost(f) {
-      if (f.type === 'radio' || f.type === 'checkbox') return f.closest('fieldset, [role="radiogroup"], [data-group]') || f.parentElement;
-      return f.closest('label') && f.closest('label').contains(f) ? f.closest('label') : f;
-    }
-    function clearError(f) {
-      var group = f.type === 'radio' ? SW.$$('input[name="' + f.name + '"]', form) : [f];
-      group.forEach(function (g) {
-        g.removeAttribute('aria-invalid');
-        var id = uid + '-err-' + (g.name || g.id);
-        var d = (g.getAttribute('aria-describedby') || '').split(' ').filter(function (x) { return x && x !== id; }).join(' ');
-        if (d) g.setAttribute('aria-describedby', d); else g.removeAttribute('aria-describedby');
-      });
-      var old = document.getElementById(uid + '-err-' + (f.name || f.id));
-      if (old) old.remove();
-    }
-    function setError(f, msg) {
-      clearError(f);
-      var id = uid + '-err-' + (f.name || f.id);
-      var p = make('p', { 'class': 'field-error', id: id }, msg);
-      var host = errorHost(f);
-      if (host === f) f.insertAdjacentElement('afterend', p); else host.appendChild(p);
-      var group = f.type === 'radio' ? SW.$$('input[name="' + f.name + '"]', form) : [f];
-      group.forEach(function (g) {
-        g.setAttribute('aria-invalid', 'true');
-        g.setAttribute('aria-describedby', ((g.getAttribute('aria-describedby') || '') + ' ' + id).trim());
-      });
-    }
-    function problem(f) {
-      var v = (f.value || '').trim();
-      if (f.type === 'radio' || f.type === 'checkbox') {
-        if (!f.required) return '';
-        var any = SW.$$('input[name="' + f.name + '"]', form).some(function (g) { return g.checked; });
-        return any ? '' : (f.getAttribute('data-error') || 'Please pick one.');
-      }
-      if (f.required && !v) return f.getAttribute('data-error') || 'Please add your ' + labelFor(f).toLowerCase() + '.';
-      if (!v) return '';
-      if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Enter an email like name@example.com.';
-      if ((f.type === 'tel' || f.name === 'phone') && v.replace(/\D/g, '').length < 10) return 'Enter a 10-digit phone number.';
-      if (f.name === 'zip' && !/^\d{5}$/.test(v.replace(/\s/g, ''))) return 'Enter a 5-digit ZIP code.';
-      if (f.pattern && !new RegExp('^(?:' + f.pattern + ')$').test(v)) return f.getAttribute('data-error') || 'Please check ' + labelFor(f).toLowerCase() + '.';
-      return '';
-    }
-    function fieldsOf(step) {
-      return SW.$$('input, select, textarea', step).filter(function (f) {
-        return f.type !== 'hidden' && f.name !== 'website2' && !f.disabled && !f.closest('[aria-hidden="true"]');
-      });
-    }
-    function validate(step) {
-      var seen = {}, first = null;
-      fieldsOf(step).forEach(function (f) {
-        if (f.type === 'radio') { if (seen[f.name]) return; seen[f.name] = true; }
-        var msg = problem(f);
-        if (msg) { setError(f, msg); if (!first) first = f; } else clearError(f);
-      });
-      if (first) {
-        var pick = first.type === 'radio' ? (SW.$('input[name="' + first.name + '"]', form) || first) : first;
-        SW.focusEl(pick);
-        say('Please fix the highlighted field.');
-        return false;
-      }
-      return true;
-    }
-    form.addEventListener('input', function (e) { if (e.target.getAttribute && e.target.getAttribute('aria-invalid') && !problem(e.target)) clearError(e.target); });
-    form.addEventListener('change', function (e) { if (e.target.getAttribute && e.target.getAttribute('aria-invalid') && !problem(e.target)) clearError(e.target); });
-
-    // ---- navigation ----
-    nextBtn.addEventListener('click', function () { if (validate(steps[cur])) show(cur + 1, true); });
-    backBtn.addEventListener('click', function () { show(cur - 1, true); });
-    form.addEventListener('keydown', function (e) {
-      if (e.key !== 'Enter' || cur === total - 1) return;
-      var t = e.target;
-      if (!t || t.tagName === 'TEXTAREA' || t.tagName === 'BUTTON' || t.tagName === 'A') return;
-      e.preventDefault();
-      nextBtn.click();
-    });
-    form.addEventListener('sw:prefill', function () { show(0, false); });
-
-    // ---- send (never leaves the page) ----
-    function thanks() {
-      var nameField = SW.$('[name="name"]', form);
-      var first = nameField && nameField.value.trim() ? nameField.value.trim().split(/\s+/)[0] : 'there';
-      var box = SW.$('[data-thanks-box]', form.parentElement) || null;
-      if (!box) {
-        box = make('div', { 'data-thanks-box': '', 'class': 'sw-thanks' });
-        var p = make('p', {}, (form.getAttribute('data-thanks') ||
-          'Thanks, {name}. In your version this goes straight to your phone and inbox.'));
-        box.appendChild(p);
-        form.insertAdjacentElement('afterend', box);
-      }
-      var walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
-      var node;
-      while ((node = walker.nextNode())) {
-        if (!node._swTpl) node._swTpl = node.nodeValue;
-        node.nodeValue = node._swTpl.replace(/\{name\}/g, first);
-      }
-      box.setAttribute('role', 'status');
-      box.hidden = false;
-      form.hidden = true;
-      form.classList.add('is-sent');
-      SW.focusEl(box);
-      form.dispatchEvent(new CustomEvent('sw:lead', { bubbles: true, detail: { demo: true } }));
-    }
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (cur < total - 1) { nextBtn.click(); return; }
-      var hp = SW.$('[name="website2"]', form);
-      if (hp && hp.value) { thanks(); return; }
-      for (var i = 0; i < total; i++) { if (!validate(steps[i])) { show(i, false); validate(steps[i]); return; } }
-      if (Date.now() - bornAt < 3000) { say('That was fast. Please check your details and press send again.'); bornAt = 0; return; }
-      thanks();
-    });
-
-    form.setAttribute('data-form-ready', '');
-    show(0, false);
-  });
 });
 
 ;
@@ -1288,6 +836,344 @@ SW.mod('estimator', function (SW) {
 });
 
 ;
+/* kit: zip */
+/* zip: "Do you serve my area?" checker against facts biz.zips.
+   <form data-zip>
+     <label for="zip-in">Your ZIP code</label> <input id="zip-in" name="zip" inputmode="numeric" autocomplete="postal-code">
+     <button type="submit">Check</button>
+     <p data-zip-result></p>          (aria-live; created when missing)
+   </form>
+   Text can be set with data-zip-yes / data-zip-no ({zip}, {phone}, {city} are replaced).
+   A yes shows a button "Get a price for {zip}" that fills the lead form (SW.prefillForm({zip})).
+   A no shows a call link. Anything but 5 digits: "Enter a 5-digit ZIP code." with aria-invalid. Never sends anything. */
+SW.mod('zip', function (SW) {
+  SW.$$('[data-zip]').forEach(function (box) {
+    var input = SW.$('input', box);
+    if (!input) return;
+    var out = SW.$('[data-zip-result]', box);
+    if (!out) { out = document.createElement('p'); out.setAttribute('data-zip-result', ''); box.appendChild(out); }
+    out.setAttribute('aria-live', 'polite');
+    out.setAttribute('role', 'status');
+    out.id = out.id || (input.id || 'sw-zip') + '-result';
+    input.setAttribute('aria-describedby', ((input.getAttribute('aria-describedby') || '') + ' ' + out.id).trim());
+    var form = box.tagName === 'FORM' ? box : null;
+    if (form) { form.setAttribute('novalidate', ''); form.setAttribute('method', 'dialog'); }
+
+    function fill(tpl, zip) {
+      return tpl.replace(/\{zip\}/g, zip).replace(/\{phone\}/g, SW.fact('biz.phone') || '').replace(/\{city\}/g, SW.fact('biz.city') || '');
+    }
+    function check() {
+      var zip = (input.value || '').replace(/\D/g, '');
+      input.value = zip;
+      out.textContent = '';
+      box.removeAttribute('data-zip-state');
+      if (zip.length !== 5) {
+        input.setAttribute('aria-invalid', 'true');
+        out.textContent = 'Enter a 5-digit ZIP code.';
+        box.setAttribute('data-zip-state', 'invalid');
+        input.focus();
+        return;
+      }
+      input.removeAttribute('aria-invalid');
+      var zips = (SW.fact('biz.zips', 'zips') || []).map(String);
+      var yes = zips.indexOf(zip) >= 0;
+      box.setAttribute('data-zip-state', yes ? 'yes' : 'no');
+      var msg = document.createElement('span');
+      msg.className = 'sw-zip-msg';
+      msg.textContent = fill(box.getAttribute(yes ? 'data-zip-yes' : 'data-zip-no') ||
+        (yes ? 'Yes, we work in {zip}.' : 'We don’t usually cover {zip}. Call us and we’ll tell you straight.'), zip);
+      out.appendChild(msg);
+      out.appendChild(document.createTextNode(' '));
+      if (yes) {
+        var go = document.createElement('button');
+        go.type = 'button';
+        go.className = 'sw-zip-go';
+        go.textContent = 'Get a price for ' + zip;
+        go.addEventListener('click', function () { SW.prefillForm({ zip: zip }); });
+        out.appendChild(go);
+      } else {
+        var phone = SW.fact('biz.phone'), e164 = SW.fact('biz.phoneE164');
+        if (phone) {
+          var a = document.createElement('a');
+          a.className = 'sw-zip-call';
+          a.href = 'tel:' + (e164 || phone.replace(/[^\d+]/g, ''));
+          a.textContent = 'Call ' + phone;
+          out.appendChild(a);
+        }
+      }
+    }
+    if (form) form.addEventListener('submit', function (e) { e.preventDefault(); check(); });
+    else {
+      var btn = SW.$('button', box);
+      if (btn) { btn.type = 'button'; btn.addEventListener('click', check); }
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    }
+    input.addEventListener('input', function () { input.removeAttribute('aria-invalid'); });
+  });
+});
+
+;
+/* kit: prefill */
+/* prefill: any link or button with data-service="Leak repair" (outside the lead form) fills the form's
+   "service" field, scrolls to #contact and focuses that field. The [[quote]] macro writes these links
+   (href="#contact" so they still work without JS). The value can be a service name or its short name. */
+SW.mod('prefill', function (SW) {
+  // capture phase: runs before the smooth-scroll anchor handler
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var t = e.target.closest ? e.target.closest('[data-service]') : null;
+    if (!t || t.closest('form[data-lead]')) return;
+    var form = SW.$('form[data-lead]');
+    if (!form) return; // plain anchor behaviour
+    e.preventDefault();
+    var want = (t.getAttribute('data-service') || '').trim().toLowerCase();
+    var services = SW.fact('services') || [];
+    var hit = services.find(function (s) {
+      return String(s.name || '').toLowerCase() === want || String(s.short || '').toLowerCase() === want;
+    });
+    var name = hit ? hit.name : t.getAttribute('data-service');
+    SW.prefillForm(name ? { service: name } : {}, { focus: 'service' });
+    if (t.getAttribute('href') && t.getAttribute('href').charAt(0) === '#') {
+      try { history.pushState(null, '', t.getAttribute('href')); } catch (err) { /* file:// */ }
+    }
+  }, true);
+});
+
+;
+/* kit: form */
+/* form: the 4-step lead form. It NEVER sends anything (no fetch, XHR or beacon); it shows the thank-you.
+   <form data-lead method="dialog" novalidate data-thanks="Thanks, {name}. ...">
+     <fieldset data-step><legend>Service</legend> ...radios name="service" required... </fieldset>
+     <fieldset data-step><legend>Job details</legend> ... name="zip", name="details" ... </fieldset>
+     <fieldset data-step><legend>When</legend> ... name="when" ... </fieldset>
+     <fieldset data-step><legend>Contact</legend> name="name" required, name="phone" type="tel" required, name="email" type="email" </fieldset>
+     <div class="hp" aria-hidden="true"><label>Website <input name="website2" tabindex="-1" autocomplete="off"></label></div>
+     <input type="hidden" name="t">
+     <button type="submit">Send my request</button>
+   </form>
+   Optional hooks: [data-form-progress] (role=progressbar, created when missing), [data-form-nav] holding
+   [data-back] / [data-next] / [data-submit] buttons (created when missing; an existing submit button is reused),
+   [data-form-status] (live region, created when missing), [data-thanks-box] (shown after sending, {name} replaced).
+   Sets --step (1-based), --steps, --progress (0..1) and data-step-current on the form.
+   Validation per step: required fields, one choice per required radio group, email shape, phone 10+ digits.
+   Errors: p.field-error linked by aria-describedby, aria-invalid on the field, focus on the first problem.
+   Spam: a filled website2 shows the thank-you and does nothing; sending in under 3 s (hidden t) asks to try again.
+   Without JS every step shows at once (method="dialog" keeps a no-JS submit from going anywhere). */
+SW.mod('form', function (SW) {
+  SW.$$('form[data-lead]').forEach(function (form, formIndex) {
+    var steps = SW.$$('[data-step]', form);
+    if (!steps.length) steps = [form];
+    var total = steps.length;
+    var cur = 0;
+    var uid = form.id || 'sw-lead-' + formIndex;
+    form.setAttribute('method', 'dialog');
+    form.setAttribute('novalidate', '');
+    form.removeAttribute('action');
+
+    // time trap
+    var tField = SW.$('input[name="t"]', form);
+    if (!tField) { tField = document.createElement('input'); tField.type = 'hidden'; tField.name = 't'; form.appendChild(tField); }
+    var bornAt = Date.now();
+    tField.value = String(bornAt);
+
+    function make(tag, attr, text) {
+      var el = document.createElement(tag);
+      Object.keys(attr || {}).forEach(function (k) { el.setAttribute(k, attr[k]); });
+      if (text) el.textContent = text;
+      return el;
+    }
+    function titleOf(i) {
+      var s = steps[i];
+      if (s === form) return '';
+      var l = s.getAttribute('data-step-title') || (s.querySelector('legend') ? s.querySelector('legend').textContent : '') || s.getAttribute('data-step');
+      return (l || '').trim();
+    }
+
+    // progress
+    var progress = SW.$('[data-form-progress]', form);
+    if (!progress && total > 1) { progress = make('div', { 'data-form-progress': '' }); form.insertBefore(progress, form.firstChild); }
+    if (progress) {
+      progress.setAttribute('role', 'progressbar');
+      progress.setAttribute('aria-valuemin', '1');
+      progress.setAttribute('aria-valuemax', String(total));
+      if (!progress.hasAttribute('aria-label')) progress.setAttribute('aria-label', 'Form progress');
+    }
+
+    // buttons
+    var submitBtn = SW.$('[data-submit]', form) || SW.$('button[type="submit"], input[type="submit"]', form);
+    var nav = SW.$('[data-form-nav]', form);
+    if (!nav) {
+      nav = make('div', { 'data-form-nav': '' });
+      if (submitBtn && submitBtn.parentElement !== form) submitBtn.parentElement.appendChild(nav); else form.appendChild(nav);
+    }
+    if (!submitBtn) submitBtn = make('button', { type: 'submit' }, form.getAttribute('data-submit-label') || 'Send my request');
+    submitBtn.setAttribute('data-submit', '');
+    var backBtn = SW.$('[data-back]', form) || make('button', { type: 'button', 'data-back': '' }, 'Back');
+    var nextBtn = SW.$('[data-next]', form) || make('button', { type: 'button', 'data-next': '' }, 'Next');
+    backBtn.type = 'button';
+    nextBtn.type = 'button';
+    if (!nav.contains(backBtn)) nav.appendChild(backBtn);
+    if (!nav.contains(nextBtn)) nav.appendChild(nextBtn);
+    if (!nav.contains(submitBtn)) nav.appendChild(submitBtn);
+
+    // status
+    var status = SW.$('[data-form-status]', form);
+    if (!status) { status = make('p', { 'data-form-status': '' }); nav.parentElement.insertBefore(status, nav.nextSibling); }
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+
+    function say(msg) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 30); }
+
+    function show(i, focus) {
+      cur = Math.max(0, Math.min(total - 1, i));
+      steps.forEach(function (s, j) {
+        if (s === form) return;
+        s.hidden = j !== cur;
+        s.classList.toggle('is-current', j === cur);
+      });
+      var last = cur === total - 1;
+      backBtn.hidden = cur === 0;
+      nextBtn.hidden = last;
+      submitBtn.hidden = !last;
+      form.style.setProperty('--step', cur + 1);
+      form.style.setProperty('--steps', total);
+      form.style.setProperty('--progress', ((cur + 1) / total).toFixed(3));
+      form.setAttribute('data-step-current', String(cur + 1));
+      if (progress) {
+        progress.setAttribute('aria-valuenow', String(cur + 1));
+        progress.setAttribute('aria-valuetext', 'Step ' + (cur + 1) + ' of ' + total + (titleOf(cur) ? ': ' + titleOf(cur) : ''));
+      }
+      if (focus) {
+        var f = SW.focusables(steps[cur])[0];
+        SW.focusEl(f || steps[cur]);
+        if (total > 1) say('Step ' + (cur + 1) + ' of ' + total + (titleOf(cur) ? ': ' + titleOf(cur) : ''));
+      }
+    }
+
+    // ---- validation ----
+    function labelFor(f) {
+      var l = (f.id && SW.$('label[for="' + f.id + '"]', form)) || f.closest('label');
+      var txt = f.getAttribute('data-label') || (l ? l.textContent : '') || f.getAttribute('aria-label') || f.name || 'this field';
+      return txt.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+    }
+    function errorHost(f) {
+      if (f.type === 'radio' || f.type === 'checkbox') return f.closest('fieldset, [role="radiogroup"], [data-group]') || f.parentElement;
+      return f.closest('label') && f.closest('label').contains(f) ? f.closest('label') : f;
+    }
+    function clearError(f) {
+      var group = f.type === 'radio' ? SW.$$('input[name="' + f.name + '"]', form) : [f];
+      group.forEach(function (g) {
+        g.removeAttribute('aria-invalid');
+        var id = uid + '-err-' + (g.name || g.id);
+        var d = (g.getAttribute('aria-describedby') || '').split(' ').filter(function (x) { return x && x !== id; }).join(' ');
+        if (d) g.setAttribute('aria-describedby', d); else g.removeAttribute('aria-describedby');
+      });
+      var old = document.getElementById(uid + '-err-' + (f.name || f.id));
+      if (old) old.remove();
+    }
+    function setError(f, msg) {
+      clearError(f);
+      var id = uid + '-err-' + (f.name || f.id);
+      var p = make('p', { 'class': 'field-error', id: id }, msg);
+      var host = errorHost(f);
+      if (host === f) f.insertAdjacentElement('afterend', p); else host.appendChild(p);
+      var group = f.type === 'radio' ? SW.$$('input[name="' + f.name + '"]', form) : [f];
+      group.forEach(function (g) {
+        g.setAttribute('aria-invalid', 'true');
+        g.setAttribute('aria-describedby', ((g.getAttribute('aria-describedby') || '') + ' ' + id).trim());
+      });
+    }
+    function problem(f) {
+      var v = (f.value || '').trim();
+      if (f.type === 'radio' || f.type === 'checkbox') {
+        if (!f.required) return '';
+        var any = SW.$$('input[name="' + f.name + '"]', form).some(function (g) { return g.checked; });
+        return any ? '' : (f.getAttribute('data-error') || 'Please pick one.');
+      }
+      if (f.required && !v) return f.getAttribute('data-error') || 'Please add your ' + labelFor(f).toLowerCase() + '.';
+      if (!v) return '';
+      if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Enter an email like name@example.com.';
+      if ((f.type === 'tel' || f.name === 'phone') && v.replace(/\D/g, '').length < 10) return 'Enter a 10-digit phone number.';
+      if (f.name === 'zip' && !/^\d{5}$/.test(v.replace(/\s/g, ''))) return 'Enter a 5-digit ZIP code.';
+      if (f.pattern && !new RegExp('^(?:' + f.pattern + ')$').test(v)) return f.getAttribute('data-error') || 'Please check ' + labelFor(f).toLowerCase() + '.';
+      return '';
+    }
+    function fieldsOf(step) {
+      return SW.$$('input, select, textarea', step).filter(function (f) {
+        return f.type !== 'hidden' && f.name !== 'website2' && !f.disabled && !f.closest('[aria-hidden="true"]');
+      });
+    }
+    function validate(step) {
+      var seen = {}, first = null;
+      fieldsOf(step).forEach(function (f) {
+        if (f.type === 'radio') { if (seen[f.name]) return; seen[f.name] = true; }
+        var msg = problem(f);
+        if (msg) { setError(f, msg); if (!first) first = f; } else clearError(f);
+      });
+      if (first) {
+        var pick = first.type === 'radio' ? (SW.$('input[name="' + first.name + '"]', form) || first) : first;
+        SW.focusEl(pick);
+        say('Please fix the highlighted field.');
+        return false;
+      }
+      return true;
+    }
+    form.addEventListener('input', function (e) { if (e.target.getAttribute && e.target.getAttribute('aria-invalid') && !problem(e.target)) clearError(e.target); });
+    form.addEventListener('change', function (e) { if (e.target.getAttribute && e.target.getAttribute('aria-invalid') && !problem(e.target)) clearError(e.target); });
+
+    // ---- navigation ----
+    nextBtn.addEventListener('click', function () { if (validate(steps[cur])) show(cur + 1, true); });
+    backBtn.addEventListener('click', function () { show(cur - 1, true); });
+    form.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' || cur === total - 1) return;
+      var t = e.target;
+      if (!t || t.tagName === 'TEXTAREA' || t.tagName === 'BUTTON' || t.tagName === 'A') return;
+      e.preventDefault();
+      nextBtn.click();
+    });
+    form.addEventListener('sw:prefill', function () { show(0, false); });
+
+    // ---- send (never leaves the page) ----
+    function thanks() {
+      var nameField = SW.$('[name="name"]', form);
+      var first = nameField && nameField.value.trim() ? nameField.value.trim().split(/\s+/)[0] : 'there';
+      var box = SW.$('[data-thanks-box]', form.parentElement) || null;
+      if (!box) {
+        box = make('div', { 'data-thanks-box': '', 'class': 'sw-thanks' });
+        var p = make('p', {}, (form.getAttribute('data-thanks') ||
+          'Thanks, {name}. In your version this goes straight to your phone and inbox.'));
+        box.appendChild(p);
+        form.insertAdjacentElement('afterend', box);
+      }
+      var walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+      var node;
+      while ((node = walker.nextNode())) {
+        if (!node._swTpl) node._swTpl = node.nodeValue;
+        node.nodeValue = node._swTpl.replace(/\{name\}/g, first);
+      }
+      box.setAttribute('role', 'status');
+      box.hidden = false;
+      form.hidden = true;
+      form.classList.add('is-sent');
+      SW.focusEl(box);
+      form.dispatchEvent(new CustomEvent('sw:lead', { bubbles: true, detail: { demo: true } }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (cur < total - 1) { nextBtn.click(); return; }
+      var hp = SW.$('[name="website2"]', form);
+      if (hp && hp.value) { thanks(); return; }
+      for (var i = 0; i < total; i++) { if (!validate(steps[i])) { show(i, false); validate(steps[i]); return; } }
+      if (Date.now() - bornAt < 3000) { say('That was fast. Please check your details and press send again.'); bornAt = 0; return; }
+      thanks();
+    });
+
+    form.setAttribute('data-form-ready', '');
+    show(0, false);
+  });
+});
+
+;
 /* kit: media-fallback */
 /* media-fallback: always on. The listener lives in core.js (it must catch errors that happen before the
    modules start); this module re-checks images that had already failed by the time the page was ready.
@@ -1301,116 +1187,151 @@ SW.mod('media-fallback', function (SW) {
 
 ;
 /* site: src/app.js */
-/* mechanic-C · Car-Year Thermometer Rail signature */
+/* mechanic-C · the car-year thermometer rail (signature) + two scroll stories + the noise finder */
 (function () {
   if (typeof SW === 'undefined') return;
+  var root = document.documentElement;
 
-  /* ── Thermo-rail signature moment ─────────────────────────────── */
+  /* ── Signature: the outside-temperature readout follows the page ──
+     State only (text + one CSS var), so it also runs under reduced motion; the number only
+     tweens when motion is allowed. */
   SW.mod('thermo-rail', function () {
-    if (SW.reduced) return;
-    var rails = document.querySelectorAll('[data-sw-signature="thermo-rail"]');
-    if (!rails.length) return;
-
-    var seasons = [];
-    document.querySelectorAll('[data-season]').forEach(function (el) {
-      seasons.push({
-        el: el,
-        temp: parseInt(el.getAttribute('data-season'), 10),
-        label: el.getAttribute('data-season-label') || ''
-      });
-    });
+    var motion = !SW.reduced && root.classList.contains('sw-motion');
+    var seasons = SW.$$('[data-season]');
+    var outs = SW.$$('[data-temp-out]');
+    var labels = SW.$$('[data-season-out]');
     if (!seasons.length) return;
+    var shown = -8, tween = null;
 
-    var currentReadout = null;
-
-    /* Intro tick: -20 → first season temp over 1.1s */
-    var heroRail = document.querySelector('.hero .thermo-rail__readout [data-count]');
-    if (heroRail && typeof gsap !== 'undefined') {
-      var startTemp = -20;
-      var endTemp = seasons[0].temp;
-      var obj = { v: startTemp };
-      gsap.to(obj, {
-        v: endTemp,
-        duration: 1.1,
-        ease: 'power2.out',
-        onUpdate: function () {
-          heroRail.textContent = Math.round(obj.v);
-        }
-      });
+    function k(t) { return Math.max(0.04, Math.min(1, (t + 20) / 90)); }
+    function fmt(v) { v = Math.round(v); return (v < 0 ? '−' : '') + Math.abs(v); }
+    function paint(v) { outs.forEach(function (o) { o.textContent = fmt(v); }); }
+    function set(el) {
+      var t = parseInt(el.getAttribute('data-season'), 10);
+      if (isNaN(t)) return;
+      root.setAttribute('data-season-now', el.getAttribute('data-season-key') || 'winter');
+      root.style.setProperty('--temp-k', k(t).toFixed(3));
+      var label = el.getAttribute('data-season-label') || '';
+      labels.forEach(function (l) { if (l.textContent !== label) l.textContent = label; });
+      if (t === shown) return;
+      if (motion && window.gsap) {
+        if (tween) tween.kill();
+        var o = { v: shown };
+        tween = gsap.to(o, { v: t, duration: 0.8, ease: 'power2.out', onUpdate: function () { paint(o.v); } });
+      } else paint(t);
+      shown = t;
     }
 
-    /* Scroll-driven crossfade between seasons */
-    if (typeof ScrollTrigger !== 'undefined') {
-      seasons.forEach(function (s, i) {
-        ScrollTrigger.create({
-          trigger: s.el,
-          start: 'top 60%',
-          end: 'bottom 40%',
-          onEnter: function () { updateRail(s); },
-          onEnterBack: function () { updateRail(s); }
-        });
-      });
+    /* intro: the hero readout ticks up from −20 (≤ 1.1 s, the h1 is readable throughout) */
+    if (motion && window.gsap) {
+      var o0 = { v: -20 };
+      paint(-20);
+      root.style.setProperty('--temp-k', k(-20).toFixed(3));
+      gsap.to(o0, { v: -8, duration: 1.1, ease: 'power2.out', delay: 0.15, onUpdate: function () { paint(o0.v); },
+        onComplete: function () { root.style.setProperty('--temp-k', k(-8).toFixed(3)); } });
+    } else {
+      set(seasons[0]);
     }
 
-    function updateRail(season) {
-      if (currentReadout === season.temp) return;
-      currentReadout = season.temp;
-      rails.forEach(function (rail) {
-        var readout = rail.querySelector('.thermo-rail__readout');
-        if (!readout) return;
-        /* Animate number if GSAP available */
-        var span = readout.querySelector('[data-count]') || readout.querySelector('span');
-        if (span && typeof gsap !== 'undefined' && !SW.reduced) {
-          var cur = parseInt(span.textContent, 10) || 0;
-          var target = season.temp;
-          var o = { v: cur };
-          gsap.to(o, {
-            v: target,
-            duration: 0.6,
-            ease: 'power1.out',
-            onUpdate: function () {
-              span.textContent = Math.round(o.v);
-            }
-          });
-        } else if (span) {
-          span.textContent = season.temp;
-        }
-      });
+    /* the season under the middle of the screen drives the rail */
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) set(e.target); });
+      }, { rootMargin: '-50% 0px -50% 0px' });
+      seasons.forEach(function (s) { io.observe(s); });
     }
   });
 
-  /* ── Noise finder tool (local logic, no kit module) ──────────── */
+  /* ── Scroll stories (motion only) ── */
+  SW.mod('stories', function () {
+    if (SW.reduced || !root.classList.contains('sw-motion')) return;
+    if (!window.gsap || !window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* 1. the cover: the twilight road drifts slower than the page */
+    gsap.to('.hero__art', { yPercent: 9, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+    /* 2. each spread: the huge season temperature slides across its gutter as the page turns */
+    ScrollTrigger.matchMedia({
+      '(min-width: 640px)': function () {
+        SW.$$('.spread').forEach(function (sp) {
+          var t = sp.querySelector('.spread__temp');
+          if (!t) return;
+          gsap.fromTo(t, { yPercent: 28 }, { yPercent: -18, ease: 'none',
+            scrollTrigger: { trigger: sp, start: 'top bottom', end: 'bottom top', scrub: true } });
+        });
+      }
+    });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+  });
+
+  /* ── Estimator output as a repair ticket: job in mono, range at display size ── */
+  SW.mod('ticket', function () {
+    var out = SW.$('.ticket [data-est-out]');
+    if (!out) return;
+    function shape() {
+      var line = out.querySelector('.sw-est-range');
+      if (!line || line.querySelector('.est-range')) return;
+      var txt = line.textContent, cut = txt.indexOf(': ');
+      if (cut < 0) return;
+      line.textContent = '';
+      var a = document.createElement('span'); a.className = 'est-item'; a.textContent = txt.slice(0, cut);
+      var b = document.createElement('span'); b.className = 'est-range'; b.textContent = txt.slice(cut + 2);
+      line.appendChild(a); line.appendChild(b);
+      var note = out.querySelector('.sw-est-note');
+      if (note) note.textContent = note.textContent.replace(/^\s*\(|\)\s*$/g, '');
+    }
+    shape();
+    new MutationObserver(shape).observe(out, { childList: true });
+  });
+
+  /* ── Noise finder ── */
   SW.mod('noise-finder', function () {
-    var form = document.querySelector('.noise-form');
-    var result = document.querySelector('[data-noise-result]');
-    if (!form || !result) return;
-
+    var form = SW.$('[data-noise]');
+    var out = SW.$('[data-noise-out]');
+    if (!form || !out) return;
     var causes = {
-      'braking-grinding': 'Worn brake pads or scored rotors. Book a brake check soon.',
-      'braking-squeal': 'Glazed pads or wear indicators. Safe to drive in this week.',
-      'braking-clunk': 'Loose caliper bracket or worn pad retainer. Book today.',
-      'turning-clunk': 'CV joint or ball joint wear. Get it checked before highway driving.',
-      'turning-click': 'CV axle joint wearing. Book this week.',
-      'turning-hum': 'Wheel bearing starting to go. Book within two weeks.',
-      'bumps-clunk': 'Sway bar link or strut mount. Common after breakup. Book when convenient.',
-      'bumps-squeal': 'Bushings drying out. Note it at your next service.',
-      'speed-hum': 'Wheel bearing or tire cupping. Book a diagnosis.',
-      'speed-grinding': 'Brake drag or rotor runout. Book soon.',
-      'cold-squeal': 'Belt glaze or tensioner. Common in winter mornings. Mention at drop-off.',
-      'cold-click': 'Starter bendix or valve train. Note it when you book.'
+      'braking-grinding': 'Pads worn to the metal or a scored rotor. Book a brake check this week.',
+      'braking-squeal': 'Pad wear indicators or glazed pads. Safe to drive in; book soon.',
+      'braking-clunk': 'A loose caliper bracket or pad clip. Book today.',
+      'braking-hum': 'Usually a wheel bearing that is louder under load. Book a look.',
+      'braking-click': 'Often a pad shifting in its bracket. Mention it at drop-off.',
+      'turning-clunk': 'A worn ball joint or sway bar link. Get it checked before highway miles.',
+      'turning-click': 'An outer CV joint wearing out. Book this week.',
+      'turning-hum': 'A wheel bearing starting to go. Book within two weeks.',
+      'turning-grinding': 'A dry CV joint or a brake shield touching the rotor. Book soon.',
+      'turning-squeal': 'Low power steering fluid or a slipping belt. Book a look.',
+      'bumps-clunk': 'Sway bar link or strut mount, common after breakup. Book when it suits you.',
+      'bumps-squeal': 'Dry suspension bushings. Note it at your next visit.',
+      'bumps-click': 'A loose heat shield or a tired strut mount. Book a look.',
+      'bumps-hum': 'Usually a tire, not the suspension. We check tread and balance.',
+      'bumps-grinding': 'A worn ball joint. Book this week and drive gently.',
+      'speed-hum': 'A wheel bearing or cupped tires. Book a diagnosis.',
+      'speed-grinding': 'A dragging brake or a bearing. Book soon.',
+      'speed-click': 'Something stuck in the tread, or a CV joint. Book a look.',
+      'speed-clunk': 'Loose suspension parts. Book today.',
+      'speed-squeal': 'A belt or a pulley bearing. Book a look.',
+      'cold-squeal': 'A glazed belt or a tired tensioner, common on dark winter mornings. Mention it at drop-off.',
+      'cold-click': 'A starter that is struggling, or the battery. Book a battery test.',
+      'cold-grinding': 'The starter gear not engaging cleanly. Book before it strands you.',
+      'cold-clunk': 'Engine or transmission mounts stiff in the cold. Book a look.',
+      'cold-hum': 'A cold power steering pump or a bearing. Mention it at drop-off.'
     };
-
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var when = form.querySelector('[name="noise-when"]:checked');
-      var type = form.querySelector('[name="noise-type"]:checked');
-      if (!when || !type) {
-        result.innerHTML = '<p>Pick both a "when" and a "what" above.</p>';
-        return;
-      }
-      var key = when.value + '-' + type.value;
-      var answer = causes[key] || 'That combination is less common. Drop the car off and we\'ll listen with you.';
-      result.innerHTML = '<p><strong>' + when.value.charAt(0).toUpperCase() + when.value.slice(1) + ', ' + type.value + ':</strong> ' + answer + '</p><p style="margin-top:var(--s-3)"><a href="#contact" class="btn btn-primary" data-service="Check engine">Book a diagnosis</a></p>';
+      var w = form.querySelector('[name="noise-when"]:checked');
+      var t = form.querySelector('[name="noise-type"]:checked');
+      out.textContent = '';
+      if (!w || !t) { out.textContent = 'Pick one answer in each row first.'; return; }
+      var head = document.createElement('strong');
+      head.textContent = w.parentElement.textContent.trim() + ', ' + t.parentElement.textContent.trim().toLowerCase();
+      var p = document.createElement('p');
+      p.textContent = causes[w.value + '-' + t.value] || 'Less common. Bring it in and we will listen with you on a short drive.';
+      var a = document.createElement('a');
+      a.href = '#contact'; a.className = 'link-arrow'; a.setAttribute('data-service', 'Check engine'); a.textContent = 'Book a diagnosis';
+      out.appendChild(head); out.appendChild(p); out.appendChild(a);
     });
   });
 })();
+
