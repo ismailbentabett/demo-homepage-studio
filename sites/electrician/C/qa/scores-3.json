@@ -1,0 +1,72 @@
+{
+  "round": 3,
+  "categories": {
+    "firstScreen": {
+      "score": 9,
+      "notes": "1440-first.jpg: h1 'Kansas City bungalows, rewired room by room.' 6 words, 2 lines, trade+city+outcome; one loud 'Price my rewire' plus a quieter outlined call button; phone in header; proof line (open-now, areas, 5 from 96 reviews + SAMPLE RATING); the Tudor-arch frame with the '01 FRONT ROOM' marker puts the signature in the first screen. Next band peeks only ~15px (dark ledger edge under the rail) at 1440, under the 40-120px mark (-0.5). 390-first.jpg: h1 4 lines, both actions above the fold, sticky Call / Price bar."
+    },
+    "distinctiveness": {
+      "score": 9,
+      "notes": "1440-full.jpg: arch frame in hero, attic decoder (1440-scroll-50.jpg) and porch/area band; numbered room marker 01-09 heads every section and the footer nav; house-section icons in the service grid (1440-scroll-25.jpg) highlight the room each service lives in, so the motif organises information. Nothing like a trade template. Deduction: a numbered mono eyebrow above every single heading reads as the 'eyebrow + 01/02/03' tell even though it carries the tour (-0.5)."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "Cormorant Garamond display + Karla body + JetBrains Mono accent, body full ink ≥16px, en-dash prices ($150–$325). Deductions: 1440-full.jpg ledger band runs 4 tracked mono caps labels in one view (OFFICE HOURS / CALL OR TEXT / WHERE / HOW WE WORK) plus mono captions (-0.5); 1440-scroll-75.jpg rating line '★★★★★ 5' sets the 5 in an old-style display figure that drops below the baseline of the sentence (-0.5 shared with hours in 24h '08:00–17:00' next to '8 am' elsewhere, noted under polish)."
+    },
+    "layout": {
+      "score": 8,
+      "notes": "Tones alternate well (paper / deep ledger / paper / sand / deep break / paper / sand / brick / paper / deep / paper / deep footer), no dark bands touch. Deductions: 1440-full.jpg #services middle row is broken: 'Two-prong outlet updates' splits into icon+LIVING ROOM column, title and body in a second column, and 'Push-button switch restoration' sits in the third with no icon or room label: a visible bug (-1.0, mustFix). 1440-scroll-75.jpg reviews: 5th card orphaned in a 2-col grid and the left column is empty for ~600px under the big quote (-0.5). Restored +0.5: render now shows every section (round-2 blank-middle fixed)."
+    },
+    "photo": {
+      "score": 8.5,
+      "notes": "Stock is placeholder; judged the drawn treatments. 1440-first.jpg: lamp-lit front-room illustration in the arch, one warm grade shared with the attic cross-section (1440-scroll-50.jpg) and the porch line drawing (1440-full.jpg area band). Consistent palette, on-topic, framed by the signature. No broken or blank frames. Not 9: the illustrations are flat vector with no sequence from plan to result across the page."
+    },
+    "copy": {
+      "score": 8,
+      "notes": "Strong trade voice: 'fish new wire through small cuts in the plaster', 'Wired for iceboxes and radios', 'Two-hole outlets have three honest fixes', 'None of these means trouble on its own.' Every price and review Sample-labelled. Capped at 8.0 by mustFix: 1440-scroll-75.jpg Erica N. review shows five filled stars while facts.json gives 4 stars (sr-only text says 4): an inflated rating on a demo. Minor: action names drift (Price my rewire / Price it / Price my outlets / Price my charger / Book an inspection)."
+    },
+    "mobile": {
+      "score": 9,
+      "notes": "390-first.jpg: h1 4 lines, both actions above the fold, sticky Call + Price bar. 390-full.jpg: wall diagram re-cut vertically, service grid stacks cleanly (the desktop grid bug does not appear here), decoder checklist single column, EV planner fits with a thumb-sized slider, area list 2-col, no sideways scroll (render.json overflow 390/320 clean). Not 9.5: 'Price it →' text links in #services look under 48px tall in 390-full.jpg."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "1440-rm-full.jpg and 390-rm-full.jpg: every section and word visible (round-2 mustFix resolved). Skip link, 3px accent focus-visible, stars have sr-only text, forced-colors and print blocks present in dist/index.html. Deduction: 1440-full.jpg #story steps 02-04 dimmed to pale grey on paper (well under 4.5:1) in the motion state, and diagram labels 'PATCHED' / 'TESTED · BEDROOM' are faint (-0.5)."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "Hooks in dist/index.html: data-split lines, story steps with active state (visible as the dimmed 02-04 in 1440-full.jpg), room marker in header ('FRONT ROOM' in 1440-first.jpg), tabs (two-prong), slider-driven EV drawing, reveal-stagger. Reveals now resolve in capture. Not 9: from the 25/50/75 frames the only motion that explains something is the story step focus; the attic decoder drawing (1440-scroll-50.jpg) and arch frames sit static, and the promised brass connector line between markers is not visible in any frame."
+    },
+    "wow": {
+      "score": 9,
+      "notes": "1440-full.jpg #ev: 'Where does the car park?' slider redraws the panel-to-garage run in line drawing, states the price driver and offers 'Print this plan'; 1440-scroll-50.jpg attic decoder with recent/mixed/original meter and a knob-and-tube cross-section in the arch. Both are tied to the bungalow thesis and something a homeowner would actually use."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "Consistent 2-4px radius, one stroke weight on the house icons, footer is a designed close with the house drawing and room index (1440-full.jpg). Deductions: hours in 24h '08:00–17:00' in ledger and footer vs '8 am' in the open-now line (1440-full.jpg) (-0.5); 1440-scroll-50.jpg label 'NEW CABLE ALONG THE JOIST' collides with the joist posts; 1440-full.jpg break band dashed wire runs through 'and radios.' like a strike-through."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "1440-scroll-75.jpg / 390-full.jpg, #reviews Erica N. card",
+      "problem": "Five filled stars are drawn for a review that is 4 stars in facts.json (the sr-only text says 4). The --s:4 value is not reflected visually, so the demo shows an inflated rating.",
+      "fix": "Make .stars honour --s: e.g. render the glyphs with a gradient mask or wrap the 5th star in a span with opacity .25 when --s is 4; confirm in the screenshot that Erica's card shows 4 filled + 1 empty."
+    },
+    {
+      "where": "1440-full.jpg, #services grid middle row",
+      "problem": "The 'Two-prong outlet updates' card breaks into columns (icon + LIVING ROOM in one column, title/body in the next) and 'Push-button switch restoration' renders with no house icon and no room label, so the row looks broken next to the clean rows above and below.",
+      "fix": "Give every service card the same internal structure (icon, room label, h3, blurb, link) and the same single grid cell; remove whatever span/subgrid rule applies to the LIVING ROOM pair, and give Push-button its own house icon with the living room highlighted. Verify at 1024 and 1440."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Turn the reviews band into a room of its own: lay the six letters out as a pinned-up 'kitchen table' spread around the Megan quote (2 + quote + 3, varied widths) so the empty left column and the orphan card disappear, and make the services grid a true floor plan where each card sits in the room cell of a large house section drawing."
+    },
+    {
+      "category": "copy",
+      "move": "Give the primary action one name everywhere ('Price my rewire' as the global action, with the room in a sub-line: 'Price my rewire · outlets') and add doubt-moment microcopy beside the decoder result and the EV plan ('Print this and leave it on the panel door; Walt reads it on the first visit')."
+    }
+  ],
+  "verdictHint": "FIX"
+}

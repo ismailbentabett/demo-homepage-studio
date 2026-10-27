@@ -1,0 +1,72 @@
+{
+  "round": 2,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "1440-first.jpg: h1 'Kansas City bungalow rewiring, room by room' (6 words). Phone visible in header. Proof line present. 390-first.jpg: Hero stacks well. Cannot verify next band peek or intro timing due to broken full-page capture."
+    },
+    "distinctiveness": {
+      "score": 8.0,
+      "notes": "1440-first.jpg: Arch-frame clip-path visible on hero. Palette (Plaster/Brick) distinct. HTML confirms arch-frame class usage in multiple sections, but visual recurrence unverifiable due to blank middle in 1440-full.jpg."
+    },
+    "type": {
+      "score": 8.5,
+      "notes": "1440-first.jpg: Cormorant Garamond + Karla pairing clear. Fluid scale evident. HTML confirms JetBrains Mono for labels. Cannot verify body text rag/orphans in invisible middle sections."
+    },
+    "layout": {
+      "score": 7.5,
+      "notes": "1440-full.jpg: Massive blank gap between hero and footer. Visual rhythm non-existent in artifact. HTML shows 10 sections with alternating tones, but render failure blocks visual verification (-1.0)."
+    },
+    "photo": {
+      "score": 7.0,
+      "notes": "dist/index.html Line 1174: alt='Placeholder for home-kc-bungalow' (Round 1 Must Fix not resolved). 1440-full.jpg: Photos in middle sections invisible. Footer credits generic 'Photo by unknown' x7."
+    },
+    "copy": {
+      "score": 8.5,
+      "notes": "dist/index.html Line 1315: Form thanks message fixed ('We will call back...'). Specific trade nouns present ('knob-and-tube', 'plaster patches'). Visual hierarchy in middle unverifiable."
+    },
+    "mobile": {
+      "score": 7.5,
+      "notes": "390-first.jpg: Hero composition good. 390-full.jpg: Same blank middle issue as desktop. Cannot verify tap targets or layout flow below hero (-0.5)."
+    },
+    "a11y": {
+      "score": 7.0,
+      "notes": "dist/index.html Line 1174: Placeholder alt text remains (-0.5). 1440-full.jpg: Content invisible in captured state implies content hidden from users/crawlers if JS scroll hooks don't fire (-1.0). Skip link/focus styles present in code."
+    },
+    "motion": {
+      "score": 6.5,
+      "notes": "1440-full.jpg / 390-full.jpg: Motion start state (opacity: 0) persisted into final screenshot. Reveal logic failed to fire for full-page capture, indicating fragility (-1.5). Cannot verify DrawSVG or variety."
+    },
+    "wow": {
+      "score": 7.0,
+      "notes": "HTML shows EV estimator structure. Invisible in screenshot. Cannot verify 'arch-frame artifact' redesign claimed in context (-1.0)."
+    },
+    "polish": {
+      "score": 8.0,
+      "notes": "Favicon, OG tags, theme-color present. Footer (visible in 1440-full.jpg) looks clean with plan-divider SVG. Generic photo credits (-0.5)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html Line 1174",
+      "problem": "Alt text still reads 'Placeholder for home-kc-bungalow'. Round 1 fix was not applied to the build.",
+      "fix": "Replace with descriptive text e.g. 'Kansas City bungalow exterior with original brick'."
+    },
+    {
+      "where": "qa/screens/1440-full.jpg, 390-full.jpg",
+      "problem": "Content below hero is invisible (blank beige). The data-reveal opacity:0 start state is not being cleared in the captured state.",
+      "fix": "Ensure content is visible if JS fails or screenshot tool doesn't scroll, or fix the reveal trigger to be more robust (e.g. fallback timeout)."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "motion",
+      "move": "The current reveal logic hides the entire page content in static captures. Move to a more robust reveal pattern (e.g., visibility toggle or ensuring is-in is added on load for above-fold) so the page degrades gracefully."
+    },
+    {
+      "category": "photo",
+      "move": "Once visible, ensure the photo-grade filter creates a cohesive 'one shoot' look across the placeholder images, and fix the alt texts to tell the story of the bungalow rewire."
+    }
+  ],
+  "verdictHint": "FIX"
+}
