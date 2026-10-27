@@ -1,128 +1,99 @@
-/* landscaper-A signature: depth gauge + horizon scroll story */
+/* landscaper-A: depth gauge (signature rail), overseeding countdown, pinned horizon story. */
 (function () {
   if (!window.SW) return;
 
-  /* Depth gauge: update --depth-pct based on which section is in view */
+  /* Depth gauge: --depth-pct follows how far down the soil profile the reader is. Not motion, just state. */
   SW.mod('depth-gauge', function () {
     var gauge = document.querySelector('.depth-gauge');
     if (!gauge) return;
-
-    var sections = Array.prototype.slice.call(gauge.querySelectorAll('[data-depth]'));
-    if (!sections.length) return;
-
-    var maxDepth = 18; // inches, from blueprint
-    var depthMap = { '0': 0, '2': 2, '6': 6, '12': 12, '18': 18 };
-
-    function update() {
-      var viewH = window.innerHeight;
-      var center = viewH * 0.5;
-      var activeDepth = 0;
-
-      for (var i = 0; i < sections.length; i++) {
-        var rect = sections[i].getBoundingClientRect();
-        if (rect.top < center && rect.bottom > center) {
-          var d = sections[i].getAttribute('data-depth');
-          activeDepth = depthMap[d] || 0;
-          break;
-        }
-      }
-
-      // Also factor in overall scroll progress for smooth fill
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      var docHeight = document.documentElement.scrollHeight - viewH;
-      var scrollPct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-
-      // Blend: use section depth as target, scroll progress as secondary
-      var sectionPct = (activeDepth / maxDepth) * 100;
-      var blended = Math.max(sectionPct, scrollPct * 0.8);
-      blended = Math.min(100, Math.max(0, blended));
-
-      gauge.style.setProperty('--depth-pct', blended.toFixed(1));
-    }
-
-    // Throttled scroll handler
     var ticking = false;
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(function () {
-          update();
-          ticking = false;
-        });
-        ticking = true;
-      }
+    function update() {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = max > 0 ? Math.min(100, Math.max(0, (window.pageYOffset / max) * 100)) : 0;
+      gauge.style.setProperty('--depth-pct', pct.toFixed(1));
     }
-
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     update();
   });
 
-  /* Countdown to fall overseeding window (mid-Sept to mid-Oct) */
+  /* Countdown to the fall fescue window (Sept 15 to Oct 15). The static text stays when JS is off. */
   SW.mod('countdown', function () {
     var el = document.querySelector('[data-countdown-days]');
     if (!el) return;
-
+    var label = el.parentElement.querySelector('.countdown-label');
+    var day = 864e5;
     var now = new Date();
-    var year = now.getFullYear();
-    var windowStart = new Date(year, 8, 15); // Sept 15
-    var windowEnd = new Date(year, 9, 15);   // Oct 15
-
-    // If past this year's window, point to next year
-    if (now > windowEnd) {
-      windowStart = new Date(year + 1, 8, 15);
-      windowEnd = new Date(year + 1, 9, 15);
-    }
-
-    var diff = windowStart - now;
-    var days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-
-    if (days <= 0 && now <= windowEnd) {
-      // We are inside the window
-      var remaining = Math.ceil((windowEnd - now) / (1000 * 60 * 60 * 24));
-      el.textContent = remaining + ' days left';
-      el.parentElement.querySelector('.countdown-label').textContent = 'Overseeding window open';
-    } else if (days > 0) {
-      el.textContent = days + ' days away';
+    var y = now.getFullYear();
+    var start = new Date(y, 8, 15), end = new Date(y, 9, 15);
+    if (now > end) { start = new Date(y + 1, 8, 15); end = new Date(y + 1, 9, 15); }
+    if (now >= start && now <= end) {
+      el.textContent = Math.ceil((end - now) / day) + ' days left';
+      if (label) label.textContent = 'Fescue seeding window is open';
     } else {
-      el.textContent = 'Next fall';
+      el.textContent = Math.ceil((start - now) / day) + ' days';
+      if (label) label.textContent = 'Until the next fescue seeding window';
     }
   });
 
-  /* Scroll story: pinned horizon sequence on desktop only */
-  if (!SW.reduced && document.documentElement.classList.contains('sw-motion')) {
-    document.fonts.ready.then(function () {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  /* Motion only from here. */
+  if (SW.reduced || !document.documentElement.classList.contains('sw-motion')) return;
 
-      gsap.registerPlugin(ScrollTrigger);
+  SW.mod('horizon-story', function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
 
-      // Refresh after fonts load
-      ScrollTrigger.refresh();
+    var story = document.querySelector('#profile');
 
-      // Horizon cross-section SVG draw on scroll (desktop only)
-      ScrollTrigger.matchMedia({
-        '(min-width: 640px)': function () {
-          var storySections = document.querySelectorAll('[data-depth]');
-          if (!storySections.length) return;
+    ScrollTrigger.matchMedia({
+      /* Pinned soil-profile story: sticky stage, roots draw down, one layer and one fix per step. */
+      '(min-width: 640px)': function () {
+        if (!story) return;
+        var steps = 4;
+        var w = window.innerWidth;
+        function setVh() { story.style.setProperty('--vh', window.innerHeight + 'px'); }
+        function onResize() { if (window.innerWidth !== w) { w = window.innerWidth; setVh(); } }
+        setVh();
+        window.addEventListener('resize', onResize);
+        story.classList.add('is-pinned');
+        story.setAttribute('data-active', '1');
+        var st = ScrollTrigger.create({
+          trigger: story,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true,
+          onUpdate: function (self) {
+            var p = self.progress;
+            story.style.setProperty('--sw-p', p.toFixed(3));
+            var n = Math.min(steps, Math.floor(p * steps) + 1);
+            if (story.getAttribute('data-active') !== String(n)) story.setAttribute('data-active', String(n));
+          }
+        });
+        ScrollTrigger.refresh();
+        return function () {
+          st.kill();
+          window.removeEventListener('resize', onResize);
+          story.classList.remove('is-pinned');
+          story.style.removeProperty('--sw-p');
+          story.setAttribute('data-active', '1');
+        };
+      },
 
-          storySections.forEach(function (sec) {
-            var tag = sec.querySelector('.depth-tag');
-            if (!tag) return;
-
-            gsap.from(tag, {
-              scrollTrigger: {
-                trigger: sec,
-                start: 'top 85%',
-                end: 'top 50%',
-                toggleActions: 'play reverse play reverse'
-              },
-              opacity: 0,
-              x: -20,
-              duration: 0.6,
-              ease: 'power2.out'
-            });
-          });
-        }
-      });
+      /* Phone: no pin. The core draws its roots once as it enters. */
+      '(max-width: 639px)': function () {
+        if (!story) return;
+        var roots = story.querySelectorAll('.core__roots path');
+        var tw = gsap.fromTo(roots, { strokeDashoffset: 1 }, {
+          strokeDashoffset: 0, duration: 1.4, ease: 'power2.out', stagger: 0.12,
+          scrollTrigger: { trigger: story.querySelector('.core'), start: 'top 80%', once: true }
+        });
+        return function () { tw.scrollTrigger && tw.scrollTrigger.kill(); tw.kill(); gsap.set(roots, { clearProps: 'strokeDashoffset' }); };
+      }
     });
-  }
+
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+    window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+  });
 })();

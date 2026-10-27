@@ -1,5 +1,10 @@
 # Blueprint — landscaper-A (Tilth & Tine Landscape)
 
+## Round 1 (elevate + fix)
+Placeholder photos were grey frames, so every photo is now a drawn soil treatment (hero profile strip, aeration, amendment + pH, drainage cross-section) and the signature became a real pinned horizon story (#profile, sticky core, roots draw on scroll, 4 steps; stacked under 640px), because photo and motion were the weakest categories.
+Sections now: hero (hero-strip) · soil-quiz (checklist) · lawn-renovation (split) · profile (story, .break, t-deep) · soil-amendment (split-rev) · drainage (diagram, t-deep) · estimator (tool) · services (index, all 9 via repeater) · reviews · service-area (t-accent) · contact (4-step kit form, [data-form-nav]). Accent band darkened to #9E4329 and button clay to #9E4329 so text reaches 4.5:1. Removed html smooth scroll (broke the capture walk).
+
+
 ## Section sequence (11 sections)
 
 | # | ID | Tone | Purpose | Layout family | Content tokens | Media slot | Hooks | Entrance |
