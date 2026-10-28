@@ -16,3 +16,10 @@ What stands in, by slot (each is an inline SVG line drawing, graphite on paper, 
 Fix round: add the hero plate photo first (`[[frame hero ...]]` inside `.plate`, the drawing moves to the plate
 margin), keep `ogPhoto: "hero"` then, and run `node tools/check-unique.mjs assembly-A`. The OG image is a plain
 color card until a hero photo exists.
+
+## Round 1 photo pass
+| slot | manifest id | where |
+|---|---|---|
+| hero | tool-stud-finder-2 | #top FIG. 1 plate (eager, og image) |
+| slide | detail-drawer-slide-2 | #steps step 02, FIG. 3b beside the squaring drawing |
+| tv | room-tv-mounted | #services head, FIG. 8 (cropped to the TV + console) |

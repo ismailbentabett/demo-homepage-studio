@@ -36,3 +36,6 @@
 
 ## Round 1
 Photo + first screen elevate: no assembly photo is approved (all 8 manifest entries are `draft`), so every step drawing became a framed FIG. plate (grid sheet, corner ticks, numbered sentence-case caption) like FIG. 1. The hero is re-cut as the manual's cover: the h1 carries "Furniture assembly in {{biz.city}}", FIG. 1 sits between the h1 and the buttons on phones, the drawers slide shut as the hero scrolls away, and the steps band peeks at 1440×900. Also: one action name ("Price my list"), 5 of 8 eyebrows cut, reviews grid stretched (no hole), reveals never hide content, honest thank-you line.
+
+### Round 1 · photo pass
+Photos arrived: FIG. 1 is now the stud-finder photo (tool-stud-finder-2, the "anchored to a stud" promise) inside the corner-tick plate, the exploded dresser kept as inset FIG. 1a (intro still closes it) and Bag A moved to the plate's lower-left so the locked stud light reads; step 02 pairs its drawing with the drawer-runner photo (FIG. 3b, detail-drawer-slide-2); the services head became a split with the mounted-TV photo (FIG. 8, room-tv-mounted), which also breaks the "heading above grid" sameness. tool-stud-finder (C) and process-wardrobe-frame (C's hero) are not used.

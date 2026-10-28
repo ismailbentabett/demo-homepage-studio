@@ -22,6 +22,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Dowel & Cam Assembly","description":"Arlington furniture assembly and TV mounting. Parts counted, frames squared, tall pieces anchored and every box taken away. Call or price your list online.","telephone":"+17035550104","email":"hello@dowel-cam-assembly.example","areaServed":[{"@type":"City","name":"Arlington"},{"@type":"City","name":"Alexandria"},{"@type":"City","name":"Falls Church"},{"@type":"City","name":"McLean"},{"@type":"City","name":"Annandale"},{"@type":"City","name":"Vienna"},{"@type":"City","name":"Fairfax"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"09:00","closes":"17:00"}]}</script>
 <script>document.documentElement.classList.add('sw-js'); if(matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('sw-motion')</script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/familjen-grotesk/familjen-grotesk-400-700-normal.woff2" crossorigin>
+<link rel="preload" as="image" href="media/tool-stud-finder-2-1170.webp" imagesrcset="media/tool-stud-finder-2-1170.webp 1170w, media/tool-stud-finder-2.webp 2340w" imagesizes="100vw" fetchpriority="high">
 <style>
 @font-face{font-family:"Familjen Grotesk";src:url("fonts/familjen-grotesk/familjen-grotesk-400-700-normal.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
 @font-face{font-family:"Public Sans";src:url("fonts/public-sans/public-sans-100-900-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
@@ -384,7 +385,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .bag::before{content:"";position:absolute;inset:10px 10px auto;block-size:0;border-top:1.5px dashed var(--line)}
 .bag::after{content:"";position:absolute;top:4px;left:50%;inline-size:6px;block-size:6px;margin-left:-12px;border-radius:50%;
   box-shadow:0 0 0 1.5px var(--line),18px 0 0 0 transparent,18px 0 0 1.5px var(--line)}
-.bag__code{display:block;font-size:var(--fs--2);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.bag__code{display:block;text-wrap:balance;font-size:var(--fs--2);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .bag__row{display:flex;justify-content:space-between;gap:12px;border-top:1px dotted var(--rule);padding-block:4px}
 .bag__row span:last-child{text-align:right}
 .t-deep .bag{background:#23272C}
@@ -441,14 +442,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ---------- 1 hero ---------- */
 .hero{min-block-size:calc(100svh - var(--header-h));display:flex;align-items:stretch;padding-block:var(--s-6) var(--s-7)}
-.hero__in{display:grid;gap:var(--s-7);align-content:center}
-.hero__text{display:grid;gap:var(--s-5);align-content:center}
-.hero__text .kicker{margin-bottom:0}
+.hero__in{display:grid;gap:var(--s-5);align-content:center}
+.hero__text,.hero__art{display:contents}
+.hero__lines{order:1}.hero__plate{order:2}.hero__text .btns{order:3}.hero__lead{order:4}.proof{order:5}.hero__bag{order:6}
+.hero__h1-sub{display:block;font-size:max(.4em,1.0625rem);font-weight:600;letter-spacing:-.012em;line-height:1.15;margin-bottom:.3em;color:var(--ink)}
 .hero__lines{display:grid;gap:var(--s-3)}
 .hero__line{display:grid;grid-template-columns:44px 1fr;gap:var(--s-3);align-items:center}
 .hero__line p{font:600 var(--fs-1)/1.2 var(--font-display);letter-spacing:-.015em;color:var(--ink)}
 .hero__line--h1{align-items:start;margin-bottom:var(--s-2)}
-.hero__line--h1 .hero__n{margin-top:.35em}
+.hero__line--h1 .hero__n{margin-top:.1em}
 .hero__n{inline-size:40px;block-size:40px;font-size:var(--fs--1)}
 .hero__n .tick{inline-size:22px;block-size:22px;top:-7px;right:-8px}
 .hero__lead{max-inline-size:44ch}
@@ -456,11 +458,11 @@ button,input,select,textarea{font:inherit;color:inherit}
 .proof .dot{color:var(--accent);padding-inline:2px}
 .proof .sample-tag{margin-left:4px}
 .plate{position:relative;display:grid;gap:var(--s-3);align-content:start}
-.plate__sheet{position:relative;padding:clamp(20px,4vw,40px);border:1.5px solid var(--rule);background:
+.plate__sheet,.step__sheet{position:relative;padding:clamp(20px,4vw,40px);border:1.5px solid var(--rule);background:
   linear-gradient(var(--rule) 1px,transparent 1px) 0 0/24px 24px,
   linear-gradient(90deg,var(--rule) 1px,transparent 1px) 0 0/24px 24px,var(--bg);
   background-blend-mode:normal}
-.plate__sheet::before{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 78%,transparent);pointer-events:none}
+.plate__sheet::before,.step__sheet::before{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 78%,transparent);pointer-events:none}
 .plate__sheet .xv{position:relative;max-block-size:min(52svh,520px);margin-inline:auto}
 .plate__crop{position:absolute;inset:8px;pointer-events:none;z-index:1;
   background:
@@ -468,30 +470,56 @@ button,input,select,textarea{font:inherit;color:inherit}
    linear-gradient(var(--ink),var(--ink)) 100% 0/14px 1.5px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 0/1.5px 14px no-repeat,
    linear-gradient(var(--ink),var(--ink)) 0 100%/14px 1.5px no-repeat,linear-gradient(var(--ink),var(--ink)) 0 100%/1.5px 14px no-repeat,
    linear-gradient(var(--ink),var(--ink)) 100% 100%/14px 1.5px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 100%/1.5px 14px no-repeat}
-.plate__cap{font-size:var(--fs--2);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px}
-.plate__cap span{color:var(--ink)}
-.hero__bag{--bag-w:min(100%,250px);justify-self:end;margin-top:calc(-1 * var(--s-7));margin-right:var(--s-4);z-index:2;box-shadow:var(--shadow-float)}
+.plate__cap{font:400 var(--fs--1)/1.4 var(--font-text);color:var(--muted);display:flex;gap:10px;align-items:baseline;text-wrap:pretty}
+.plate__cap .mono{flex:none;color:var(--accent);font-size:var(--fs--2);font-weight:500}
+.hero__bag{--bag-w:min(100%,250px);justify-self:start;z-index:2;box-shadow:var(--shadow-float)}
+.hero__plate .plate__sheet{padding:12px 16px}
+.hero__plate .plate__sheet .xv{max-block-size:min(22svh,190px)}
+.hero .btns .btn{flex:1 1 auto}
 @media (min-width:640px){
   .hero__line{grid-template-columns:52px 1fr}
   .hero__n{inline-size:48px;block-size:48px}
 }
+@media (min-width:640px){.hero__plate .plate__sheet{padding:clamp(20px,4vw,40px)}.hero__plate .plate__sheet .xv{max-block-size:min(34svh,360px)}.hero .btns .btn{flex:0 0 auto} }
 @media (min-width:900px){
-  .hero{padding-block:var(--s-5)}
+  .hero{padding-block:var(--s-5);min-block-size:calc(100svh - var(--header-h) - clamp(64px,10svh,96px))}
+  .hero__text{display:grid;gap:var(--s-5);align-content:center}
+  .hero__text>*,.hero__text .btns{order:0}
+  .hero__art{display:block;position:relative;align-self:center}
   .hero__in{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(32px,4vw,72px);align-items:center}
   .hero__plate{align-self:center}
   .hero__bag{position:absolute;left:calc(-1 * var(--s-7));top:var(--s-7);margin:0}
-  .plate__sheet .xv{max-block-size:min(58svh,560px)}
+  .hero__plate .plate__sheet .xv{max-block-size:min(50svh,500px)}
 }
 @media (min-width:1200px){.hero__bag{left:calc(-1 * var(--s-8))} }
 
+/* hero photo plate (FIG. 1) + the dresser inset (FIG. 1a) */
+.hero__sheet{padding:10px!important}
+.hero__photo{margin:0;aspect-ratio:2/1;overflow:hidden;background:#787878}
+.hero__photo img{inline-size:100%;block-size:100%;object-fit:cover;object-position:42% 45%;filter:saturate(.92) contrast(1.02)}
+.hero__inset{position:absolute;z-index:2;right:-6px;bottom:-14px;inline-size:min(30%,120px);padding:6px 8px 4px;background:var(--bg);border:1.5px solid var(--ink);box-shadow:var(--shadow-float);display:grid;gap:2px}
+.hero__inset .xv{max-block-size:none!important;inline-size:100%;block-size:auto}
+.hero__inset-cap{font-size:var(--fs--2);color:var(--accent);font-weight:500;line-height:1}
+.hero__plate .plate__cap{padding-top:4px;padding-right:min(30%,124px)}
+@media (min-width:640px){.hero__photo{aspect-ratio:3/2}.hero__inset{inline-size:min(36%,220px);right:-14px;bottom:-26px;padding:12px 14px 8px}.hero__plate .plate__cap{padding-right:min(38%,232px)} }
+@media (min-width:900px){
+  .hero__photo{aspect-ratio:4/3;max-block-size:min(62svh,560px);inline-size:100%}
+  .hero__inset{inline-size:min(34%,196px);right:-28px;bottom:-34px}
+  .hero__bag{top:auto;bottom:calc(var(--s-8) + 24px)}
+  .hero__plate .plate__cap{padding-top:var(--s-3);padding-right:min(34%,210px)}
+}
+
 /* ---------- 2 steps (manual rail) ---------- */
 .steps{padding-block:var(--pad) var(--pad-loose)}
+@media (min-width:900px){.steps{padding-top:var(--s-7)} }
 .steps__head h2{max-inline-size:18ch}
 .steps__list{display:grid;gap:var(--s-8);counter-reset:step}
 .step{display:grid;gap:var(--s-5);grid-template-areas:"rail" "fig" "body";padding-top:var(--s-6);border-top:1.5px solid var(--rule)}
 .step__rail{grid-area:rail;display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s-4)}
 .step__bag{--bag-w:min(60%,230px)}
-.step__fig{grid-area:fig;max-inline-size:340px;inline-size:100%;justify-self:center}
+.step__fig{grid-area:fig;max-inline-size:360px;inline-size:100%;justify-self:center;display:grid;gap:var(--s-3)}
+.step__sheet{padding:clamp(16px,3vw,28px)}
+.step__sheet .xv{position:relative}
 .step__body{grid-area:body;display:grid;gap:var(--s-4);align-content:start}
 .step__body p{max-inline-size:52ch;color:var(--ink)}
 .step__body .btns{margin-top:var(--s-3)}
@@ -499,14 +527,14 @@ button,input,select,textarea{font:inherit;color:inherit}
   .step{grid-template-columns:200px minmax(0,1fr);grid-template-areas:"rail fig" "rail body";column-gap:var(--s-7)}
   .step__rail{flex-direction:column;justify-content:flex-start}
   .step__bag{--bag-w:100%}
-  .step__fig{justify-self:start;max-inline-size:320px}
+  .step__fig{justify-self:start;max-inline-size:360px}
 }
 @media (min-width:1100px){
   .steps__list{gap:0}
   .step{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gutter);grid-template-areas:none;align-items:center;padding-block:var(--s-8);min-block-size:min(68svh,560px)}
   .step__rail{grid-column:1/4;grid-row:1;align-self:center}
   .step__fig{grid-column:4/9;grid-row:1;max-inline-size:none;justify-self:stretch;padding-inline:var(--s-4)}
-  .step__fig .xv{max-block-size:400px;margin-inline:auto}
+  .step__fig .xv{max-block-size:360px;margin-inline:auto}
   .step__body{grid-column:9/13;grid-row:1;padding-left:var(--s-5)}
   .step:nth-child(even) .step__body{padding:0 var(--s-5) 0 0}
   .step:nth-child(even) .step__rail{grid-column:10/13}
@@ -544,6 +572,18 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ---------- 4 services (parts tray) ---------- */
 .tray{padding-block:var(--pad)}
+.tray__fig{margin:0;display:grid;gap:var(--s-3)}
+.tray__sheet{padding:10px}
+.tray__photo{margin:0;aspect-ratio:16/9;overflow:hidden;background:#281808}
+.tray__photo img{inline-size:100%;block-size:100%;object-fit:cover;object-position:0% 50%;transform:scale(1.5);transform-origin:12% 46%}
+.step__ev{display:grid;gap:var(--s-2);margin-top:var(--s-2);max-inline-size:360px}
+.step__photo{margin:0;aspect-ratio:3/2;overflow:hidden;border:1.5px solid var(--rule);background:#e8d8d8}
+.step__photo img{inline-size:100%;block-size:100%;object-fit:cover;object-position:50% 50%}
+@media (min-width:900px){
+  .tray__head{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:clamp(40px,6vw,96px);align-items:end}
+  .tray__head h2{align-self:end;padding-bottom:var(--s-6)}
+  .tray__photo{aspect-ratio:16/9}
+}
 .tray__grid{display:grid;grid-template-columns:minmax(0,1fr);border-top:1.5px solid var(--rule);border-left:1.5px solid var(--rule)}
 .cell{position:relative;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto 1fr auto;gap:var(--s-2) var(--s-4);padding:var(--s-5);border-right:1.5px solid var(--rule);border-bottom:1.5px solid var(--rule);background:var(--bg)}
 .cell__key{grid-column:1;font-size:var(--fs--2);letter-spacing:.06em;color:var(--muted)}
@@ -555,8 +595,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .cell::after{content:"";position:absolute;top:-4px;left:-4px;inline-size:7px;block-size:7px;border-radius:50%;background:var(--bg);box-shadow:0 0 0 1.5px var(--rule)}
 @media (min-width:640px){.tray__grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (min-width:900px){.tray__grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cell{padding:var(--s-6)} }
-.sw-motion .tray__grid>*{opacity:0;transform:translateY(16px);transition:opacity var(--t-page) var(--ease-out),transform var(--t-page) var(--ease-out);transition-delay:calc(var(--i,0) * 40ms)}
-.sw-motion .tray__grid.is-in>*{opacity:1;transform:none}
+/* reveals never hide content: children only settle into place */
+html.sw-motion [data-reveal-stagger]:not(.is-in)>*{opacity:1;transform:translate3d(0,14px,0)}
+html.sw-motion [data-reveal-stagger]>*{transition:transform var(--t-page) var(--ease-out);transition-delay:calc(var(--i,0) * 40ms)}
 
 /* ---------- 5 prices (parts list) ---------- */
 .parts{padding-block:var(--pad-tight)}
@@ -624,6 +665,8 @@ textarea{resize:vertical;min-block-size:120px}
 .tags__score{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap}
 .tags__num{font:700 var(--fs-4)/1 var(--font-display);letter-spacing:-.03em}
 .tags__grid{display:grid;gap:var(--s-5);grid-template-columns:minmax(0,1fr)}
+.tag{display:flex}
+.tag__bag{flex:1 1 auto;grid-template-rows:auto 1fr auto}
 .tag__bag{--bag-w:100%;display:grid;gap:var(--s-3);block-size:100%;padding:30px 20px 18px;font-family:var(--font-text)}
 .tag__bag .bag__code{font-family:var(--font-mono);margin:0}
 .tag__bag blockquote p{font-size:var(--fs-0);line-height:1.5;color:var(--ink)}
@@ -636,9 +679,9 @@ textarea{resize:vertical;min-block-size:120px}
   .tags__rating{grid-column:2;grid-row:1/3}
 }
 @media (min-width:1100px){
-  .tags__grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+  .tags__grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
   .tag:first-child{grid-column:1/3;grid-row:1/3}
-  .tag:nth-child(3n+2){margin-top:var(--s-7)}
+  .tag:first-child blockquote{align-self:center}
   .tag:first-child .tag__bag{padding:40px 32px 24px}
   .tag:first-child .tag__bag blockquote p{font-size:var(--fs-2);line-height:1.25}
 }
@@ -819,14 +862,13 @@ textarea{resize:vertical;min-block-size:120px}
 <section class="hero t-light" id="top" data-layout="hero-plate" data-hook="intro" aria-labelledby="hero-h">
   <div class="hero__in wrap">
     <div class="hero__text">
-      <p class="kicker">Furniture assembly · Arlington, VA</p>
       <ol class="hero__lines" role="list">
         <li class="hero__line hero__line--h1">
           <span class="hero__n" aria-hidden="true">01</span>
-          <h1 id="hero-h">Six boxes in the hall.</h1>
+          <h1 id="hero-h"><span class="hero__h1-sub">Furniture assembly in Arlington</span> Six boxes in the hall.</h1>
         </li>
         <li class="hero__line"><span class="hero__n" aria-hidden="true">02<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span><p>Parts counted on a blanket.</p></li>
-        <li class="hero__line"><span class="hero__n" aria-hidden="true">03<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span><p>Built, anchored, boxes gone.</p></li>
+        <li class="hero__line"><span class="hero__n" aria-hidden="true">03<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span><p>Anchored to a stud, and the boxes leave with us.</p></li>
       </ol>
       <p class="lead hero__lead">Beds, dressers, wardrobes, desks and TVs, built square and strapped to the wall. Tools and anchors come with us.</p>
       <div class="btns">
@@ -835,12 +877,15 @@ textarea{resize:vertical;min-block-size:120px}
       </div>
       <p class="proof mono"><span data-open-now>Mon–Fri 8 am – 7 pm · Sat 9 am – 5 pm</span> <span class="dot" aria-hidden="true">·</span> from $70 a piece <span class="dot" aria-hidden="true">·</span> 4.9 from 214 reviews <span class="sample-tag">Sample figures</span></p>
     </div>
+    <div class="hero__art">
     <figure class="plate hero__plate">
-      <div class="plate__sheet">
+      <div class="plate__sheet hero__sheet">
         <span class="plate__crop" aria-hidden="true"></span>
-        <svg class="xv xv--open" viewBox="-98.5 -125.7 208.2 205.1" role="img" aria-label="Figure 1: a three-drawer dresser in exploded view; back panel, top, cam bolts and drawers close into the frame"><g class="xp" style="--dx:34.6;--dy:-26;--d:0"><polygon class="e f-t" points="1.6,-84.9 69.1,-45.9 68.4,-45.5 0.9,-84.5"/><polygon class="e f-f" points="0.9,-0.5 68.4,38.5 68.4,-45.5 0.9,-84.5"/><polygon class="e f-r" points="69.1,38.1 68.4,38.5 68.4,-45.5 69.1,-45.9"/><polygon class="s" points="1.6,-84.9 69.1,-45.9 69.1,38.1 68.4,38.5 0.9,-0.5 0.9,-84.5"/><ellipse class="nail" cx="13.9" cy="-76" rx="0.6" ry="0.4"/><ellipse class="nail" cx="34.6" cy="-64" rx="0.6" ry="0.4"/><ellipse class="nail" cx="55.4" cy="-52" rx="0.6" ry="0.4"/></g><g class="xs"><polygon class="e f-t" points="0,-86 69.3,-46 32.9,-25 -36.4,-65"/><polygon class="e f-f" points="-36.4,21 32.9,61 32.9,-25 -36.4,-65"/><polygon class="e f-r" points="69.3,40 32.9,61 32.9,-25 69.3,-46"/><polygon class="s" points="0,-86 69.3,-46 69.3,40 32.9,61 -36.4,21 -36.4,-65"/><polygon class="e f-h" points="-34.6,22 31.2,60 31.2,53 -34.6,15"/><clipPath id="dh-cl"><polygon class="" points="-34.2,-38 30.7,-0.5 30.7,-24.2 -34.2,-61.7"/><polygon class="" points="-34.2,-12.5 30.7,25 30.7,1.5 -34.2,-36"/><polygon class="" points="-34.2,13.3 30.7,50.8 30.7,27.1 -34.2,-10.5"/></clipPath><polygon class="e f-h" points="-34.2,-38 30.7,-0.5 30.7,-24.2 -34.2,-61.7"/><polygon class="e f-h" points="-34.2,-12.5 30.7,25 30.7,1.5 -34.2,-36"/><polygon class="e f-h" points="-34.2,13.3 30.7,50.8 30.7,27.1 -34.2,-10.5"/><g clip-path="url(#dh-cl)"><line class="e" x1="-34.2" y1="-38" x2="0.4" y2="-58"/><line class="e" x1="0.4" y1="-58" x2="65.4" y2="-20.5"/><line class="e" x1="0.4" y1="-58" x2="0.4" y2="-81.7"/><line class="e" x1="-8.2" y1="-53" x2="56.7" y2="-15.5"/><line class="e" x1="-34.2" y1="-12.5" x2="0.4" y2="-32.4"/><line class="e" x1="0.4" y1="-32.4" x2="65.4" y2="5"/><line class="e" x1="0.4" y1="-32.4" x2="0.4" y2="-56"/><line class="e" x1="-8.2" y1="-27.4" x2="56.7" y2="10"/><line class="e" x1="-34.2" y1="13.3" x2="0.4" y2="-6.7"/><line class="e" x1="0.4" y1="-6.7" x2="65.4" y2="30.8"/><line class="e" x1="0.4" y1="-6.7" x2="0.4" y2="-30.4"/><line class="e" x1="-8.2" y1="-1.7" x2="56.7" y2="35.8"/></g><ellipse class="e f-h" cx="-1.7" cy="-81" rx="1.7" ry="1"/><ellipse class="e f-h" cx="60.6" cy="-45" rx="1.7" ry="1"/><ellipse class="e f-h" cx="-27.7" cy="-66" rx="1.7" ry="1"/><ellipse class="e f-h" cx="34.6" cy="-30" rx="1.7" ry="1"/></g><g class="xls"><line class="xl" x1="-27.7" y1="-66" x2="-27.7" y2="-96"/><line class="xl" x1="34.6" y1="-30" x2="34.6" y2="-60"/><line class="xl" x1="30.7" y1="-1.5" x2="5.2" y2="11.7"/><line class="xl" x1="30.7" y1="24" x2="15.6" y2="31.3"/><line class="xl" x1="30.7" y1="49.8" x2="26" y2="51"/><line class="xl" x1="68.4" y1="-45.5" x2="103.1" y2="-71.5"/></g><g class="xp" style="--dx:0;--dy:-14;--d:1"><path class="e f-r" d="M-2.8,-81 A1.1,0.6 0 0 0 -0.6,-81 L-0.6,-84 L-2.8,-84 Z"/><ellipse class="e f-t" cx="-1.7" cy="-84" rx="1.1" ry="0.6"/><path class="s" d="M-2.8,-84 L-2.8,-81 A1.1,0.6 0 0 0 -0.6,-81 L-0.6,-84"/><ellipse class="e f-h" cx="-1.7" cy="-84" rx="0.4" ry="0.2"/><path class="e f-r" d="M59.5,-45 A1.1,0.6 0 0 0 61.7,-45 L61.7,-48 L59.5,-48 Z"/><ellipse class="e f-t" cx="60.6" cy="-48" rx="1.1" ry="0.6"/><path class="s" d="M59.5,-48 L59.5,-45 A1.1,0.6 0 0 0 61.7,-45 L61.7,-48"/><ellipse class="e f-h" cx="60.6" cy="-48" rx="0.4" ry="0.2"/><path class="e f-r" d="M-28.8,-66 A1.1,0.6 0 0 0 -26.6,-66 L-26.6,-69 L-28.8,-69 Z"/><ellipse class="e f-t" cx="-27.7" cy="-69" rx="1.1" ry="0.6"/><path class="s" d="M-28.8,-69 L-28.8,-66 A1.1,0.6 0 0 0 -26.6,-66 L-26.6,-69"/><ellipse class="e f-h" cx="-27.7" cy="-69" rx="0.4" ry="0.2"/><path class="e f-r" d="M33.5,-30 A1.1,0.6 0 0 0 35.7,-30 L35.7,-33 L33.5,-33 Z"/><ellipse class="e f-t" cx="34.6" cy="-33" rx="1.1" ry="0.6"/><path class="s" d="M33.5,-33 L33.5,-30 A1.1,0.6 0 0 0 35.7,-30 L35.7,-33"/><ellipse class="e f-h" cx="34.6" cy="-33" rx="0.4" ry="0.2"/></g><g class="xp" style="--dx:0;--dy:-30;--d:2"><polygon class="e f-t" points="-0.4,-89.7 70.6,-48.7 31.6,-26.2 -39.4,-67.2"/><polygon class="e f-f" points="-39.4,-64.2 31.6,-23.2 31.6,-26.2 -39.4,-67.2"/><polygon class="e f-r" points="70.6,-45.7 31.6,-23.2 31.6,-26.2 70.6,-48.7"/><polygon class="s" points="-0.4,-89.7 70.6,-48.7 70.6,-45.7 31.6,-23.2 -39.4,-64.2 -39.4,-67.2"/></g><g class="xp" style="--dx:-34.6;--dy:20;--d:3"><g class="xb"><polygon class="e f-t" points="-1.7,-23.7 60.6,12.3 29.4,30.3 -32.9,-5.7"/><polygon class="e f-f" points="-32.9,13 29.4,49 29.4,30.3 -32.9,-5.7"/><polygon class="e f-r" points="60.6,31 29.4,49 29.4,30.3 60.6,12.3"/><polygon class="s" points="-1.7,-23.7 60.6,12.3 60.6,31 29.4,49 -32.9,13 -32.9,-5.7"/><polygon class="e f-h" points="-1.7,-22.5 58.5,12.3 29.4,29.1 -30.8,-5.7"/></g><polygon class="e f-t" points="-35.5,-11.7 32,27.3 30.5,28.2 -37.1,-10.8"/><polygon class="e f-f" points="-37.1,14.3 30.5,53.3 30.5,28.2 -37.1,-10.8"/><polygon class="e f-r" points="32,52.4 30.5,53.3 30.5,28.2 32,27.3"/><polygon class="s" points="-35.5,-11.7 32,27.3 32,52.4 30.5,53.3 -37.1,14.3 -37.1,-10.8"/><polygon class="e f-t" points="-12.8,12.8 6.2,23.8 5,24.5 -14,13.5"/><polygon class="e f-f" points="-14,14.9 5,25.9 5,24.5 -14,13.5"/><polygon class="e f-r" points="6.2,25.2 5,25.9 5,24.5 6.2,23.8"/><polygon class="s" points="-12.8,12.8 6.2,23.8 6.2,25.2 5,25.9 -14,14.9 -14,13.5"/></g><g class="xp" style="--dx:-45;--dy:26;--d:4"><g class="xb"><polygon class="e f-t" points="-1.7,-49.3 60.6,-13.3 29.4,4.7 -32.9,-31.3"/><polygon class="e f-f" points="-32.9,-12.7 29.4,23.3 29.4,4.7 -32.9,-31.3"/><polygon class="e f-r" points="60.6,5.3 29.4,23.3 29.4,4.7 60.6,-13.3"/><polygon class="s" points="-1.7,-49.3 60.6,-13.3 60.6,5.3 29.4,23.3 -32.9,-12.7 -32.9,-31.3"/><polygon class="e f-h" points="-1.7,-48.1 58.5,-13.3 29.4,3.5 -30.8,-31.3"/></g><polygon class="e f-t" points="-35.5,-37.3 32,1.7 30.5,2.6 -37.1,-36.4"/><polygon class="e f-f" points="-37.1,-11.4 30.5,27.6 30.5,2.6 -37.1,-36.4"/><polygon class="e f-r" points="32,26.7 30.5,27.6 30.5,2.6 32,1.7"/><polygon class="s" points="-35.5,-37.3 32,1.7 32,26.7 30.5,27.6 -37.1,-11.4 -37.1,-36.4"/><polygon class="e f-t" points="-12.8,-12.8 6.2,-1.8 5,-1.1 -14,-12.1"/><polygon class="e f-f" points="-14,-10.7 5,0.3 5,-1.1 -14,-12.1"/><polygon class="e f-r" points="6.2,-0.4 5,0.3 5,-1.1 6.2,-1.8"/><polygon class="s" points="-12.8,-12.8 6.2,-1.8 6.2,-0.4 5,0.3 -14,-10.7 -14,-12.1"/></g><g class="xp" style="--dx:-55.4;--dy:32;--d:5"><g class="xb"><polygon class="e f-t" points="-1.7,-75 60.6,-39 29.4,-21 -32.9,-57"/><polygon class="e f-f" points="-32.9,-38.3 29.4,-2.3 29.4,-21 -32.9,-57"/><polygon class="e f-r" points="60.6,-20.3 29.4,-2.3 29.4,-21 60.6,-39"/><polygon class="s" points="-1.7,-75 60.6,-39 60.6,-20.3 29.4,-2.3 -32.9,-38.3 -32.9,-57"/><polygon class="e f-h" points="-1.7,-73.8 58.5,-39 29.4,-22.2 -30.8,-57"/></g><polygon class="e f-t" points="-35.5,-63 32,-24 30.5,-23.1 -37.1,-62.1"/><polygon class="e f-f" points="-37.1,-37 30.5,2 30.5,-23.1 -37.1,-62.1"/><polygon class="e f-r" points="32,1.1 30.5,2 30.5,-23.1 32,-24"/><polygon class="s" points="-35.5,-63 32,-24 32,1.1 30.5,2 -37.1,-37 -37.1,-62.1"/><polygon class="e f-t" points="-12.8,-38.5 6.2,-27.5 5,-26.8 -14,-37.8"/><polygon class="e f-f" points="-14,-36.4 5,-25.4 5,-26.8 -14,-37.8"/><polygon class="e f-r" points="6.2,-26.1 5,-25.4 5,-26.8 6.2,-27.5"/><polygon class="s" points="-12.8,-38.5 6.2,-27.5 6.2,-26.1 5,-25.4 -14,-36.4 -14,-37.8"/></g></svg>
+        <figure class="frame hero__photo" data-fallback="Hand holding a stud finder level on a grey wall, centre light locked on one stud"><img src="media/tool-stud-finder-2-1170.webp" srcset="media/tool-stud-finder-2-1170.webp 1170w, media/tool-stud-finder-2.webp 2340w" width="1170" height="878" fetchpriority="high" decoding="async" data-photo="tool-stud-finder-2" data-slot="hero" sizes="(min-width: 900px) 44vw, 100vw" alt="A hand holds a stud finder level on a grey wall; the centre light has locked on one stud"></figure>
+        <div class="hero__inset"><svg class="xv xv--open" viewBox="-98.5 -125.7 208.2 205.1" role="img" aria-label="Figure 1a: a three-drawer dresser in exploded view; back panel, top, cam bolts and drawers close into the frame"><g class="xp" style="--dx:34.6;--dy:-26;--d:0"><polygon class="e f-t" points="1.6,-84.9 69.1,-45.9 68.4,-45.5 0.9,-84.5"/><polygon class="e f-f" points="0.9,-0.5 68.4,38.5 68.4,-45.5 0.9,-84.5"/><polygon class="e f-r" points="69.1,38.1 68.4,38.5 68.4,-45.5 69.1,-45.9"/><polygon class="s" points="1.6,-84.9 69.1,-45.9 69.1,38.1 68.4,38.5 0.9,-0.5 0.9,-84.5"/><ellipse class="nail" cx="13.9" cy="-76" rx="0.6" ry="0.4"/><ellipse class="nail" cx="34.6" cy="-64" rx="0.6" ry="0.4"/><ellipse class="nail" cx="55.4" cy="-52" rx="0.6" ry="0.4"/></g><g class="xs"><polygon class="e f-t" points="0,-86 69.3,-46 32.9,-25 -36.4,-65"/><polygon class="e f-f" points="-36.4,21 32.9,61 32.9,-25 -36.4,-65"/><polygon class="e f-r" points="69.3,40 32.9,61 32.9,-25 69.3,-46"/><polygon class="s" points="0,-86 69.3,-46 69.3,40 32.9,61 -36.4,21 -36.4,-65"/><polygon class="e f-h" points="-34.6,22 31.2,60 31.2,53 -34.6,15"/><clipPath id="dh-cl"><polygon class="" points="-34.2,-38 30.7,-0.5 30.7,-24.2 -34.2,-61.7"/><polygon class="" points="-34.2,-12.5 30.7,25 30.7,1.5 -34.2,-36"/><polygon class="" points="-34.2,13.3 30.7,50.8 30.7,27.1 -34.2,-10.5"/></clipPath><polygon class="e f-h" points="-34.2,-38 30.7,-0.5 30.7,-24.2 -34.2,-61.7"/><polygon class="e f-h" points="-34.2,-12.5 30.7,25 30.7,1.5 -34.2,-36"/><polygon class="e f-h" points="-34.2,13.3 30.7,50.8 30.7,27.1 -34.2,-10.5"/><g clip-path="url(#dh-cl)"><line class="e" x1="-34.2" y1="-38" x2="0.4" y2="-58"/><line class="e" x1="0.4" y1="-58" x2="65.4" y2="-20.5"/><line class="e" x1="0.4" y1="-58" x2="0.4" y2="-81.7"/><line class="e" x1="-8.2" y1="-53" x2="56.7" y2="-15.5"/><line class="e" x1="-34.2" y1="-12.5" x2="0.4" y2="-32.4"/><line class="e" x1="0.4" y1="-32.4" x2="65.4" y2="5"/><line class="e" x1="0.4" y1="-32.4" x2="0.4" y2="-56"/><line class="e" x1="-8.2" y1="-27.4" x2="56.7" y2="10"/><line class="e" x1="-34.2" y1="13.3" x2="0.4" y2="-6.7"/><line class="e" x1="0.4" y1="-6.7" x2="65.4" y2="30.8"/><line class="e" x1="0.4" y1="-6.7" x2="0.4" y2="-30.4"/><line class="e" x1="-8.2" y1="-1.7" x2="56.7" y2="35.8"/></g><ellipse class="e f-h" cx="-1.7" cy="-81" rx="1.7" ry="1"/><ellipse class="e f-h" cx="60.6" cy="-45" rx="1.7" ry="1"/><ellipse class="e f-h" cx="-27.7" cy="-66" rx="1.7" ry="1"/><ellipse class="e f-h" cx="34.6" cy="-30" rx="1.7" ry="1"/></g><g class="xls"><line class="xl" x1="-27.7" y1="-66" x2="-27.7" y2="-96"/><line class="xl" x1="34.6" y1="-30" x2="34.6" y2="-60"/><line class="xl" x1="30.7" y1="-1.5" x2="5.2" y2="11.7"/><line class="xl" x1="30.7" y1="24" x2="15.6" y2="31.3"/><line class="xl" x1="30.7" y1="49.8" x2="26" y2="51"/><line class="xl" x1="68.4" y1="-45.5" x2="103.1" y2="-71.5"/></g><g class="xp" style="--dx:0;--dy:-14;--d:1"><path class="e f-r" d="M-2.8,-81 A1.1,0.6 0 0 0 -0.6,-81 L-0.6,-84 L-2.8,-84 Z"/><ellipse class="e f-t" cx="-1.7" cy="-84" rx="1.1" ry="0.6"/><path class="s" d="M-2.8,-84 L-2.8,-81 A1.1,0.6 0 0 0 -0.6,-81 L-0.6,-84"/><ellipse class="e f-h" cx="-1.7" cy="-84" rx="0.4" ry="0.2"/><path class="e f-r" d="M59.5,-45 A1.1,0.6 0 0 0 61.7,-45 L61.7,-48 L59.5,-48 Z"/><ellipse class="e f-t" cx="60.6" cy="-48" rx="1.1" ry="0.6"/><path class="s" d="M59.5,-48 L59.5,-45 A1.1,0.6 0 0 0 61.7,-45 L61.7,-48"/><ellipse class="e f-h" cx="60.6" cy="-48" rx="0.4" ry="0.2"/><path class="e f-r" d="M-28.8,-66 A1.1,0.6 0 0 0 -26.6,-66 L-26.6,-69 L-28.8,-69 Z"/><ellipse class="e f-t" cx="-27.7" cy="-69" rx="1.1" ry="0.6"/><path class="s" d="M-28.8,-69 L-28.8,-66 A1.1,0.6 0 0 0 -26.6,-66 L-26.6,-69"/><ellipse class="e f-h" cx="-27.7" cy="-69" rx="0.4" ry="0.2"/><path class="e f-r" d="M33.5,-30 A1.1,0.6 0 0 0 35.7,-30 L35.7,-33 L33.5,-33 Z"/><ellipse class="e f-t" cx="34.6" cy="-33" rx="1.1" ry="0.6"/><path class="s" d="M33.5,-33 L33.5,-30 A1.1,0.6 0 0 0 35.7,-30 L35.7,-33"/><ellipse class="e f-h" cx="34.6" cy="-33" rx="0.4" ry="0.2"/></g><g class="xp" style="--dx:0;--dy:-30;--d:2"><polygon class="e f-t" points="-0.4,-89.7 70.6,-48.7 31.6,-26.2 -39.4,-67.2"/><polygon class="e f-f" points="-39.4,-64.2 31.6,-23.2 31.6,-26.2 -39.4,-67.2"/><polygon class="e f-r" points="70.6,-45.7 31.6,-23.2 31.6,-26.2 70.6,-48.7"/><polygon class="s" points="-0.4,-89.7 70.6,-48.7 70.6,-45.7 31.6,-23.2 -39.4,-64.2 -39.4,-67.2"/></g><g class="xp" style="--dx:-34.6;--dy:20;--d:3"><g class="xb"><polygon class="e f-t" points="-1.7,-23.7 60.6,12.3 29.4,30.3 -32.9,-5.7"/><polygon class="e f-f" points="-32.9,13 29.4,49 29.4,30.3 -32.9,-5.7"/><polygon class="e f-r" points="60.6,31 29.4,49 29.4,30.3 60.6,12.3"/><polygon class="s" points="-1.7,-23.7 60.6,12.3 60.6,31 29.4,49 -32.9,13 -32.9,-5.7"/><polygon class="e f-h" points="-1.7,-22.5 58.5,12.3 29.4,29.1 -30.8,-5.7"/></g><polygon class="e f-t" points="-35.5,-11.7 32,27.3 30.5,28.2 -37.1,-10.8"/><polygon class="e f-f" points="-37.1,14.3 30.5,53.3 30.5,28.2 -37.1,-10.8"/><polygon class="e f-r" points="32,52.4 30.5,53.3 30.5,28.2 32,27.3"/><polygon class="s" points="-35.5,-11.7 32,27.3 32,52.4 30.5,53.3 -37.1,14.3 -37.1,-10.8"/><polygon class="e f-t" points="-12.8,12.8 6.2,23.8 5,24.5 -14,13.5"/><polygon class="e f-f" points="-14,14.9 5,25.9 5,24.5 -14,13.5"/><polygon class="e f-r" points="6.2,25.2 5,25.9 5,24.5 6.2,23.8"/><polygon class="s" points="-12.8,12.8 6.2,23.8 6.2,25.2 5,25.9 -14,14.9 -14,13.5"/></g><g class="xp" style="--dx:-45;--dy:26;--d:4"><g class="xb"><polygon class="e f-t" points="-1.7,-49.3 60.6,-13.3 29.4,4.7 -32.9,-31.3"/><polygon class="e f-f" points="-32.9,-12.7 29.4,23.3 29.4,4.7 -32.9,-31.3"/><polygon class="e f-r" points="60.6,5.3 29.4,23.3 29.4,4.7 60.6,-13.3"/><polygon class="s" points="-1.7,-49.3 60.6,-13.3 60.6,5.3 29.4,23.3 -32.9,-12.7 -32.9,-31.3"/><polygon class="e f-h" points="-1.7,-48.1 58.5,-13.3 29.4,3.5 -30.8,-31.3"/></g><polygon class="e f-t" points="-35.5,-37.3 32,1.7 30.5,2.6 -37.1,-36.4"/><polygon class="e f-f" points="-37.1,-11.4 30.5,27.6 30.5,2.6 -37.1,-36.4"/><polygon class="e f-r" points="32,26.7 30.5,27.6 30.5,2.6 32,1.7"/><polygon class="s" points="-35.5,-37.3 32,1.7 32,26.7 30.5,27.6 -37.1,-11.4 -37.1,-36.4"/><polygon class="e f-t" points="-12.8,-12.8 6.2,-1.8 5,-1.1 -14,-12.1"/><polygon class="e f-f" points="-14,-10.7 5,0.3 5,-1.1 -14,-12.1"/><polygon class="e f-r" points="6.2,-0.4 5,0.3 5,-1.1 6.2,-1.8"/><polygon class="s" points="-12.8,-12.8 6.2,-1.8 6.2,-0.4 5,0.3 -14,-10.7 -14,-12.1"/></g><g class="xp" style="--dx:-55.4;--dy:32;--d:5"><g class="xb"><polygon class="e f-t" points="-1.7,-75 60.6,-39 29.4,-21 -32.9,-57"/><polygon class="e f-f" points="-32.9,-38.3 29.4,-2.3 29.4,-21 -32.9,-57"/><polygon class="e f-r" points="60.6,-20.3 29.4,-2.3 29.4,-21 60.6,-39"/><polygon class="s" points="-1.7,-75 60.6,-39 60.6,-20.3 29.4,-2.3 -32.9,-38.3 -32.9,-57"/><polygon class="e f-h" points="-1.7,-73.8 58.5,-39 29.4,-22.2 -30.8,-57"/></g><polygon class="e f-t" points="-35.5,-63 32,-24 30.5,-23.1 -37.1,-62.1"/><polygon class="e f-f" points="-37.1,-37 30.5,2 30.5,-23.1 -37.1,-62.1"/><polygon class="e f-r" points="32,1.1 30.5,2 30.5,-23.1 32,-24"/><polygon class="s" points="-35.5,-63 32,-24 32,1.1 30.5,2 -37.1,-37 -37.1,-62.1"/><polygon class="e f-t" points="-12.8,-38.5 6.2,-27.5 5,-26.8 -14,-37.8"/><polygon class="e f-f" points="-14,-36.4 5,-25.4 5,-26.8 -14,-37.8"/><polygon class="e f-r" points="6.2,-26.1 5,-25.4 5,-26.8 6.2,-27.5"/><polygon class="s" points="-12.8,-38.5 6.2,-27.5 6.2,-26.1 5,-25.4 -14,-36.4 -14,-37.8"/></g></svg><span class="hero__inset-cap mono" aria-hidden="true">Fig. 1a</span></div>
       </div>
-      <figcaption class="plate__cap mono"><span>Fig. 1</span> Dresser, three drawers, exploded</figcaption>
+      <figcaption class="plate__cap"><span class="mono">Fig. 1</span> Centre light on: the stud, found before the dresser is strapped to it.</figcaption>
+    </figure>
       <div class="bag hero__bag" aria-label="Bag A, what the visit includes">
         <span class="bag__code">Bag A · the visit</span>
         <p class="bag__row"><span>Tools</span><span>ours</span></p>
@@ -848,7 +893,7 @@ textarea{resize:vertical;min-block-size:120px}
         <p class="bag__row"><span>Parts</span><span>counted</span></p>
         <p class="bag__row"><span>Boxes out</span><span>all</span></p>
       </div>
-    </figure>
+    </div>
   </div>
 </section>
 
@@ -856,7 +901,6 @@ textarea{resize:vertical;min-block-size:120px}
 <section class="steps t-paper" id="steps" data-layout="manual-rail" data-hook="steps" data-sw-signature aria-labelledby="steps-h">
   <div class="wrap">
     <header class="sec-head steps__head">
-      <p class="kicker">How a visit runs</p>
       <h2 id="steps-h">Six steps, in the same order, every visit.</h2>
       <p class="lead">The manual in the box skips the parts that matter. Ours doesn’t.</p>
     </header>
@@ -867,7 +911,7 @@ textarea{resize:vertical;min-block-size:120px}
           <span class="step-num" aria-hidden="true">01<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span>
           <div class="bag step__bag"><span class="bag__code">Bag 01</span><p class="bag__row"><span>Boxes opened</span><span>all</span></p><p class="bag__row"><span>Parts counted</span><span>every bag</span></p><p class="bag__row"><span>Floor</span><span>covered</span></p></div>
         </div>
-        <figure class="step__fig"><svg class="xv" viewBox="-71.8 -46.4 181.7 150.4" role="img" aria-label="Step 01: the parts laid out on a blanket and counted, panels and hardware in rows"><g class="xs"><polygon class="e f-c" points="0,-0.8 103.9,59.2 38.1,97.2 -65.8,37.2"/><polygon class="e f-f" points="-65.8,38 38.1,98 38.1,97.2 -65.8,37.2"/><polygon class="e f-r" points="103.9,60 38.1,98 38.1,97.2 103.9,59.2"/><polygon class="s" points="0,-0.8 103.9,59.2 103.9,60 38.1,98 -65.8,38 -65.8,37.2"/><polygon class="stitch" points="0,3.2 97,59.2 38.1,93.2 -58.9,37.2"/></g><g class="xls"><line class="xl" x1="0" y1="7" x2="0" y2="-38"/><line class="xl" x1="24.2" y1="55" x2="24.2" y2="16"/><line class="xl" x1="88.3" y1="58" x2="88.3" y2="7"/><line class="xl" x1="-38.1" y1="33" x2="-38.1" y2="4"/><line class="xl" x1="16.5" y1="75.5" x2="16.5" y2="54.5"/></g><g class="xp" style="--dx:0;--dy:-46;--d:0"><polygon class="e f-t" points="0,5.6 53.7,36.6 40.7,44.1 -13,13.1"/><polygon class="e f-f" points="-13,14.7 40.7,45.7 40.7,44.1 -13,13.1"/><polygon class="e f-r" points="53.7,38.2 40.7,45.7 40.7,44.1 53.7,36.6"/><polygon class="s" points="0,5.6 53.7,36.6 53.7,38.2 40.7,45.7 -13,14.7 -13,13.1"/><ellipse class="e f-h" cx="-1.3" cy="12.4" rx="1.3" ry="0.8"/><ellipse class="e f-h" cx="42" cy="37.4" rx="1.3" ry="0.8"/></g><g class="xp" style="--dx:0;--dy:-40;--d:1"><polygon class="e f-t" points="-16.5,15.1 37.2,46.1 24.2,53.6 -29.4,22.6"/><polygon class="e f-f" points="-29.4,24.2 24.2,55.2 24.2,53.6 -29.4,22.6"/><polygon class="e f-r" points="37.2,47.7 24.2,55.2 24.2,53.6 37.2,46.1"/><polygon class="s" points="-16.5,15.1 37.2,46.1 37.2,47.7 24.2,55.2 -29.4,24.2 -29.4,22.6"/><ellipse class="e f-h" cx="-17.8" cy="21.9" rx="1.3" ry="0.8"/><ellipse class="e f-h" cx="25.5" cy="46.9" rx="1.3" ry="0.8"/></g><g class="xp" style="--dx:0;--dy:-52;--d:2"><polygon class="e f-t" points="60.6,40.6 88.3,56.6 79.7,61.6 52,45.6"/><polygon class="e f-f" points="52,47.2 79.7,63.2 79.7,61.6 52,45.6"/><polygon class="e f-r" points="88.3,58.2 79.7,63.2 79.7,61.6 88.3,56.6"/><polygon class="s" points="60.6,40.6 88.3,56.6 88.3,58.2 79.7,63.2 52,47.2 52,45.6"/></g><g class="xp" style="--dx:0;--dy:-46;--d:3"><polygon class="e f-t" points="49.4,47.1 77.1,63.1 68.4,68.1 40.7,52.1"/><polygon class="e f-f" points="40.7,53.7 68.4,69.7 68.4,68.1 40.7,52.1"/><polygon class="e f-r" points="77.1,64.7 68.4,69.7 68.4,68.1 77.1,63.1"/><polygon class="s" points="49.4,47.1 77.1,63.1 77.1,64.7 68.4,69.7 40.7,53.7 40.7,52.1"/></g><g class="xp" style="--dx:0;--dy:-40;--d:4"><polygon class="e f-t" points="38.1,53.6 65.8,69.6 57.2,74.6 29.4,58.6"/><polygon class="e f-f" points="29.4,60.2 57.2,76.2 57.2,74.6 29.4,58.6"/><polygon class="e f-r" points="65.8,71.2 57.2,76.2 57.2,74.6 65.8,69.6"/><polygon class="s" points="38.1,53.6 65.8,69.6 65.8,71.2 57.2,76.2 29.4,60.2 29.4,58.6"/></g><g class="xp" style="--dx:0;--dy:-30;--d:5"><path class="e f-r" d="M-39.5,33.2 A1.3,0.8 0 0 0 -36.8,33.2 L-36.8,29.2 L-39.5,29.2 Z"/><ellipse class="e f-t" cx="-38.1" cy="29.2" rx="1.3" ry="0.8"/><path class="s" d="M-39.5,29.2 L-39.5,33.2 A1.3,0.8 0 0 0 -36.8,33.2 L-36.8,29.2"/><path class="e f-r" d="M-34.3,36.2 A1.3,0.8 0 0 0 -31.6,36.2 L-31.6,32.2 L-34.3,32.2 Z"/><ellipse class="e f-t" cx="-32.9" cy="32.2" rx="1.3" ry="0.8"/><path class="s" d="M-34.3,32.2 L-34.3,36.2 A1.3,0.8 0 0 0 -31.6,36.2 L-31.6,32.2"/><path class="e f-r" d="M-29.1,39.2 A1.3,0.8 0 0 0 -26.4,39.2 L-26.4,35.2 L-29.1,35.2 Z"/><ellipse class="e f-t" cx="-27.7" cy="35.2" rx="1.3" ry="0.8"/><path class="s" d="M-29.1,35.2 L-29.1,39.2 A1.3,0.8 0 0 0 -26.4,39.2 L-26.4,35.2"/><path class="e f-r" d="M-23.9,42.2 A1.3,0.8 0 0 0 -21.2,42.2 L-21.2,38.2 L-23.9,38.2 Z"/><ellipse class="e f-t" cx="-22.5" cy="38.2" rx="1.3" ry="0.8"/><path class="s" d="M-23.9,38.2 L-23.9,42.2 A1.3,0.8 0 0 0 -21.2,42.2 L-21.2,38.2"/></g><g class="xp" style="--dx:0;--dy:-26;--d:6"><path class="e f-r" d="M-15.3,48.2 A3.2,1.8 0 0 0 -8.9,48.2 L-8.9,46.8 L-15.3,46.8 Z"/><ellipse class="e f-t" cx="-12.1" cy="46.8" rx="3.2" ry="1.8"/><path class="s" d="M-15.3,46.8 L-15.3,48.2 A3.2,1.8 0 0 0 -8.9,48.2 L-8.9,46.8"/><line class="e" x1="-13.3" y1="46.1" x2="-10.9" y2="47.5"/><path class="e f-r" d="M-8.4,52.2 A3.2,1.8 0 0 0 -2,52.2 L-2,50.8 L-8.4,50.8 Z"/><ellipse class="e f-t" cx="-5.2" cy="50.8" rx="3.2" ry="1.8"/><path class="s" d="M-8.4,50.8 L-8.4,52.2 A3.2,1.8 0 0 0 -2,52.2 L-2,50.8"/><line class="e" x1="-6.4" y1="50.1" x2="-4" y2="51.5"/><path class="e f-r" d="M-1.5,56.2 A3.2,1.8 0 0 0 4.9,56.2 L4.9,54.8 L-1.5,54.8 Z"/><ellipse class="e f-t" cx="1.7" cy="54.8" rx="3.2" ry="1.8"/><path class="s" d="M-1.5,54.8 L-1.5,56.2 A3.2,1.8 0 0 0 4.9,56.2 L4.9,54.8"/><line class="e" x1="0.5" y1="54.1" x2="2.9" y2="55.5"/><path class="e f-r" d="M5.5,60.2 A3.2,1.8 0 0 0 11.8,60.2 L11.8,58.8 L5.5,58.8 Z"/><ellipse class="e f-t" cx="8.7" cy="58.8" rx="3.2" ry="1.8"/><path class="s" d="M5.5,58.8 L5.5,60.2 A3.2,1.8 0 0 0 11.8,60.2 L11.8,58.8"/><line class="e" x1="7.4" y1="58.1" x2="9.9" y2="59.5"/></g><g class="xp" style="--dx:0;--dy:-22;--d:7"><polygon class="e f-t" points="24.2,61.8 31.2,65.8 30,66.5 23,62.5"/><polygon class="e f-f" points="23,63.9 30,67.9 30,66.5 23,62.5"/><polygon class="e f-r" points="31.2,67.2 30,67.9 30,66.5 31.2,65.8"/><polygon class="s" points="24.2,61.8 31.2,65.8 31.2,67.2 30,67.9 23,63.9 23,62.5"/><polygon class="e f-t" points="21.3,63.5 28.2,67.5 27,68.2 20.1,64.2"/><polygon class="e f-f" points="20.1,65.6 27,69.6 27,68.2 20.1,64.2"/><polygon class="e f-r" points="28.2,68.9 27,69.6 27,68.2 28.2,67.5"/><polygon class="s" points="21.3,63.5 28.2,67.5 28.2,68.9 27,69.6 20.1,65.6 20.1,64.2"/><polygon class="e f-t" points="18.4,65.2 25.3,69.2 24.1,69.9 17.1,65.9"/><polygon class="e f-f" points="17.1,67.3 24.1,71.3 24.1,69.9 17.1,65.9"/><polygon class="e f-r" points="25.3,70.6 24.1,71.3 24.1,69.9 25.3,69.2"/><polygon class="s" points="18.4,65.2 25.3,69.2 25.3,70.6 24.1,71.3 17.1,67.3 17.1,65.9"/><polygon class="e f-t" points="15.4,66.9 22.3,70.9 21.1,71.6 14.2,67.6"/><polygon class="e f-f" points="14.2,69 21.1,73 21.1,71.6 14.2,67.6"/><polygon class="e f-r" points="22.3,72.3 21.1,73 21.1,71.6 22.3,70.9"/><polygon class="s" points="15.4,66.9 22.3,70.9 22.3,72.3 21.1,73 14.2,69 14.2,67.6"/><polygon class="e f-t" points="12.5,68.6 19.4,72.6 18.2,73.3 11.3,69.3"/><polygon class="e f-f" points="11.3,70.7 18.2,74.7 18.2,73.3 11.3,69.3"/><polygon class="e f-r" points="19.4,74 18.2,74.7 18.2,73.3 19.4,72.6"/><polygon class="s" points="12.5,68.6 19.4,72.6 19.4,74 18.2,74.7 11.3,70.7 11.3,69.3"/><polygon class="e f-t" points="9.5,70.3 16.5,74.3 15.2,75 8.3,71"/><polygon class="e f-f" points="8.3,72.4 15.2,76.4 15.2,75 8.3,71"/><polygon class="e f-r" points="16.5,75.7 15.2,76.4 15.2,75 16.5,74.3"/><polygon class="s" points="9.5,70.3 16.5,74.3 16.5,75.7 15.2,76.4 8.3,72.4 8.3,71"/></g><g class="xp" style="--dx:0;--dy:-18;--d:8"><polygon class="e f-t" points="38.1,71.6 52,79.6 50.6,80.4 36.7,72.4"/><polygon class="e f-f" points="36.7,74 50.6,82 50.6,80.4 36.7,72.4"/><polygon class="e f-r" points="52,81.2 50.6,82 50.6,80.4 52,79.6"/><polygon class="s" points="38.1,71.6 52,79.6 52,81.2 50.6,82 36.7,74 36.7,72.4"/><polygon class="e f-t" points="50.6,78.8 52,79.6 44.2,84.1 42.8,83.3"/><polygon class="e f-f" points="42.8,84.9 44.2,85.7 44.2,84.1 42.8,83.3"/><polygon class="e f-r" points="52,81.2 44.2,85.7 44.2,84.1 52,79.6"/><polygon class="s" points="50.6,78.8 52,79.6 52,81.2 44.2,85.7 42.8,84.9 42.8,83.3"/></g></svg></figure>
+        <figure class="step__fig"><div class="step__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv" viewBox="-71.8 -46.4 181.7 150.4" role="img" aria-label="Step 01: the parts laid out on a blanket and counted, panels and hardware in rows"><g class="xs"><polygon class="e f-c" points="0,-0.8 103.9,59.2 38.1,97.2 -65.8,37.2"/><polygon class="e f-f" points="-65.8,38 38.1,98 38.1,97.2 -65.8,37.2"/><polygon class="e f-r" points="103.9,60 38.1,98 38.1,97.2 103.9,59.2"/><polygon class="s" points="0,-0.8 103.9,59.2 103.9,60 38.1,98 -65.8,38 -65.8,37.2"/><polygon class="stitch" points="0,3.2 97,59.2 38.1,93.2 -58.9,37.2"/></g><g class="xls"><line class="xl" x1="0" y1="7" x2="0" y2="-38"/><line class="xl" x1="24.2" y1="55" x2="24.2" y2="16"/><line class="xl" x1="88.3" y1="58" x2="88.3" y2="7"/><line class="xl" x1="-38.1" y1="33" x2="-38.1" y2="4"/><line class="xl" x1="16.5" y1="75.5" x2="16.5" y2="54.5"/></g><g class="xp" style="--dx:0;--dy:-46;--d:0"><polygon class="e f-t" points="0,5.6 53.7,36.6 40.7,44.1 -13,13.1"/><polygon class="e f-f" points="-13,14.7 40.7,45.7 40.7,44.1 -13,13.1"/><polygon class="e f-r" points="53.7,38.2 40.7,45.7 40.7,44.1 53.7,36.6"/><polygon class="s" points="0,5.6 53.7,36.6 53.7,38.2 40.7,45.7 -13,14.7 -13,13.1"/><ellipse class="e f-h" cx="-1.3" cy="12.4" rx="1.3" ry="0.8"/><ellipse class="e f-h" cx="42" cy="37.4" rx="1.3" ry="0.8"/></g><g class="xp" style="--dx:0;--dy:-40;--d:1"><polygon class="e f-t" points="-16.5,15.1 37.2,46.1 24.2,53.6 -29.4,22.6"/><polygon class="e f-f" points="-29.4,24.2 24.2,55.2 24.2,53.6 -29.4,22.6"/><polygon class="e f-r" points="37.2,47.7 24.2,55.2 24.2,53.6 37.2,46.1"/><polygon class="s" points="-16.5,15.1 37.2,46.1 37.2,47.7 24.2,55.2 -29.4,24.2 -29.4,22.6"/><ellipse class="e f-h" cx="-17.8" cy="21.9" rx="1.3" ry="0.8"/><ellipse class="e f-h" cx="25.5" cy="46.9" rx="1.3" ry="0.8"/></g><g class="xp" style="--dx:0;--dy:-52;--d:2"><polygon class="e f-t" points="60.6,40.6 88.3,56.6 79.7,61.6 52,45.6"/><polygon class="e f-f" points="52,47.2 79.7,63.2 79.7,61.6 52,45.6"/><polygon class="e f-r" points="88.3,58.2 79.7,63.2 79.7,61.6 88.3,56.6"/><polygon class="s" points="60.6,40.6 88.3,56.6 88.3,58.2 79.7,63.2 52,47.2 52,45.6"/></g><g class="xp" style="--dx:0;--dy:-46;--d:3"><polygon class="e f-t" points="49.4,47.1 77.1,63.1 68.4,68.1 40.7,52.1"/><polygon class="e f-f" points="40.7,53.7 68.4,69.7 68.4,68.1 40.7,52.1"/><polygon class="e f-r" points="77.1,64.7 68.4,69.7 68.4,68.1 77.1,63.1"/><polygon class="s" points="49.4,47.1 77.1,63.1 77.1,64.7 68.4,69.7 40.7,53.7 40.7,52.1"/></g><g class="xp" style="--dx:0;--dy:-40;--d:4"><polygon class="e f-t" points="38.1,53.6 65.8,69.6 57.2,74.6 29.4,58.6"/><polygon class="e f-f" points="29.4,60.2 57.2,76.2 57.2,74.6 29.4,58.6"/><polygon class="e f-r" points="65.8,71.2 57.2,76.2 57.2,74.6 65.8,69.6"/><polygon class="s" points="38.1,53.6 65.8,69.6 65.8,71.2 57.2,76.2 29.4,60.2 29.4,58.6"/></g><g class="xp" style="--dx:0;--dy:-30;--d:5"><path class="e f-r" d="M-39.5,33.2 A1.3,0.8 0 0 0 -36.8,33.2 L-36.8,29.2 L-39.5,29.2 Z"/><ellipse class="e f-t" cx="-38.1" cy="29.2" rx="1.3" ry="0.8"/><path class="s" d="M-39.5,29.2 L-39.5,33.2 A1.3,0.8 0 0 0 -36.8,33.2 L-36.8,29.2"/><path class="e f-r" d="M-34.3,36.2 A1.3,0.8 0 0 0 -31.6,36.2 L-31.6,32.2 L-34.3,32.2 Z"/><ellipse class="e f-t" cx="-32.9" cy="32.2" rx="1.3" ry="0.8"/><path class="s" d="M-34.3,32.2 L-34.3,36.2 A1.3,0.8 0 0 0 -31.6,36.2 L-31.6,32.2"/><path class="e f-r" d="M-29.1,39.2 A1.3,0.8 0 0 0 -26.4,39.2 L-26.4,35.2 L-29.1,35.2 Z"/><ellipse class="e f-t" cx="-27.7" cy="35.2" rx="1.3" ry="0.8"/><path class="s" d="M-29.1,35.2 L-29.1,39.2 A1.3,0.8 0 0 0 -26.4,39.2 L-26.4,35.2"/><path class="e f-r" d="M-23.9,42.2 A1.3,0.8 0 0 0 -21.2,42.2 L-21.2,38.2 L-23.9,38.2 Z"/><ellipse class="e f-t" cx="-22.5" cy="38.2" rx="1.3" ry="0.8"/><path class="s" d="M-23.9,38.2 L-23.9,42.2 A1.3,0.8 0 0 0 -21.2,42.2 L-21.2,38.2"/></g><g class="xp" style="--dx:0;--dy:-26;--d:6"><path class="e f-r" d="M-15.3,48.2 A3.2,1.8 0 0 0 -8.9,48.2 L-8.9,46.8 L-15.3,46.8 Z"/><ellipse class="e f-t" cx="-12.1" cy="46.8" rx="3.2" ry="1.8"/><path class="s" d="M-15.3,46.8 L-15.3,48.2 A3.2,1.8 0 0 0 -8.9,48.2 L-8.9,46.8"/><line class="e" x1="-13.3" y1="46.1" x2="-10.9" y2="47.5"/><path class="e f-r" d="M-8.4,52.2 A3.2,1.8 0 0 0 -2,52.2 L-2,50.8 L-8.4,50.8 Z"/><ellipse class="e f-t" cx="-5.2" cy="50.8" rx="3.2" ry="1.8"/><path class="s" d="M-8.4,50.8 L-8.4,52.2 A3.2,1.8 0 0 0 -2,52.2 L-2,50.8"/><line class="e" x1="-6.4" y1="50.1" x2="-4" y2="51.5"/><path class="e f-r" d="M-1.5,56.2 A3.2,1.8 0 0 0 4.9,56.2 L4.9,54.8 L-1.5,54.8 Z"/><ellipse class="e f-t" cx="1.7" cy="54.8" rx="3.2" ry="1.8"/><path class="s" d="M-1.5,54.8 L-1.5,56.2 A3.2,1.8 0 0 0 4.9,56.2 L4.9,54.8"/><line class="e" x1="0.5" y1="54.1" x2="2.9" y2="55.5"/><path class="e f-r" d="M5.5,60.2 A3.2,1.8 0 0 0 11.8,60.2 L11.8,58.8 L5.5,58.8 Z"/><ellipse class="e f-t" cx="8.7" cy="58.8" rx="3.2" ry="1.8"/><path class="s" d="M5.5,58.8 L5.5,60.2 A3.2,1.8 0 0 0 11.8,60.2 L11.8,58.8"/><line class="e" x1="7.4" y1="58.1" x2="9.9" y2="59.5"/></g><g class="xp" style="--dx:0;--dy:-22;--d:7"><polygon class="e f-t" points="24.2,61.8 31.2,65.8 30,66.5 23,62.5"/><polygon class="e f-f" points="23,63.9 30,67.9 30,66.5 23,62.5"/><polygon class="e f-r" points="31.2,67.2 30,67.9 30,66.5 31.2,65.8"/><polygon class="s" points="24.2,61.8 31.2,65.8 31.2,67.2 30,67.9 23,63.9 23,62.5"/><polygon class="e f-t" points="21.3,63.5 28.2,67.5 27,68.2 20.1,64.2"/><polygon class="e f-f" points="20.1,65.6 27,69.6 27,68.2 20.1,64.2"/><polygon class="e f-r" points="28.2,68.9 27,69.6 27,68.2 28.2,67.5"/><polygon class="s" points="21.3,63.5 28.2,67.5 28.2,68.9 27,69.6 20.1,65.6 20.1,64.2"/><polygon class="e f-t" points="18.4,65.2 25.3,69.2 24.1,69.9 17.1,65.9"/><polygon class="e f-f" points="17.1,67.3 24.1,71.3 24.1,69.9 17.1,65.9"/><polygon class="e f-r" points="25.3,70.6 24.1,71.3 24.1,69.9 25.3,69.2"/><polygon class="s" points="18.4,65.2 25.3,69.2 25.3,70.6 24.1,71.3 17.1,67.3 17.1,65.9"/><polygon class="e f-t" points="15.4,66.9 22.3,70.9 21.1,71.6 14.2,67.6"/><polygon class="e f-f" points="14.2,69 21.1,73 21.1,71.6 14.2,67.6"/><polygon class="e f-r" points="22.3,72.3 21.1,73 21.1,71.6 22.3,70.9"/><polygon class="s" points="15.4,66.9 22.3,70.9 22.3,72.3 21.1,73 14.2,69 14.2,67.6"/><polygon class="e f-t" points="12.5,68.6 19.4,72.6 18.2,73.3 11.3,69.3"/><polygon class="e f-f" points="11.3,70.7 18.2,74.7 18.2,73.3 11.3,69.3"/><polygon class="e f-r" points="19.4,74 18.2,74.7 18.2,73.3 19.4,72.6"/><polygon class="s" points="12.5,68.6 19.4,72.6 19.4,74 18.2,74.7 11.3,70.7 11.3,69.3"/><polygon class="e f-t" points="9.5,70.3 16.5,74.3 15.2,75 8.3,71"/><polygon class="e f-f" points="8.3,72.4 15.2,76.4 15.2,75 8.3,71"/><polygon class="e f-r" points="16.5,75.7 15.2,76.4 15.2,75 16.5,74.3"/><polygon class="s" points="9.5,70.3 16.5,74.3 16.5,75.7 15.2,76.4 8.3,72.4 8.3,71"/></g><g class="xp" style="--dx:0;--dy:-18;--d:8"><polygon class="e f-t" points="38.1,71.6 52,79.6 50.6,80.4 36.7,72.4"/><polygon class="e f-f" points="36.7,74 50.6,82 50.6,80.4 36.7,72.4"/><polygon class="e f-r" points="52,81.2 50.6,82 50.6,80.4 52,79.6"/><polygon class="s" points="38.1,71.6 52,79.6 52,81.2 50.6,82 36.7,74 36.7,72.4"/><polygon class="e f-t" points="50.6,78.8 52,79.6 44.2,84.1 42.8,83.3"/><polygon class="e f-f" points="42.8,84.9 44.2,85.7 44.2,84.1 42.8,83.3"/><polygon class="e f-r" points="52,81.2 44.2,85.7 44.2,84.1 52,79.6"/><polygon class="s" points="50.6,78.8 52,79.6 52,81.2 44.2,85.7 42.8,84.9 42.8,83.3"/></g></svg></div><figcaption class="plate__cap"><span class="mono">Fig. 2</span> Every part on the blanket, counted against the sheet.</figcaption></figure>
         <div class="step__body">
           <h3><span class="sr-only">Step 1: </span>Count the parts on a blanket.</h3>
           <p>We open every box and count the parts on a blanket before a single screw goes in. A missing bag shows up now, not halfway up a wardrobe.</p>
@@ -879,8 +923,7 @@ textarea{resize:vertical;min-block-size:120px}
           <span class="step-num" aria-hidden="true">02<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span>
           <div class="bag step__bag"><span class="bag__code">Bag 02</span><p class="bag__row"><span>Diagonals</span><span>equal</span></p><p class="bag__row"><span>Back panel</span><span>after</span></p></div>
         </div>
-        <figure class="step__fig">
-          <svg class="xv" viewBox="0 0 240 236" role="img" aria-label="Step 02: the frame closes up and both corner-to-corner measurements match">
+        <figure class="step__fig"><div class="step__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv" viewBox="0 0 240 236" role="img" aria-label="Step 02: the frame closes up and both corner-to-corner measurements match">
             <rect class="ghost" x="40" y="30" width="160" height="170"/>
             <g class="xls"><line class="xl" x1="12" y1="115" x2="40" y2="115"/><line class="xl" x1="200" y1="115" x2="228" y2="115"/><line class="xl" x1="120" y1="6" x2="120" y2="30"/><line class="xl" x1="120" y1="192" x2="120" y2="214"/></g>
             <g class="xp" style="--dx:0;--dy:-22;--d:0"><rect class="e f-t" x="50" y="30" width="140" height="10"/><rect class="s" x="50" y="30" width="140" height="10"/><circle class="e f-h" cx="56" cy="35" r="1.8"/><circle class="e f-h" cx="184" cy="35" r="1.8"/></g>
@@ -893,12 +936,11 @@ textarea{resize:vertical;min-block-size:120px}
               <circle class="callout" cx="86" cy="62" r="8"/><text class="lbl" x="86" y="65.5" text-anchor="middle">A</text>
               <circle class="callout" cx="154" cy="62" r="8"/><text class="lbl" x="154" y="65.5" text-anchor="middle">B</text>
               <text class="lbl lbl--accent" x="120" y="226" text-anchor="middle">A = B</text>
-            </g>
-          </svg>
-        </figure>
+            </g></svg></div><figcaption class="plate__cap"><span class="mono">Fig. 3</span> Corner to corner: A matches B, so the drawers run true.</figcaption></figure>
         <div class="step__body">
           <h3><span class="sr-only">Step 2: </span>Square the frame.</h3>
           <p>Before the back panel goes on, we measure corner to corner both ways. When the two numbers match, the drawers will run straight.</p>
+          <div class="step__ev"><figure class="frame step__photo" data-fallback="Close view of a drawer runner damper and spring fixed inside a white cabinet"><img src="media/detail-drawer-slide-2-1170.webp" srcset="media/detail-drawer-slide-2-1170.webp 1170w, media/detail-drawer-slide-2.webp 2340w" width="1170" height="878" loading="lazy" decoding="async" data-photo="detail-drawer-slide-2" data-slot="slide" sizes="(min-width: 900px) 26vw, 92vw" alt="A drawer runner damper and its spring, fixed inside a white cabinet side"></figure><p class="plate__cap"><span class="mono">Fig. 3b</span> The runner it protects, screwed in level.</p></div>
         </div>
       </li>
 
@@ -907,8 +949,7 @@ textarea{resize:vertical;min-block-size:120px}
           <span class="step-num" aria-hidden="true">03<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span>
           <div class="bag step__bag"><span class="bag__code">Bag 03</span><p class="bag__row"><span>Cam locks</span><span>hand-tight</span></p><p class="bag__row"><span>Stripped holes</span><span>dowel + glue</span></p></div>
         </div>
-        <figure class="step__fig">
-          <svg class="xv" viewBox="0 0 280 200" role="img" aria-label="Step 03, seen from above: the shelf slides onto the cam bolt and the cam lock drops into its hole and turns">
+        <figure class="step__fig"><div class="step__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv" viewBox="0 0 280 200" role="img" aria-label="Step 03, seen from above: the shelf slides onto the cam bolt and the cam lock drops into its hole and turns">
             <g class="xs">
               <rect class="e f-r" x="20" y="16" width="18" height="168"/><rect class="s" x="20" y="16" width="18" height="168"/>
               <path class="hid" d="M24 98.5h14M24 101.5h14M27 97v6M30.5 97v6M34 97v6"/>
@@ -933,9 +974,7 @@ textarea{resize:vertical;min-block-size:120px}
             <g class="xdone">
               <path class="hid" d="M81 95.5h7v9h-7z"/>
               <path class="arrow" d="M70 78a26 26 0 0 1 40 6"/><path class="arrow" d="M104 77.5l6 6.5-8.5 1.5"/>
-            </g>
-          </svg>
-        </figure>
+            </g></svg></div><figcaption class="plate__cap"><span class="mono">Fig. 4</span> The shelf slides onto the cam bolt; the cam is turned by hand.</figcaption></figure>
         <div class="step__body">
           <h3><span class="sr-only">Step 3: </span>Set the cams by hand.</h3>
           <p>Cam locks get turned until they bite, not until they spin. The last turn into particleboard is by hand, so the holes hold.</p>
@@ -947,8 +986,7 @@ textarea{resize:vertical;min-block-size:120px}
           <span class="step-num" aria-hidden="true">04<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span>
           <div class="bag step__bag"><span class="bag__code">Bag 04</span><p class="bag__row"><span>Door gaps</span><span>matched</span></p><p class="bag__row"><span>Drawers</span><span>close straight</span></p></div>
         </div>
-        <figure class="step__fig">
-          <svg class="xv" viewBox="0 0 280 214" role="img" aria-label="Step 04, seen from above: the door and its hinge arm clip onto the mounting plate, then the adjusting screws set the gap">
+        <figure class="step__fig"><div class="step__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv" viewBox="0 0 280 214" role="img" aria-label="Step 04, seen from above: the door and its hinge arm clip onto the mounting plate, then the adjusting screws set the gap">
             <rect class="ghost" x="22" y="174" width="240" height="20"/>
             <g class="xs">
               <rect class="e f-r" x="30" y="10" width="20" height="164"/><rect class="s" x="30" y="10" width="20" height="164"/>
@@ -968,9 +1006,7 @@ textarea{resize:vertical;min-block-size:120px}
             <g class="xdone">
               <path class="arrow" d="M100 206h40M106 202l-6 4 6 4M134 202l6 4-6 4"/>
               <path class="arrow" d="M90 100v28M86 106l4-6 4 6M86 122l4 6 4-6"/>
-            </g>
-          </svg>
-        </figure>
+            </g></svg></div><figcaption class="plate__cap"><span class="mono">Fig. 5</span> The hinge clips onto its plate; three screws set the gap.</figcaption></figure>
         <div class="step__body">
           <h3><span class="sr-only">Step 4: </span>Hang and adjust the doors.</h3>
           <p>Every hinge has three screws: in and out, up and down, side to side. We turn them until the gaps match from top to bottom.</p>
@@ -982,8 +1018,7 @@ textarea{resize:vertical;min-block-size:120px}
           <span class="step-num" aria-hidden="true">05<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span>
           <div class="bag step__bag"><span class="bag__code">Bag 05</span><p class="bag__row"><span>Tall pieces</span><span>strapped</span></p><p class="bag__row"><span>Anchors</span><span>ours</span></p></div>
         </div>
-        <figure class="step__fig">
-          <svg class="xv" viewBox="0 0 280 230" role="img" aria-label="Step 05, in section: the strap screws through the drywall into the stud and holds the dresser to the wall">
+        <figure class="step__fig"><div class="step__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv" viewBox="0 0 280 230" role="img" aria-label="Step 05, in section: the strap screws through the drywall into the stud and holds the dresser to the wall">
             <defs><pattern id="h5" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="hatch" x1="0" y1="0" x2="0" y2="7"/></pattern></defs>
             <g class="xs">
               <rect class="e f-r" x="6" y="0" width="40" height="230"/><rect fill="url(#h5)" x="6" y="0" width="40" height="230"/><rect class="s" x="6" y="0" width="40" height="230"/>
@@ -1007,9 +1042,7 @@ textarea{resize:vertical;min-block-size:120px}
               <path class="e" d="M168 140h26M168 196h26"/>
               <path class="e f-t" d="M108 84h12v12h-4v-8h-8z"/><path class="s" d="M108 84h12v12h-4v-8h-8z"/>
             </g>
-            <g class="xdone"><circle class="dot-accent" cx="30" cy="51" r="3"/></g>
-          </svg>
-        </figure>
+            <g class="xdone"><circle class="dot-accent" cx="30" cy="51" r="3"/></g></svg></div><figcaption class="plate__cap"><span class="mono">Fig. 6</span> The strap goes through the drywall and into the stud.</figcaption></figure>
         <div class="step__body">
           <h3><span class="sr-only">Step 5: </span>Anchor it to a stud.</h3>
           <p>Tall dressers get strapped to a stud. Not plaster, not drywall alone: the stud. TVs go up the same way.</p>
@@ -1021,7 +1054,7 @@ textarea{resize:vertical;min-block-size:120px}
           <span class="step-num" aria-hidden="true">06<svg class="tick" viewBox="0 0 24 24"><path pathLength="1" d="M4 12l5 5L20 6"/></svg></span>
           <div class="bag step__bag"><span class="bag__code">Bag 06</span><p class="bag__row"><span>Boxes out</span><span>all</span></p><p class="bag__row"><span>Foam + bags</span><span>gone</span></p></div>
         </div>
-        <figure class="step__fig"><svg class="xv" viewBox="-48.7 -76.8 146.4 147.9" role="img" aria-label="Step 06: the cardboard flattened, stacked and tied with twine, ready to carry out"><g class="xp" style="--dx:0;--dy:0;--d:0"><polygon class="e f-c" points="0,-1.4 60.6,33.6 22.5,55.6 -38.1,20.6"/><polygon class="e f-f" points="-38.1,22 22.5,57 22.5,55.6 -38.1,20.6"/><polygon class="e f-r" points="60.6,35 22.5,57 22.5,55.6 60.6,33.6"/><polygon class="s" points="0,-1.4 60.6,33.6 60.6,35 22.5,57 -38.1,22 -38.1,20.6"/><line class="crease" x1="15.6" y1="7.6" x2="-22.5" y2="29.6"/><line class="crease" x1="30.3" y1="16.1" x2="-7.8" y2="38.1"/><line class="crease" x1="45.9" y1="25.1" x2="7.8" y2="47.1"/></g><g class="xp" style="--dx:0;--dy:-32;--d:1"><polygon class="e f-c" points="3,-2.5 63.7,32.5 25.5,54.5 -35.1,19.5"/><polygon class="e f-f" points="-35.1,20.9 25.5,55.9 25.5,54.5 -35.1,19.5"/><polygon class="e f-r" points="63.7,33.9 25.5,55.9 25.5,54.5 63.7,32.5"/><polygon class="s" points="3,-2.5 63.7,32.5 63.7,33.9 25.5,55.9 -35.1,20.9 -35.1,19.5"/><line class="crease" x1="18.6" y1="6.5" x2="-19.5" y2="28.5"/><line class="crease" x1="33.3" y1="15" x2="-4.8" y2="37"/><line class="crease" x1="48.9" y1="24" x2="10.8" y2="46"/></g><g class="xp" style="--dx:0;--dy:-48;--d:2"><polygon class="e f-c" points="-2.6,-4.2 58,30.8 19.9,52.8 -40.7,17.8"/><polygon class="e f-f" points="-40.7,19.2 19.9,54.2 19.9,52.8 -40.7,17.8"/><polygon class="e f-r" points="58,32.2 19.9,54.2 19.9,52.8 58,30.8"/><polygon class="s" points="-2.6,-4.2 58,30.8 58,32.2 19.9,54.2 -40.7,19.2 -40.7,17.8"/><line class="crease" x1="13" y1="4.8" x2="-25.1" y2="26.8"/><line class="crease" x1="27.7" y1="13.3" x2="-10.4" y2="35.3"/><line class="crease" x1="43.3" y1="22.3" x2="5.2" y2="44.3"/></g><g class="xp" style="--dx:0;--dy:-64;--d:3"><polygon class="e f-c" points="0.4,-4.8 61.1,30.2 22.9,52.2 -37.7,17.2"/><polygon class="e f-f" points="-37.7,18.6 22.9,53.6 22.9,52.2 -37.7,17.2"/><polygon class="e f-r" points="61.1,31.6 22.9,53.6 22.9,52.2 61.1,30.2"/><polygon class="s" points="0.4,-4.8 61.1,30.2 61.1,31.6 22.9,53.6 -37.7,18.6 -37.7,17.2"/><line class="crease" x1="16" y1="4.2" x2="-22.1" y2="26.2"/><line class="crease" x1="30.7" y1="12.7" x2="-7.4" y2="34.7"/><line class="crease" x1="46.3" y1="21.7" x2="8.2" y2="43.7"/></g><g class="xdone"><line class="twine" x1="-18.6" y1="6.2" x2="42" y2="41.2"/><line class="twine" x1="30.7" y1="12.7" x2="-7.4" y2="34.7"/><line class="twine" x1="-7.4" y1="34.7" x2="-7.4" y2="40.3"/><line class="twine" x1="42" y1="41.2" x2="42" y2="46.8"/><ellipse class="twine" cx="9.3" cy="22" rx="2.6" ry="1.6"/><ellipse class="twine" cx="14.1" cy="22" rx="2.6" ry="1.6"/></g><g class="xdone"><path class="arrow" d="M46.2,59 h22 m-6,-5 l6,5 l-6,5"/></g></svg></figure>
+        <figure class="step__fig"><div class="step__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv" viewBox="-48.7 -76.8 146.4 147.9" role="img" aria-label="Step 06: the cardboard flattened, stacked and tied with twine, ready to carry out"><g class="xp" style="--dx:0;--dy:0;--d:0"><polygon class="e f-c" points="0,-1.4 60.6,33.6 22.5,55.6 -38.1,20.6"/><polygon class="e f-f" points="-38.1,22 22.5,57 22.5,55.6 -38.1,20.6"/><polygon class="e f-r" points="60.6,35 22.5,57 22.5,55.6 60.6,33.6"/><polygon class="s" points="0,-1.4 60.6,33.6 60.6,35 22.5,57 -38.1,22 -38.1,20.6"/><line class="crease" x1="15.6" y1="7.6" x2="-22.5" y2="29.6"/><line class="crease" x1="30.3" y1="16.1" x2="-7.8" y2="38.1"/><line class="crease" x1="45.9" y1="25.1" x2="7.8" y2="47.1"/></g><g class="xp" style="--dx:0;--dy:-32;--d:1"><polygon class="e f-c" points="3,-2.5 63.7,32.5 25.5,54.5 -35.1,19.5"/><polygon class="e f-f" points="-35.1,20.9 25.5,55.9 25.5,54.5 -35.1,19.5"/><polygon class="e f-r" points="63.7,33.9 25.5,55.9 25.5,54.5 63.7,32.5"/><polygon class="s" points="3,-2.5 63.7,32.5 63.7,33.9 25.5,55.9 -35.1,20.9 -35.1,19.5"/><line class="crease" x1="18.6" y1="6.5" x2="-19.5" y2="28.5"/><line class="crease" x1="33.3" y1="15" x2="-4.8" y2="37"/><line class="crease" x1="48.9" y1="24" x2="10.8" y2="46"/></g><g class="xp" style="--dx:0;--dy:-48;--d:2"><polygon class="e f-c" points="-2.6,-4.2 58,30.8 19.9,52.8 -40.7,17.8"/><polygon class="e f-f" points="-40.7,19.2 19.9,54.2 19.9,52.8 -40.7,17.8"/><polygon class="e f-r" points="58,32.2 19.9,54.2 19.9,52.8 58,30.8"/><polygon class="s" points="-2.6,-4.2 58,30.8 58,32.2 19.9,54.2 -40.7,19.2 -40.7,17.8"/><line class="crease" x1="13" y1="4.8" x2="-25.1" y2="26.8"/><line class="crease" x1="27.7" y1="13.3" x2="-10.4" y2="35.3"/><line class="crease" x1="43.3" y1="22.3" x2="5.2" y2="44.3"/></g><g class="xp" style="--dx:0;--dy:-64;--d:3"><polygon class="e f-c" points="0.4,-4.8 61.1,30.2 22.9,52.2 -37.7,17.2"/><polygon class="e f-f" points="-37.7,18.6 22.9,53.6 22.9,52.2 -37.7,17.2"/><polygon class="e f-r" points="61.1,31.6 22.9,53.6 22.9,52.2 61.1,30.2"/><polygon class="s" points="0.4,-4.8 61.1,30.2 61.1,31.6 22.9,53.6 -37.7,18.6 -37.7,17.2"/><line class="crease" x1="16" y1="4.2" x2="-22.1" y2="26.2"/><line class="crease" x1="30.7" y1="12.7" x2="-7.4" y2="34.7"/><line class="crease" x1="46.3" y1="21.7" x2="8.2" y2="43.7"/></g><g class="xdone"><line class="twine" x1="-18.6" y1="6.2" x2="42" y2="41.2"/><line class="twine" x1="30.7" y1="12.7" x2="-7.4" y2="34.7"/><line class="twine" x1="-7.4" y1="34.7" x2="-7.4" y2="40.3"/><line class="twine" x1="42" y1="41.2" x2="42" y2="46.8"/><ellipse class="twine" cx="9.3" cy="22" rx="2.6" ry="1.6"/><ellipse class="twine" cx="14.1" cy="22" rx="2.6" ry="1.6"/></g><g class="xdone"><path class="arrow" d="M46.2,59 h22 m-6,-5 l6,5 l-6,5"/></g></svg></div><figcaption class="plate__cap"><span class="mono">Fig. 7</span> The cardboard, flattened and tied for the trip out.</figcaption></figure>
         <div class="step__body">
           <h3><span class="sr-only">Step 6: </span>Take every box away.</h3>
           <p>When we leave, the hallway is empty. Foam, bags and cardboard go with us.</p>
@@ -1110,8 +1143,11 @@ textarea{resize:vertical;min-block-size:120px}
 <section class="tray t-light" id="services" data-layout="tray-grid" aria-labelledby="svc-h">
   <div class="wrap">
     <header class="sec-head tray__head">
-      <p class="kicker">Parts tray · what we build</p>
       <h2 id="svc-h">Everything that came in a flat box, and the wall it hangs on.</h2>
+      <figure class="tray__fig">
+        <div class="plate__sheet tray__sheet"><span class="plate__crop" aria-hidden="true"></span><figure class="frame tray__photo" data-fallback="Flat TV mounted on a gold papered wall above a console in a sitting room"><img src="media/room-tv-mounted-1170.webp" srcset="media/room-tv-mounted-1170.webp 1170w, media/room-tv-mounted.webp 2340w" width="1170" height="779" loading="lazy" decoding="async" data-photo="room-tv-mounted" data-slot="tv" sizes="(min-width: 900px) 40vw, 92vw" alt="A flat TV mounted level on a papered wall above a low console in a sitting room"></figure></div>
+        <figcaption class="plate__cap"><span class="mono">Fig. 8</span> The wall it hangs on: a flat TV, mounted level above the console.</figcaption>
+      </figure>
     </header>
     <ul class="tray__grid" role="list" data-reveal-stagger>
       
@@ -1120,7 +1156,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-1"/></svg>
         <h3>Flat-pack furniture assembly</h3>
         <p>Dressers, bookcases and nightstands built square, with drawers that close straight.</p>
-        <a class="btn btn--text" href="#contact" data-service="Flat-pack">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Flat-pack">Price my list</a>
       </li>
       
       <li class="cell">
@@ -1128,7 +1164,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-2"/></svg>
         <h3>Beds and cribs</h3>
         <p>Bed frames, bunk beds and cribs put together and checked for every loose bolt.</p>
-        <a class="btn btn--text" href="#contact" data-service="Beds &amp; cribs">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Beds &amp; cribs">Price my list</a>
       </li>
       
       <li class="cell">
@@ -1136,7 +1172,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-3"/></svg>
         <h3>Wardrobes and closet systems</h3>
         <p>Tall wardrobe frames raised safely, doors hung and hinges adjusted until the gaps match.</p>
-        <a class="btn btn--text" href="#contact" data-service="Wardrobes">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Wardrobes">Price my list</a>
       </li>
       
       <li class="cell">
@@ -1144,7 +1180,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-4"/></svg>
         <h3>Desks and office chairs</h3>
         <p>Desks, chairs and shelving set up for a home office in a single visit.</p>
-        <a class="btn btn--text" href="#contact" data-service="Office setup">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Office setup">Price my list</a>
       </li>
       
       <li class="cell">
@@ -1152,7 +1188,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-5"/></svg>
         <h3>TV and wall mounting</h3>
         <p>TVs, shelves and mirrors mounted level into studs, with cords tidied away.</p>
-        <a class="btn btn--text" href="#contact" data-service="TV mounting">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="TV mounting">Price my list</a>
       </li>
       
       <li class="cell">
@@ -1160,7 +1196,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-6"/></svg>
         <h3>Anchoring tall furniture</h3>
         <p>Dressers and bookcases strapped to a stud so they cannot tip onto a child.</p>
-        <a class="btn btn--text" href="#contact" data-service="Anchoring">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Anchoring">Price my list</a>
       </li>
       
       <li class="cell">
@@ -1168,7 +1204,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-7"/></svg>
         <h3>Patio sets and playsets</h3>
         <p>Patio tables, grills and backyard swing sets assembled on your lawn or balcony.</p>
-        <a class="btn btn--text" href="#contact" data-service="Outdoor">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Outdoor">Price my list</a>
       </li>
       
       <li class="cell">
@@ -1176,7 +1212,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-8"/></svg>
         <h3>Taking furniture apart for a move</h3>
         <p>Beds and wardrobes taken down, hardware bagged and labeled for the new place.</p>
-        <a class="btn btn--text" href="#contact" data-service="Take-apart">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Take-apart">Price my list</a>
       </li>
       
       <li class="cell">
@@ -1184,7 +1220,7 @@ textarea{resize:vertical;min-block-size:120px}
         <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-9"/></svg>
         <h3>Box and packing haul-away</h3>
         <p>Every box, foam sheet and plastic bag carried out before we leave.</p>
-        <a class="btn btn--text" href="#contact" data-service="Box haul-away">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Box haul-away">Price my list</a>
       </li>
       
     </ul>
@@ -1258,7 +1294,6 @@ textarea{resize:vertical;min-block-size:120px}
 <section class="bench t-light" id="planner" data-layout="tool-bench" aria-labelledby="tools-h">
   <div class="wrap">
     <header class="sec-head bench__head">
-      <p class="kicker">Two checks before we come</p>
       <h2 id="tools-h">Plan the day. Check what could tip.</h2>
     </header>
     <div class="bench__grid">
@@ -1411,7 +1446,6 @@ textarea{resize:vertical;min-block-size:120px}
 <section class="area t-accent" id="area" data-layout="split-band" aria-labelledby="area-h">
   <div class="wrap area__in">
     <div class="area__main">
-      <p class="kicker">Where we come</p>
       <h2 id="area-h">Arlington and the towns around it.</h2>
       <p class="lead">Alexandria, Falls Church, McLean, Annandale, Vienna and Fairfax. Check your ZIP and we’ll fill it in on the form.</p>
       <form class="zip" data-zip data-zip-yes="Yes, we come to {zip}. Price your list and we’ll call to set a time." data-zip-no="{zip} is just outside our list. Call {phone} and we’ll tell you straight." aria-label="Check your ZIP code">
@@ -1451,7 +1485,6 @@ textarea{resize:vertical;min-block-size:120px}
 <section class="contact t-paper" id="contact" data-layout="form-split" aria-labelledby="contact-h">
   <div class="wrap contact__in">
     <div class="contact__side">
-      <p class="kicker">Send the list</p>
       <h2 id="contact-h">Tell us what’s in the boxes. We’ll call back to set a time.</h2>
       <a class="btn btn-call btn--primary btn--lg" href="tel:+17035550104"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (703) 555-0104</span></a>
       <p class="contact__sms"><a class="link" href="sms:+17035550104"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg>Text a photo of the box label</a></p>
@@ -1462,7 +1495,7 @@ textarea{resize:vertical;min-block-size:120px}
         <span class="sample-tag">Sample terms</span>
       </div>
     </div>
-    <form class="lform" data-lead method="dialog" novalidate data-thanks="Thanks, {name}. In your version of this site, this list goes straight to your phone and inbox." aria-label="Price my list">
+    <form class="lform" data-lead method="dialog" novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this list goes to Dowel &amp; Cam, and you get a call back to set a time." aria-label="Price my list">
       <div class="lform__bar" data-form-progress aria-label="Form progress"><span></span></div>
       <fieldset data-step>
         <legend><span class="mono">1/4</span> What we’re building</legend>
@@ -1554,7 +1587,7 @@ textarea{resize:vertical;min-block-size:120px}
       <p>Licence # SAMPLE-VA-31877 (sample)</p>
       <p class="disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
       <p>Drawings stand in for job photos in this sample.</p>
-      <ul class="credits"></ul>
+      <ul class="credits"><li>Photo by KJGarcia on <a href="https://commons.wikimedia.org/wiki/File:M210_demo-wall_center-Green.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Stilfehler on <a href="https://commons.wikimedia.org/wiki/File:Maximera_Slides_1.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by PattayaPatrol on <a href="https://commons.wikimedia.org/wiki/File:DSC_8575_A_cozy_elegantly_furnished_sitting_room_with_two_tufted_armchairs_ornate_gold-accent_tables_patterned_tile_floor_and_rug_warm_lighting_and_decorative_artwork_on_the_walls.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul>
       <p>© 2026 Dowel &amp; Cam Assembly</p>
     </div>
   </div>

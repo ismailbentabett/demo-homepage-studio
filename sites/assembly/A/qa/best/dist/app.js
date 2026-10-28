@@ -1016,6 +1016,11 @@ SW.mod('media-fallback', function (SW) {
 
   /* ---------- story: each step's drawing closes as it crosses the viewport (scrub, no pin) ---------- */
   if (ST) {
+    /* FIG. 1: as the hero scrolls away, the top drops on and the drawers slide shut */
+    if (hero) ST.create({
+      trigger: '.hero', start: 'top top', end: 'bottom 35%', scrub: 0.5,
+      onUpdate: function (self) { hero.style.setProperty('--sw-p', self.progress.toFixed(3)); }
+    });
     SW.$$('.step').forEach(function (step) {
       var xv = SW.$('.step__fig .xv', step);
       if (!xv) return;
