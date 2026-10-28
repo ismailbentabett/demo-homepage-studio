@@ -13,6 +13,8 @@
   var ICONS = {
     chat: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 8.5h8M8 11.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
     close: '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    image: '<rect x="3.5" y="5" width="17" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="1.6" fill="currentColor"/><path d="M4 17l5-4.5 3.5 3 3-2.5L20 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    x: '<path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
     send: '<path d="M4 12l16-8-6 16-2.5-6.5z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/>',
     phone: '<path d="M6.6 3.5l2.6.5 1.3 4-2 1.6a12 12 0 0 0 5.9 5.9l1.6-2 4 1.3.5 2.6a2 2 0 0 1-2 2.1A16.5 16.5 0 0 1 4.5 5.5a2 2 0 0 1 2.1-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
     sms: '<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H9l-4 3.5V16A2 2 0 0 1 4 14z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="9" cy="10.3" r="1.1" fill="currentColor"/><circle cx="12" cy="10.3" r="1.1" fill="currentColor"/><circle cx="15" cy="10.3" r="1.1" fill="currentColor"/>',
@@ -118,10 +120,25 @@
     var lab = el('label', 'swc-sr', 'Type a message'); lab.htmlFor = uid + '-input';
     var input = this.input = el('textarea', 'swc-input'); input.id = uid + '-input'; input.rows = 1; input.placeholder = c.copy.placeholder; input.setAttribute('autocomplete', 'off'); input.maxLength = 600;
     var send = this.sendBtn = el('button', 'swc-send'); send.type = 'submit'; send.setAttribute('aria-label', 'Send'); send.innerHTML = icon('send'); send.disabled = true;
+    // Add-image control: UI only, the picked photo is previewed but never uploaded.
+    var tray = el('div', 'swc-tray'); tray.hidden = true;
+    var file = el('input', 'swc-sr'); file.type = 'file'; file.accept = 'image/*'; file.tabIndex = -1; file.setAttribute('aria-hidden', 'true');
+    var attach = el('button', 'swc-attach'); attach.type = 'button'; attach.setAttribute('aria-label', 'Add a photo'); attach.title = 'Add a photo'; attach.innerHTML = icon('image');
+    attach.addEventListener('click', function () { file.click(); });
+    function clearTray() { tray.innerHTML = ''; tray.hidden = true; file.value = ''; }
+    file.addEventListener('change', function () {
+      var f = file.files && file.files[0]; if (!f || !/^image\//.test(f.type)) return clearTray();
+      tray.innerHTML = '';
+      var th = el('div', 'swc-thumb'); var img = el('img'); img.alt = f.name; img.src = URL.createObjectURL(f);
+      var rm = el('button', 'swc-thumb__x'); rm.type = 'button'; rm.setAttribute('aria-label', 'Remove photo'); rm.innerHTML = icon('x');
+      rm.addEventListener('click', function () { URL.revokeObjectURL(img.src); clearTray(); attach.focus(); });
+      th.appendChild(img); th.appendChild(rm); tray.appendChild(th); tray.appendChild(el('span', 'swc-tray__name', f.name)); tray.hidden = false;
+    });
+    form.appendChild(tray); form.appendChild(file); form.appendChild(attach);
     form.appendChild(lab); form.appendChild(input); form.appendChild(send);
     input.addEventListener('input', function () { send.disabled = !input.value.trim(); input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 120) + 'px'; });
     input.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit', { cancelable: true })); } });
-    form.addEventListener('submit', function (e) { e.preventDefault(); var v = input.value.trim(); if (!v) return; input.value = ''; input.style.height = ''; send.disabled = true; self.user(v); });
+    form.addEventListener('submit', function (e) { e.preventDefault(); var v = input.value.trim(); if (!v) return; input.value = ''; input.style.height = ''; send.disabled = true; clearTray(); self.user(v); });
 
     var foot = el('footer', 'swc-foot');
     foot.appendChild(this.footLink('tel:' + b.phoneE164, 'phone', 'Call'));
