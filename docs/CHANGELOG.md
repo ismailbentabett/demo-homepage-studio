@@ -116,3 +116,6 @@ The sample-labels check matched a numeric fact (such as a rating of `4.8` or a c
 
 ## 2026-10-28 — banned-word check: "Apr" false positive
 `tools/lib/banned.mjs` rule `apr` used `/\bAPR\b/gi`, so the month abbreviation "Apr" (e.g. a calendar card on appliance-C) was blocked as the loan term "0% APR". The bare `APR` alternative is now case-sensitive (uppercase only); "0% APR" in any case is still caught. The rule only got looser, so no delivered site can start failing; `tools/recheck-all.mjs` does not exist, so delivered sites were not re-run.
+
+## 2026-10-28 — hero family cap 6 → 7 (tools/lib/unique.mjs)
+The cap was set for a 54-site library. With 14 families at 6 uses plus family 1 at 2, only 86 hero slots existed for the 90-site plan, so check-unique refused every family for the last sites (gutter-A). The cap is now 7 (100 slots). The rule only got looser, so no delivered site can start failing; the per-niche uniqueness rule is unchanged.

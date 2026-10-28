@@ -8,7 +8,7 @@ import { siteDir, readJson, nicheIds, parseId, readRegistry, updateRegistry, rel
 // The easy default hero (full-bleed video with a left scrim) may appear at most twice in the library.
 export const EASY_HERO_FAMILY = 1;
 const MAX_DISPLAY_USES = 6; // expanded from 3 to accommodate 54-site library
-const MAX_HERO_USES = 6; // expanded from 3 to accommodate 54-site library
+const MAX_HERO_USES = 7; // 14 families x 7 + 2 (family 1) = 100 slots >= the 90-site library
 const SIGNATURE_JACCARD = 0.5;
 const ACCENT_HUE_DEG = 12;
 
