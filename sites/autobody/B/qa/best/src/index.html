@@ -37,7 +37,7 @@
     <a href="#claim"><span class="mono">04</span> Claim path</a>
     <a href="#prices"><span class="mono">05</span> Prices</a>
     <a href="#area"><span class="mono">06</span> Area &amp; hours</a>
-    <a href="#contact"><span class="mono">07</span> Price it</a>
+    <a href="#contact"><span class="mono">07</span> Send the paint</a>
     <p class="menu__tel">[[call btn-primary]]</p>
   </div>
 </nav>
@@ -47,8 +47,8 @@
 <!-- 1 · HERO: the sun-damage sorter + the panel being read -->
 <section id="hero" class="hero t-paper" data-layout="split" aria-labelledby="hero-title">
   <div class="hero__text">
-    <p class="kicker mono">{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
-    <h1 id="hero-title" data-split="lines">Peeling, chalky or just dull? <span class="h1-b">Tap your paint.</span></h1>
+    <p class="kicker mono">{{biz.tradeLabel}}</p>
+    <h1 id="hero-title" data-split="lines">Sun-peeled paint in {{biz.city}}? <span class="h1-b">Tap your paint.</span></h1>
     <p class="hero__lead">We put a gauge on the paint before we tell you what it needs. Pick the one that looks like your roof or hood.</p>
 
     <div class="sorter" data-tabs data-hook="sorter">
@@ -59,22 +59,22 @@
         <button class="swatch-btn" data-tab data-state="bare"><span class="swatch swatch--bare" aria-hidden="true"></span><span class="swatch__label">Bare</span></button>
       </div>
       <section class="sort-panel" data-tabpanel data-mil="4.4" data-status="polish" data-state="dull">
-        <h2 class="sort-panel__h"><span class="mono sort-panel__mil">4.4 mils</span> Dull: hazy, swirled, no reflection.</h2>
+        <p class="sort-panel__h"><span class="mono sort-panel__mil">4.4 mils</span> Dull: hazy, swirled, no reflection.</p>
         <p>A one-step polish. Plenty of clear coat left to work with. <span class="price mono">{{proof.prices.1.from}}–{{proof.prices.1.to}}</span> [[sample pricing]]</p>
         <a class="btn-text" href="#contact" data-service="Paint correction">Send this to the shop [[i arrow]]</a>
       </section>
       <section class="sort-panel" data-tabpanel data-mil="3.6" data-status="correct + coat" data-state="chalk">
-        <h2 class="sort-panel__h"><span class="mono sort-panel__mil">3.6 mils</span> Chalky: a white film comes off on your finger.</h2>
+        <p class="sort-panel__h"><span class="mono sort-panel__mil">3.6 mils</span> Chalky: a white film comes off on your finger.</p>
         <p>Correct it, then coat it, before the clear gives out. <span class="price mono">{{proof.prices.5.from}}–{{proof.prices.5.to}}</span> [[sample pricing]]</p>
         <a class="btn-text" href="#contact" data-service="Ceramic coating">Send this to the shop [[i arrow]]</a>
       </section>
       <section class="sort-panel" data-tabpanel data-mil="1.8" data-status="refinish clear" data-state="peel">
-        <h2 class="sort-panel__h"><span class="mono sort-panel__mil sort-panel__mil--low">1.8 mils</span> Peeling: clear lifting in sheets, like a sunburn.</h2>
+        <p class="sort-panel__h"><span class="mono sort-panel__mil sort-panel__mil--low">1.8 mils</span> Peeling: clear lifting in sheets, like a sunburn.</p>
         <p>Sand that panel to sound paint and reclear it. <span class="price mono">{{proof.prices.0.from}}–{{proof.prices.0.to}}</span> {{proof.prices.0.unit}} [[sample pricing]]</p>
         <a class="btn-text" href="#contact" data-service="Sun-damaged paint refinishing">Send this to the shop [[i arrow]]</a>
       </section>
       <section class="sort-panel" data-tabpanel data-mil="0.0" data-status="prime + refinish" data-state="bare">
-        <h2 class="sort-panel__h"><span class="mono sort-panel__mil sort-panel__mil--low">0.0 mils</span> Bare: clear and color gone, primer showing.</h2>
+        <p class="sort-panel__h"><span class="mono sort-panel__mil sort-panel__mil--low">0.0 mils</span> Bare: clear and color gone, primer showing.</p>
         <p>Prime and refinish the panel. We price this one after we see it, so send photos.</p>
         <a class="btn-text" href="#contact" data-service="Sun-damaged paint refinishing">Send this to the shop [[i arrow]]</a>
       </section>
@@ -84,11 +84,14 @@
       [[call btn-primary btn-lg]]
       <a class="btn btn-secondary btn-lg" href="sms:{{biz.phoneE164}}">[[i msg]]<span>Text us 4 photos</span></a>
     </div>
-    <p class="proofline mono">{{hours|today}} <span class="dot" aria-hidden="true">·</span> {{proof.rating}} from {{proof.reviewCount}} reviews [[sample rating]] <span class="dot" aria-hidden="true">·</span> Your insurer, your choice of shop</p>
+    <ul class="proofline" role="list"><li>{{hours|today}}</li><li><span class="mono">{{proof.rating}}</span> from {{proof.reviewCount}} reviews [[sample rating]]</li><li>Your insurer, your choice of shop</li></ul>
   </div>
 
-  <figure class="hero__fig cs-wrap" data-state="dull" aria-label="Drawing: a cross-section of car paint under a gauge probe and the sun">
-    <svg class="cs" viewBox="0 0 600 640" aria-hidden="true" focusable="false">
+  <div class="hero__fig cs-wrap" data-state="dull">
+    [[frame hero hero__photo | | eager sizes="(min-width: 900px) 48vw, 100vw"]]
+    <span class="probe-dot" aria-hidden="true"></span>
+    <figure class="cs-inset" aria-label="Drawing: the paint films under that spot, magnified, with the gauge probe and the sun">
+    <svg class="cs" viewBox="20 64 580 556" aria-hidden="true" focusable="false">
       <defs>
         <pattern id="h-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#15181C" stroke-opacity=".07" stroke-width="1"/></pattern>
         <pattern id="h-steel" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#A9B2BC"/><path d="M0 0V10" stroke="#575650" stroke-width="1.6"/></pattern>
@@ -97,11 +100,6 @@
         <clipPath id="h-clip"><rect x="80" y="180" width="480" height="240"/></clipPath>
       </defs>
       <rect class="cs-bg" width="600" height="640" fill="url(#h-grid)"/>
-      <g class="cs-head" font-family="Martian Mono, monospace" font-size="13" fill="#575650" letter-spacing=".06em">
-        <text x="40" y="44">CROSS-SECTION · HOOD · ×400</text>
-        <text x="560" y="44" text-anchor="end">SAMPLE</text>
-        <path d="M40 58H560" stroke="#15181C" stroke-width="2"/>
-      </g>
       <!-- the sun -->
       <g class="cs-sun">
         <g class="cs-rays" stroke="#15181C" stroke-width="2" stroke-linecap="round">
@@ -136,7 +134,7 @@
             <path d="M392 266c18-14 40-16 56-6l-6 16c-14-6-30-4-44 4z" fill="url(#h-clear)" stroke="#1748C8" stroke-width="1.6" stroke-linejoin="round"/>
             <path d="M486 280l34-6 4 10-36 6z" fill="url(#h-clear)" stroke="#1748C8" stroke-width="1.6" stroke-linejoin="round"/>
           </g>
-          <text class="cs-lbl" x="552" y="290" text-anchor="end">CLEAR COAT</text>
+          <text class="cs-lbl" x="552" y="288" text-anchor="end">Clear coat</text>
         </g>
       </g>
       <!-- the probe rides the surface -->
@@ -150,27 +148,28 @@
             <path d="M196 300h-14M224 300h14" stroke="#1748C8" stroke-width="2"/>
           </g>
       <g class="cs-lbl">
-        <text class="cs-lbl--on cs-base" x="552" y="451" text-anchor="end">BASE COLOR</text>
-        <text x="552" y="494" text-anchor="end">PRIMER</text>
-        <text class="cs-lbl--on" x="552" y="521" text-anchor="end" font-size="12">E-COAT</text>
-        <text x="552" y="572" text-anchor="end" class="cs-lbl--chip">STEEL</text>
+        <text class="cs-lbl--on cs-base" x="552" y="452" text-anchor="end">Base color</text>
+        <text x="552" y="495" text-anchor="end">Primer</text>
+        <text class="cs-lbl--on cs-lbl--sm" x="552" y="522" text-anchor="end">E-coat</text>
+        <text x="552" y="572" text-anchor="end" class="cs-lbl--chip">Steel</text>
       </g>
       <!-- scale in mils -->
       <g class="cs-scale" font-family="Martian Mono, monospace" font-size="12" fill="#575650">
         <path d="M66 300V420" stroke="#15181C" stroke-width="1.5"/>
         <path d="M58 300h8M60 320h6M58 340h8M60 360h6M58 380h8M60 400h6M58 420h8" stroke="#15181C" stroke-width="1.5"/>
         <text x="52" y="304" text-anchor="end">6</text><text x="52" y="344" text-anchor="end">4</text><text x="52" y="384" text-anchor="end">2</text><text x="52" y="424" text-anchor="end">0</text>
-        <text x="40" y="284">MILS</text>
+        <text x="40" y="284">mils</text>
       </g>
     </svg>
-    <div class="gloss" aria-hidden="true"><span class="gloss__label mono">Gloss</span><span class="gloss__bar"><i></i></span></div>
+    <div class="gloss" aria-hidden="true"><span class="gloss__label">Gloss</span><span class="gloss__bar"><i></i></span></div>
+    </figure>
     <figure class="readout readout--hero" data-sw-signature data-state="dull" style="--mil:4.4;--mil-max:6">
       <div class="readout__lcd"><span class="readout__val" data-readout-val>4.4</span><span class="readout__unit">mils</span>
         <span class="readout__status" data-readout-status>polish</span><span class="sample-tag tag-sample">Sample reading</span></div>
       <div class="readout__strata" aria-hidden="true"><i class="l-clear"></i><i class="l-base"></i><i class="l-primer"></i><i class="l-ecoat"></i></div>
       <figcaption class="sr-only" data-readout-cap>Sample reading: 4.4 mils, polish</figcaption>
     </figure>
-  </figure>
+  </div>
 </section>
 
 <!-- 2 · STORY: one hood, four readings (count) -->
@@ -183,22 +182,22 @@
     <ol class="story__steps" role="list">
       <li class="step" data-mil="4.6" data-state="factory">
         <figure class="readout readout--mini" data-sw-signature style="--mil:4.6;--mil-max:6"><div class="readout__lcd"><span class="readout__val">4.6</span><span class="readout__unit">mils</span><span class="readout__status">factory</span></div><div class="readout__strata" aria-hidden="true"><i class="l-clear"></i><i class="l-base"></i><i class="l-primer"></i><i class="l-ecoat"></i></div></figure>
-        <h3><span class="mono step__n">01</span> The day it left the plant</h3>
+        <h3>The day it left the plant</h3>
         <p>Factory paint on a new hood. This is the number everything else gets compared to.</p>
       </li>
       <li class="step" data-mil="3.6" data-state="chalk">
         <figure class="readout readout--mini" data-sw-signature data-state="low" style="--mil:3.6;--mil-max:6"><div class="readout__lcd"><span class="readout__val">3.6</span><span class="readout__unit">mils</span><span class="readout__status">sun-thinned</span></div><div class="readout__strata" aria-hidden="true"><i class="l-clear"></i><i class="l-base"></i><i class="l-primer"></i><i class="l-ecoat"></i></div></figure>
-        <h3><span class="mono step__n">02</span> Eight summers parked outside</h3>
+        <h3>Eight summers parked outside</h3>
         <p>The {{biz.city}} sun burned off a full mil. The hood looks chalky, but the clear is still there.</p>
       </li>
       <li class="step" data-mil="3.4" data-state="dull">
         <figure class="readout readout--mini" data-sw-signature style="--mil:3.4;--mil-max:6"><div class="readout__lcd"><span class="readout__val">3.4</span><span class="readout__unit">mils</span><span class="readout__status">corrected</span></div><div class="readout__strata" aria-hidden="true"><i class="l-clear"></i><i class="l-base"></i><i class="l-primer"></i><i class="l-ecoat"></i></div></figure>
-        <h3><span class="mono step__n">03</span> One-step correction, after a test spot</h3>
+        <h3>One-step correction, after a test spot</h3>
         <p>We polished off two tenths of a mil and no more. The gloss comes back; the clear stays thick.</p>
       </li>
       <li class="step" data-mil="3.4" data-state="coat">
         <figure class="readout readout--mini" data-sw-signature data-coat style="--mil:3.4;--mil-max:6"><div class="readout__lcd"><span class="readout__val">3.4</span><span class="readout__unit">+ coat</span><span class="readout__status">coated</span></div><div class="readout__strata" aria-hidden="true"><i class="l-clear"></i><i class="l-base"></i><i class="l-primer"></i><i class="l-ecoat"></i></div></figure>
-        <h3><span class="mono step__n">04</span> A hard layer on top</h3>
+        <h3>A hard layer on top</h3>
         <p>Ceramic coating over the corrected clear. Dust storms rinse off with a hose instead of a scrub.</p>
       </li>
     </ol>
@@ -267,62 +266,62 @@
       <ol class="rows" role="list" data-reveal-stagger>
         <li class="row">
           <span class="row__n mono">01</span>
-          <div class="row__text"><h3>{{services.0.name}}</h3><p>{{services.0.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono chip-read--low"><b>1.8</b> mils · peeling</span></div>
+          <div class="row__text"><h3>{{services.0.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.0.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono chip-read--low"><b>1.8</b> mils · peeling</span></div>
           <a class="btn-text row__cta" href="#contact" data-service="{{services.0.name}}">Price it<span class="sr-only">: {{services.0.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">02</span>
-          <div class="row__text"><h3>{{services.1.name}}</h3><p>{{services.1.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono"><b>3.6</b>→<b>3.4</b> mils</span></div>
+          <div class="row__text"><h3>{{services.1.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.1.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono"><b>3.6</b>→<b>3.4</b> mils</span></div>
           <a class="btn-text row__cta" href="#contact" data-service="{{services.1.name}}">Price it<span class="sr-only">: {{services.1.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">03</span>
-          <div class="row__text"><h3>{{services.2.name}}</h3><p>{{services.2.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono"><b>41</b> dents mapped</span></div>
+          <div class="row__text"><h3>{{services.2.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.2.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono"><b>41</b> dents mapped</span></div>
           <a class="btn-text row__cta" href="#contact" data-service="{{services.2.name}}">Price it<span class="sr-only">: {{services.2.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">04</span>
-          <div class="row__text"><h3>{{services.3.name}}</h3><p>{{services.3.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono">coin · palm</span></div>
+          <div class="row__text"><h3>{{services.3.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.3.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono">coin · palm</span></div>
           <a class="btn-text row__cta" href="#dent">Dent check<span class="sr-only">: {{services.3.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">05</span>
-          <div class="row__text"><h3>{{services.4.name}}</h3><p>{{services.4.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono"><b>4</b> photos</span></div>
+          <div class="row__text"><h3>{{services.4.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.4.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono"><b>4</b> photos</span></div>
           <a class="btn-text row__cta" href="#contact" data-service="{{services.4.name}}">Price it<span class="sr-only">: {{services.4.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">06</span>
-          <div class="row__text"><h3>{{services.5.name}}</h3><p>{{services.5.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono">step <b>0</b>: you pick</span></div>
+          <div class="row__text"><h3>{{services.5.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.5.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono">step <b>0</b>: you pick</span></div>
           <a class="btn-text row__cta" href="#claim">Claim path<span class="sr-only">: {{services.5.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">07</span>
-          <div class="row__text"><h3>{{services.6.name}}</h3><p>{{services.6.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono">full sun · checked</span></div>
+          <div class="row__text"><h3>{{services.6.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.6.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono">full sun · checked</span></div>
           <a class="btn-text row__cta" href="#contact" data-service="{{services.6.name}}">Price it<span class="sr-only">: {{services.6.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">08</span>
-          <div class="row__text"><h3>{{services.7.name}}</h3><p>{{services.7.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono">cover · matched</span></div>
+          <div class="row__text"><h3>{{services.7.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.7.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono">cover · matched</span></div>
           <a class="btn-text row__cta" href="#contact" data-service="{{services.7.name}}">Price it<span class="sr-only">: {{services.7.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">09</span>
-          <div class="row__text"><h3>{{services.8.name}}</h3><p>{{services.8.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono">yellow → clear</span></div>
+          <div class="row__text"><h3>{{services.8.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.8.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono">yellow → clear</span></div>
           <a class="btn-text row__cta" href="#contact" data-service="{{services.8.name}}">Price it<span class="sr-only">: {{services.8.short}}</span></a>
         </li>
         <li class="row">
           <span class="row__n mono">10</span>
-          <div class="row__text"><h3>{{services.9.name}}</h3><p>{{services.9.blurb}}</p></div>
-          <div class="row__read"><span class="chip-read mono"><b>3.4</b> + coat</span></div>
+          <div class="row__text"><h3>{{services.9.name}}</h3><details class="row__more" open><summary>What we do</summary><p>{{services.9.blurb}}</p></details></div>
+          <div class="row__read"><span class="chip-read probe-touch mono"><b>3.4</b> + coat</span></div>
           <a class="btn-text row__cta" href="#contact" data-service="{{services.9.name}}">Price it<span class="sr-only">: {{services.9.short}}</span></a>
         </li>
       </ol>
@@ -361,12 +360,14 @@
       </fieldset>
       <div class="dent__out" aria-live="polite">
         <div class="result" data-dent-result="pdr">
-          <p class="result__head"><span class="nojs-if mono" data-nojs-only>Coin or palm, paint whole, off the edges:</span> Likely paintless.</p>
-          <p>Pushed out from behind, no paint, often while you wait. <span class="price mono">{{proof.prices.3.from}}–{{proof.prices.3.to}}</span> {{proof.prices.3.unit}} [[sample pricing]]</p>
+          <span class="nojs-if mono" data-nojs-only>Coin or palm, paint whole, off the edges:</span>
+          <div class="result__lcd readout__lcd" data-sw-signature><span class="readout__val">PDR</span><span class="readout__unit">paintless</span><p class="result__head">Likely paintless.</p><p class="result__price"><span class="price mono">{{proof.prices.3.from}}–{{proof.prices.3.to}}</span> {{proof.prices.3.unit}} [[sample pricing]]</p></div>
+          <p>Pushed out from behind, no paint, often while you wait.</p>
           <a class="btn btn-primary" href="#contact" data-service="{{services.3.name}}">Send this dent to the shop</a>
         </div>
         <div class="result" data-dent-result="body">
-          <p class="result__head"><span class="nojs-if mono" data-nojs-only>Bigger, cracked, or on an edge:</span> Likely body and paint.</p>
+          <span class="nojs-if mono" data-nojs-only>Bigger, cracked, or on an edge:</span>
+          <div class="result__lcd readout__lcd" data-sw-signature data-state="body"><span class="readout__val">B+P</span><span class="readout__unit">body + paint</span><p class="result__head">Likely body and paint.</p></div>
           <p>The panel needs filler, primer and a color match. Send 4 photos and we will tell you what we see.</p>
           <a class="btn btn-primary" href="#contact" data-service="{{services.4.name}}">Send this dent to the shop</a>
         </div>
@@ -376,9 +377,9 @@
       <svg class="lb" viewBox="0 0 560 520" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id="d-panel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3E5A78"/><stop offset="1" stop-color="#15181C"/></linearGradient>
-          <clipPath id="d-clip"><path d="M40 70h480v380a20 20 0 0 1-20 20H60a20 20 0 0 1-20-20z"/></clipPath>
+          <clipPath id="d-clip"><rect x="40" y="70" width="480" height="400"/></clipPath>
         </defs>
-        <path d="M40 70h480v380a20 20 0 0 1-20 20H60a20 20 0 0 1-20-20z" fill="url(#d-panel)"/>
+        <rect x="40" y="70" width="480" height="400" fill="url(#d-panel)"/>
         <g clip-path="url(#d-clip)" fill="none" stroke="#F5F2EB" stroke-width="7" stroke-linecap="round" class="lb-stripes">
           <path d="M40 120H520"/>
           <path d="M40 170H520"/>
@@ -399,16 +400,11 @@
             <path d="M280 270l18-14 10 6 16-16M280 270l-20 10-6 16-14 6M280 270l4 22"/>
           </g>
         </g>
-        <g font-family="Martian Mono, monospace" font-size="14" fill="#15181C" letter-spacing=".06em">
-          <text x="40" y="48">LIGHT BOARD · DOOR PANEL</text>
-          <text x="520" y="48" text-anchor="end">SAMPLE</text>
-          <text x="40" y="504">STRIPES BEND WHERE THE METAL DOES</text>
+        <g font-family="Public Sans, sans-serif" font-size="17" fill="#15181C">
+          <text x="40" y="48">Light board on a door panel</text>
+          <text x="40" y="504">The stripes bend where the metal does.</text>
         </g>
       </svg>
-      <figure class="readout readout--dent" data-sw-signature>
-        <div class="readout__lcd"><span class="readout__val" data-dent-val>PDR</span><span class="readout__unit" data-dent-unit>coin</span>
-          <span class="readout__status" data-dent-status>likely paintless</span></div>
-      </figure>
     </figure>
   </div>
 </section>
@@ -476,7 +472,7 @@
         <p class="claim__note">The days for each step go on a printed sheet you keep.</p>
         <div class="claim__btns">
           <a class="btn btn-onaccent" href="sms:{{biz.phoneE164}}">[[i msg]]<span>Text us 4 photos</span></a>
-          <a class="btn btn-ghost-onaccent" href="#contact" data-service="{{services.5.name}}">Price it</a>
+          <a class="btn btn-ghost-onaccent" href="#contact" data-service="{{services.5.name}}">Send the paint</a>
         </div>
       </div>
     </div>
@@ -485,6 +481,8 @@
 
 <!-- 6 · MATCH: full-bleed break -->
 <section id="match" class="match break t-paper" data-layout="break" aria-labelledby="match-title">
+  <div class="match__booth">
+  [[frame booth match__photo]]
   <div class="match__strip" aria-hidden="true">
     <div class="card" style="--k:-3"><i></i><span class="mono">−3</span></div>
     <div class="card" style="--k:-2"><i></i><span class="mono">−2</span></div>
@@ -494,12 +492,13 @@
     <div class="card" style="--k:2"><i></i><span class="mono">+2</span></div>
     <div class="card" style="--k:3"><i></i><span class="mono">+3</span></div>
   </div>
+  </div>
   <div class="wrap match__text">
     <h2 id="match-title">Matched in the booth. <span>Checked in full sun.</span></h2>
     <ol class="match__steps" role="list">
-      <li><span class="mono">01</span> We read the color off your car, not off a chart.</li>
-      <li><span class="mono">02</span> We spray test cards and pick the one that disappears.</li>
-      <li><span class="mono">03</span> We hold it to the panel outside, at noon, before it goes on.</li>
+      <li>We read the color off your car, not off a chart.</li>
+      <li>We spray test cards and pick the one that disappears.</li>
+      <li>We hold it to the panel outside, at noon, before it goes on.</li>
     </ol>
     <p class="match__promise">{{proof.guarantee}} [[sample promise]]</p>
   </div>
@@ -568,6 +567,11 @@
         </div>
         <p data-zip-result class="zip__out"></p>
       </form>
+      <div class="area__sun">
+        [[frame sun area__photo | | sizes="(min-width: 900px) 52vw, 100vw"]]
+        <span class="probe-dot" aria-hidden="true"></span>
+        <div class="readout__lcd area__tag" aria-hidden="true"><span class="readout__val readout__val--sm">UV</span><span class="readout__unit">noon</span><span class="readout__status">why the clear burns off</span></div>
+      </div>
     </div>
     <div class="hours-card t-light">
       <p class="hours-card__now mono">[[i probe]] {{hours|today}}</p>
@@ -583,7 +587,7 @@
 <section id="contact" class="contact t-paper" data-layout="form" aria-labelledby="contact-title">
   <div class="wrap contact__grid">
     <div class="contact__side">
-      <p class="kicker mono">Price it</p>
+      <p class="kicker mono">Send the paint</p>
       <h2 id="contact-title">Send us the paint. We will send a number.</h2>
       <p class="lead">Four short steps. No VIN, no claim number needed.</p>
       <p class="contact__or">Faster: call or text the photos.</p>
@@ -664,7 +668,7 @@
       <a href="#dent">Dent check</a>
       <a href="#claim">Claim path</a>
       <a href="#prices">Prices</a>
-      <a href="#contact">Price it</a>
+      <a href="#contact">Send the paint</a>
     </nav>
     <div class="footer__contact">
       [[call btn-onaccent]]
@@ -682,5 +686,5 @@
 <div class="mobile-bar t-deep" data-mobilebar>
   <a class="btn btn-onaccent" href="tel:{{biz.phoneE164}}">[[i phone]]<span>Call</span></a>
   <a class="btn btn-ghost-deep" href="sms:{{biz.phoneE164}}">[[i msg]]<span>Text photos</span></a>
-  <a class="btn btn-ghost-deep" href="#contact">Price it</a>
+  <a class="btn btn-ghost-deep" href="#contact">Send the paint</a>
 </div>

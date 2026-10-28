@@ -86,7 +86,25 @@
     });
   }
 
+  /* ---- 3 · test sheet: blurbs fold into a disclosure on phones (open with JS off) ---- */
+  if (window.matchMedia && window.matchMedia('(max-width: 639px)').matches) {
+    qsa('.row__more').forEach(function (d) { d.removeAttribute('open'); });
+  }
+
   if (!motion) return;
+
+  /* ---- probe touch: hovering a sheet row re-reads its number ---- */
+  if (window.matchMedia('(hover: hover)').matches) {
+    qsa('.row').forEach(function (row) {
+      var b = qs('.chip-read b', row); if (!b) return;
+      var to = parseFloat(b.textContent); if (isNaN(to)) return;
+      var dec = /\./.test(b.textContent) ? 1 : 0;
+      row.addEventListener('mouseenter', function () {
+        var o = { v: 0 };
+        gsap.to(o, { v: to, duration: .45, ease: 'power3.out', onUpdate: function () { b.textContent = o.v.toFixed(dec); } });
+      });
+    });
+  }
 
   /* ---- motion only below ---- */
   if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
