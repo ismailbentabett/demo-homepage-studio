@@ -978,6 +978,13 @@ SW.mod('media-fallback', function (SW) {
     calc();
   }
 
+  /* ---- one amber primary per view: the header button is outlined while the hero's own is visible ---- */
+  var hdr = document.querySelector('[data-header]');
+  var heroBtn = document.querySelector('.hero__cta .btn--primary');
+  if (hdr && heroBtn && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (e) { hdr.classList.toggle('is-over-hero', e[0].isIntersecting); }).observe(heroBtn);
+  }
+
   if (window.SW && SW.reduced) return;
   if (!root.classList.contains('sw-motion') || !window.gsap) return;
 
@@ -1033,6 +1040,17 @@ SW.mod('media-fallback', function (SW) {
           rail.forEach(function (r) { r.classList.remove('is-on', 'is-done'); });
         };
       }
+    });
+  }
+
+  /* ---- every seam: its screws back out a half turn as the edge scrolls past ---- */
+  if (window.ScrollTrigger) {
+    document.querySelectorAll('.seam').forEach(function (seam) {
+      var sc = seam.querySelectorAll('.seam__s');
+      gsap.fromTo(sc, { rotate: function (i) { return [0, 35, -20, 70][i] || 0; } }, {
+        rotate: function (i) { return ([0, 35, -20, 70][i] || 0) - 270; }, ease: 'none',
+        scrollTrigger: { trigger: seam, start: 'top bottom', end: 'top 35%', scrub: .6 }
+      });
     });
   }
 
