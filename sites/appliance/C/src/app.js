@@ -5,7 +5,7 @@
   'use strict';
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
-  var MONTHS = ['Jan', 'Feb', 'Mar', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   function boot() {
     /* ---- the last blank line gets this month ---- */
@@ -139,6 +139,14 @@
     };
     watch($$('.ledger__line'), 'is-in', true);
     watch($$('.footer'), 'is-in', false);
+    // every heading is a dated entry: its tick draws when it enters
+    watch($$('h2 .h-tick').map(function (t) { return t.closest('h2'); }), 'is-dated', false);
+    // review notes get taped down, one after another
+    watch($$('.note-card'), 'is-in', true);
+    // the thaw clock's frost band fills to the hours left
+    watch($$('.thaw__fig'), 'is-in', false);
+    // the archive print is pressed onto the list
+    watch($$('.archive'), 'is-in', false);
 
     // the year ribbon
     var year = $('#year');

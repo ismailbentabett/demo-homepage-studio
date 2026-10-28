@@ -303,7 +303,9 @@ body {
 }
 @media (min-width: 900px) { body { padding-bottom: 0; } }
 h1, h2, h3 { font-family: var(--f-display); font-weight: 600; font-optical-sizing: auto; text-wrap: balance; color: inherit; }
-h2 { font-size: var(--fs-4); line-height: 1.04; letter-spacing: -0.02em; max-width: 22ch; }
+h2 { font-size: var(--fs-4); line-height: 1.06; letter-spacing: -0.02em; max-width: 22ch; font-style: italic; font-weight: 500; font-variation-settings: "opsz" 60; }
+/* every section heading is a dated entry: margin month + italic entry + one pencil tick */
+.h-tick { display: inline-block; width: .62em; height: .48em; margin-left: .12em; vertical-align: -.02em; stroke: var(--accent); stroke-width: 3; }
 h3 { font-size: var(--fs-1); line-height: 1.2; }
 p, li, dd, blockquote { text-wrap: pretty; }
 p { max-width: var(--measure); }
@@ -429,36 +431,46 @@ main { overflow-x: clip; }
 
 /* ---------- hero ---------- */
 .hero {
-  min-height: calc(100svh - var(--header-h)); padding-top: var(--header-h);
-  display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-6);
+  min-height: calc(100svh - var(--header-h)); padding-top: calc(var(--header-h) + clamp(16px, 4svh, 48px));
+  display: flex; flex-direction: column; justify-content: center;
   padding-bottom: var(--s-6); text-align: center; overflow: hidden;
 }
-.hero__copy { display: flex; flex-direction: column; align-items: center; padding-top: clamp(20px, 5svh, 72px); }
-.hero .kicker { margin-bottom: var(--s-3); }
-.hero__h1 { font-size: var(--fs-h1); line-height: var(--lh-display); letter-spacing: var(--track-display); font-variation-settings: "opsz" 72; max-width: 16ch; }
-.hero__lead { max-width: 40ch; margin-inline: auto; margin-top: var(--s-4); font-size: var(--fs-0); }
-@media (min-width: 640px) { .hero__lead { font-size: var(--fs-1); max-width: 50ch; margin-top: var(--s-5); } }
-.hero__ctas { justify-content: center; flex-direction: column; width: 100%; max-width: 620px; margin-top: var(--s-5); gap: var(--s-2); }
+.hero__copy { display: flex; flex-direction: column; align-items: center; }
+/* the pencil line above the lid: the one handwritten note in the hero */
+.hero__note { font: 600 clamp(1.375rem, 1.2rem + .8vw, 1.875rem)/1.15 var(--f-pencil); color: #8A1F2C; transform: rotate(-1.2deg); margin-bottom: var(--s-3); max-width: 24ch; }
+@media (min-width: 640px) { .hero__note { max-width: none; white-space: nowrap; } }
+@media (max-width: 639px) { .hero__h1 { font-size: min(var(--fs-h1), 9.6vw); max-width: none; } .hero__lid { display: block; padding-inline: 14px; } .hero__lid .tick--first { position: absolute; top: 16px; right: 12px; width: 34px; } }
+/* the h1 is the first strip of tape on the freezer lid */
+.hero__lid { --skew: -.5deg; display: flex; align-items: flex-end; gap: var(--s-3); width: fit-content; max-width: 100%; padding: 14px 16px 16px;
+  background-image: none; clip-path: polygon(0 3%, 1.5% 0, 98.5% 2%, 100% 0, 99.4% 50%, 100% 100%, 98% 97%, 2% 100%, 0 98%, .6% 50%); }
+.hero__h1 { font-size: var(--fs-h1); line-height: var(--lh-display); letter-spacing: var(--track-display); font-variation-settings: "opsz" 72; max-width: 14ch; text-align: left; }
+.hero__lid .tick--first { width: clamp(34px, 4vw, 56px); height: auto; aspect-ratio: 26 / 20; margin-bottom: .35em; }
+.hero__rest { display: flex; flex-direction: column; align-items: center; margin-top: var(--s-4); }
+.hero__lead { max-width: 40ch; margin-inline: auto; margin-top: 0; font-size: var(--fs-0); }
+@media (min-width: 640px) {
+  .hero__lid { padding: 20px 32px 22px; }
+  .hero__lead { font-size: var(--fs-1); max-width: 50ch; }
+  .hero__rest { margin-top: var(--s-5); }
+}
+.hero__ctas { justify-content: center; flex-direction: column; width: 100%; max-width: 620px; margin-top: var(--s-4); gap: var(--s-2); }
 .hero__ctas .btn { white-space: nowrap; }
-@media (min-width: 640px) { .hero__ctas { flex-direction: row; gap: var(--s-3); margin-top: var(--s-6); } .hero__ctas .btn { flex: 1 1 0; } }
-.proof { list-style: none; margin: var(--s-5) 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px; font-size: var(--fs--1); color: var(--muted); }
-.proof { gap: 4px 20px; margin-top: var(--s-4); }
-@media (min-width: 640px) { .proof { margin-top: var(--s-5); } }
+@media (min-width: 640px) { .hero__ctas { flex-direction: row; gap: var(--s-3); margin-top: var(--s-5); } .hero__ctas .btn { flex: 1 1 0; } }
+.proof { list-style: none; margin: var(--s-4) 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 20px; font-size: var(--fs--1); color: var(--muted); }
 @media (max-width: 639px) { .proof { flex-direction: column; align-items: center; } }
-@media (min-width: 640px) { .proof li + li::before { content: "·"; margin-right: 20px; color: var(--ink); } }
-.hero__tape { position: relative; }
-.marquee { padding-block: 14px; }
+@media (min-width: 640px) { .proof { margin-top: var(--s-5); } .proof li + li { border-left: 1px solid var(--rule); padding-left: 20px; } }
+.hero__tape { position: relative; margin-top: -6px; }
+.marquee { padding-block: 10px; }
 .mq { display: flex; align-items: center; gap: 12px; width: 290px; margin-right: 22px; padding: 12px 18px 12px 14px; text-align: left; }
 .mq:nth-child(even) { --skew: .6deg; }
 .mq .vig { width: 52px; flex: none; color: #2A2118; }
 .mq .tape__month { flex: none; width: 2.6em; }
 .mq .tape__entry { font-size: 1.0625rem; line-height: 1.2; flex: 1; }
-@media (max-width: 899px) { .hero { padding-bottom: 76px; gap: var(--s-4); } .marquee { padding-block: 8px; } .mq { padding-block: 8px; } }
+@media (max-width: 899px) { .hero { padding-bottom: 76px; } .marquee { padding-block: 6px; } .mq { padding-block: 8px; } }
 .mq .tick { width: 28px; height: 22px; }
 .mq .tbox { width: 26px; height: 26px; }
 @media (min-width: 900px) {
-  .hero__h1 { max-width: 23ch; }
-  .mq { width: 380px; gap: 14px; }
+  .hero__h1 { max-width: 22ch; }
+  .mq { width: 430px; gap: 14px; }
   .mq .vig { width: 80px; }
   .mq .tape__entry { font-size: 1.25rem; }
 }
@@ -519,6 +531,17 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
   .ledger__no { display: block; }
   .ledger__line .tbox { align-self: start; }
   .ledger__book { grid-column: 4; grid-row: 1; align-self: start; }
+}
+/* the one archive print, taped onto the list (cropped above the range panel: no brand marks) */
+.archive { --skew: 1.2deg; position: relative; margin: var(--s-7) 0 0; max-width: 520px; background: #FBF7EE; padding: 10px 10px 0; box-shadow: 0 1px 0 rgba(42,33,24,.14), 0 10px 24px rgba(42,33,24,.12); transform: rotate(var(--skew)); }
+.archive::before { content: ""; position: absolute; z-index: 1; top: -12px; left: 50%; width: 96px; height: 24px; margin-left: -48px; background: rgba(228,214,184,.94); transform: rotate(-3deg); box-shadow: 0 1px 0 rgba(42,33,24,.1); }
+.archive__crop { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #585858; }
+.archive__img { position: absolute; max-width: none; width: 195%; height: auto; left: -25%; top: -17.8%; filter: sepia(.28) contrast(1.04); }
+.archive figcaption { font-size: var(--fs--1); color: #5E5243; padding: 10px 4px 12px; }
+@media (min-width: 1100px) {
+  .services__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 19rem); column-gap: var(--s-7); align-items: end; }
+  .services__head h2 { max-width: none; }
+  .archive { margin: 0; }
 }
 @media (min-width: 1100px) {
   .services__head { grid-row: 1; }
@@ -584,6 +607,7 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
 .garage__out strong { display: block; font: 600 var(--fs-1)/1.25 var(--f-display); margin-bottom: var(--s-2); }
 .kit { --skew: .4deg; display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-6); max-width: 34rem; }
 .garage__copy { order: -1; }
+.garage .margin-month { order: -2; }
 @media (min-width: 900px) {
   .garage .grid12 { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-8); }
   .garage .margin-month { grid-column: 1 / -1; }
@@ -631,9 +655,17 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
 /* ---------- reviews ---------- */
 .reviews__rating { margin-top: var(--s-4); font-weight: 500; }
 .reviews__rating .tnum { font: 600 var(--fs-2)/1 var(--f-display); }
-.notes { list-style: none; margin: var(--s-7) 0 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--s-5); }
+.notes { list-style: none; margin: var(--s-8) 0 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--s-5); }
 .note-card { position: relative; background: #F3EBDA; padding: var(--s-6) var(--s-5) var(--s-5); border-radius: var(--radius); box-shadow: 0 1px 0 rgba(42,33,24,.12); }
-.note-card__tape { position: absolute; top: -11px; left: 50%; width: 64px; height: 22px; margin-left: -32px; background: rgba(228,214,184,.92); transform: rotate(-2deg); box-shadow: 0 1px 0 rgba(42,33,24,.1); }
+.note-card__tape { position: absolute; top: -11px; right: 18%; width: 64px; height: 22px; background: rgba(228,214,184,.92); transform: rotate(-2deg); box-shadow: 0 1px 0 rgba(42,33,24,.1); }
+/* the last note never sits alone: it becomes the wide note on its row */
+@media (min-width: 640px) and (max-width: 1099px) { .note-card:last-child:nth-child(odd) { grid-column: 1 / -1; } }
+@media (min-width: 1100px) {
+  .note-card:last-child:nth-child(3n+1) { grid-column: 1 / -1; }
+  .note-card:last-child:nth-child(3n+2) { grid-column: span 2; }
+}
+.note-card:last-child blockquote { max-width: 62ch; }
+.reviews .notes { margin-top: var(--s-9); }
 .note-card__town { font: 600 var(--fs--1)/1 var(--f-text); letter-spacing: .14em; text-transform: uppercase; color: #5E5243; }
 .note-card blockquote { margin-top: var(--s-4); font: italic 450 var(--fs-0)/1.5 var(--f-display); }
 .note-card__by { margin-top: var(--s-4); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); font-size: var(--fs--1); font-weight: 600; }
@@ -740,9 +772,23 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
 .sw-motion .hero__h1[data-split] .sw-word-in { transition-duration: 700ms; transition-timing-function: cubic-bezier(.2, .7, .1, 1); }
 .sw-motion .hero__h1[data-split="lines"] .sw-word-in { transition-delay: calc(var(--i, 0) * 70ms); }
 .sw-motion .footer:not(.is-in) [data-foot-tick] { --sw-p: 0; }
+/* the lid strip is pressed down while the h1 words arrive; the first tick lands at the end of the h1 */
+.sw-motion .hero__lid { animation: lid-press 640ms var(--ease-out) both; }
+@keyframes lid-press { from { transform: rotate(-2.2deg) translate3d(0, -6px, 0); } }
+/* headings: the pencil tick draws as the entry enters */
+.sw-motion h2:not(.is-dated) .h-tick { --sw-p: 0; }
+.sw-motion h2 .h-tick { transition-delay: 260ms; }
+/* review notes: taped down one after another */
+.note-card { transition: transform var(--t-page) var(--ease-out), opacity var(--t-page) var(--ease-out); transition-delay: calc(var(--i, 0) * 90ms); }
+.sw-motion .note-card:not(.is-in) { opacity: 0; transform: translate3d(0, -18px, 0) rotate(-2.5deg); }
+/* thaw clock: the frost band fills to the hours left */
+.sw-motion .thaw__fig:not(.is-in) .thaw__frost { transform: scaleY(0); }
+/* the archive print is pressed onto the page */
+.archive { transition: transform var(--t-story) var(--ease-out), opacity var(--t-page) var(--ease-out); }
+.sw-motion .archive:not(.is-in) { opacity: 0; transform: rotate(5deg) translate3d(14px, -10px, 0); }
 
 @media (prefers-reduced-motion: reduce) {
-  .tick, .thaw__frost { transition: none; }
+  .tick, .thaw__frost, .note-card, .archive { transition: none; }
 }
 
 /* ---------- forced colors ---------- */
@@ -760,6 +806,8 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
   .year.is-pinned .year__stick { position: static; height: auto; }
   .mobilebar, .site-header { display: none !important; }
 }
+
+.services .ledger { margin-top: var(--s-7); }
 
 </style>
 </head>
@@ -782,7 +830,17 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
   <symbol id="v-dryer" viewBox="0 0 120 90"><rect x="26" y="14" width="56" height="70" rx="3"/><path d="M26 28h56M34 21h10M70 21h4"/><circle cx="54" cy="56" r="18"/><circle cx="54" cy="56" r="11" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M82 36h14V6h18M96 6 92 2M106 6V2"/></symbol>
   <symbol id="v-oven" viewBox="0 0 120 90"><rect x="24" y="12" width="72" height="72" rx="3"/><path d="M24 26h72"/><circle cx="36" cy="19" r="3"/><circle cx="48" cy="19" r="3"/><circle cx="72" cy="19" r="3"/><circle cx="84" cy="19" r="3"/><rect x="34" y="36" width="52" height="34" rx="2"/><rect x="38" y="40" width="44" height="26" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M46 62c0-8 28-8 28 0zM40 76h40"/></symbol>
   <symbol id="v-dish" viewBox="0 0 120 90"><rect x="30" y="8" width="60" height="76" rx="3"/><path d="M30 22h60M38 15h20M76 15h6M46 30h28"/><rect x="36" y="38" width="48" height="40" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M44 50v20M54 46v24M64 50v20M74 46v24"/></symbol>
-  <symbol id="v-upright" viewBox="0 0 120 90"><rect x="40" y="4" width="40" height="82" rx="3"/><path d="M44 26h32M44 46h32M44 66h32M74 30v14"/><rect x="44" y="8" width="32" height="74" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M14 30l8 8M22 30l-8 8M18 28v12M98 52l6 6M104 52l-6 6M101 50v10"/></symbol>
+  <symbol id="v-mud" viewBox="0 0 120 90"><rect x="22" y="8" width="56" height="76" rx="3"/><path d="M22 22h56M30 15h10M66 15h4"/><circle cx="50" cy="52" r="20"/><circle cx="50" cy="52" r="13" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M88 56v28h16v-7l-8-3V56zM104 62v22h12v-6l-6-2V62M86 88h32M90 50c2-3 6-3 8 0"/></symbol>
+  <symbol id="v-move" viewBox="0 0 120 90"><rect x="12" y="14" width="52" height="70" rx="3"/><path d="M12 28h52M20 21h10M52 21h4"/><circle cx="38" cy="58" r="17"/><circle cx="38" cy="58" r="10" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M74 54h40v30H74zM74 54l6-8h28l6 8M94 54v10M80 38h28v8M78 24h32v14H78zM86 31h16"/></symbol>
+  <symbol id="v-grad" viewBox="0 0 120 90"><rect x="38" y="20" width="44" height="66" rx="3"/><path d="M38 44h44M74 26v12M74 50v16"/><rect x="42" y="24" width="26" height="16" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M42 12 60 5l18 7-18 7zM52 15v5c4 3 12 3 16 0v-5M78 12v8M8 86h104M92 28c6 4 10 10 12 18M100 34l6-2M96 44l7 1"/></symbol>
+  <symbol id="v-lake" viewBox="0 0 120 90"><rect x="18" y="40" width="70" height="38" rx="4"/><path d="M14 40h78v-8H14zM44 32v-5h18v5"/><rect x="24" y="46" width="58" height="26" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M30 18l6-6 6 6-6 6zM48 14l5-5 5 5-5 5zM64 20l5-5 5 5-5 5M98 30l14-14M104 18l8-2-2 8M4 86q7-4 14 0t14 0 14 0 14 0 14 0 14 0 14 0 14 0"/></symbol>
+  <symbol id="v-heat" viewBox="0 0 120 90"><path d="M10 44 18 26h56l8 18"/><rect x="6" y="44" width="80" height="38" rx="2"/><rect x="14" y="51" width="64" height="24" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><circle cx="102" cy="20" r="9"/><path d="M102 4v4M102 32v4M86 20h4M114 20h4M91 9l3 3M110 28l3 3M113 9l-3 3M94 28l-3 3M92 52c4-3 4-7 0-10M100 56c5-4 5-9 0-13M14 82v4M78 82v4"/></symbol>
+  <symbol id="v-coils" viewBox="0 0 120 90"><rect x="30" y="4" width="52" height="82" rx="3"/><path d="M38 14h36v8H38v8h36v8H38v8h36v8H38v8h36"/><rect x="34" y="70" width="44" height="12" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M96 20l14 50M92 18l8-2M88 24l3 3M86 40h2M90 50h2M84 58h2"/></symbol>
+  <symbol id="v-check" viewBox="0 0 120 90"><path d="M8 30h96v8H8z"/><rect x="10" y="38" width="92" height="44" rx="2"/><rect x="18" y="45" width="76" height="30" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M48 34h16M18 82v4M94 82v4M84 30V8M84 8a4 4 0 0 1 8 0v22M80 14h4M80 20h4M80 26h4"/><circle cx="88" cy="32" r="0"/></symbol>
+  <symbol id="v-pheasant" viewBox="0 0 120 90"><path d="M6 40h100v8H6z"/><rect x="8" y="48" width="96" height="36" rx="2"/><rect x="16" y="54" width="80" height="24" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M28 40c4-10 20-14 32-10 6 2 9 6 10 10M60 30c3-6 8-8 12-6l3-3M75 21l4 1M70 40c12-6 30-12 46-24M70 38c12-4 26-6 40-14M40 32l4 6M50 30l2 7"/></symbol>
+  <symbol id="v-turkey" viewBox="0 0 120 90"><rect x="24" y="12" width="72" height="72" rx="3"/><path d="M24 26h72"/><circle cx="36" cy="19" r="3"/><circle cx="48" cy="19" r="3"/><circle cx="72" cy="19" r="3"/><circle cx="84" cy="19" r="3"/><rect x="34" y="36" width="52" height="34" rx="2"/><rect x="38" y="40" width="44" height="26" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M44 62c-2-12 10-16 16-16s18 4 16 16zM48 50l-6-4-2 3M72 50l6-4 2 3M40 64h40M40 76h40"/></symbol>
+  <symbol id="v-plates" viewBox="0 0 120 90"><rect x="22" y="8" width="60" height="76" rx="3"/><path d="M22 22h60M30 15h20M68 15h6"/><rect x="28" y="30" width="48" height="48" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M36 40v30M46 36v34M56 36v34M66 40v30M30 72h44M90 82h24M92 78h20M94 74h16M96 70h12M102 52l2 5 5 1-4 3 1 5-4-3-4 3 1-5-4-3 5-1z"/></symbol>
+  <symbol id="v-upright"viewBox="0 0 120 90"><rect x="40" y="4" width="40" height="82" rx="3"/><path d="M44 26h32M44 46h32M44 66h32M74 30v14"/><rect x="44" y="8" width="32" height="74" style="fill:var(--hatch);opacity:var(--hatch-o,1)" stroke="none"/><path d="M14 30l8 8M22 30l-8 8M18 28v12M98 52l6 6M104 52l-6 6M101 50v10"/></symbol>
 </svg>
 
 <a class="skip-link" href="#main">Skip to the page</a>
@@ -810,9 +868,25 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
 
 <section id="top" class="hero t-paper" data-layout="statement" aria-labelledby="hero-h">
   <div class="hero__copy wrap">
-    <p class="kicker"><span>Appliance Repair</span> · <span>Sioux Falls, SD</span></p>
-    <h1 id="hero-h" class="hero__h1" data-split="lines">By November, most of the freezer is spoken for.</h1>
-    <p class="lead hero__lead">Chest freezers, garage fridges, washers and dryers, fixed around Sioux Falls by people who know what they're holding.</p>
+    <p class="hero__note">By November, most of the freezer is spoken for.</p>
+    <div class="hero__lid tape">
+      <h1 id="hero-h" class="hero__h1" data-split="lines">Sioux Falls appliance repair, before the beef thaws.</h1>
+      <svg class="tick tick--first" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg>
+    </div>
+  </div>
+  <div class="hero__tape" data-hook="marquee">
+    <p class="sr-only">The year on our list: October, the pheasant opener goes in the chest freezer. November, a quarter of beef. January, the garage fridge freezer goes soft. February, the dryer vent fills with lint. July, the compressor runs hard. September, the freezer checkup.</p>
+    <div class="marquee" data-marquee="34" aria-hidden="true">
+      <div class="mq tape" style="--hatch:url(#hatch-warm)"><svg class="vig"><use href="#v-pheasant"/></svg><span class="tape__month">Oct</span><span class="tape__entry">The pheasant opener goes in the chest freezer</span><span class="tbox"></span></div>
+      <div class="mq tape" style="--hatch:url(#hatch-frost)"><svg class="vig"><use href="#v-upright"/></svg><span class="tape__month">Nov</span><span class="tape__entry">A quarter of beef, wrapped and dated</span><span class="tbox"></span></div>
+      <div class="mq tape" style="--hatch:url(#hatch-frost)"><svg class="vig"><use href="#v-fridge"/></svg><span class="tape__month">Jan</span><span class="tape__entry">The garage fridge freezer goes soft</span><span class="tbox"></span></div>
+      <div class="mq tape" style="--hatch:url(#hatch-frost)"><svg class="vig"><use href="#v-dryer"/></svg><span class="tape__month">Feb</span><span class="tape__entry">The dryer vent to the roof fills with lint</span><span class="tbox"></span></div>
+      <div class="mq tape" style="--hatch:url(#hatch-warm)"><svg class="vig"><use href="#v-heat"/></svg><span class="tape__month">Jul</span><span class="tape__entry">The compressor runs hard in the heat</span><span class="tbox"></span></div>
+      <div class="mq tape" style="--hatch:url(#hatch-warm)"><svg class="vig"><use href="#v-check"/></svg><span class="tape__month">Sep</span><span class="tape__entry">Freezer checkup, before it fills</span><span class="tbox"></span></div>
+    </div>
+  </div>
+  <div class="hero__rest wrap">
+    <p class="lead hero__lead">Chest freezers, garage fridges, washers and dryers, fixed around Sioux Falls by people who know what they’re holding.</p>
     <div class="btn-row hero__ctas">
       <a class="btn btn-call btn--primary" href="tel:+16055550172"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (605) 555-0172</span></a>
       <a class="btn btn--line" href="sms:+16055550172"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-text"/></svg><span>Text us</span></a>
@@ -823,27 +897,15 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
       <li>Diagnostic <span class="tnum">$85–$115</span> <span class="sample-tag">Sample pricing</span></li>
     </ul>
   </div>
-  <div class="hero__tape" data-hook="marquee">
-    <p class="sr-only">The year on our list: October, the pheasant opener goes in the chest freezer. November, a quarter of beef. January, the garage fridge freezer goes soft. February, the dryer vent fills with lint. July, the compressor runs hard. September, the freezer checkup.</p>
-    <div class="marquee" data-marquee="34" aria-hidden="true">
-      <div class="mq tape" style="--hatch:url(#hatch-warm)"><svg class="vig"><use href="#v-chest"/></svg><span class="tape__month">Oct</span><span class="tape__entry">The pheasant opener goes in the chest freezer</span><svg class="tick tick--first"><use href="#i-tick"/></svg></div>
-      <div class="mq tape" style="--hatch:url(#hatch-frost)"><svg class="vig"><use href="#v-upright"/></svg><span class="tape__month">Nov</span><span class="tape__entry">A quarter of beef, wrapped and dated</span><span class="tbox"></span></div>
-      <div class="mq tape" style="--hatch:url(#hatch-frost)"><svg class="vig"><use href="#v-fridge"/></svg><span class="tape__month">Jan</span><span class="tape__entry">The garage fridge freezer goes soft</span><span class="tbox"></span></div>
-      <div class="mq tape" style="--hatch:url(#hatch-frost)"><svg class="vig"><use href="#v-dryer"/></svg><span class="tape__month">Feb</span><span class="tape__entry">The dryer vent to the roof fills with lint</span><span class="tbox"></span></div>
-      <div class="mq tape" style="--hatch:url(#hatch-warm)"><svg class="vig"><use href="#v-chest"/></svg><span class="tape__month">Jul</span><span class="tape__entry">The compressor runs hard in the heat</span><span class="tbox"></span></div>
-      <div class="mq tape" style="--hatch:url(#hatch-warm)"><svg class="vig"><use href="#v-upright"/></svg><span class="tape__month">Sep</span><span class="tape__entry">Freezer checkup, before it fills</span><span class="tbox"></span></div>
-    </div>
-  </div>
 </section>
 
 <section id="thaw" class="thaw t-deep pad" data-layout="split" aria-labelledby="thaw-h">
   <div class="wrap grid12">
     <p class="margin-month"><span class="tape tape--chip">Now</span></p>
     <div class="thaw__copy">
-      <p class="kicker" data-reveal>Freezer gone quiet</p>
-      <h2 id="thaw-h" data-reveal>Keep the lid shut. Then call.</h2>
-      <p class="lead" data-reveal>A full freezer holds about 48 hours with the lid closed, a half-full one about 24 (USDA guidance). Every look inside spends some of that.</p>
-      <div class="btn-row" data-reveal>
+      <h2 id="thaw-h">Keep the lid shut. Then call. <svg class="tick h-tick" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg></h2>
+      <p class="lead">A full freezer holds about 48 hours with the lid closed, a half-full one about 24 (USDA guidance). Every look inside spends some of that.</p>
+      <div class="btn-row">
         <a class="btn btn-call btn--primary" href="tel:+16055550172"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (605) 555-0172</span></a>
         <a class="btn btn--line" href="sms:+16055550172"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-text"/></svg><span>Text a photo of the model tag</span></a>
       </div>
@@ -873,10 +935,13 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
 
 <section id="services" class="services t-light pad" data-layout="ledger" aria-labelledby="svc-h">
   <div class="wrap grid12">
-    <p class="margin-month"><span class="tape tape--chip">All year</span></p>
+    <p class="margin-month"><span class="tape tape--chip">Jan–Dec</span></p>
     <div class="services__head">
-      <p class="kicker" data-reveal>What we fix</p>
-      <h2 id="svc-h" data-reveal>Everything on the list, from the beef in the basement to the oven upstairs.</h2>
+      <h2 id="svc-h">From the basement freezer to the oven upstairs. <svg class="tick h-tick" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg></h2>
+      <figure class="archive">
+        <div class="archive__crop"><img src="media/hero-A1-1170.webp" srcset="media/hero-A1-1170.webp 1170w, media/hero-A1.webp 2340w" sizes="100vw" alt="1965 repairman lifting a coil burner to test an electric range with its oven door open" width="1170" height="913" loading="lazy" decoding="async" data-photo="hero-A1" data-slot="archive" class="archive__img"></div>
+        <figcaption>Seattle, 1965: a repairman tests a range coil. The check hasn’t changed much.</figcaption>
+      </figure>
     </div>
     <ol class="ledger" role="list" data-hook="services-ticks">
       
@@ -976,8 +1041,8 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
 
 <section id="lid" class="lid t-accent break" data-layout="banner" aria-labelledby="lid-h">
   <div class="wrap lid__in">
-    <h2 id="lid-h" class="lid__quote">Don't check on it. A shut lid buys you two days.</h2>
-    <p class="lid__sub">Call first. We'll tell you what to do until we're there.</p>
+    <h2 id="lid-h" class="lid__quote">Don’t check on it. A shut lid buys you two days.</h2>
+    <p class="lid__sub">Call first. We’ll tell you what to do until we’re there.</p>
     <a class="btn btn-call btn--paper" href="tel:+16055550172"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (605) 555-0172</span></a>
   </div>
 </section>
@@ -986,23 +1051,23 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
   <div class="year__stick">
     <div class="wrap year__head">
       <p class="kicker">Jan–Dec</p>
-      <h2 id="year-h">A Sioux Falls year, by what the machines are carrying.</h2>
+      <h2 id="year-h">A Sioux Falls year, month by month.</h2>
       <p class="lead">Every month puts something different on the list. Scroll the year; each line gets its tick.</p>
     </div>
     <div class="year__rail">
       <ol class="year__track" role="list">
         <li class="yr tape" style="--hatch:url(#hatch-frost)"><span class="tape__month">Jan</span><svg class="vig"><use href="#v-fridge"/></svg><p class="tape__entry">The garage fridge lets its freezer side go soft</p><svg class="tick"><use href="#i-tick"/></svg></li>
         <li class="yr tape" style="--hatch:url(#hatch-frost)"><span class="tape__month">Feb</span><svg class="vig"><use href="#v-dryer"/></svg><p class="tape__entry">A winter of loads packs the dryer vent</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-frost)"><span class="tape__month">Mar</span><svg class="vig"><use href="#v-washer"/></svg><p class="tape__entry">Mud season: the washer runs four loads a day</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">April</span><svg class="vig"><use href="#v-washer"/></svg><p class="tape__entry">Move-in month: new laundry rooms hooked up</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">May</span><svg class="vig"><use href="#v-fridge"/></svg><p class="tape__entry">Graduation parties fill the spare fridge</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Jun</span><svg class="vig"><use href="#v-upright"/></svg><p class="tape__entry">The ice maker works every lake weekend</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Jul</span><svg class="vig"><use href="#v-chest"/></svg><p class="tape__entry">The compressor runs hard in the heat</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Aug</span><svg class="vig"><use href="#v-fridge"/></svg><p class="tape__entry">Summer dust settles on the fridge coils</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Sep</span><svg class="vig"><use href="#v-chest"/></svg><p class="tape__entry">Freezer checkup, before it fills</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-frost)"><span class="tape__month">Oct</span><svg class="vig"><use href="#v-chest"/></svg><p class="tape__entry">The pheasant opener goes in the chest freezer</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Nov</span><svg class="vig"><use href="#v-oven"/></svg><p class="tape__entry">The quarter of beef, and the oven before Thanksgiving</p><svg class="tick"><use href="#i-tick"/></svg></li>
-        <li class="yr tape" style="--hatch:url(#hatch-frost)"><span class="tape__month">Dec</span><svg class="vig"><use href="#v-dish"/></svg><p class="tape__entry">The dishwasher after every holiday meal</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-frost)"><span class="tape__month">Mar</span><svg class="vig"><use href="#v-mud"/></svg><p class="tape__entry">Mud season: the washer runs four loads a day</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">April</span><svg class="vig"><use href="#v-move"/></svg><p class="tape__entry">Move-in month: new laundry rooms hooked up</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">May</span><svg class="vig"><use href="#v-grad"/></svg><p class="tape__entry">Graduation parties fill the spare fridge</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Jun</span><svg class="vig"><use href="#v-lake"/></svg><p class="tape__entry">The ice maker works every lake weekend</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Jul</span><svg class="vig"><use href="#v-heat"/></svg><p class="tape__entry">The compressor runs hard in the heat</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Aug</span><svg class="vig"><use href="#v-coils"/></svg><p class="tape__entry">Summer dust settles on the fridge coils</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Sep</span><svg class="vig"><use href="#v-check"/></svg><p class="tape__entry">Freezer checkup, before it fills</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-frost)"><span class="tape__month">Oct</span><svg class="vig"><use href="#v-pheasant"/></svg><p class="tape__entry">The pheasant opener goes in the chest freezer</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-warm)"><span class="tape__month">Nov</span><svg class="vig"><use href="#v-turkey"/></svg><p class="tape__entry">The quarter of beef, and the oven before Thanksgiving</p><svg class="tick"><use href="#i-tick"/></svg></li>
+        <li class="yr tape" style="--hatch:url(#hatch-frost)"><span class="tape__month">Dec</span><svg class="vig"><use href="#v-plates"/></svg><p class="tape__entry">The dishwasher after every holiday meal</p><svg class="tick"><use href="#i-tick"/></svg></li>
       </ol>
     </div>
     <div class="year__bar" aria-hidden="true"><span></span></div>
@@ -1033,25 +1098,23 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
         <svg class="vig vig--xl" viewBox="0 0 120 90" aria-hidden="true"><use href="#v-fridge"/></svg>
         <figcaption>Garage fridge, snow at the door. The hatch is the freezer side.</figcaption>
       </figure>
-      <p class="garage__out" data-cold-out aria-live="polite"><strong>At 20°F the fresh-food side is already cold.</strong> The thermostat barely asks for cooling, so the freezer side drifts soft. That's the January problem.</p>
+      <p class="garage__out" data-cold-out aria-live="polite"><strong>At 20°F the fresh-food side is already cold.</strong> The thermostat barely asks for cooling, so the freezer side drifts soft. That’s the January problem.</p>
     </div>
     <div class="garage__copy">
-      <p class="kicker" data-reveal>The garage fridge</p>
-      <h2 id="garage-h" data-reveal>The garage got cold, so the fridge thinks it's done. The freezer side isn't.</h2>
-      <p class="lead" data-reveal>On many single-thermostat fridges the thermostat sits in the fresh-food side. A cold garage keeps that side happy, the compressor rarely runs, and the freezer warms.</p>
-      <p class="note" data-reveal>Many manuals list a minimum room temperature around 50–60°F. Typical; check yours.</p>
-      <p class="kit tape tape--line" data-reveal><span class="tape__month">Fix</span><span>Cold-weather kit, installed <strong class="tnum">$90–$160</strong> <span class="sample-tag">Sample pricing</span></span></p>
-      <div class="btn-row" data-reveal><a class="btn btn--primary" href="#contact" data-service="Garage fridge winter fix"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"/></svg><span>Book the winter fix</span></a></div>
+      <h2 id="garage-h">Cold garage, soft freezer. <svg class="tick h-tick" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg></h2>
+      <p class="lead">The fridge thinks it’s done. On many models the thermostat sits in the fresh-food side, so the compressor rests and the freezer warms.</p>
+      <p class="note">Many manuals list a minimum room temperature around 50–60°F. Typical; check yours.</p>
+      <p class="kit tape tape--line"><span class="tape__month">Fix</span><span>Cold-weather kit, installed <strong class="tnum">$90–$160</strong> <span class="sample-tag">Sample pricing</span></span></p>
+      <div class="btn-row"><a class="btn btn--primary" href="#contact" data-service="Garage fridge winter fix"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"/></svg><span>Book the winter fix</span></a></div>
     </div>
   </div>
 </section>
 
 <section id="prices" class="prices t-mid pad" data-layout="sheet" aria-labelledby="prices-h">
   <div class="wrap grid12">
-    <p class="margin-month"><span class="tape tape--chip">Any month</span></p>
+    <p class="margin-month"><span class="tape tape--chip">Sep</span></p>
     <div class="prices__head">
-      <p class="kicker" data-reveal>What it costs</p>
-      <h2 id="prices-h" data-reveal>The prices, before anyone comes out.</h2>
+      <h2 id="prices-h">The prices, before anyone comes out. <svg class="tick h-tick" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg></h2>
     </div>
     <div class="prices__sheet">
       <p class="prices__tag tape tape--chip"><span class="sample-tag">Sample pricing</span></p>
@@ -1095,7 +1158,7 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
     </div>
     <div class="fix" data-hook="fix-or-replace" data-fix>
       <h3>Fix it or replace it?</h3>
-      <p>If the repair costs more than the machine has left in it, we'll say so first.</p>
+      <p>If the repair costs more than the machine has left in it, we’ll say so first.</p>
       <label class="field">
         <span class="field__label">Appliance</span>
         <select data-fix-app>
@@ -1119,13 +1182,12 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
 
 <section id="reviews" class="reviews t-light pad" data-layout="notes" aria-labelledby="rev-h">
   <div class="wrap grid12">
-    <p class="margin-month"><span class="tape tape--chip">Notes</span></p>
+    <p class="margin-month"><span class="tape tape--chip">Dec</span></p>
     <div class="reviews__head">
-      <p class="kicker" data-reveal>Notes under the tape</p>
-      <h2 id="rev-h" data-reveal>Notes from kitchens and basements around Sioux Falls.</h2>
-      <p class="reviews__rating" data-reveal><span class="tnum">4.9</span> from <span class="tnum">96</span> reviews <span class="sample-tag">Sample rating</span></p>
+      <h2 id="rev-h">Notes from Sioux Falls kitchens and basements. <svg class="tick h-tick" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg></h2>
+      <p class="reviews__rating"><span class="tnum">4.9</span> from <span class="tnum">96</span> reviews <span class="sample-tag">Sample rating</span></p>
     </div>
-    <ul class="notes" role="list" data-reveal-stagger>
+    <ul class="notes" role="list">
       
       <li class="note-card">
         <span class="note-card__tape" aria-hidden="true"></span>
@@ -1182,11 +1244,10 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
 
 <section id="area" class="area t-paper pad" data-layout="route" aria-labelledby="area-h">
   <div class="wrap grid12">
-    <p class="margin-month"><span class="tape tape--chip">Route</span></p>
+    <p class="margin-month"><span class="tape tape--chip">Feb</span></p>
     <div class="area__head">
-      <p class="kicker" data-reveal>The route</p>
-      <h2 id="area-h" data-reveal>Sioux Falls and the towns a short drive out.</h2>
-      <p class="lead" data-reveal>Ask for Lars E.. <span class="tnum">9</span> years on these roads <span class="sample-tag">Sample years</span></p>
+      <h2 id="area-h">Sioux Falls and the towns a short drive out. <svg class="tick h-tick" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg></h2>
+      <p class="lead"><span class="tnum">9</span> years on these roads <span class="sample-tag">Sample years</span>. Ask for Lars E.</p>
     </div>
     <div class="area__towns">
       <h3>Where we drive</h3>
@@ -1207,7 +1268,7 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
         
       </ul>
     </div>
-    <form class="area__zip" data-zip data-zip-yes="Yes, we drive to {zip}." data-zip-no="{zip} is off our usual route. Call and we'll tell you straight." aria-labelledby="zip-h">
+    <form class="area__zip" data-zip data-zip-yes="Yes, we drive to {zip}." data-zip-no="{zip} is off our usual route. Call and we’ll tell you straight." aria-labelledby="zip-h">
       <h3 id="zip-h">Do you come out to me?</h3>
       <label class="field">
         <span class="field__label">Your ZIP code</span>
@@ -1227,16 +1288,15 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
   <div class="wrap grid12">
     <p class="margin-month"><span class="tape tape--chip" data-this-month>Next</span></p>
     <div class="contact__head">
-      <p class="kicker">The last blank line</p>
-      <h2 id="contact-h">The last line on the list is yours.</h2>
+      <h2 id="contact-h">The last line on the list is yours. <svg class="tick h-tick" aria-hidden="true" focusable="false"><use href="#i-tick"/></svg></h2>
       <p class="lead">Tell us the machine and the model number, and the tech brings the likely part.</p>
       <p class="contact__call">Rather talk? <a class="tel-plain" href="tel:+16055550172">(605) 555-0172</a> · <span data-open-now>Mon–Fri 7 am – 5 pm · Sat 8 am – noon</span></p>
     </div>
     <div class="contact__sheet tape tape--sheet">
-      <form class="lead-form" data-lead novalidate data-thanks="Thanks, {name}. In your version this goes straight to the shop's phone and inbox.">
+      <form class="lead-form" data-lead novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to Prairie Pantry.">
         <div class="lead-form__progress" data-form-progress aria-label="Form progress"></div>
         <fieldset data-step>
-          <legend>What's acting up</legend>
+          <legend>What’s acting up</legend>
           <div class="svc-pick">
             
             <label class="pick"><input type="radio" name="service" value="Chest and upright freezers" required data-error="Pick the machine (or the closest one)."><span>Chest and upright freezers</span></label>
@@ -1262,7 +1322,7 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
         <fieldset data-step>
           <legend>The details</legend>
           <label class="field"><span class="field__label">What is it doing?</span><textarea name="details" rows="3"></textarea></label>
-          <label class="field"><span class="field__label">Model number (on the tag, or "photo later")</span><input name="model" autocomplete="off"></label>
+          <label class="field"><span class="field__label">Model number (on the tag, or “photo later”)</span><input name="model" autocomplete="off"></label>
           <label class="field field--short"><span class="field__label">ZIP code</span><input name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" required></label>
         </fieldset>
         <fieldset data-step>
@@ -1287,7 +1347,7 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
           <button class="btn btn--primary" type="button" data-next data-js-only>Next<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
           <button class="btn btn--primary" type="submit" data-submit>Send my request</button>
         </div>
-        <p class="hint">We'll call you back to set up a visit.</p>
+        <p class="hint">We’ll call you back to set up a visit.</p>
       </form>
     </div>
   </div>
@@ -1314,8 +1374,8 @@ html:not(.sw-motion) .marquee .sw-marquee-group, html:not(.sw-js) .marquee { dis
       </nav>
       <div class="footer__small">
         <p>Sample website by Site Sledge. Business details are illustrative.</p>
-        <p>Drawings made for this page. © 2026 Prairie Pantry Appliance Repair</p>
-        <ul class="credits"></ul>
+        <p>Drawings made for this page, plus one credited archive photo. © 2026 Prairie Pantry Appliance Repair</p>
+        <ul class="credits"><li>Photo by Seattle Municipal Archives from Seattle, WA on <a href="https://commons.wikimedia.org/wiki/File:Seattle_City_Light_appliance_repairman,_1965.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li></ul>
       </div>
     </div>
   </div>

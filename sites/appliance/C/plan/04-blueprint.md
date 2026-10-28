@@ -1,5 +1,8 @@
 # appliance-C · Blueprint ("Freezer-Lid Tape List")
 
+## Round 1
+Elevate type + firstScreen: the h1 now names town + trade and sits on a tape strip as the first line of the lid, with the month marquee butted under it and the first tick landing at the end of the h1; every section heading became a dated entry (margin month + Literata italic + a tick that draws on entry) and the eyebrows were retired. Also: 9 new month vignettes (no repeats in the year story), one archive photo (hero-A1, cropped above the range panel so no logo shows) taped beside the services heading, review notes taped down in sequence and the 7th note set wide, thaw frost fills on entry, curly apostrophes and copy-1 replacements throughout.
+
 | # | id | tone | purpose (objection / path) | layout family | content (tokens) | media | hooks | entrance |
 |---|---|---|---|---|---|---|---|---|
 | 1 | #hero | t-paper | first 5 s: food + season, call/text | statement (centred) | kicker `{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}`, h1, lead, `[[call]]` + sms, proof line `{{hours\|today}}` · `{{proof.rating}}`/`{{proof.reviewCount}}` [[sample rating]] · diagnostic `{{proof.prices.0.from}}-{{proof.prices.0.to}}` [[sample pricing]]; tape marquee of 6 month entries (sig.) | drawn vignettes (sprite) | `data-hook="marquee"` | h1 line mask 70 ms, marquee slides in, first tick draws 0.9 s |
@@ -29,3 +32,6 @@
 - Story length: 12 months scrub as `--n: 5` (55svh × 5 + 100svh = 375svh), close to the concept's 12 × 22svh + 100svh; 12 × 55svh would be 7+ screens (LEARNINGS T10). Sticky stage inside the tall section; the scrub is created only in `gsap.matchMedia('(min-width: 640px)')`; < 640 the cards stack and tick on enter.
 - Repair-or-replace sits in #prices (the cost question: "what does it cost / is it worth it") rather than its own band, to stay at 10 sections.
 - Wheat #C9962E appears only on t-deep (ticks, labels, focus) and in vignette hatch; never as text on paper/light/mid.
+
+## Open issues
+- Year card "April" stays 5 letters: `tools/lib/banned.mjs` rule `apr` (`APR`, case-insensitive) blocks the month abbreviation "Apr" as "0% APR". A false positive. The builder may not edit tools; the orchestrator can make the rule case-sensitive (CHANGELOG + recheck).
