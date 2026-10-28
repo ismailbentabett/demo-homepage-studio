@@ -1,0 +1,194 @@
+/* hvac-B chat config, generated from sites/hvac/B/facts.json. Re-run tools/build.mjs after a reskin. */
+window.SiteChatConfig = {
+  "id": "hvac-B",
+  "side": "right",
+  "teaserDelay": 9000,
+  "theme": {
+    "tone": "light-led",
+    "motif": "ruler",
+    "shape": "sharp"
+  },
+  "biz": {
+    "name": "Wetbulb Heating & Cooling",
+    "short": "Wetbulb",
+    "initials": "WHC",
+    "slug": "wetbulb-heating-and-cooling",
+    "owner": "Tasha W.",
+    "tradeLabel": "Heating & Cooling",
+    "schemaType": "HVACBusiness",
+    "phone": "(713) 555-0105",
+    "phoneE164": "+17135550105",
+    "sms": true,
+    "email": "hello@wetbulb-heating-and-cooling.example",
+    "city": "Houston",
+    "state": "TX",
+    "stateName": "Texas",
+    "timezone": "America/Chicago",
+    "areas": [
+      "Bellaire",
+      "Pasadena",
+      "Sugar Land",
+      "Katy",
+      "Pearland",
+      "Spring",
+      "Cypress"
+    ],
+    "zips": [
+      "77005",
+      "77006",
+      "77007",
+      "77008",
+      "77019",
+      "77024",
+      "77025",
+      "77401",
+      "77502",
+      "77478",
+      "77449",
+      "77581",
+      "77379",
+      "77429"
+    ],
+    "hours": {
+      "mon": [
+        "07:00",
+        "18:00"
+      ],
+      "tue": [
+        "07:00",
+        "18:00"
+      ],
+      "wed": [
+        "07:00",
+        "18:00"
+      ],
+      "thu": [
+        "07:00",
+        "18:00"
+      ],
+      "fri": [
+        "07:00",
+        "18:00"
+      ],
+      "sat": [
+        "08:00",
+        "15:00"
+      ],
+      "sun": null
+    },
+    "emergency": true,
+    "timezoneLabel": "Central time"
+  },
+  "services": [
+    {
+      "name": "Humidity check with readings",
+      "short": "Humidity check",
+      "blurb": "Temperature, humidity and dew point measured in each room, then plotted on one chart."
+    },
+    {
+      "name": "Whole-home dehumidifiers",
+      "short": "Dehumidifiers",
+      "blurb": "A dehumidifier tied into your ducts pulls the clammy feel out without freezing the house."
+    },
+    {
+      "name": "AC repair",
+      "short": "AC repair",
+      "blurb": "No cooling or weak cooling diagnosed with gauges and a meter, explained in plain words."
+    },
+    {
+      "name": "Right-sized AC replacement",
+      "short": "New AC",
+      "blurb": "A room-by-room load calculation so the new unit runs long enough to dry the air."
+    },
+    {
+      "name": "Heat pump installation",
+      "short": "Heat pumps",
+      "blurb": "Variable-speed heat pumps that cool slowly, dry deeply and heat through Houston's freezes."
+    },
+    {
+      "name": "Evaporator coil cleaning",
+      "short": "Coil cleaning",
+      "blurb": "Dirty indoor coils cleaned so air moves across them and water drains instead of pooling."
+    },
+    {
+      "name": "Drain line and pan service",
+      "short": "Drain service",
+      "blurb": "Slime cleared, pans checked for rust, float switches tested before water reaches the ceiling."
+    },
+    {
+      "name": "Attic duct repair",
+      "short": "Duct repair",
+      "blurb": "Crushed or sweating attic ducts fixed and wrapped, so they stop dripping onto the drywall."
+    },
+    {
+      "name": "Furnace repair",
+      "short": "Heat repair",
+      "blurb": "Gas furnaces brought back for the few cold weeks, with a carbon monoxide reading noted."
+    }
+  ],
+  "prices": [
+    {
+      "item": "Diagnostic visit",
+      "from": "$89",
+      "to": "$150",
+      "note": "credited if you go ahead with the repair"
+    },
+    {
+      "item": "Humidity check with readings",
+      "from": "$120",
+      "to": "$195",
+      "note": "whole house, printed report"
+    },
+    {
+      "item": "Whole-home dehumidifier",
+      "from": "$2,200",
+      "to": "$3,900",
+      "note": "installed on existing ducts"
+    },
+    {
+      "item": "Evaporator coil cleaning",
+      "from": "$250",
+      "to": "$600",
+      "note": "depends on access"
+    },
+    {
+      "item": "3-ton heat pump system",
+      "from": "$9,500",
+      "to": "$15,500",
+      "note": "replacement with load calculation"
+    }
+  ],
+  "proof": {
+    "rating": 4.8,
+    "reviewCount": 276,
+    "years": null,
+    "license": "SAMPLE-TACLA-104477C",
+    "insured": true,
+    "guarantee": null,
+    "review": {
+      "text": "Thermostat said 72 and the house still felt like a swamp. Tasha measured a dew point of 64 in the bedroom and showed me on her chart why turning it down made it worse. The dehumidifier fixed it in a week.",
+      "name": "Priya S.",
+      "town": "Sugar Land"
+    }
+  },
+  "anchors": {
+    "contact": "contact",
+    "prices": "pricing"
+  },
+  "copy": {
+    "launcher": "Ask us",
+    "teaser": "Hi, need a price range or want to check if we cover your street? Ask me here.",
+    "placeholder": "Ask about prices, hours, your ZIP…",
+    "footnote": "Sample assistant on a demo site. Answers come from this page only.",
+    "formLink": "Use the full form",
+    "greeting": "Hi, I am the Wetbulb website assistant. I can answer the quick stuff: prices, hours, areas, and I can start a quote for you.",
+    "greeting2": "What can I help with?",
+    "chips": [
+      "Get a quote",
+      "Prices",
+      "Do you serve my area?",
+      "Hours",
+      "Talk to a person"
+    ]
+  }
+};
