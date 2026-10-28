@@ -4,6 +4,13 @@ Workspace changes that affect how sites are made. Newest first. Site deliveries 
 and `data/design-registry.json`, not here. Add an entry whenever a doc, agent, skill, command or
 tool changes behaviour.
 
+## 2026-10-28: credit links from the WordPress photo directory
+
+- `tools/check-static.mjs`: the photo-credit allowlist inside `ul.credits` now also accepts
+  `wordpress.org` (the WordPress Photo Directory, CC0). The fencedeck curator approved a photo from it
+  (`deck-boards`), and its required credit link was flagged as an outside address. Still only allowed
+  when the href is one of the page's own credit links.
+
 ## 2026-10-27: 17 new niches, phone groups G7-G10
 
 - New trades: tattoo, assembly (furniture assembly), autobody (auto body / collision and cosmetic
@@ -106,3 +113,6 @@ The sample-labels check matched a numeric fact (such as a rating of `4.8` or a c
 
 ## 2026-10-27: city pool reads every group
 - `tools/lib/niche.mjs` `cityPool()` only parsed table rows G1-G6, so every G7-G10 city failed validation. It now reads any `G<n>` row. The check was wrong, not the data.
+
+## 2026-10-28 — banned-word check: "Apr" false positive
+`tools/lib/banned.mjs` rule `apr` used `/\bAPR\b/gi`, so the month abbreviation "Apr" (e.g. a calendar card on appliance-C) was blocked as the loan term "0% APR". The bare `APR` alternative is now case-sensitive (uppercase only); "0% APR" in any case is still caught. The rule only got looser, so no delivered site can start failing; `tools/recheck-all.mjs` does not exist, so delivered sites were not re-run.

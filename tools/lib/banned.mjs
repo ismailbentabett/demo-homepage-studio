@@ -44,7 +44,7 @@ export const DEMO_RULES = [
   { id: "guarantee", label: "guarantee / guaranteed (only with proof.guarantee)", re: /\bguarantee(d|s)?\b/gi, unless: (f) => !!f?.proof?.guarantee },
   { id: "warranty", label: "warranty (only with proof.guarantee)", re: /\bwarrant(y|ies)\b/gi, unless: (f) => !!f?.proof?.guarantee },
   { id: "financing", label: "financing", re: /\bfinanc(ing|ed)\b/gi },
-  { id: "apr", label: "0% APR", re: /\b0\s?%\s*APR\b|\bAPR\b/gi },
+  { id: "apr", label: "0% APR", re: /\b0\s?%\s*[Aa][Pp][Rr]\b|\bAPR\b/g },
   { id: "24-7", label: "24/7", re: /\b24\s*\/\s*7\b|\b24-7\b|\b24 hours a day\b|\bround[- ]the[- ]clock\b/gi, unless: allDayEveryDay },
   { id: "same-day", label: "same-day", re: /\bsame[- ]day\b/gi },
   { id: "emergency", label: "emergency as a promise (only when biz.emergency is true)", re: /\bemergenc(y|ies)\b/gi, unless: (f) => f?.biz?.emergency === true },
