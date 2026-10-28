@@ -41,7 +41,30 @@
         SW.prefillForm(state, { focus: 'service' });
       });
       sizeIt();
+      var out = sizer.querySelector('[data-est-out]');
+      function splitPrice() {
+        var r = out && out.querySelector('.sw-est-range');
+        if (!r || r.querySelector('.tr__n')) return;
+        var t = r.textContent, k = t.indexOf(': ');
+        if (k < 0) return;
+        var item = t.slice(0, k), num = t.slice(k + 2).replace(' to ', '–');
+        r.textContent = '';
+        var a = document.createElement('span'); a.className = 'tr__item'; a.textContent = item;
+        var b = document.createElement('span'); b.className = 'tr__n'; b.textContent = num;
+        r.appendChild(a); r.appendChild(b);
+      }
+      if (out && 'MutationObserver' in window) new MutationObserver(splitPrice).observe(out, { childList: true });
+      splitPrice();
     }
+
+    /* ---------- services wall: point at a repair, its mark lights up ---------- */
+    var rw = document.querySelector('[data-rw]');
+    if (rw) Array.prototype.forEach.call(document.querySelectorAll('.svc'), function (row, i) {
+      function on() { rw.setAttribute('data-on', String(i)); }
+      function offRw() { rw.removeAttribute('data-on'); }
+      row.addEventListener('mouseenter', on); row.addEventListener('focusin', on);
+      row.addEventListener('mouseleave', offRw); row.addEventListener('focusout', offRw);
+    });
 
     /* ---------- crack & nail-pop timer ---------- */
     var timer = document.querySelector('[data-timer]');
@@ -118,29 +141,29 @@
         if (coats && wp) {
           var steps = coats.querySelectorAll('.step');
           var wpBlade = wp.querySelector('.blade');
-          var lab = coats.querySelector('[data-wp-label]'), coat = coats.querySelector('[data-wp-coat]');
-          var labels = ['Visit 1', 'Visit 1', 'Visit 1', 'Visits 2 and 3', 'Last visit'];
-          var coatsN = ['0', '0', '1', '3', '3'];
+          var lab = coats.querySelector('[data-wp-label]');
+          var labels = ['Visit 1 of 3 · cut and backed', 'Visit 1 of 3 · cut and backed', 'Visit 1 of 3 · taped', 'Visits 2 and 3 · coats 1 to 3', 'Last visit · primed'];
+          var stage = coats.querySelector('.coats__stage'), vid = coats.querySelector('.step__vid'), vidHome = vid ? vid.parentNode : null, vidCap = vid ? vid.nextElementSibling : null;
           var cur = -1;
           function setStep(s) {
             if (s === cur) return;
             cur = s;
             wp.setAttribute('data-s', String(s));
-            Array.prototype.forEach.call(steps, function (st, i) { st.classList.toggle('is-active', i === s - 1 || (s === 0 && i === 0)); });
+            Array.prototype.forEach.call(steps, function (st, i) { var a = s === 0 ? 0 : s - 1; st.classList.toggle('is-active', i === a); st.classList.toggle('is-passed', i < a); });
             if (lab) lab.textContent = labels[s];
-            if (coat) coat.textContent = coatsN[s];
             if (wpBlade && s > 0) g.fromTo(wpBlade, { opacity: 1, x: -wpBlade.offsetWidth }, { x: wp.offsetWidth + 4, duration: .7, ease: 'power2.inOut', overwrite: true, onComplete: function () { g.set(wpBlade, { opacity: 0 }); } });
           }
           var mm = g.matchMedia();
           mm.add('(min-width: 900px)', function () {
             coats.classList.add('is-pinned');
+            if (vid && stage) { vid.classList.add('stage__vid'); stage.appendChild(vid); if (vidCap) { vidCap.classList.add('stage__cap'); stage.appendChild(vidCap); } }
             setStep(0);
             var st = ScrollTrigger.create({
               trigger: coats, start: 'top top', end: 'bottom bottom',
               onUpdate: function (self) { var p = self.progress; setStep(p < .04 ? 0 : Math.min(4, Math.floor(p * 4) + 1)); }
             });
             ScrollTrigger.refresh();
-            return function () { st.kill(); coats.classList.remove('is-pinned'); Array.prototype.forEach.call(steps, function (x) { x.classList.remove('is-active'); }); cur = -1; };
+            return function () { st.kill(); coats.classList.remove('is-pinned'); if (vid && vidHome) { vid.classList.remove('stage__vid'); vidHome.appendChild(vid); if (vidCap) { vidCap.classList.remove('stage__cap'); vidHome.appendChild(vidCap); } } Array.prototype.forEach.call(steps, function (x) { x.classList.remove('is-active', 'is-passed'); }); cur = -1; };
           });
         }
 

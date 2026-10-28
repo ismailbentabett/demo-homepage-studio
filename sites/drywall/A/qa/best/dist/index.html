@@ -336,7 +336,9 @@ img{max-width:100%;height:auto;display:block}
 .seam::before{content:"";position:absolute;left:0;right:0;top:calc(var(--amp) * -1 + 1px);height:var(--amp);z-index:1;pointer-events:none;
   background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 70%,transparent),var(--bg) 55%);
   clip-path:polygon(0 100%,0 55%,3% 70%,6% 38%,10% 62%,14% 22%,18% 50%,22% 30%,27% 74%,31% 40%,35% 58%,40% 12%,44% 48%,48% 30%,53% 66%,57% 26%,61% 54%,66% 36%,70% 80%,74% 34%,79% 56%,83% 6%,87% 44%,91% 28%,95% 64%,98% 40%,100% 52%,100% 100%)}
-.seam--flat::before{display:none}
+.seam::after{content:"";position:absolute;left:0;right:0;top:calc(var(--amp) * -1 - 2px);height:calc(var(--amp) + 3px);z-index:0;pointer-events:none;background:rgba(29,35,39,.3);clip-path:polygon(0 100%,0 55%,3% 70%,6% 38%,10% 62%,14% 22%,18% 50%,22% 30%,27% 74%,31% 40%,35% 58%,40% 12%,44% 48%,48% 30%,53% 66%,57% 26%,61% 54%,66% 36%,70% 80%,74% 34%,79% 56%,83% 6%,87% 44%,91% 28%,95% 64%,98% 40%,100% 52%,100% 100%)}
+.seam > *{position:relative;z-index:2}
+.seam--flat::before,.seam--flat::after{display:none}
 
 /* ---------- signature: the blade ---------- */
 .blade{position:absolute;top:0;bottom:0;left:0;width:clamp(64px,7vw,110px);pointer-events:none;z-index:4;opacity:0;will-change:transform}
@@ -377,7 +379,7 @@ img{max-width:100%;height:auto;display:block}
 }
 
 /* ---------- hero ---------- */
-.hero{position:relative;min-height:calc(100svh - var(--header-h));display:flex;align-items:center;overflow:clip;
+.hero{position:relative;min-height:calc(100svh - var(--header-h) - 56px);display:flex;align-items:center;overflow:clip;
   background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 1px,transparent 1px 7px),radial-gradient(120% 90% at 20% 0%,#DEDFDB,#D5D6D2 60%,#CBCDC8);
   --gp:1;--hf:1}
 .sw-motion .hero{--gp:0;--hf:0}
@@ -391,6 +393,7 @@ img{max-width:100%;height:auto;display:block}
 .proof-line{list-style:none;padding:0;margin:var(--s-5) 0 0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:var(--fs--1);color:var(--muted)}
 .proof-line li{display:inline-flex;align-items:center;gap:6px}
 .proof-line{flex-direction:column;gap:4px}
+.hero .proof-line{margin-top:var(--s-6)}
 @media (min-width:640px){.proof-line{flex-direction:row;gap:6px 18px}.proof-line li+li::before{content:"·";margin-right:12px;margin-left:-6px;color:var(--mud)}
 }
 .proof-line b{color:var(--ink);font-family:var(--f-display);font-variant-numeric:tabular-nums}
@@ -412,13 +415,21 @@ img{max-width:100%;height:auto;display:block}
 .tape--l{left:-9px;transform:rotate(.5deg)}.tape--r{right:-9px;transform:rotate(-.4deg)}
 .patch__cap{position:relative;z-index:3;margin-top:var(--s-4);font-size:var(--fs--1);color:var(--muted)}
 .blade--hero{top:0;bottom:0}
+@media (max-width:899px){
+  .hero{align-items:flex-start}
+  .hero__grid{gap:var(--s-5);padding-block:var(--s-5) var(--s-7)}
+  .patch{order:-1;justify-self:stretch;width:auto;margin:10px 10px 0}
+  .patch__frame{aspect-ratio:5/2}
+  .patch__frame img{object-position:40% 38%}
+  .patch__halo{inset:-14px;box-shadow:0 0 14px 8px #E6E2D8}
+  .patch__cap{position:absolute;left:8px;bottom:8px;margin:0;z-index:4;background:#F3F0E8;color:#1D2327;padding:3px 8px;font-size:13px}
+}
 
 @media (min-width:640px){
   .hero__actions .btn{flex:0 0 auto}
-  .patch{width:min(70%,460px)}
 }
 @media (min-width:900px){
-  .hero__grid{grid-template-columns:repeat(12,minmax(0,1fr));align-items:center;padding-block:var(--s-7) var(--s-9)}
+  .hero__grid{grid-template-columns:repeat(12,minmax(0,1fr));align-items:center;padding-block:var(--s-6) var(--s-8)}
   .hero__text{grid-column:1 / span 8;grid-row:1}
   .patch{grid-column:8 / -1;grid-row:1;width:min(100%,calc((100svh - var(--header-h) - 200px) * .8),460px);transform:rotate(-1.2deg);margin-top:var(--s-5)}
   .patch__frame{aspect-ratio:4/5}
@@ -433,16 +444,38 @@ img{max-width:100%;height:auto;display:block}
 .services{padding-block:var(--pad)}
 .services__grid{display:grid;gap:var(--s-7)}
 .svc-list{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
-.svc{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:var(--s-2) var(--s-4);padding:var(--s-5) 0;border-bottom:1px solid var(--rule)}
+.svc{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s-2) var(--s-4);padding:var(--s-5) 0;border-bottom:1px solid var(--rule)}
 .svc__n{font-family:var(--f-display);font-weight:700;font-size:var(--fs--1);font-variant-numeric:tabular-nums;color:var(--muted);padding-top:.3em}
 .svc__body p{color:var(--muted);margin-top:var(--s-2);font-size:var(--fs-0)}
-.svc__go{grid-column:2;justify-self:start}
+.svc__go{justify-self:start}
+.svc{transition:background-color var(--t-ui)}
+@media (hover:hover){ .svc:hover{background:linear-gradient(90deg,#E6E2D8,transparent 70%)} }
+.rw,.rw__cap{display:none}
 @media (min-width:900px){
   .services__grid{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s-8)}
   .services__head{position:sticky;top:calc(var(--header-h) + 48px);align-self:start}
-  .svc{grid-template-columns:3rem minmax(0,1fr) auto;align-items:start}
-  .svc__go{grid-column:3;grid-row:1;align-self:center}
+  .svc{grid-template-columns:minmax(0,1fr) auto;align-items:start;padding-inline:var(--s-3)}
+  .svc__go{grid-column:2;grid-row:1;align-self:center}
+  .rw{display:block;position:relative;margin-top:var(--s-7);height:clamp(300px,calc(100svh - var(--header-h) - 400px),440px);overflow:hidden;border:1px solid #A7ACAA;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 1px,transparent 1px 7px),radial-gradient(circle at 30% 70%,rgba(125,139,145,.3) 0 2px,transparent 3px) 0 0/23px 19px,linear-gradient(170deg,#D5D6D2,#C7C9C4)}
+  .rw__cap{display:block;margin-top:var(--s-3);font-size:var(--fs--1);color:var(--muted)}
 }
+
+/* services wall: smooth above the knife, rough below */
+.rw__smooth{position:absolute;left:0;right:0;top:0;height:26%;background:linear-gradient(115deg,#F6F4EE,#ECE9E2 60%,#E6E2D8);clip-path:polygon(0 0,100% 0,100% 92%,88% 100%,72% 94%,55% 100%,38% 93%,20% 99%,0 94%)}
+.rw__knife{position:absolute;left:8%;right:22%;top:calc(26% - 22px);height:30px;transform:rotate(-1.5deg)}
+.rw__steel{position:absolute;inset:0 0 0 0;background:linear-gradient(180deg,#EEF1F2,#B5BFC2 55%,#8E999D);clip-path:polygon(0 100%,4% 0,96% 0,100% 100%);box-shadow:0 3px 6px rgba(22,40,42,.25)}
+.rw__grip{position:absolute;left:50%;top:-34px;width:26px;height:36px;margin-left:-13px;background:#0E5C4C;border:2px solid #1D2327}
+.rw__m{position:absolute;transition:box-shadow var(--t-ui),transform var(--t-ui)}
+.rw__m--0{left:16%;top:44%;width:34px;height:30px;background:#2A3033;box-shadow:inset 4px 4px 7px rgba(0,0,0,.5);clip-path:polygon(12% 8%,40% 0,62% 14%,90% 6%,100% 38%,86% 62%,98% 90%,64% 100%,40% 86%,10% 96%,0 64%,14% 40%)}
+.rw__m--1{left:52%;top:36%;width:96px;height:64px;border-radius:50%;background:radial-gradient(closest-side,rgba(150,120,70,.0) 55%,rgba(150,120,70,.35) 70%,rgba(150,120,70,0) 100%)}
+.rw__m--2{left:72%;top:30%;width:3px;height:56%;background:linear-gradient(#5D676B,#5D676B) 0 0/1px 100% no-repeat;box-shadow:0 0 0 0 transparent}
+.rw__m--3{left:30%;top:66%;width:80px;height:46px;background:radial-gradient(circle,rgba(255,255,255,.85) 0 1.2px,transparent 2px) 0 0/7px 7px,radial-gradient(circle,rgba(93,103,107,.5) 0 1.2px,transparent 2px) 3px 4px/8px 8px}
+.rw__m--4{left:8%;top:78%;width:60px;height:24px;background:radial-gradient(circle,#5D676B 0 2px,transparent 2.6px) 0 0/20px 12px}
+.rw__m--5{left:44%;top:30%;width:70px;height:2px;background:#5D676B;transform:rotate(-14deg)}
+.rw__m--6{right:0;top:52%;width:14px;height:40px;background:linear-gradient(90deg,#B5BFC2,#7D8B91);clip-path:polygon(0 0,100% 0,100% 100%,0 100%,40% 50%)}
+.rw__m--7{left:58%;top:80%;width:90px;height:22px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.6),rgba(255,255,255,0))}
+.rw[data-on="0"] .rw__m--0,.rw[data-on="1"] .rw__m--1,.rw[data-on="2"] .rw__m--2,.rw[data-on="3"] .rw__m--3,.rw[data-on="4"] .rw__m--4,.rw[data-on="5"] .rw__m--5,.rw[data-on="6"] .rw__m--6,.rw[data-on="7"] .rw__m--7{outline:2px solid #0E5C4C;outline-offset:8px}
 
 /* ---------- coats story ---------- */
 .coats{padding-block:var(--pad)}
@@ -454,10 +487,15 @@ img{max-width:100%;height:auto;display:block}
 .step__visit{font-family:var(--f-display);font-weight:700;font-size:var(--fs--1);letter-spacing:.08em;text-transform:uppercase;color:#0E5C4C;margin-bottom:var(--s-2)}
 .step h3{margin-bottom:var(--s-3)}
 .step p{color:#50595D}
-.step__vid{margin:var(--s-5) 0 0;position:relative;aspect-ratio:16/9;overflow:hidden;max-width:420px;background:#7D8B91}
+.step__vid{margin:var(--s-5) 0 0;position:relative;aspect-ratio:4/3;overflow:hidden;background:#7D8B91}
 .step__vid video{width:100%;height:100%;object-fit:cover;object-position:50% 40%;filter:var(--grade)}
 .step .step__cap{font-size:var(--fs--1);margin-top:var(--s-2)}
-.vid-btn{position:absolute;right:8px;bottom:8px;min-height:44px;padding:0 14px;font:600 13px/1 var(--f-text);background:rgba(22,40,42,.85);color:#F3F0E8;border:0;cursor:pointer}
+.vid-btn{position:absolute;right:8px;top:8px;width:44px;height:44px;padding:0;font-size:0;line-height:0;color:transparent;background:rgba(22,40,42,.85);border:0;cursor:pointer;overflow:hidden}
+.vid-btn::before,.vid-btn::after{content:"";position:absolute;top:14px;width:5px;height:16px;background:#F3F0E8}
+.vid-btn::before{left:15px}.vid-btn::after{right:15px}
+.vid-btn[aria-pressed="true"]::before{left:16px;width:0;height:0;background:none;border-style:solid;border-width:8px 0 8px 14px;border-color:transparent transparent transparent #F3F0E8}
+.vid-btn[aria-pressed="true"]::after{display:none}
+.vid-btn:focus-visible{outline:3px solid #E0C98F;outline-offset:-3px}
 @media (min-width:640px){ .steps{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (min-width:1100px){ .steps{grid-template-columns:repeat(4,minmax(0,1fr))} }
 
@@ -497,14 +535,23 @@ img{max-width:100%;height:auto;display:block}
   .coats.is-pinned .coats__head h2{font-size:var(--fs-3)}
   .coats.is-pinned .coats__stage{display:block;grid-column:2;grid-row:1 / span 2;align-self:center;justify-self:center;width:min(100%,520px,calc(100svh - var(--header-h) - 200px))}
   .coats.is-pinned .steps{grid-column:1;grid-row:2;grid-template-columns:1fr;gap:0}
-  .coats.is-pinned .step{background:none;border:0;border-top:1px solid var(--rule);padding:var(--s-3) 0;opacity:.45;transition:opacity var(--t-ui)}
+  .coats.is-pinned .steps{gap:6px}
+  .coats.is-pinned .step{border:1px solid #A7ACAA;padding:var(--s-3) var(--s-4);background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 1px,transparent 1px 6px),#D5D6D2;transition:background-color var(--t-ui)}
+  .coats.is-pinned .step .step__visit{color:#1D2327}
+  .coats.is-pinned .step.is-passed{background:#F3F0E8;border-color:#D3CEC2}
+  .coats.is-pinned .step.is-passed .step__visit{color:#0E5C4C}
+  .coats.is-pinned .step.is-active{background:#FFFFFF;border-color:#1D2327;box-shadow:inset 4px 0 0 #0E5C4C}
+  .coats.is-pinned .step.is-active .step__visit{color:#0E5C4C}
+  .coats.is-pinned .coats__stage{position:relative}
+  .coats.is-pinned .stage__vid{position:absolute;right:-28px;bottom:44px;width:58%;aspect-ratio:4/3;max-width:none;margin:0;z-index:5;border:2px solid #1D2327;box-shadow:0 0 0 10px rgba(224,201,143,.9),var(--shadow);transform:rotate(1.4deg);opacity:0;visibility:hidden;transition:opacity var(--t-page) var(--ease-out),visibility var(--t-page)}
+  .coats.is-pinned .coats__stage:has(.wp[data-s="3"]) .stage__vid{opacity:1;visibility:visible}
+  .coats.is-pinned .stage__cap{position:absolute;right:-28px;bottom:4px;margin:0;font-size:var(--fs--1);color:#50595D;opacity:0;transition:opacity var(--t-page)}
+  .coats.is-pinned .coats__stage:has(.wp[data-s="3"]) .stage__cap{opacity:1}
   .coats.is-pinned .step .wp--mini{display:none}
   .coats.is-pinned .step h3{margin:0}
   .coats.is-pinned .step__visit{margin-bottom:2px}
   .coats.is-pinned .step > p:not(.step__visit),.coats.is-pinned .step__vid{display:none}
-  .coats.is-pinned .step.is-active{opacity:1}
   .coats.is-pinned .step.is-active > p:not(.step__visit){display:block;margin-top:var(--s-2)}
-  .coats.is-pinned .step.is-active .step__vid{display:block;max-width:300px;margin-top:var(--s-3)}
 }
 
 /* ---------- break ---------- */
@@ -533,7 +580,7 @@ img{max-width:100%;height:auto;display:block}
 select,input[type="text"],input[type="tel"],input[type="email"],input:not([type]),textarea{width:100%;min-height:52px;padding:10px 14px;font:inherit;color:#1D2327;background:#FFFFFF;border:1px solid #50595D;border-radius:2px}
 textarea{min-height:96px}
 .tool__out{display:grid;gap:var(--s-4);margin-top:var(--s-6);padding-top:var(--s-6);border-top:2px solid #1D2327}
-.sketch{position:relative;height:120px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.14) 0 1px,transparent 1px 6px),#D5D6D2;overflow:hidden;--hs:22%}
+.sketch{position:relative;height:180px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.14) 0 1px,transparent 1px 6px),#D5D6D2;overflow:hidden;--hs:22%}
 .sketch[data-surface="ceiling"]{background:linear-gradient(#C7C2B6 0 10px,transparent 10px),repeating-linear-gradient(0deg,rgba(255,255,255,.14) 0 1px,transparent 1px 6px),#D5D6D2}
 .sketch[data-finish="textured"]::before{content:"";position:absolute;inset:0;background:radial-gradient(circle,rgba(255,255,255,.6) 0 1px,transparent 1.6px) 0 0/7px 7px,radial-gradient(circle,rgba(125,139,145,.4) 0 1px,transparent 1.8px) 3px 4px/9px 9px}
 .sketch__hole{position:absolute;left:50%;top:50%;height:var(--hs);aspect-ratio:1;transform:translate(-50%,-50%);background:#2A3033;box-shadow:0 0 0 6px rgba(224,201,143,.9),0 0 0 18px rgba(230,226,216,.8);transition:height var(--t-page) var(--ease-out)}
@@ -541,6 +588,9 @@ textarea{min-height:96px}
 .sketch[data-size="door"] .sketch__hole{aspect-ratio:.5}
 .tool__range{font-family:var(--f-display);font-weight:800;font-size:var(--fs-2);letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
 .tool__range span{background:none!important}
+.tool__range .sw-est-range{display:block}
+.tr__item{display:block;font-family:var(--f-text);font-weight:600;font-size:var(--fs-1);letter-spacing:0;line-height:1.3}
+.tr__n{display:block;margin-top:4px;font-size:var(--fs-4);letter-spacing:-.035em;line-height:1;white-space:nowrap}
 .tool__range .sw-est-note{display:block;font-family:var(--f-text);font-weight:400;font-size:var(--fs--1);color:#50595D;letter-spacing:0}
 .tool__range .sample-tag{font-size:13px;margin-left:0;margin-top:6px}
 .tool__visits{color:#50595D}
@@ -581,7 +631,10 @@ textarea{min-height:96px}
 .sw--peel{background:radial-gradient(circle at 40% 40%,rgba(255,255,255,.9) 0 1.2px,transparent 2px) 0 0/8px 8px,radial-gradient(circle,rgba(125,139,145,.5) 0 1.3px,transparent 2.2px) 4px 5px/9px 9px,radial-gradient(circle,rgba(125,139,145,.3) 0 1px,transparent 1.8px) 2px 1px/6px 7px,#E6E2D8}
 .sw--knock{background:radial-gradient(ellipse 14px 9px at 30% 40%,#F6F4EE 60%,transparent 64%) 0 0/52px 40px,radial-gradient(ellipse 11px 7px at 70% 70%,#F3F0E8 60%,transparent 64%) 0 0/52px 40px,radial-gradient(ellipse 16px 10px at 60% 20%,rgba(125,139,145,.28) 55%,transparent 62%) 10px 6px/60px 46px,radial-gradient(ellipse 9px 6px at 20% 80%,#F6F4EE 60%,transparent 64%) 20px 10px/44px 36px,#DCD8CE}
 .sw--skip{background:radial-gradient(ellipse 34px 9px at 50% 50%,#F6F4EE 55%,transparent 60%) 0 0/70px 34px,radial-gradient(ellipse 26px 7px at 50% 50%,rgba(125,139,145,.25) 50%,transparent 58%) 35px 17px/70px 34px,radial-gradient(ellipse 20px 6px at 50% 50%,#EFECE5 55%,transparent 60%) 12px 24px/56px 40px,#E2DED4}
-.tex__board.sw--smooth{background:linear-gradient(110deg,#FBFAF6,#ECE9E2 50%,#D9D5CB)}
+.tex__board{position:relative;overflow:hidden}
+.tex__board::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.55),rgba(255,255,255,0) 35%,rgba(29,35,39,0) 65%,rgba(29,35,39,.16))}
+.tex__board.sw--smooth{background:linear-gradient(90deg,transparent 38%,rgba(29,35,39,.09) 38.4%,rgba(255,255,255,.85) 39%,transparent 40.5%,transparent 58%,rgba(255,255,255,.75) 58.6%,rgba(29,35,39,.1) 59.2%,transparent 60%),repeating-linear-gradient(180deg,rgba(29,35,39,.03) 0 2px,transparent 2px 9px),linear-gradient(90deg,transparent 41%,rgba(224,201,143,.25) 43%,rgba(224,201,143,.25) 56%,transparent 58%),linear-gradient(110deg,#FBFAF6,#ECE9E2 50%,#D9D5CB)}
+.tex__board.sw--smooth::before{content:"Taped seam under a side light";position:absolute;left:12px;bottom:12px;z-index:1;font:600 13px/1 var(--f-text);background:#F3F0E8;color:#1D2327;padding:5px 8px}
 .texture__foot{display:grid;gap:var(--s-5);margin-top:var(--s-7);padding-top:var(--s-6);border-top:1px solid var(--rule);align-items:center}
 .pull p{font-size:var(--fs-1);line-height:1.4}
 .pull footer{margin-top:var(--s-3);font-size:var(--fs--1);color:#50595D}
@@ -596,13 +649,13 @@ blockquote{margin:0}
 .proof__rate{margin-top:var(--s-4);font-size:var(--fs-1)}
 .proof__rate b{font-family:var(--f-display);font-size:var(--fs-3);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .boards{display:grid;gap:var(--s-5)}
-.board{position:relative;overflow:hidden;isolation:isolate;margin:0;background:#FFFFFF;border:1px solid var(--rule);padding:var(--s-6) var(--s-5) var(--s-5) calc(var(--s-5) + 36px)}
-.board .sample-tag{margin:0 0 var(--s-4);color:#50595D}
+.board{position:relative;overflow:hidden;isolation:isolate;margin:0;background:#FFFFFF;border:1px solid var(--rule);padding:var(--s-5) calc(var(--s-5) + 56px) var(--s-5) var(--s-5);display:flex;flex-direction:column;align-items:flex-start}
+.board .sample-tag{margin:0 0 var(--s-4);color:#50595D;width:max-content}
 .board blockquote p{font-size:var(--fs-0);line-height:1.5}
 .board figcaption{margin-top:var(--s-4);font-size:var(--fs--1);color:#50595D}
 .board figcaption b{color:#1D2327}
 .board figcaption span{display:block}
-.board__sw{position:absolute;left:0;top:0;width:28px;height:28px;border-right:1px solid #A7ACAA;border-bottom:1px solid #A7ACAA}
+.board__sw{position:absolute;right:16px;top:16px;width:40px;height:40px;border:1px solid #A7ACAA;box-shadow:inset 0 0 0 3px #FFFFFF,0 1px 0 rgba(29,35,39,.12)}
 .board--1 .board__sw{background:radial-gradient(ellipse 6px 4px at 40% 40%,#FFF 60%,transparent 64%) 0 0/14px 12px,#DCD8CE}
 .board--2 .board__sw{background:radial-gradient(circle,rgba(125,139,145,.55) 0 1px,transparent 1.8px) 0 0/5px 5px,#E6E2D8}
 .board--3 .board__sw{background:linear-gradient(120deg,#FBFAF6,#DCD8CE)}
@@ -610,25 +663,25 @@ blockquote{margin:0}
 .board::after{content:"";position:absolute;inset:0 auto 0 0;width:60%;z-index:-1;background:linear-gradient(90deg,transparent,rgba(213,214,210,.45) 70%,transparent);transform:translateX(-110%);transition:transform 0s}
 @media (hover:hover){ .board:hover::after{transform:translateX(190%);transition:transform 700ms var(--ease-io)} }
 .board--1 blockquote p{font-size:var(--fs-1);line-height:1.4}
-.board--promise{background:#16282A;color:#F3F0E8;border-color:#16282A;padding:var(--s-6) var(--s-5)}
+.board--promise{background:#16282A;color:#F3F0E8;border-color:#16282A;padding:var(--s-6) var(--s-5);justify-content:center}
 .board__k{font-family:var(--f-display);font-weight:700;font-size:var(--fs--1);letter-spacing:.08em;text-transform:uppercase;color:#E0C98F}
 .board__k .sample-tag{color:#E0C98F;margin-left:8px}
 .board__big{margin-top:var(--s-4);font-family:var(--f-display);font-weight:750;font-size:var(--fs-2);letter-spacing:-.02em;line-height:1.15}
 @media (min-width:640px){ .boards{grid-template-columns:repeat(2,minmax(0,1fr))} .board--1{grid-column:1 / -1} }
 @media (min-width:1100px){
-  .boards{grid-template-columns:repeat(12,minmax(0,1fr));align-items:start}
-  .board--1{grid-column:1 / span 5;grid-row:1 / span 2;aspect-ratio:1;display:flex;flex-direction:column;justify-content:center}
-  .board--2{grid-column:6 / span 4;grid-row:1}
-  .board--3{grid-column:10 / span 3;grid-row:1;margin-top:var(--s-7)}
-  .board--4{grid-column:6 / span 3;grid-row:2}
-  .board--promise{grid-column:9 / span 4;grid-row:2;margin-top:var(--s-5)}
+  .boards{grid-template-columns:repeat(12,minmax(0,1fr));align-items:stretch}
+  .board--1{grid-column:1 / span 7;grid-row:1}
+  .board--2{grid-column:8 / span 5;grid-row:1}
+  .board--3{grid-column:1 / span 4;grid-row:2}
+  .board--4{grid-column:5 / span 4;grid-row:2}
+  .board--promise{grid-column:9 / span 4;grid-row:2}
 }
 
 /* ---------- timer ---------- */
 .timer{padding-block:var(--pad)}
 .timer__grid{display:grid;gap:var(--s-7)}
 .timer .kicker{color:#E0C98F}
-.timer__rules{list-style:none;margin:var(--s-6) 0 0;padding:0;display:grid;gap:var(--s-4)}
+.timer .timer__rules{list-style:none;margin:var(--s-6) 0 0;padding:0;display:grid;gap:var(--s-4)}
 .timer__rules li{padding-left:var(--s-5);border-left:2px solid #E0C98F}
 .timer__rules b{font-family:var(--f-display)}
 .console{border:1px solid rgba(243,240,232,.45);padding:var(--s-5)}
@@ -641,7 +694,7 @@ blockquote{margin:0}
 /* ---------- area ---------- */
 .area{padding-block:var(--pad)}
 .area__grid{display:grid;gap:var(--s-7)}
-.towns{list-style:none;margin:var(--s-6) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 0;font-family:var(--f-display);font-weight:800;font-size:var(--fs-2);letter-spacing:-.025em;line-height:1.2}
+.area .towns{list-style:none;margin:var(--s-6) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 0;font-family:var(--f-display);font-weight:800;font-size:var(--fs-2);letter-spacing:-.025em;line-height:1.2}
 .towns li:not(:last-child)::after{content:"·";margin:0 .35em;color:#7D8B91}
 .towns li:first-child{color:#0E5C4C}
 .zip{background:#FFFFFF;border:1px solid var(--rule);padding:var(--s-5)}
@@ -707,10 +760,11 @@ blockquote{margin:0}
 @media (min-width:900px){ .footer{padding-bottom:var(--s-8)} .footer__cols{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr)} }
 
 /* ---------- mobile bar ---------- */
-.mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:1fr 1fr 1.3fr;background:#16282A;box-shadow:var(--shadow);padding-bottom:env(safe-area-inset-bottom);transition:transform var(--t-page) var(--ease-out)}
+.mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.6fr);background:#16282A;box-shadow:var(--shadow);padding-bottom:env(safe-area-inset-bottom);transition:transform var(--t-page) var(--ease-out)}
 .mobile-bar.is-hidden{transform:translateY(110%)}
 .mb{display:flex;align-items:center;justify-content:center;gap:8px;min-height:64px;color:#F3F0E8;text-decoration:none;font-family:var(--f-display);font-weight:700;border-right:1px solid #2E4244}
-.mb--go{background:#7FC7BF;color:#16282A;border:0}
+.mb--go{background:#7FC7BF;color:#16282A;border:0;white-space:nowrap;padding:0 8px}
+@media (max-width:389px){ .mb{font-size:15px;gap:6px} }
 .mb:focus-visible{outline:3px solid #7FC7BF;outline-offset:-3px}
 @media (min-width:900px){ .mobile-bar{display:none} }
 
@@ -756,13 +810,13 @@ blockquote{margin:0}
     </a>
     <nav class="nav" aria-label="Primary">
       <a href="#coats">How it’s done</a>
-      <a href="#sizer">Price my patch</a>
+      <a href="#sizer">Patch sizer</a>
       <a href="#texture">Texture</a>
       <a href="#area">Area &amp; hours</a>
     </nav>
     <div class="header__cta">
       <a class="header__tel" href="tel:+17175550161"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>(717) 555-0161</span></a>
-      <a class="btn btn-primary header__quote" href="#contact">Price it</a>
+      <a class="btn btn-primary header__quote" href="#contact">Price my patch</a>
       <button class="menu-btn" type="button" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span></button>
     </div>
   </div>
@@ -772,10 +826,10 @@ blockquote{margin:0}
   <div class="menu__inner">
     <a href="#services">What we fix</a>
     <a href="#coats">How it’s done</a>
-    <a href="#sizer">Price my patch</a>
+    <a href="#sizer">Patch sizer</a>
     <a href="#texture">Texture match</a>
     <a href="#area">Area &amp; hours</a>
-    <a href="#contact">Price it</a>
+    <a href="#contact">Price my patch</a>
     <p class="menu__tel"><a class="tel-plain" href="tel:+17175550161">(717) 555-0161</a></p>
   </div>
 </nav>
@@ -787,7 +841,7 @@ blockquote{margin:0}
   <div class="hero__grid wrap">
     <div class="hero__text">
       <p class="kicker">Drywall repair · Harrisburg, PA</p>
-      <h1 id="hero-title"><span class="h1__chip">Patches that disappear under paint.</span></h1>
+      <h1 id="hero-title"><span class="h1__chip">Harrisburg drywall patches that vanish under paint.</span></h1>
       <p class="hero__lead">Cut it square, back it, tape it, three coats. A photo after each one, then a wall your painter can’t find the patch in.</p>
       <div class="hero__actions">
         <a class="btn btn-call btn-primary" href="tel:+17175550161"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (717) 555-0161</span></a>
@@ -801,7 +855,7 @@ blockquote{margin:0}
     </div>
     <div class="patch" data-patch>
       <span class="patch__halo" aria-hidden="true"></span>
-      <figure class="frame patch__frame" data-fallback="Close-up of a gloved hand applying plaster to a wall indoors in Falun, Sweden."><img src="media/hero-A1-1170.webp" srcset="media/hero-A1-1170.webp 1170w, media/hero-A1.webp 2340w" sizes="100vw" alt="Close-up of a gloved hand applying plaster to a wall indoors in Falun, Sweden." width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-A1" data-slot="hero"></figure>
+      <figure class="frame patch__frame" data-fallback="Gloved hand pressing a taping knife along a fresh drywall seam beside bare board"><img src="media/hero-A1-1170.webp" srcset="media/hero-A1-1170.webp 1170w, media/hero-A1.webp 2340w" sizes="100vw" alt="Gloved hand pressing a taping knife along a fresh drywall seam beside bare board" width="1170" height="780" fetchpriority="high" decoding="async" data-photo="hero-A1" data-slot="hero"></figure>
       <span class="tape tape--t" aria-hidden="true"></span>
       <span class="tape tape--r" aria-hidden="true"></span>
       <span class="tape tape--b" aria-hidden="true"></span>
@@ -812,97 +866,94 @@ blockquote{margin:0}
   <span class="blade blade--hero" aria-hidden="true"><span class="blade__h"></span></span>
 </section>
 
-<section id="services" class="services t-paper seam" style="--amp:13px" data-layout="ruled-index" aria-labelledby="svc-title">
+<section id="services" class="services t-paper seam" style="--amp:16px" data-layout="ruled-index" aria-labelledby="svc-title">
   <div class="wrap services__grid">
     <div class="services__head">
-      <p class="kicker">What we fix</p>
-      <h2 id="svc-title">One wall problem at a time.</h2>
+            <h2 id="svc-title">One wall problem at a time.</h2>
       <p class="lead">Most calls are one hole, one stain or one crack. Each one gets the same steps a new wall gets.</p>
+      <div class="rw" data-rw aria-hidden="true">
+        <span class="rw__smooth"></span>
+        <span class="rw__knife"><span class="rw__steel"></span><span class="rw__grip"></span></span>
+        <span class="rw__m rw__m--0"></span><span class="rw__m rw__m--1"></span><span class="rw__m rw__m--2"></span><span class="rw__m rw__m--3"></span>
+        <span class="rw__m rw__m--4"></span><span class="rw__m rw__m--5"></span><span class="rw__m rw__m--6"></span><span class="rw__m rw__m--7"></span>
+      </div>
+      <p class="rw__cap">Drawing: the wall before the knife. Point at a repair to find its mark.</p>
     </div>
     <ol class="svc-list" role="list" data-reveal-stagger>
       
       <li class="svc">
-        <span class="svc__n">01</span>
         <div class="svc__body">
           <h3 class="svc__name">Hole and dent patches</h3>
           <p>Doorknob holes, anchor holes and dents cut square, backed, taped and feathered until you cannot find them.</p>
         </div>
-        <a class="btn btn-text svc__go" href="#contact" data-service="Patches">Price it</a>
+        <a class="btn btn-text svc__go" href="#contact" data-service="Patches">Price this repair</a>
       </li>
       
       <li class="svc">
-        <span class="svc__n">02</span>
         <div class="svc__body">
           <h3 class="svc__name">Water-damaged ceilings and walls</h3>
           <p>Wet board cut out past the stain, dried, replaced and finished so the ceiling reads as one plane.</p>
         </div>
-        <a class="btn btn-text svc__go" href="#contact" data-service="Water damage">Price it</a>
+        <a class="btn btn-text svc__go" href="#contact" data-service="Water damage">Price this repair</a>
       </li>
       
       <li class="svc">
-        <span class="svc__n">03</span>
         <div class="svc__body">
           <h3 class="svc__name">Taping and finishing</h3>
           <p>Seams and corners taped, three coats of mud, sanded flat and ready for your painter.</p>
         </div>
-        <a class="btn btn-text svc__go" href="#contact" data-service="Taping">Price it</a>
+        <a class="btn btn-text svc__go" href="#contact" data-service="Taping">Price this repair</a>
       </li>
       
       <li class="svc">
-        <span class="svc__n">04</span>
         <div class="svc__body">
           <h3 class="svc__name">Texture matching</h3>
           <p>Orange peel, knockdown or smooth: a test board first, so the patch blends with the old wall.</p>
         </div>
-        <a class="btn btn-text svc__go" href="#contact" data-service="Texture match">Price it</a>
+        <a class="btn btn-text svc__go" href="#contact" data-service="Texture match">Price this repair</a>
       </li>
       
       <li class="svc">
-        <span class="svc__n">05</span>
         <div class="svc__body">
           <h3 class="svc__name">New walls and basements</h3>
           <p>Board hung, screwed on a tight pattern, taped and finished for a finished basement or new room.</p>
         </div>
-        <a class="btn btn-text svc__go" href="#contact" data-service="Hang &amp; finish">Price it</a>
+        <a class="btn btn-text svc__go" href="#contact" data-service="Hang &amp; finish">Price this repair</a>
       </li>
       
       <li class="svc">
-        <span class="svc__n">06</span>
         <div class="svc__body">
           <h3 class="svc__name">Ceiling repair</h3>
           <p>Sagging, cracked or stained ceiling panels fixed with the right board and a flat, even finish.</p>
         </div>
-        <a class="btn btn-text svc__go" href="#contact" data-service="Ceilings">Price it</a>
+        <a class="btn btn-text svc__go" href="#contact" data-service="Ceilings">Price this repair</a>
       </li>
       
       <li class="svc">
-        <span class="svc__n">07</span>
         <div class="svc__body">
           <h3 class="svc__name">Corner bead and arches</h3>
           <p>Dented outside corners rebuilt and curved arches finished with flexible bead and clean lines.</p>
         </div>
-        <a class="btn btn-text svc__go" href="#contact" data-service="Corners &amp; arches">Price it</a>
+        <a class="btn btn-text svc__go" href="#contact" data-service="Corners &amp; arches">Price this repair</a>
       </li>
       
       <li class="svc">
-        <span class="svc__n">08</span>
         <div class="svc__body">
           <h3 class="svc__name">Sanding and priming</h3>
           <p>Dust kept to the room, every coat sanded under a work light, then primed for paint.</p>
         </div>
-        <a class="btn btn-text svc__go" href="#contact" data-service="Sand &amp; prime">Price it</a>
+        <a class="btn btn-text svc__go" href="#contact" data-service="Sand &amp; prime">Price this repair</a>
       </li>
       
     </ol>
   </div>
 </section>
 
-<section id="coats" class="coats t-skim seam" style="--amp:11px" data-layout="pinned-story" data-hook="coats" aria-labelledby="coats-title">
+<section id="coats" class="coats t-skim seam" style="--amp:14px" data-layout="pinned-story" data-hook="coats" aria-labelledby="coats-title">
   <div class="coats__stick">
     <div class="wrap coats__grid">
       <div class="coats__head">
-        <p class="kicker">How a patch disappears</p>
-        <h2 id="coats-title">Four steps, in the order the mud allows.</h2>
+                <h2 id="coats-title">Four steps, in the order the mud allows.</h2>
       </div>
       <div class="coats__stage" aria-hidden="true">
         <div class="wp" data-wp data-s="0">
@@ -911,7 +962,7 @@ blockquote{margin:0}
           <span class="wp__prime"></span><span class="wp__light"></span>
           <span class="blade blade--wp"><span class="blade__h"></span></span>
         </div>
-        <p class="wp__label"><span data-wp-label>Visit 1</span> · coat <span data-wp-coat>0</span> of 3</p>
+        <p class="wp__label"><span data-wp-label>Visit 1 of 3 · cut and backed</span></p>
       </div>
       <ol class="steps" role="list">
         <li class="step" data-step-i="0">
@@ -931,7 +982,7 @@ blockquote{margin:0}
           <p class="step__visit">Visits 2 and 3</p>
           <h3>Three coats, dry between</h3>
           <p>Each coat runs wider than the last, so the edge fades out. Mud has to dry, so a fist-size hole is three short visits, not one long one.</p>
-          <figure class="vid step__vid"><video muted loop playsinline preload="none" poster="media/video-1-poster.webp" data-src="media/video-1.mp4" data-video aria-label="a knife spreading mud across a wall" data-photo="video-1"></video><button class="vid-btn" type="button" data-vid-btn aria-pressed="false">Pause background video</button></figure>
+          <figure class="vid step__vid"><video muted loop playsinline preload="none" poster="media/video-1-poster.webp" data-src="media/video-1.mp4" data-video aria-label="Hand holding a wooden-handled knife spreading wet mud across a rough wall" data-photo="video-1"></video><button class="vid-btn" type="button" data-vid-btn aria-pressed="false">Pause background video</button></figure>
           <p class="step__cap">A knife laying a coat of mud across a wall.</p>
         </li>
         <li class="step" data-step-i="3">
@@ -947,7 +998,7 @@ blockquote{margin:0}
 
 <section id="break" class="break t-deep" data-layout="full-bleed" data-hook="skim" aria-labelledby="break-title">
   <div class="break__media">
-    <img src="media/hero-A2-1170.webp" srcset="media/hero-A2-1170.webp 1170w, media/hero-A2.webp 2340w" sizes="100vw" alt="Close view of a smooth plaster wall" width="1170" height="780" loading="lazy" decoding="async" data-photo="hero-A2" data-slot="break" class="break__img">
+    <img src="media/hero-A2-1170.webp" srcset="media/hero-A2-1170.webp 1170w, media/hero-A2.webp 2340w" sizes="100vw" alt="Close view of a gray skim-coated wall with patchy, uneven plaster texture" width="1170" height="780" loading="lazy" decoding="async" data-photo="hero-A2" data-slot="break" class="break__img">
     <span class="break__skim" aria-hidden="true"></span>
   </div>
   <div class="break__chip">
@@ -956,11 +1007,10 @@ blockquote{margin:0}
   <p class="break__cap">Hand-troweled mud, before the skim coat.</p>
 </section>
 
-<section id="sizer" class="sizer t-paper seam" style="--amp:9px" data-layout="split-tool" aria-labelledby="sizer-title">
+<section id="sizer" class="sizer t-paper seam" style="--amp:12px" data-layout="split-tool" aria-labelledby="sizer-title">
   <div class="wrap">
     <header class="sizer__head">
-      <p class="kicker">Price my patch</p>
-      <h2 id="sizer-title">What a fist-size hole costs, before you call.</h2>
+            <h2 id="sizer-title">What a fist-size hole costs, before you call.</h2>
       <p class="lead">Pick the size and where it is. You get the sample range and how many visits it takes.</p>
     </header>
     <div class="sizer__grid">
@@ -1029,11 +1079,10 @@ blockquote{margin:0}
   </div>
 </section>
 
-<section id="texture" class="texture t-skim seam" style="--amp:8px" data-layout="swatch-tabs" data-hook="texture" aria-labelledby="tex-title">
+<section id="texture" class="texture t-skim seam" style="--amp:10px" data-layout="swatch-tabs" data-hook="texture" aria-labelledby="tex-title">
   <div class="wrap">
     <div class="texture__head">
-      <p class="kicker">Texture match</p>
-      <h2 id="tex-title">Name your texture. We spray a test board before the patch.</h2>
+            <h2 id="tex-title">Name your texture. We spray a test board before the patch.</h2>
     </div>
     <div class="tex" data-tabs>
       <div class="tex__list" data-tablist aria-label="Wall textures">
@@ -1085,11 +1134,10 @@ blockquote{margin:0}
   </div>
 </section>
 
-<section id="proof" class="proof t-paper seam" style="--amp:6px" data-layout="test-boards" data-hook="boards" aria-labelledby="proof-title">
+<section id="proof" class="proof t-paper seam" style="--amp:8px" data-layout="test-boards" data-hook="boards" aria-labelledby="proof-title">
   <div class="wrap">
     <div class="proof__head">
-      <p class="kicker">Sample reviews</p>
-      <h2 id="proof-title">Small jobs, written up by the people who had them.</h2>
+            <h2 id="proof-title">Small jobs, written up by the people who had them.</h2>
       <p class="proof__rate"><b>4.9</b> from 142 reviews <span class="sample-tag">Sample rating</span></p>
     </div>
     <div class="boards" data-reveal-stagger>
@@ -1129,11 +1177,11 @@ blockquote{margin:0}
   </div>
 </section>
 
-<section id="timer" class="timer t-accent seam" style="--amp:5px" data-layout="console" data-hook="timer" aria-labelledby="timer-title">
+<section id="timer" class="timer t-accent seam" style="--amp:6px" data-layout="console" data-hook="timer" aria-labelledby="timer-title">
   <div class="wrap timer__grid">
     <div class="timer__head">
       <p class="kicker">Fix now or wait?</p>
-      <h2 id="timer-title">Cracks that show up in the heating season can often wait for spring.</h2>
+      <h2 id="timer-title">Winter cracks can often wait for spring.</h2>
       <ul class="timer__rules" role="list">
         <li><b>Nail pops and seam cracks</b> from this winter: dry heat shrinks the framing. Wait until spring unless they keep growing.</li>
         <li><b>Plaster cracks</b>: pin it, don’t just caulk it. Loose plaster gets screwed back to the lath first.</li>
@@ -1167,11 +1215,10 @@ blockquote{margin:0}
   </div>
 </section>
 
-<section id="area" class="area t-paper seam" style="--amp:3px" data-layout="split-schedule" aria-labelledby="area-title">
+<section id="area" class="area t-paper seam" style="--amp:4px" data-layout="split-schedule" aria-labelledby="area-title">
   <div class="wrap area__grid">
     <div class="area__towns">
-      <p class="kicker">Where we work</p>
-      <h2 id="area-title">Harrisburg and the West Shore, out to Hershey.</h2>
+            <h2 id="area-title">Harrisburg and the West Shore, out to Hershey.</h2>
       <ul class="towns" role="list">
         <li>Harrisburg</li>
         
@@ -1219,7 +1266,7 @@ blockquote{margin:0}
       <a class="btn btn-call btn-secondary" href="tel:+17175550161"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (717) 555-0161</span></a>
       <p class="contact__now"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg> <span data-open-now>Mon–Thu 7:30 am – 4:30 pm · Fri 7:30 am – 3:30 pm · Sat 8 am – noon</span></p>
     </div>
-    <form class="lead-form" data-lead data-thanks="Thanks, {name}. In your version of this site, this request goes straight to your phone and inbox." aria-label="Ask for a price">
+    <form class="lead-form" data-lead data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to Knife &amp; Hawk." aria-label="Ask for a price">
       <div class="lead-form__bar" data-form-progress aria-label="Form progress"><span></span></div>
       <fieldset data-step>
         <legend><span class="step-n">1/4</span> What’s wrong</legend>
@@ -1311,10 +1358,10 @@ blockquote{margin:0}
       <nav class="footer__nav" aria-label="Footer">
         <a href="#services">What we fix</a>
         <a href="#coats">How it’s done</a>
-        <a href="#sizer">Price my patch</a>
+        <a href="#sizer">Patch sizer</a>
         <a href="#texture">Texture match</a>
         <a href="#timer">Fix now or wait</a>
-        <a href="#contact">Price it</a>
+        <a href="#contact">Price my patch</a>
       </nav>
       <div class="footer__legal">
         <p class="disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
@@ -1329,7 +1376,7 @@ blockquote{margin:0}
 <div class="mobile-bar" data-mobilebar>
   <a class="mb mb--call" href="tel:+17175550161"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call</span></a>
   <a class="mb" href="sms:+17175550161"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg><span>Text</span></a>
-  <a class="mb mb--go" href="#contact">Price it</a>
+  <a class="mb mb--go" href="#contact">Price my patch</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Knife & Hawk Drywall","short":"Knife & Hawk","phone":"(717) 555-0161","phoneE164":"+17175550161","sms":true,"email":"hello@knife-and-hawk.example","city":"Harrisburg","state":"PA","timezone":"America/New_York","areas":["Camp Hill","Mechanicsburg","Lemoyne","New Cumberland","Enola","Hummelstown","Hershey"],"zips":["17101","17102","17103","17104","17109","17110","17111","17112","17011","17050","17055","17043","17070","17025","17036","17033"],"hours":{"mon":["07:30","16:30"],"tue":["07:30","16:30"],"wed":["07:30","16:30"],"thu":["07:30","16:30"],"fri":["07:30","15:30"],"sat":["08:00","12:00"],"sun":null},"emergency":false},"services":[{"name":"Hole and dent patches","short":"Patches"},{"name":"Water-damaged ceilings and walls","short":"Water damage"},{"name":"Taping and finishing","short":"Taping"},{"name":"Texture matching","short":"Texture match"},{"name":"New walls and basements","short":"Hang & finish"},{"name":"Ceiling repair","short":"Ceilings"},{"name":"Corner bead and arches","short":"Corners & arches"},{"name":"Sanding and priming","short":"Sand & prime"}],"proof":{"label":"Sample","prices":[{"item":"Small hole or dent patch","from":"$150","to":"$325","note":"up to fist size, primed"},{"item":"Water-damaged ceiling section","from":"$450","to":"$1,100","note":"up to about 4 x 8 ft, textured to match"},{"item":"Texture match, one wall","from":"$275","to":"$650"},{"item":"Hang and finish one room","from":"$1,900","to":"$4,400","note":"about 12 x 12 ft, walls and ceiling"},{"item":"Basement finishing, drywall only","from":"$3","to":"$5","unit":"per sq ft of wall","note":"hang, tape, three coats"}]},"hours":{"mon":["07:30","16:30"],"tue":["07:30","16:30"],"wed":["07:30","16:30"],"thu":["07:30","16:30"],"fri":["07:30","15:30"],"sat":["08:00","12:00"],"sun":null},"timezone":"America/New_York","zips":["17101","17102","17103","17104","17109","17110","17111","17112","17011","17050","17055","17043","17070","17025","17036","17033"],"areas":["Camp Hill","Mechanicsburg","Lemoyne","New Cumberland","Enola","Hummelstown","Hershey"],"phone":"(717) 555-0161","phoneE164":"+17175550161"}</script>
 <script defer src="vendor/gsap.min.js"></script>
