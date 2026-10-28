@@ -459,9 +459,14 @@ html:not(.sw-js) .menu { display: none; }
 .fr .tape--tab { position: absolute; top: -10px; left: 10px; z-index: 2; }
 .fr:nth-child(3n+2) .tape--tab { --tilt: 2deg; }
 .fr:nth-child(3n) .tape--tab { --tilt: -3.5deg; left: auto; right: 10px; }
-.fr__art { width: 100%; aspect-ratio: 300 / 340; height: auto; outline: 1px solid rgba(247,247,244,.12); outline-offset: -1px; }
-.fr figcaption { margin-top: 8px; font-size: var(--fs--1); color: var(--muted); line-height: 1.3; }
-.fr figcaption b { display: block; color: #F7F7F4; font-weight: 650; }
+.fr { width: clamp(232px, 64vw, 300px); }
+.msg { display: grid; grid-template-rows: auto 1fr auto; gap: 10px; height: 100%; min-height: 176px; padding: 30px 16px 14px; background: #1C2126; border: 1.5px solid rgba(247,247,244,.14); }
+.msg__from { display: flex; align-items: center; gap: 8px; font: 800 13px/1 var(--ff-t); letter-spacing: .08em; text-transform: uppercase; color: #A7B0B8; }
+.msg__from svg { color: #E6C34E; }
+.msg__body { position: relative; align-self: start; padding: 12px 14px; background: #F7F7F4; color: #121417; font-size: var(--fs--1); line-height: 1.4; font-weight: 500; border-radius: 14px 14px 14px 2px; }
+.msg__n { font-size: 13px; color: #A7B0B8; font-weight: 650; }
+.fr:last-child .msg__body { background: #E6C34E; }
+.strip__track { align-items: stretch; }
 
 .sw-motion .strip__view { overflow: hidden; scroll-snap-type: none; }
 .sw-motion .strip__dup { display: flex; }
@@ -486,7 +491,7 @@ html:not(.sw-js) .menu { display: none; }
   .hero__h1 { max-width: none; }
   .proofline { grid-auto-flow: row; gap: 6px; }
 }
-@media (min-width: 1440px) { .fr { width: 244px; } }
+@media (min-width: 1440px) { .fr { width: 300px; } }
 
 /* ---------- section heads ---------- */
 .sec-grid { display: grid; margin-bottom: var(--s-8); }
@@ -523,11 +528,17 @@ html:not(.sw-js) .menu { display: none; }
   .sw-motion .stations__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s-8); }
   .sw-motion .stage { display: block; position: sticky; top: calc(var(--header-h) + 3svh); height: calc(100svh - var(--header-h) - 6svh); }
   .sw-motion .stn-list { gap: 0; }
-  .sw-motion .stn { grid-template-columns: minmax(0, 1fr); min-height: 55svh; align-content: center; border-top: 0; padding: var(--s-6) 0; opacity: .38; transition: opacity var(--t-page) var(--ease-out); }
-  .sw-motion .stn.is-current, .sw-motion .stn.is-done { opacity: 1; }
+  .sw-motion .stn { grid-template-columns: minmax(0, 1fr); min-height: 46svh; align-content: center; border-top: 1.5px solid var(--rule); padding: var(--s-6) 0; }
+  .sw-motion .stn .tp { opacity: .45; transition: opacity var(--t-page) var(--ease-out); }
+  .sw-motion .stn.is-current .tp, .sw-motion .stn.is-done .tp { opacity: 1; }
+  .sw-motion .stn.is-current { border-top-color: #121417; }
   .sw-motion .stn > * { grid-column: 1 !important; }
   .sw-motion .stn__art { display: none; }
-  .sw-motion .stn:last-child { min-height: 70svh; }
+  .sw-motion .stn:last-child { min-height: 52svh; }
+  .sw-motion main > section.stations { padding-bottom: 0; }
+  .sw-motion .stations__grid { max-width: none; padding-left: 0; padding-right: max(var(--sec-x), calc((100% - var(--maxw)) / 2)); }
+  .sw-motion .stage { top: var(--header-h); height: calc(100svh - var(--header-h)); }
+  .sw-motion .stage__plate { padding-left: max(var(--s-6), calc((100vw - var(--maxw)) / 2)); }
 }
 .stage__plate { position: relative; height: 100%; background: #15191D linear-gradient(180deg, #283037 0%, #15191D 72%); color: #F7F7F4; display: grid; grid-template-rows: auto 1fr auto; padding: var(--s-6); overflow: hidden; }
 .stage__plate::before { content: ""; position: absolute; left: 10%; right: 10%; top: 18px; height: 6px; border-radius: 3px; background: #F7F7F4; box-shadow: 0 0 24px 6px rgba(247,247,244,.35); }
@@ -583,7 +594,16 @@ html:not(.sw-js) .menu { display: none; }
 }
 
 /* ---------- 4 · services (hung cards) ---------- */
+.cards__hint { display: flex; align-items: center; gap: 8px; margin-bottom: var(--s-3); font-size: var(--fs--1); font-weight: 650; color: var(--muted); }
+.cards__hint svg { color: #E6C34E; }
 .cards { display: grid; gap: var(--s-6) var(--gut); align-items: start; }
+@media (max-width: 639px) {
+  ul.cards[role="list"] { grid-auto-flow: column; grid-auto-columns: 84%; gap: var(--gut); align-items: stretch; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--sec-x); padding-top: 18px; padding-bottom: 12px; scrollbar-width: thin; scrollbar-color: #E6C34E transparent; overscroll-behavior-x: contain; }
+  .cards > .card { scroll-snap-align: start; }
+  .cards .tape--corner { left: 8px; }
+  .card:nth-child(3n+2) .tape--corner { right: 8px; }
+}
+@media (min-width: 640px) { .cards__hint { display: none; } }
 .card { position: relative; display: grid; align-content: start; gap: var(--s-3); padding: var(--s-6) var(--s-5) var(--s-5); background: var(--card); border: 1.5px solid var(--rule); }
 .card:nth-child(3n+2) .tape--corner { --tilt: 7deg; left: auto; right: -12px; }
 .card:nth-child(3n) .tape--corner { --tilt: -3deg; left: 40%; }
@@ -637,6 +657,29 @@ html:not(.sw-js) .menu { display: none; }
   .salt__price { border-top: 0; padding-top: 0; }
 }
 
+/* ---------- 2b · gloss (photo break, the quiet breath) ---------- */
+main > section.gloss { padding-block: 0; min-height: clamp(520px, 86svh, 860px); display: grid; align-items: end; overflow: hidden; }
+.gloss__ph { position: absolute; inset: 0; margin: 0; }
+.gloss__ph img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; filter: saturate(.82) contrast(1.06); }
+.gloss::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(21,25,29,0) 30%, rgba(21,25,29,.6) 62%, rgba(21,25,29,.94) 100%); pointer-events: none; }
+.gloss__in { position: relative; z-index: 1; display: grid; gap: var(--s-4); padding-block: var(--s-9) var(--s-7); }
+.gloss__tape { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+.gloss__tape .done { background: #B23A17; color: #F7F7F4; font: 650 var(--fs--1)/1 var(--ff-t); text-transform: uppercase; letter-spacing: .08em; padding: .7em 1.1em; transform: rotate(1.5deg); }
+.gloss h2 { max-width: 18ch; text-shadow: 0 2px 18px rgba(0,0,0,.45); }
+.gloss__cap { max-width: 52ch; color: #E4E6E1; font-size: var(--fs--1); }
+@media (min-width: 1100px) { .gloss__in { padding-left: calc(var(--sec-x) + (100% - 2 * var(--sec-x) + var(--gut)) / 6); } }
+
+.promise__ph { position: relative; display: grid; gap: var(--s-3); max-width: 560px; order: 5; margin-top: var(--s-5); }
+.promise__ph .tape { position: absolute; top: -12px; left: 14px; z-index: 2; }
+.promise__ph img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; filter: grayscale(1) contrast(1.12) brightness(.92); outline: 1.5px solid rgba(247,247,244,.16); outline-offset: -1.5px; }
+.promise__ph figcaption { color: var(--muted); font-size: var(--fs--1); max-width: 48ch; }
+@media (min-width: 1100px) {
+  .promise__in { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); column-gap: var(--s-8); align-items: center; }
+  .promise__in > :not(.promise__ph) { grid-column: 1; }
+  .promise__ph { grid-column: 2; grid-row: 1 / span 4; order: 0; margin-top: 0; }
+  .promise__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* ---------- 6 · dent check (t-mid) ---------- */
 .dent__grid { display: grid; gap: var(--s-7); }
 .dent__q h2 { margin-bottom: var(--s-4); }
@@ -682,12 +725,18 @@ html:not(.sw-js) .menu { display: none; }
 .rv--feature blockquote p { font: italic 500 var(--fs-2)/1.3 var(--ff-t); }
 .rv--feature blockquote p::before { content: "“"; display: block; font: 400 5rem/.6 var(--ff-d); color: #B23A17; margin-bottom: var(--s-2); }
 .rv--feature .rv__tape .tape { --tilt: -2.4deg; }
-.board__rest { display: grid; gap: var(--s-7) var(--s-5); }
-@media (min-width: 640px) { .board__rest { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.rv--rating { align-content: center; background: #15191D; color: #F7F7F4; border-color: #15191D; }
+.rv--rating .proof__num { font-size: clamp(4rem, 3rem + 4vw, 7rem); color: #E6C34E; line-height: .85; }
+.rv__score { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3em .8em; font-weight: 500; }
+.rv--rating .lnk { justify-self: start; color: #F7F7F4; text-decoration-color: #E6C34E; }
+@media (min-width: 640px) {
+  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-7) var(--s-5); align-items: stretch; }
+  .rv--feature { grid-column: 1 / -1; }
+}
 @media (min-width: 1100px) {
-  .board { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--s-7); align-items: start; }
-  .rv--feature { position: sticky; top: calc(var(--header-h) + 40px); }
-  .board__rest > :nth-child(even) { margin-top: var(--s-7); }
+  .board { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-7) var(--s-6); }
+  .rv--feature { grid-column: span 2; }
+  .rv--rating { grid-column: span 2; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--s-7); align-items: center; }
 }
 
 /* ---------- 8 · promise (statement) ---------- */
@@ -701,8 +750,8 @@ html:not(.sw-js) .menu { display: none; }
 .promise__facts b { font: 400 var(--fs-3)/1 var(--ff-d); color: #E6C34E; overflow-wrap: anywhere; letter-spacing: .01em; }
 .promise__facts li:nth-child(3) b { font-size: var(--fs-1); font-family: var(--ff-t); font-weight: 800; letter-spacing: .02em; }
 .promise__facts span { color: var(--muted); font-size: var(--fs--1); }
-@media (min-width: 900px) { .promise__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-@media (min-width: 1100px) { .promise__in { padding-left: calc((100% + var(--gut)) / 6); } }
+@media (min-width: 900px) and (max-width: 1099px) { .promise__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
 
 /* ---------- 9 · area ---------- */
 .area__grid { display: grid; gap: var(--s-7); }
@@ -742,7 +791,13 @@ html:not(.sw-js) .menu { display: none; }
 .slot { position: relative; display: grid; align-content: end; gap: 8px; aspect-ratio: 4 / 3; padding: var(--s-5) 10px 10px; border: 2px dashed rgba(18,20,23,.45); background: #ECEDE8; cursor: pointer; }
 .slot .tape { position: absolute; top: -12px; left: 8px; right: 8px; white-space: normal; line-height: 1.05; font-size: 1.25rem; justify-content: flex-start; }
 .slot:nth-child(even) .tape { --tilt: 1.2deg; }
-.slot input { width: 100%; font-size: 13px; min-height: 44px; }
+.slot__in { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.slot__add { display: flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 650; font-size: var(--fs--1); overflow-wrap: anywhere; line-height: 1.2; }
+.slot__add svg { width: 22px; height: 22px; color: #B23A17; }
+.slot:hover { border-color: #121417; }
+.slot:has(.slot__in:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+.slot.is-filled { border-style: solid; border-color: #121417; background: #F7F7F4; }
+.slot.is-filled .slot__add svg { color: #121417; }
 .fld { display: grid; gap: 6px; font-weight: 650; font-size: var(--fs--1); }
 .fld input, .fld select, .fld textarea { min-height: 52px; padding: 12px 14px; border: 2px solid rgba(18,20,23,.4); background: #fff; border-radius: 0; font-weight: 400; font-size: var(--fs-0); width: 100%; }
 .fld input:focus, .fld select:focus, .fld textarea:focus { border-color: #121417; }
@@ -893,7 +948,6 @@ html:not(.sw-js) .menu { display: none; }
       <a href="#proof">Reviews</a>
       <a href="#area">Area</a>
     </nav>
-    <p class="hdr__hours"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg> <span data-open-now>Mon–Thu 7:30 am – 5:30 pm · Fri 7:30 am – 5 pm · Sat 8 am – noon</span></p>
     <a class="btn btn-call hdr__call" href="tel:+13135550107"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (313) 555-0107</span></a>
     <button class="hdr__menu" type="button" data-menu-btn aria-expanded="false" aria-controls="menu"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg><span>Menu</span></button>
   </div>
@@ -919,8 +973,8 @@ html:not(.sw-js) .menu { display: none; }
   <section id="top" class="hero t-deep" data-layout="filmstrip" aria-labelledby="hero-h">
     <div class="hero__text wrap">
       <div class="hero__head">
-        <p class="hero__kicker"><span class="tape tape--lay">Detroit collision repair · Station 1 of 9</span></p>
-        <h1 id="hero-h" class="hero__h1" data-split="lines">Nine stations. You hear from us at every one.</h1>
+        <p class="hero__kicker"><span class="tape tape--lay">Station 1 of 9 · You pick the shop</span></p>
+        <h1 id="hero-h" class="hero__h1" data-split="lines">Detroit collision repair in nine stations. A text at each one.</h1>
       </div>
       <div class="hero__side">
         <p class="hero__lead">We work with every insurer, and the shop is your choice, not theirs.</p>
@@ -938,32 +992,32 @@ html:not(.sw-js) .menu { display: none; }
 
     <div class="strip" data-hook="filmstrip" data-strip>
       <div class="strip__bar wrap">
-        <p class="strip__label" id="strip-label">The nine stations, in order</p>
+        <p class="strip__label" id="strip-label">Nine texts, one per station <span class="sample-tag">Sample texts</span></p>
         <button class="strip__btn" type="button" data-strip-btn aria-pressed="false" data-js-only><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pause"/></svg><span>Pause the strip</span></button>
       </div>
       <div class="strip__view" role="region" aria-labelledby="strip-label" tabindex="0">
         <div class="strip__belt">
           <ol class="strip__track" role="list">
-            <li class="fr"><figure><span class="tape tape--tab">STN 1</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: a dented red door framed by camera corners"><use href="#fr-bg"/><use href="#st-1" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Check-in</b> photos of every panel</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 2</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: the door with its handle off and masking tape on the trim"><use href="#fr-bg"/><use href="#st-2" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Teardown</b> what the app missed</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 3</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: a phone showing a bent bar from behind the bumper"><use href="#fr-bg"/><use href="#st-3" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Supplement</b> a photo before a bill</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 4</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: measuring points along the sill and a printout"><use href="#fr-bg"/><use href="#st-4" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Measure</b> the printout is yours</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 5</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: bare steel and sanded filler where the dent was"><use href="#fr-bg"/><use href="#st-5" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Metal</b> pulled, filled, sanded</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 6</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: grey primer with guide coat and a sanding block"><use href="#fr-bg"/><use href="#st-6" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Prime and block</b> flat under the lights</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 7</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: the door masked with paper and tape, red basecoat going on"><use href="#fr-bg"/><use href="#st-7" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Booth</b> test card first</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 8</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: a polishing pad on glossy red clear coat"><use href="#fr-bg"/><use href="#st-8" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Polish</b> same gloss as the next panel</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 9</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drawing: a washed red door with water drops and a key tag"><use href="#fr-bg"/><use href="#st-9" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Wash</b> keys back in daylight</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 1 · Check-in</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Checked in. Photos of every panel attached, same set going to your insurer.</p><figcaption class="msg__n">Text 1 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 2 · Teardown</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Bumper is off. Cracked bracket behind it, photo attached. Nothing to do yet.</p><figcaption class="msg__n">Text 2 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 3 · Supplement</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Sent the bracket photo to your adjuster. Approved. No extra to you.</p><figcaption class="msg__n">Text 3 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 4 · Measure</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Frame measured against factory points. Printout attached, it goes home with you.</p><figcaption class="msg__n">Text 4 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 5 · Metal</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Dent pulled and sanded flush. Primer next.</p><figcaption class="msg__n">Text 5 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 6 · Prime and block</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Blocked flat under the lights. Going into the booth.</p><figcaption class="msg__n">Text 6 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 7 · Booth</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Test card held against your car, photo attached. Match is good. Spraying now.</p><figcaption class="msg__n">Text 7 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 8 · Polish</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Clear is cut and polished. Pick it up tomorrow afternoon?</p><figcaption class="msg__n">Text 8 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 9 · Keys back</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">It’s ready. Washed, keys at the front desk.</p><figcaption class="msg__n">Text 9 of 9</figcaption></figure></li>
           </ol>
           <ol class="strip__track strip__dup" role="list" aria-hidden="true">
-            <li class="fr"><figure><span class="tape tape--tab">STN 1</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-1" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Check-in</b> photos of every panel</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 2</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-2" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Teardown</b> what the app missed</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 3</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-3" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Supplement</b> a photo before a bill</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 4</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-4" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Measure</b> the printout is yours</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 5</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-5" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Metal</b> pulled, filled, sanded</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 6</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-6" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Prime and block</b> flat under the lights</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 7</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-7" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Booth</b> test card first</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 8</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-8" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Polish</b> same gloss as the next panel</figcaption></figure></li>
-            <li class="fr"><figure><span class="tape tape--tab">STN 9</span><svg class="fr__art" viewBox="0 22 300 340" preserveAspectRatio="xMidYMid slice"><use href="#fr-bg"/><use href="#st-9" x="6" y="114" width="288" height="216"/></svg><figcaption><b>Wash</b> keys back in daylight</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 1 · Check-in</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Checked in. Photos of every panel attached, same set going to your insurer.</p><figcaption class="msg__n">Text 1 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 2 · Teardown</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Bumper is off. Cracked bracket behind it, photo attached. Nothing to do yet.</p><figcaption class="msg__n">Text 2 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 3 · Supplement</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Sent the bracket photo to your adjuster. Approved. No extra to you.</p><figcaption class="msg__n">Text 3 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 4 · Measure</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Frame measured against factory points. Printout attached, it goes home with you.</p><figcaption class="msg__n">Text 4 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 5 · Metal</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Dent pulled and sanded flush. Primer next.</p><figcaption class="msg__n">Text 5 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 6 · Prime and block</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Blocked flat under the lights. Going into the booth.</p><figcaption class="msg__n">Text 6 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 7 · Booth</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Test card held against your car, photo attached. Match is good. Spraying now.</p><figcaption class="msg__n">Text 7 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 8 · Polish</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">Clear is cut and polished. Pick it up tomorrow afternoon?</p><figcaption class="msg__n">Text 8 of 9</figcaption></figure></li>
+            <li class="fr"><figure class="msg"><span class="tape tape--tab">STN 9 · Keys back</span><p class="msg__from"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg> Booth Nine</p><p class="msg__body">It’s ready. Washed, keys at the front desk.</p><figcaption class="msg__n">Text 9 of 9</figcaption></figure></li>
           </ol>
         </div>
       </div>
@@ -1052,10 +1106,20 @@ html:not(.sw-js) .menu { display: none; }
           <div class="tp"><span class="tape">STN 9 · Wash · Keys back</span><span class="done">Done · come get it</span><span class="cover" aria-hidden="true"></span></div>
           <h3>Washed, then walked around with you, in daylight.</h3>
           <p>You see the repair outside before you sign anything. The measuring printout and the photos go home in your folder.</p>
-          <p class="stn__hear"><b>You hear:</b> "It's ready." Then your keys.</p>
+          <p class="stn__hear"><b>You hear:</b> “It’s ready.” Then your keys.</p>
           <svg class="stn__art" viewBox="0 0 400 300" role="img" aria-label="Drawing: a washed red door with water drops and a key tag"><use href="#st-9"/></svg>
         </li>
       </ol>
+    </div>
+  </section>
+
+  <!-- 2b · GLOSS (photo break, the quiet breath) -->
+  <section id="gloss" class="gloss break t-deep" data-layout="photo-break" data-sw-signature="tape-label" aria-labelledby="gloss-h">
+    <figure class="frame gloss__ph" data-fallback="Close view of a red gloss tail fin with chrome trim and twin bullet lamps" data-reveal="clip"><img src="media/process-clearcoat-wet-1170.webp" srcset="media/process-clearcoat-wet-1170.webp 1170w, media/process-clearcoat-wet.webp 2340w" alt="Close view of a red gloss tail fin with chrome trim and twin bullet lamps" width="1170" height="781" loading="lazy" decoding="async" data-photo="process-clearcoat-wet" data-slot="fin" sizes="100vw"></figure>
+    <div class="wrap gloss__in">
+      <p class="gloss__tape"><span class="tape">STN 8 · Gloss check</span><span class="done">Done</span></p>
+      <h2 id="gloss-h">The drawings show the order. This is the finish we hand back.</h2>
+      <p class="gloss__cap">Red clear coat, cut and polished until the chrome sits in it like a mirror. Library photo, not our shop.</p>
     </div>
   </section>
 
@@ -1141,6 +1205,7 @@ html:not(.sw-js) .menu { display: none; }
         <p class="lead">Each one goes through the same stations, and each one has a Price it button that opens the photo form with the job filled in.</p>
       </div>
     </div>
+    <p class="wrap cards__hint" aria-hidden="true">Swipe for all ten jobs <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></p>
     <ul class="wrap cards" role="list" data-reveal-stagger>
       
       <li class="card">
@@ -1362,50 +1427,53 @@ html:not(.sw-js) .menu { display: none; }
       <p class="sec-tape"><span class="tape">Taped to the hood</span></p>
       <div class="sec-head proof__head">
         <h2 id="proof-h">What people said when they got their keys back.</h2>
-        <p class="proof__rating"><span class="proof__num">4.8</span> <span>average from 214 reviews</span> <span class="sample-tag">Sample rating</span></p>
+        <p class="lead">Six notes from people who picked the shop themselves.</p>
       </div>
     </div>
-    <div class="wrap board">
+    <div class="wrap board" data-reveal-stagger>
       
       <figure class="rv rv--feature">
         <p class="rv__tape"><span class="tape">Collision repair · Hamtramck</span></p>
-        <blockquote><p>Hit a deer on the way back from Port Huron. The tape on my hood said &#39;station 6, day 4&#39; when I stopped by, which made me laugh, but it was right. Car came back on day seven.</p></blockquote>
+        <blockquote><p data-quotes>Hit a deer on the way back from Port Huron. The tape on my hood said &#39;station 6, day 4&#39; when I stopped by, which made me laugh, but it was right. Car came back on day seven.</p></blockquote>
         <figcaption>Marek S., Hamtramck <span class="sample-tag">Sample review</span></figcaption>
       </figure>
       
-      <div class="board__rest" data-reveal-stagger>
-        
-        <figure class="rv">
-          <p class="rv__tape"><span class="tape tape--tab">Insurance claim help</span></p>
-          <blockquote><p>Got rear-ended on Woodward in January. They called my insurance before I even got home, and when they found a bent reinforcement bar behind the bumper they sent me a photo and handled the extra with the adjuster. I never had to argue with anybody.</p></blockquote>
-          <figcaption>Latoya B., Detroit <span class="sample-tag">Sample review</span></figcaption>
-        </figure>
-        
-        
-        <figure class="rv">
-          <p class="rv__tape"><span class="tape tape--tab">Rust and rocker panel repair</span></p>
-          <blockquote><p>My rockers were going from twelve winters of salt. Teodor showed me where the metal was still good and where it wasn&#39;t, cut out only the bad part and quoted it before he started. Nothing came back through this past winter.</p></blockquote>
-          <figcaption>Gerald W., Warren <span class="sample-tag">Sample review</span></figcaption>
-        </figure>
-        
-        <figure class="rv">
-          <p class="rv__tape"><span class="tape tape--tab">Paint matching and refinishing</span></p>
-          <blockquote><p>The new door is the same silver as the fender, in the shop and in the Kroger lot in daylight. They showed me the test card next to my car before they painted.</p></blockquote>
-          <figcaption>Hiba A., Dearborn <span class="sample-tag">Sample review</span></figcaption>
-        </figure>
-        
-        <figure class="rv">
-          <p class="rv__tape"><span class="tape tape--tab">Paintless dent removal</span></p>
-          <blockquote><p>Two dings from a shopping cart, pushed out in about an hour while I waited. You genuinely cannot find where they were.</p></blockquote>
-          <figcaption>Colin F., Ferndale <span class="sample-tag">Sample review</span></figcaption>
-        </figure>
-        
-        <figure class="rv">
-          <p class="rv__tape"><span class="tape tape--tab">Bumper repair</span></p>
-          <blockquote><p>Slid into a curb on an icy morning and cracked the bumper and a parking sensor. They fixed the cover instead of replacing it, recalibrated the sensor, and the bill was lower than the app estimate my insurer gave me.</p></blockquote>
-          <figcaption>Renata P., Royal Oak <span class="sample-tag">Sample review</span></figcaption>
-        </figure>
-        
+      
+      <figure class="rv">
+        <p class="rv__tape"><span class="tape tape--tab">Insurance claim help</span></p>
+        <blockquote><p data-quotes>Got rear-ended on Woodward in January. They called my insurance before I even got home, and when they found a bent reinforcement bar behind the bumper they sent me a photo and handled the extra with the adjuster. I never had to argue with anybody.</p></blockquote>
+        <figcaption>Latoya B., Detroit <span class="sample-tag">Sample review</span></figcaption>
+      </figure>
+      
+      
+      <figure class="rv">
+        <p class="rv__tape"><span class="tape tape--tab">Rust and rocker panel repair</span></p>
+        <blockquote><p data-quotes>My rockers were going from twelve winters of salt. Teodor showed me where the metal was still good and where it wasn&#39;t, cut out only the bad part and quoted it before he started. Nothing came back through this past winter.</p></blockquote>
+        <figcaption>Gerald W., Warren <span class="sample-tag">Sample review</span></figcaption>
+      </figure>
+      
+      <figure class="rv">
+        <p class="rv__tape"><span class="tape tape--tab">Paint matching and refinishing</span></p>
+        <blockquote><p data-quotes>The new door is the same silver as the fender, in the shop and in the Kroger lot in daylight. They showed me the test card next to my car before they painted.</p></blockquote>
+        <figcaption>Hiba A., Dearborn <span class="sample-tag">Sample review</span></figcaption>
+      </figure>
+      
+      <figure class="rv">
+        <p class="rv__tape"><span class="tape tape--tab">Paintless dent removal</span></p>
+        <blockquote><p data-quotes>Two dings from a shopping cart, pushed out in about an hour while I waited. You genuinely cannot find where they were.</p></blockquote>
+        <figcaption>Colin F., Ferndale <span class="sample-tag">Sample review</span></figcaption>
+      </figure>
+      
+      <figure class="rv">
+        <p class="rv__tape"><span class="tape tape--tab">Bumper repair</span></p>
+        <blockquote><p data-quotes>Slid into a curb on an icy morning and cracked the bumper and a parking sensor. They fixed the cover instead of replacing it, recalibrated the sensor, and the bill was lower than the app estimate my insurer gave me.</p></blockquote>
+        <figcaption>Renata P., Royal Oak <span class="sample-tag">Sample review</span></figcaption>
+      </figure>
+      
+      <div class="rv rv--rating">
+        <p class="rv__tape"><span class="tape tape--tab">Marker on the hood</span></p>
+        <p class="rv__score"><span class="proof__num">4.8</span><span>average from 214 reviews <span class="sample-tag">Sample rating</span></span></p>
+        <a class="lnk" href="#contact">Start at station 1: send photos <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </div>
     </div>
   </section>
@@ -1413,6 +1481,7 @@ html:not(.sw-js) .menu { display: none; }
   <!-- 8 · PROMISE (statement) -->
   <section id="promise" class="promise t-deep" data-layout="statement" aria-labelledby="promise-h">
     <div class="wrap promise__in">
+      <figure class="promise__ph"><span class="tape tape--tab">STN 9 · Outside, in daylight</span><img src="media/resto-coating-applicator-1170.webp" srcset="media/resto-coating-applicator-1170.webp 1170w, media/resto-coating-applicator.webp 2340w" alt="A fallen leaf resting on deep blue gloss car paint, its reflection sharp below" width="1170" height="787" loading="lazy" decoding="async" data-photo="resto-coating-applicator" data-slot="leaf" sizes="(min-width: 1100px) 34vw, 100vw"><figcaption>The parking-lot test: if a leaf sits on the panel and you see the sky in it, the clear is flat. Library photo.</figcaption></figure>
       <p class="promise__k"><span class="tape tape--tab">Signed off at station 9</span></p>
       <h2 id="promise-h">For as long as you own the car.</h2>
       <p class="promise__p">Paint and body work we do is covered for as long as you own the car. If it fails, we fix it. <span class="sample-tag">Sample promise</span></p>
@@ -1488,10 +1557,10 @@ html:not(.sw-js) .menu { display: none; }
           <legend>1 · Photos</legend>
           <p class="lf__hint">Four angles help us price it. Skip any you can't take now.</p>
           <div class="slots">
-            <label class="slot"><span class="tape tape--sm">1 · Whole car, from a corner</span><input type="file" name="photo1" accept="image/*"></label>
-            <label class="slot"><span class="tape tape--sm">2 · Damage, straight on</span><input type="file" name="photo2" accept="image/*"></label>
-            <label class="slot"><span class="tape tape--sm">3 · Damage, at an angle</span><input type="file" name="photo3" accept="image/*"></label>
-            <label class="slot"><span class="tape tape--sm">4 · Odometer (optional)</span><input type="file" name="photo4" accept="image/*"></label>
+            <label class="slot"><span class="tape tape--sm">1 · Whole car, from a corner</span><input class="slot__in" type="file" name="photo1" accept="image/*"><span class="slot__add"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-cam"/></svg><span data-slot-file>Add photo</span></span></label>
+            <label class="slot"><span class="tape tape--sm">2 · Damage, straight on</span><input class="slot__in" type="file" name="photo2" accept="image/*"><span class="slot__add"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-cam"/></svg><span data-slot-file>Add photo</span></span></label>
+            <label class="slot"><span class="tape tape--sm">3 · Damage, at an angle</span><input class="slot__in" type="file" name="photo3" accept="image/*"><span class="slot__add"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-cam"/></svg><span data-slot-file>Add photo</span></span></label>
+            <label class="slot"><span class="tape tape--sm">4 · Odometer (optional)</span><input class="slot__in" type="file" name="photo4" accept="image/*"><span class="slot__add"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-cam"/></svg><span data-slot-file>Add photo</span></span></label>
           </div>
         </fieldset>
         <fieldset data-step>
@@ -1587,8 +1656,8 @@ html:not(.sw-js) .menu { display: none; }
     </div>
     <div class="ftr__fine">
       <p>Sample website by Site Sledge. Business details are illustrative.</p>
-      <p>Drawings made for this page. Reviews, rating, prices and licence are sample values.</p>
-      <ul class="credits"></ul>
+      <p>Drawings made for this page; the two photos are licensed library images, not this shop. Reviews, rating, prices and licence are sample values.</p>
+      <ul class="credits"><li>Photo by Mitch Rosen focusmitch on <a href="https://commons.wikimedia.org/wiki/File:Glossy_red_car_body_(Unsplash).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="noopener license" target="_blank">CC0</a></li><li>Photo by jenny downing from Geneva, Switzerland on <a href="https://commons.wikimedia.org/wiki/File:Coating_car_(5151956860)_(2).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li></ul>
       <p>© 2026 Booth Nine Collision</p>
     </div>
   </div>

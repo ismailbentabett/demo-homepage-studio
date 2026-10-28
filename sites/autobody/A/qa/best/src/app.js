@@ -39,8 +39,36 @@
     });
   }
 
+  /* photo slots: show the chosen file name in the taped slot */
+  Array.prototype.forEach.call(document.querySelectorAll('.slot__in'), function (inp) {
+    inp.addEventListener('change', function () {
+      var slot = inp.closest('.slot');
+      var out = slot && slot.querySelector('[data-slot-file]');
+      if (!out) return;
+      var f = inp.files && inp.files[0];
+      out.textContent = f ? f.name : 'Add photo';
+      slot.classList.toggle('is-filled', !!f);
+    });
+  });
+
+  /* curly quotes inside review text (facts keep straight ones) */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-quotes]'), function (p) {
+    p.textContent = p.textContent
+      .replace(/(^|[\s(])'/g, function (m, a) { return a + '‘'; }).replace(/'/g, '’')
+      .replace(/(^|[\s(])"/g, function (m, a) { return a + '“'; }).replace(/"/g, '”');
+  });
+
   if (!(motion && window.gsap && window.ScrollTrigger)) return;
   gsap.registerPlugin(ScrollTrigger);
+
+  /* gloss break: the photo settles as it arrives, like a panel coming out of the booth */
+  var gimg = document.querySelector('.gloss__ph img');
+  if (gimg) {
+    gsap.fromTo(gimg, { scale: 1.14, yPercent: -4 }, {
+      scale: 1, yPercent: 4, ease: 'none',
+      scrollTrigger: { trigger: '.gloss', start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  }
 
   /* the peel: each station's tape comes off as it reaches the middle of the screen */
   var stns = gsap.utils.toArray('.stn');
