@@ -1352,17 +1352,31 @@ SW.mod('media-fallback', function (SW) {
     rows.forEach(function (r) { io.observe(r); });
 
     if (!chip) return;
+    // one master run: the chip reads the same stake tag the section shows, set as the tag enters.
     var tags = rows.map(function (r) {
       var t = SW.$('.sl-tag', r);
       return t ? t.textContent.split('·').slice(0, 2).join('·').trim() : '';
     });
+    var run = SW.$('[data-ft-run]');
+    var pk = [];
+    if (run) {
+      for (var q = 0; q < rows.length; q++) { var s = doc.createElement('span'); run.appendChild(s); pk.push(s); }
+    }
     var hero = SW.$('#top');
+    var proc = SW.$('#process');
+    var last = -2;
     function onScroll() {
-      var mid = window.innerHeight * .5, idx = -1;
-      rows.forEach(function (r, i) { if (r.getBoundingClientRect().top < mid) idx = i; });
-      var heroIn = hero && hero.getBoundingClientRect().bottom > mid;
-      chipBox.classList.toggle('is-off', heroIn || idx < 0);
-      if (idx >= 0) chip.textContent = tags[idx];
+      var vh = window.innerHeight, enter = vh * .85, idx = -1;
+      rows.forEach(function (r, i) { if (r.getBoundingClientRect().top < enter) idx = i; });
+      var heroIn = hero && hero.getBoundingClientRect().bottom > vh * .5;
+      var pr = proc ? proc.getBoundingClientRect() : null;
+      var procIn = pr && pr.top < vh * .5 && pr.bottom > vh * .5;   // the process has its own big readout
+      chipBox.classList.toggle('is-off', heroIn || procIn || idx < 0);
+      if (idx >= 0 && idx !== last) {
+        chip.textContent = tags[idx];
+        pk.forEach(function (p, i) { p.classList.toggle('is-on', i <= idx); });
+        last = idx;
+      }
     }
     var ticking = false;
     window.addEventListener('scroll', function () {
@@ -1432,9 +1446,17 @@ SW.mod('media-fallback', function (SW) {
       var groups = SW.$$('[data-xs-step]', xs);
       var labels = SW.$$('.xs-l', xs);
       var dtl = gsap.timeline({
-        scrollTrigger: { trigger: xs, start: 'top 85%', end: 'bottom 55%', scrub: .5 }
+        scrollTrigger: { trigger: xs, start: 'top 80%', end: 'bottom 30%', scrub: .5 }
       });
+      var plumb = SW.$('.xs-plumb', xs), bob = SW.$('.xs-bob', xs), plumbL = SW.$('.xs-l-plumb', xs);
       groups.forEach(function (g, i) {
+        if (g.getAttribute('data-xs-step') === '4') {
+          // the moment: the layout string swings 90° off the post top and hangs plumb to the frost line
+          if (plumb) dtl.fromTo(plumb, { rotation: 90, scaleY: .66, svgOrigin: '218 40' }, { rotation: 0, scaleY: 1, svgOrigin: '218 40', ease: 'back.out(1.4)', duration: 1.2 }, i);
+          if (bob) dtl.from(bob, { opacity: 0, y: -12, duration: .4, ease: 'back.out(2)' }, i + 1);
+          if (plumbL) dtl.from(plumbL, { opacity: 0, x: -8, duration: .4 }, i + 1.1);
+          return;
+        }
         var paths = SW.$$('.dr', g);
         var solid = paths.filter(function (p) { return !p.hasAttribute('stroke-dasharray'); });
         var dashed = paths.filter(function (p) { return p.hasAttribute('stroke-dasharray'); });
@@ -1446,16 +1468,53 @@ SW.mod('media-fallback', function (SW) {
         var rest = SW.$$(':scope > :not(.dr)', g);
         if (rest.length) dtl.from(rest, { opacity: 0, duration: .5 }, i + .5);
       });
-      if (labels.length) dtl.from(labels, { opacity: 0, x: -8, duration: .4, stagger: .5 }, .5);
+      var early = labels.filter(function (l) { return l !== plumbL; });
+      if (early.length) dtl.from(early, { opacity: 0, x: -8, duration: .4, stagger: .5 }, .5);
+    }
+
+    // stake B: the drawn run clip-wipes into the photograph of a built one (phones too, no pin)
+    var rv = SW.$('[data-reveal-photo]');
+    if (rv) {
+      var ph = SW.$('.rv-photo', rv), edge = SW.$('.rv-edge', rv);
+      var rtl = gsap.timeline({ scrollTrigger: { trigger: rv, start: 'top 85%', end: 'center 45%', scrub: .5 } });
+      rtl.fromTo(ph, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', duration: 1 }, 0);
+      if (edge) rtl.fromTo(edge, { left: '0%', opacity: 1 }, { left: '100%', ease: 'none', duration: 1 }, 0).to(edge, { opacity: 0, duration: .1 }, 1);
     }
 
     if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(function () { ST.refresh(); });
     window.addEventListener('load', function () { ST.refresh(); });
   }
 
+  /* ---------- 4. the drawn run under the stake-B photo, service groups, stake-out print ---------- */
+  function initExtras() {
+    var d = SW.$('[data-rv-draw]');
+    if (d) {
+      var g = 384, p = '', r = '', k = '';
+      for (var x = 40; x <= 1160; x += 160) p += 'M' + (x - 7) + ' 70h14V' + (g + 12) + 'h-14Z';
+      for (var px = 58; px < 1150; px += 26) { if ((px - 40) % 160 < 14) continue; k += 'M' + px + ' ' + (g - 4) + 'V104l7-12l7 12V' + (g - 4) + 'Z'; }
+      r = 'M40 150H1160M40 310H1160';
+      el('path', { 'class': 'ln', d: 'M0 ' + g + 'H1200' }, d);
+      el('path', { 'class': 'ht', d: r }, d);
+      el('path', { 'class': 'ln pf', d: k }, d);
+      el('path', { 'class': 'ln pf', d: p }, d);
+      el('path', { 'class': 'ac', d: 'M10 64H1190' }, d);
+    }
+    var mq = window.matchMedia('(max-width: 639px)');
+    var grps = SW.$$('[data-svc-grp]');
+    if (mq.matches && grps.length > 1) grps.slice(1).forEach(function (gp) { gp.open = false; });
+    var pr = SW.$('[data-est-print]');
+    if (pr) pr.addEventListener('click', function () {
+      doc.documentElement.classList.add('is-print-est');
+      var off = function () { doc.documentElement.classList.remove('is-print-est'); window.removeEventListener('afterprint', off); };
+      window.addEventListener('afterprint', off);
+      window.print();
+    });
+  }
+
   SW.ready(function () {
     initEstimator();
     initStakes();
+    initExtras();
     if (!SW.reduced && doc.documentElement.classList.contains('sw-motion')) initMotion();
   });
 })();
