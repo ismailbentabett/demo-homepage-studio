@@ -901,7 +901,7 @@ SW.mod('media-fallback', function (SW) {
   var fact = function (p) { try { return SW.fact ? SW.fact(p) : null; } catch (e) { return null; } };
   var prices = fact('proof.prices') || [];
   var services = fact('services') || [];
-  var range = function (i) { var p = prices[i]; return p ? p.from + '–' + p.to : 'measured at your door'; };
+  var range = function (i) { var p = prices[i]; return p ? p.from + '–' + p.to : 'set on the visit'; };
   var svcName = function (i) { return services[i] ? services[i].name : ''; };
   var motion = !SW.reduced && root.classList.contains('sw-motion');
 
@@ -942,7 +942,7 @@ SW.mod('media-fallback', function (SW) {
       if (!r) return;
       out('part').textContent = r.part + (r.partial ? ' (pick step 2)' : '');
       out('urg').textContent = URG[r.urg][0];
-      out('range').textContent = r.price >= 0 ? range(r.price) : 'measured at your door';
+      out('range').textContent = r.price >= 0 ? range(r.price) : 'set on the visit';
       out('safe').innerHTML = '<span class="mono">Safe to lift?</span> <b></b>';
       out('safe').querySelector('b').textContent = SAFE[r.urg];
       plate.setAttribute('data-state', r.urg);

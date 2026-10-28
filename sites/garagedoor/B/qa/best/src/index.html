@@ -58,8 +58,8 @@
 <section class="hero t-paper" id="top" data-layout="split" aria-labelledby="hero-h">
   <p class="serial" aria-hidden="true">CC-01</p>
   <div class="hero__copy">
-    <p class="kicker mono">{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
-    <h1 id="hero-h" class="h1">What broke? <span class="h1__b">Two taps.</span></h1>
+    <p class="kicker mono">Springs · openers · cables · bottom sections</p>
+    <h1 id="hero-h" class="h1"><span class="h1__a">Garage door repair, {{biz.city}}.</span> What broke? <span class="h1__b">Two taps.</span></h1>
     <p class="lead">Tap the sound and what the door does. The plate reads back the likely part, a sample price, and whether it’s safe to touch.</p>
 
     <form class="finder" data-hook="finder" data-js-only aria-label="Symptom finder">
@@ -92,13 +92,17 @@
 
     <div class="hero__cta">
       [[call btn--primary btn--lg]]
-      <a class="btn btn--secondary btn--lg" href="#contact">[[i sheet]]<span>Get a written quote</span></a>
+      <a class="btn btn--secondary btn--lg" href="#contact">[[i sheet]]<span>Price it</span></a>
     </div>
     <p class="proofline mono">{{hours|today}} <i aria-hidden="true">·</i> {{biz.city}} &amp; suburbs <i aria-hidden="true">·</i> <span class="nowrap">★ {{proof.rating}} from {{proof.reviewCount}} reviews [[sample rating]]</span></p>
   </div>
 
   <div class="hero__dwg t-mid">
-    <svg class="dwg" viewBox="0 0 640 600" preserveAspectRatio="xMidYMin slice" role="img" aria-label="Line drawing of a torsion spring assembly above a garage door, seen from inside the garage">
+    <figure class="hero__photo" data-reveal="clip">
+      [[img hero | eager class="hero__img" sizes="(min-width: 1100px) 42vw, 100vw"]]
+      <figcaption class="mono">Photograph · a flush two-car door, from the drive</figcaption>
+    </figure>
+    <svg class="dwg" viewBox="0 0 640 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Line drawing of a torsion spring assembly above a garage door, seen from inside the garage">
       <g class="dwg__frame" fill="none" stroke="#15181B" stroke-width="1.5">
         <path d="M0 16H640" stroke-width="2"/>
         <path d="M0 578H640" stroke-width="2"/>
@@ -174,23 +178,23 @@
         <text x="120" y="530">BOTTOM SECTION</text>
       </g>
     </svg>
-    <p class="dwg__cap mono">Drawing · torsion assembly, inside view · not to scale</p>
+    <p class="dwg__cap mono">Drawing · the same kind of door, from inside · not to scale</p>
   </div>
 
-  <aside class="plate plate--xl hero__plate" data-sw-signature="plate" data-state="idle" aria-labelledby="plate-h">
+  <aside class="plate plate--xl hero__plate" data-sw-signature="plate" data-state="idle" aria-label="Reading from the symptom finder">
     <div class="plate__head">
-      <h2 id="plate-h" class="plate__title mono">Reading</h2>
+      <p class="plate__title mono">Reading</p>
       <span class="plate__serial-top mono">CC-01</span>
     </div>
     <div class="plate__meterrow mono"><span>Std. spring</span><span class="plate__meter" style="--sw-p:0" data-meter aria-hidden="true"></span><span><span class="odo" data-odo>10,000</span> cycles</span></div>
     <div class="plate__rows" aria-live="polite">
       <p class="plate__row"><span class="plate__label">Likely part</span><i></i><span class="plate__value" data-out="part"><span class="plate__fill">tap a sound</span></span></p>
       <p class="plate__row"><span class="plate__label">Urgency</span><i></i><span class="plate__value" data-out="urg"><span class="plate__fill">—</span></span></p>
-      <p class="plate__row"><span class="plate__label">Sample range</span><i></i><span class="plate__value" data-out="range"><span class="plate__fill">measured at your door</span></span></p>
+      <p class="plate__row"><span class="plate__label">Sample range</span><i></i><span class="plate__value" data-out="range"><span class="plate__fill">follows the part</span></span></p>
     </div>
     <p class="plate__safe" data-out="safe"><span class="mono">Safe to lift?</span> <b>If you heard a bang: no. Call.</b></p>
     <div class="plate__foot">
-      <button class="btn btn--text" type="button" data-send-reading data-js-only hidden>Send this reading to us [[i arrow]]</button>
+      <button class="btn btn--text" type="button" data-send-reading data-js-only hidden>Price this reading [[i arrow]]</button>
       [[sample pricing]]
     </div>
   </aside>
@@ -267,21 +271,163 @@
       <h2 id="svcs-h" class="h2">Every part on the door gets a reading.</h2>
       <p class="sec-lead">The part, what we check on it, and a button that prices it. Read yours, skip the rest.</p>
     </div>
-    <ul class="svc-grid" role="list" data-hook="service-plates" data-reveal-stagger>
-      <!-- each services -->
+    <ul class="svc-grid" role="list" data-hook="service-plates" tabindex="0" aria-label="Service plates">
       <li class="plate svc">
         <div class="svc__top">
-          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-{{#}}"/></svg>
-          <span class="svc__serial mono">S-{{#2}}</span>
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-1"/></svg>
+          <span class="svc__serial mono">S-01</span>
         </div>
-        <h3 class="svc__name">{{.short}}</h3>
-        <p class="svc__full mono">{{.name}}</p>
-        <p class="svc__blurb">{{.blurb}}</p>
-        <p class="plate__row svc__row"><span class="plate__label">Reading</span><i></i><span class="plate__fill">measured at your door</span></p>
-        [[quote {{.short}} btn--text svc__go]]
+        <h3 class="svc__name">{{services.0.short}}</h3>
+        <p class="svc__full">{{services.0.name}}</p>
+        <p class="svc__blurb">{{services.0.blurb}}</p>
+        <div class="svc__spec">
+          <p class="plate__row"><span class="plate__label">Wire size</span><i></i><span class="plate__fill">measured at your door</span></p>
+          <p class="plate__row"><span class="plate__label">Length · inside diameter</span><i></i><span class="plate__fill">on the quote</span></p>
+          <p class="plate__row"><span class="plate__label">Cycle rating</span><i></i><span class="plate__value">10,000 std. · high-cycle option</span></p>
+        </div>
+        <p class="plate__row svc__row"><span class="plate__label">Sample range</span><i></i><span class="plate__value">{{proof.prices.0.from}}–{{proof.prices.0.to}} a pair</span></p>
+        <div class="svc__foot">
+          [[quote {{services.0.short}} btn--text svc__go]]
+          [[sample pricing]]
+        </div>
       </li>
-      <!-- /each -->
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-2"/></svg>
+          <span class="svc__serial mono">S-02</span>
+        </div>
+        <h3 class="svc__name">{{services.1.short}}</h3>
+        <p class="svc__full">{{services.1.name}}</p>
+        <p class="svc__blurb">{{services.1.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">Sample range</span><i></i><span class="plate__value">Conversion {{proof.prices.1.from}}–{{proof.prices.1.to}}</span></p>
+        <div class="svc__foot">
+          [[quote {{services.1.short}} btn--text svc__go]]
+          [[sample pricing]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-3"/></svg>
+          <span class="svc__serial mono">S-03</span>
+        </div>
+        <h3 class="svc__name">{{services.2.short}}</h3>
+        <p class="svc__full">{{services.2.name}}</p>
+        <p class="svc__blurb">{{services.2.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">Sample range</span><i></i><span class="plate__value">{{proof.prices.3.from}}–{{proof.prices.3.to}} installed</span></p>
+        <div class="svc__foot">
+          [[quote {{services.2.short}} btn--text svc__go]]
+          [[sample pricing]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-4"/></svg>
+          <span class="svc__serial mono">S-04</span>
+        </div>
+        <h3 class="svc__name">{{services.3.short}}</h3>
+        <p class="svc__full">{{services.3.name}}</p>
+        <p class="svc__blurb">{{services.3.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">Sample range</span><i></i><span class="plate__value">{{proof.prices.2.from}}–{{proof.prices.2.to}}</span></p>
+        <div class="svc__foot">
+          [[quote {{services.3.short}} btn--text svc__go]]
+          [[sample pricing]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-5"/></svg>
+          <span class="svc__serial mono">S-05</span>
+        </div>
+        <h3 class="svc__name">{{services.4.short}}</h3>
+        <p class="svc__full">{{services.4.name}}</p>
+        <p class="svc__blurb">{{services.4.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">We check</span><i></i><span class="plate__fill">cable fray, roller play</span></p>
+        <div class="svc__foot">
+          [[quote {{services.4.short}} btn--text svc__go]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-6"/></svg>
+          <span class="svc__serial mono">S-06</span>
+        </div>
+        <h3 class="svc__name">{{services.5.short}}</h3>
+        <p class="svc__full">{{services.5.name}}</p>
+        <p class="svc__blurb">{{services.5.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">Sample range</span><i></i><span class="plate__value">{{proof.prices.4.from}}–{{proof.prices.4.to}} · 16x7</span></p>
+        <div class="svc__foot">
+          [[quote {{services.5.short}} btn--text svc__go]]
+          [[sample pricing]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-7"/></svg>
+          <span class="svc__serial mono">S-07</span>
+        </div>
+        <h3 class="svc__name">{{services.6.short}}</h3>
+        <p class="svc__full">{{services.6.name}}</p>
+        <p class="svc__blurb">{{services.6.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">We check</span><i></i><span class="plate__fill">seal length, gap at the slab</span></p>
+        <div class="svc__foot">
+          [[quote {{services.6.short}} btn--text svc__go]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-8"/></svg>
+          <span class="svc__serial mono">S-08</span>
+        </div>
+        <h3 class="svc__name">{{services.7.short}}</h3>
+        <p class="svc__full">{{services.7.name}}</p>
+        <p class="svc__blurb">{{services.7.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">We check</span><i></i><span class="plate__fill">reversing force, eye alignment</span></p>
+        <div class="svc__foot">
+          [[quote {{services.7.short}} btn--text svc__go]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-9"/></svg>
+          <span class="svc__serial mono">S-09</span>
+        </div>
+        <h3 class="svc__name">{{services.8.short}}</h3>
+        <p class="svc__full">{{services.8.name}}</p>
+        <p class="svc__blurb">{{services.8.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">We check</span><i></i><span class="plate__fill">every code in memory</span></p>
+        <div class="svc__foot">
+          [[quote {{services.8.short}} btn--text svc__go]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-10"/></svg>
+          <span class="svc__serial mono">S-10</span>
+        </div>
+        <h3 class="svc__name">{{services.9.short}}</h3>
+        <p class="svc__full">{{services.9.name}}</p>
+        <p class="svc__blurb">{{services.9.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">Sample range</span><i></i><span class="plate__value">{{proof.prices.5.from}}–{{proof.prices.5.to}}</span></p>
+        <div class="svc__foot">
+          [[quote {{services.9.short}} btn--text svc__go]]
+          [[sample pricing]]
+        </div>
+      </li>
+      <li class="plate svc">
+        <div class="svc__top">
+          <svg class="svc__ico" aria-hidden="true" focusable="false"><use href="#s-11"/></svg>
+          <span class="svc__serial mono">S-11</span>
+        </div>
+        <h3 class="svc__name">{{services.10.short}}</h3>
+        <p class="svc__full">{{services.10.name}}</p>
+        <p class="svc__blurb">{{services.10.blurb}}</p>
+        <p class="plate__row svc__row"><span class="plate__label">First</span><i></i><span class="plate__fill">call before you lift it</span></p>
+        <div class="svc__foot">
+          [[quote {{services.10.short}} btn--text svc__go]]
+        </div>
+      </li>
     </ul>
+    <p class="svc-hint mono" aria-hidden="true">11 plates · swipe sideways →</p>
   </div>
 </section>
 
@@ -295,7 +441,7 @@
       <p class="sec-lead">Ranges for the six jobs we do most. The exact number is written on your quote before any work starts, with the part sizes next to it.</p>
       <div class="parts__cta">
         [[call btn--primary]]
-        <a class="btn btn--secondary" href="#contact">Get a written quote</a>
+        <a class="btn btn--secondary" href="#contact">Price it</a>
       </div>
     </div>
     <div class="plate plate--ledger" aria-labelledby="ledger-h">
@@ -324,6 +470,10 @@
       <p class="kicker mono">Repair or replace</p>
       <h2 id="ror-h" class="h2">Fix the old door, or price a new one?</h2>
       <p class="sec-lead">The fear is a spring visit that turns into a new door. Answer four questions and see both numbers side by side.</p>
+      <figure class="ror__photo">
+        [[img carriage | class="ror__img" sizes="(min-width: 1100px) 36vw, 100vw"]]
+        <figcaption class="mono">Photograph · swing-out carriage doors on an older garage</figcaption>
+      </figure>
     </div>
     <form class="ror__form" data-hook="ror" aria-label="Repair or replace check">
       <fieldset class="q">
@@ -377,7 +527,7 @@
       </div>
       <p class="ror__tag">[[sample pricing]] Ranges from the parts sheet. No math on your wallet: the written quote has the real number.</p>
       <div class="ror__cta">
-        <a class="btn btn--primary" href="#contact" data-ror-send>Get both numbers in writing</a>
+        <a class="btn btn--primary" href="#contact" data-ror-send>Price both</a>
       </div>
       <blockquote class="ror__q"><p>“{{proof.reviews.4.text}}”</p><footer class="mono">{{proof.reviews.4.name}}, {{proof.reviews.4.town}} · {{proof.reviews.4.service}} [[sample review]]</footer></blockquote>
     </div>
@@ -405,7 +555,7 @@
     <p class="salt__p">Twenty winters of slush sit against the bottom section of a {{biz.city}} door. When the panel is still made, we replace that one section and the seal. Not the door.</p>
     <div class="salt__row">
       <p class="salt__price mono">{{proof.prices.2.item}} <b>{{proof.prices.2.from}}–{{proof.prices.2.to}}</b> [[sample pricing]]</p>
-      [[quote {{services.3.short}} btn--primary | Price the bottom section]]
+      [[quote {{services.3.short}} btn--primary]]
     </div>
     <blockquote class="salt__q"><p>“{{proof.reviews.2.text}}”</p><footer class="mono">{{proof.reviews.2.name}}, {{proof.reviews.2.town}} [[sample review]]</footer></blockquote>
   </div>
@@ -449,9 +599,9 @@
         <p data-warm-comfort><b>Comfort:</b> the biggest change you’ll feel. The garage wall under a bedroom stops being the coldest wall in the house.</p>
         <p data-warm-noise><b>Noise:</b> a foam-filled door is stiffer, so it rattles less and the opener sounds quieter from upstairs.</p>
       </div>
-      <a class="btn btn--primary" href="#contact" data-service="{{services.5.name}}">Ask for door options</a>
+      <a class="btn btn--primary" href="#contact" data-service="{{services.5.name}}">Price it</a>
+      <blockquote class="warm__q"><p class="warm__qk mono">Reading from upstairs</p><p>“{{proof.reviews.3.text}}”</p><footer class="mono">{{proof.reviews.3.name}}, {{proof.reviews.3.town}} [[sample review]]</footer></blockquote>
     </div>
-    <blockquote class="warm__q"><p>“{{proof.reviews.3.text}}”</p><footer class="mono">{{proof.reviews.3.name}}, {{proof.reviews.3.town}} [[sample review]]</footer></blockquote>
   </div>
 </section>
 
@@ -543,7 +693,7 @@
       <p class="mono contact__hours">{{hours|today}}</p>
     </div>
     <div class="formcard">
-      <form class="lead" data-lead novalidate data-thanks="Thanks, {name}. In your version this goes straight to your phone and inbox.">
+      <form class="lead" data-lead novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to {{biz.short}}.">
         <div class="lead__prog" data-form-progress aria-label="Form progress"><span></span></div>
         <fieldset data-step>
           <legend>What’s wrong?</legend>
@@ -595,7 +745,7 @@
           <button class="btn btn--primary" type="button" data-next>Next</button>
           <button class="btn btn--primary" type="submit" data-submit>Send my request</button>
         </div>
-        <p class="lead__micro">We’ll call you back to set up a visit. Nothing is sent in this sample.</p>
+        <p class="lead__micro">On the real site, {{biz.short}} calls you back with a number. Nothing is sent in this demo.</p>
       </form>
     </div>
   </div>
@@ -613,12 +763,12 @@
       <div class="maker__rows">
         <p class="plate__row"><span class="plate__label">Trade</span><i></i><span class="plate__value">{{biz.tradeLabel}}</span></p>
         <p class="plate__row"><span class="plate__label">Based in</span><i></i><span class="plate__value">{{biz.city}}, {{biz.state}}</span></p>
-        <p class="plate__row"><span class="plate__label">Lic. # (sample)</span><i></i><span class="plate__value">{{proof.license}}</span></p>
-        <p class="plate__row"><span class="plate__label">Insured (sample)</span><i></i><span class="plate__value">Yes</span></p>
-        <p class="plate__row"><span class="plate__label">In the trade (sample)</span><i></i><span class="plate__value">{{proof.years}} yrs</span></p>
+        <p class="plate__row"><span class="plate__label">Lic.</span><i></i><span class="plate__value">{{proof.license}} [[sample]]</span></p>
+        <p class="plate__row"><span class="plate__label">Insured</span><i></i><span class="plate__value">Yes [[sample]]</span></p>
+        <p class="plate__row"><span class="plate__label">Years</span><i></i><span class="plate__value">{{proof.years}} [[sample]]</span></p>
         <p class="plate__row"><span class="plate__label">Phone</span><i></i><span class="plate__value">[[tel]]</span></p>
-        <p class="plate__row"><span class="plate__label">Email</span><i></i><span class="plate__value"><a class="tel-plain" href="mailto:{{biz.email}}">{{biz.email}}</a></span></p>
       </div>
+      <p class="plate__row maker__mail"><span class="plate__label">Email</span><i></i><span class="plate__value"><a class="tel-plain" href="mailto:{{biz.email}}">{{biz.email}}</a></span></p>
       <p class="plate__serial mono" aria-hidden="true">CC-{{year}}</p>
     </div>
     <div class="foot__row">
@@ -641,5 +791,5 @@
 <nav class="mbar" data-mobilebar aria-label="Quick contact">
   <a class="mbar__call" href="tel:{{biz.phoneE164}}">[[i phone]]<span>Call</span></a>
   <a href="sms:{{biz.phoneE164}}">[[i msg]]<span>Text</span></a>
-  <a href="#contact">[[i sheet]]<span>Quote</span></a>
+  <a href="#contact">[[i sheet]]<span>Price it</span></a>
 </nav>
