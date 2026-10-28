@@ -274,8 +274,7 @@ html.lenis, html.lenis body { height: auto; }
   --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-io: cubic-bezier(.77, 0, .175, 1);
   --t-press: 120ms; --t-ui: 200ms; --t-page: 520ms; --t-story: 900ms; --stagger: 60ms;
 
-  --frost-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='64' viewBox='0 0 320 64'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M0 1H320'/%3E%3Cpath d='M18 0v40M18 12l-9 8M18 12l9 7M18 26l-7 6M18 26l7 6'/%3E%3Cpath d='M58 0v22M58 9l-6 6M58 9l6 6'/%3E%3Cpath d='M104 0v58M104 14l-11 10M104 14l11 9M104 30l-9 8M104 30l9 8M104 45l-6 5M104 45l6 5'/%3E%3Cpath d='M150 0v30M150 10l-7 7M150 10l7 7M150 21l-5 5M150 21l5 5'/%3E%3Cpath d='M196 0v46M196 12l-9 8M196 12l9 8M196 28l-8 7M196 28l8 7'/%3E%3Cpath d='M238 0v18M238 8l-5 5M238 8l5 5'/%3E%3Cpath d='M284 0v36M284 11l-8 7M284 11l8 7M284 24l-6 6M284 24l6 6'/%3E%3C/g%3E%3C/svg%3E");
-  --frost-bot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='64' viewBox='0 0 320 64'%3E%3Cg transform='matrix(1 0 0 -1 0 64)' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M0 1H320'/%3E%3Cpath d='M30 0v34M30 10l-8 7M30 10l8 7M30 22l-6 6M30 22l6 6'/%3E%3Cpath d='M76 0v52M76 13l-10 9M76 13l10 9M76 30l-8 7M76 30l8 7M76 43l-5 5M76 43l5 5'/%3E%3Cpath d='M128 0v20M128 8l-5 5M128 8l5 5'/%3E%3Cpath d='M172 0v42M172 12l-9 8M172 12l9 8M172 27l-7 6M172 27l7 6'/%3E%3Cpath d='M222 0v28M222 10l-6 6M222 10l6 6'/%3E%3Cpath d='M268 0v56M268 14l-10 9M268 14l10 9M268 32l-8 7M268 32l8 7'/%3E%3Cpath d='M310 0v16M310 7l-4 4M310 7l4 4'/%3E%3C/g%3E%3C/svg%3E");
+  --rime: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 2.6 -1'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23f)'/%3E%3C/svg%3E");
 }
 @media (min-width: 900px) { :root { --header-h: 68px; } }
 
@@ -319,11 +318,9 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .btn--secondary { background: transparent; color: var(--ink); border-color: currentColor; }
 .btn--dark { background: #0F2340; color: #EEF3F7; }
 .btn--text { min-height: 48px; padding: 0; color: var(--accent); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-.btn--text::after { content: "→"; text-decoration: none; display: inline-block; transition: transform var(--t-ui) var(--ease-out); }
 @media (hover: hover) {
   .btn--primary:hover, .btn-call:hover { filter: brightness(1.06); }
   .btn--secondary:hover { background: color-mix(in srgb, var(--ink) 10%, transparent); }
-  .btn--text:hover::after { transform: translateX(4px); }
 }
 .btns { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-4); align-items: center; }
 .tel-plain { display: inline-block; padding-block: 12px; margin-block: -12px; color: inherit; font-variant-numeric: tabular-nums; }
@@ -336,11 +333,15 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .stamp--sm { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); }
 .stamp--md { font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem); }
 .stamp--xl { font-size: clamp(4rem, 2rem + 7vw, 9rem); }
-.stamp--word { font-size: var(--fs--1); font-family: "Libre Franklin", sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; padding: .45em .7em; }
+.stamp--word, .stamp--sm.stamp--word { font-size: var(--fs--1); white-space: nowrap; align-self: center; font-family: "Libre Franklin", sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; padding: .45em .7em; }
 .frost { position: relative; isolation: isolate; }
 .frost::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit; background: var(--frost);
-  -webkit-mask: var(--frost-top) top left / 320px calc(var(--cold) * 44px) repeat-x, var(--frost-bot) bottom left / 320px calc(var(--cold) * 34px) repeat-x;
-  mask: var(--frost-top) top left / 320px calc(var(--cold) * 44px) repeat-x, var(--frost-bot) bottom left / 320px calc(var(--cold) * 34px) repeat-x;
+  --d: calc(var(--cold) * 72px);
+  -webkit-mask: var(--rime) 0 0 / 220px 220px, linear-gradient(90deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000), linear-gradient(180deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000);
+  -webkit-mask-composite: source-in, source-over;
+  mask: var(--rime) 0 0 / 220px 220px, linear-gradient(90deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000), linear-gradient(180deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000);
+  mask-composite: intersect, add, add;
+  opacity: calc(.25 + var(--cold) * .75);
   transition: --cold var(--t-page) var(--ease-out), opacity var(--t-ui) var(--ease-out); }
 @media (hover: hover) {
   .frost:is(:hover, :focus-within)::before { --cold: 0; }
@@ -364,35 +365,60 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 @media (min-width: 900px) { .hdr__nav { display: flex; } }
 @media (min-width: 1200px) { .hdr__tel { display: inline-block; } .hdr__call span { font-size: 0; } .hdr__call span::before { content: "Call"; font-size: var(--fs-0); } }
 
-/* ---------- 1 hero ---------- */
-.hero { min-height: calc(100svh - var(--header-h)); padding: var(--s-5) 0 var(--s-7); display: flex; align-items: center; overflow: clip; }
-.hero__grid { display: grid; gap: var(--s-4); grid-template-areas: "mask" "copy" "act" "card"; }
-.hero__mask { grid-area: mask; margin-inline: -6px; }
-.mask { width: 100%; height: auto; overflow: visible; }
-.mask__glyphs { font-family: "Arvo", Georgia, serif; font-weight: 700; font-size: 700px; letter-spacing: -24px; }
-.mask__outline { fill: none; stroke: rgba(238,243,247,.4); stroke-width: 2; }
-.reading { grid-area: card; border: 1px solid var(--rule); border-radius: 2px; padding: 52px var(--s-5) 44px; display: grid; gap: 4px; justify-items: start; align-self: end; }
-.reading .stamp { color: #EEF3F7; margin-bottom: var(--s-2); }
-.reading__line { font: 600 var(--fs--1)/1.3 "Libre Franklin"; text-transform: uppercase; letter-spacing: .08em; color: var(--signal-t); }
-.reading__item { font-weight: 600; margin-top: var(--s-2); }
-.reading__price { font: 700 var(--fs-3)/1 "Arvo", serif; font-variant-numeric: tabular-nums; color: var(--accent); letter-spacing: -.02em; }
-.reading__note { font-size: var(--fs--1); color: var(--muted); }
-.hero__copy { grid-area: copy; }
-.hero__copy .kicker { margin-bottom: var(--s-3); }
-.hero__act { grid-area: act; display: grid; gap: var(--s-5); align-content: start; }
-.hero__act .lead { font-size: var(--fs-0); color: var(--muted); }
+/* ---------- 1 hero: one frosted window ---------- */
+/* Glyph run "−8°" in Arvo 700: ink starts .047em, ends 1.455em (letter-spacing −.04em); 8 is .766em tall, ° tops out at .844em. */
+.hero { position: relative; overflow: clip; container-type: inline-size; isolation: isolate;
+  --F: min(calc((100cqw + 28px - var(--side)) / 1.408), 46svh);
+  --gx: calc(var(--side) - .047 * var(--F)); --gy: calc(14px + .844 * var(--F)); }
+.hero__window { position: absolute; inset: 0; z-index: -1; }
+.win { display: block; width: 100%; height: 100%; }
+.win__sky { fill: url(#sky-m); }
+.win__photo { width: 100%; height: calc(14px + .95 * var(--F) + 40px); }
+.win__grade { fill: #1C3A62; opacity: .5; mix-blend-mode: multiply; }
+.win__frost { mix-blend-mode: normal; }
+.win__glow { mix-blend-mode: screen; opacity: .8; cx: calc(var(--gx) + .74 * var(--F)); cy: calc(var(--gy) - .38 * var(--F)); r: calc(.8 * var(--F)); }
+.win__scrim { fill: url(#scrim-m); }
+.run { font: 700 var(--F)/1 "Arvo", Georgia, serif; letter-spacing: -.04em; transform: translate(var(--gx), var(--gy)); }
+.run__minus { baseline-shift: .09em; letter-spacing: -.07em; }
+.run--cut { fill: #000; }
+.run--line { fill: none; stroke: rgba(238,243,247,.62); stroke-width: 1.5px; }
+.win__clear { cx: calc(var(--gx) + .74 * var(--F)); cy: calc(var(--gy) - .4 * var(--F)); r: calc(var(--clear, 1) * 150cqw); }
+.hero__body { position: relative; padding: calc(14px + .87 * var(--F) + 14px) 0 var(--s-6); display: grid; gap: var(--s-4); }
+.hero__kicker { margin: 0; color: #C9D7E5; }
+.hero .h1 { max-width: 15ch; }
+.hero__act { display: grid; gap: var(--s-4); }
+.hero__act .lead { font-size: var(--fs-0); color: var(--muted); max-width: 44ch; }
 .hero .btns .btn-call { flex: 1 1 100%; }
+.hero__price-link { display: none; }
+.hero__proof { display: grid; gap: var(--s-3); }
+.reading { display: flex; gap: var(--s-4); align-items: center; }
+.reading .stamp { color: #EEF3F7; flex: none; }
+.reading__item { font-weight: 600; }
+.reading__price { font: 700 var(--fs-1)/1 "Arvo", serif; font-variant-numeric: tabular-nums; color: var(--accent); letter-spacing: -.01em; white-space: nowrap; }
+.reading__note { font-size: var(--fs--1); color: var(--muted); }
+.reading__note .sample-tag { margin-top: 4px; }
 .proofline { font-size: var(--fs--1); color: var(--muted); font-variant-numeric: tabular-nums; }
 .proofline [data-open-now] { color: var(--ink); font-weight: 600; }
-@media (min-width: 640px) { .hero .btns .btn-call { flex: 0 0 auto; } .hero__act .lead { font-size: var(--fs-1); } }
+@media (min-width: 640px) {
+  .hero .btns .btn-call { flex: 0 0 auto; }
+  .hero__price-link { display: inline-flex; }
+}
 @media (min-width: 900px) {
-  .hero { padding: var(--s-6) 0 var(--s-7); }
-  .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(250px, 300px); grid-template-areas: "mask card" "copy copy" "act act"; column-gap: var(--s-7); row-gap: var(--s-5); }
-  .mask { height: clamp(180px, 40svh, 440px); width: auto; max-width: 100%; }
-  .hero__act { grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: var(--s-7); }
-  .hero__act .lead { max-width: 46ch; }
-  .hero__act .btns { justify-content: flex-end; }
-  .hero__act .proofline { grid-column: 1 / -1; }
+  .hero { container-type: size; height: clamp(600px, calc(100svh - var(--header-h) - 56px), 880px);
+    --F: min(calc((100cqw + 40px - var(--side)) / 1.408), calc((100cqh - 30px) / .766));
+    --gy: calc(100cqh - 18px); }
+  .win__sky { fill: url(#sky-d); }
+  .win__scrim { fill: url(#scrim-d); }
+  .win__photo { height: 100%; }
+  .hero__body { height: 100%; padding: var(--s-5) 0 var(--s-5); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto 1fr auto auto auto; column-gap: var(--s-7); row-gap: var(--s-4); }
+  .hero__kicker { grid-column: 1; grid-row: 1; }
+  .hero .h1 { grid-column: 1 / -1; grid-row: 3; max-width: 22ch; text-shadow: 0 2px 24px rgba(8,22,41,.6); }
+  .hero__act { grid-column: 1 / -1; grid-row: 4; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: var(--s-7); }
+  .hero__act .lead { max-width: 52ch; }
+  .hero__proof { grid-column: 1 / -1; grid-row: 5; grid-template-columns: auto 1fr; align-items: center; column-gap: var(--s-7); }
+  .hero__proof .proofline { justify-self: end; text-align: right; }
+  .reading__body { display: flex; flex-wrap: wrap; gap: 2px 12px; align-items: baseline; }
+  .reading__note .sample-tag { margin-top: 0; }
 }
 
 /* ---------- 2 story ---------- */
@@ -400,7 +426,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .story__stage { display: none; }
 .story__text .h2 { margin-bottom: var(--s-7); }
 .scenes { display: grid; gap: var(--s-5); padding: 0; margin: 0; list-style: none; }
-.scene { border: 1px solid var(--rule); background: #FFFFFF; border-radius: 2px; padding: 52px var(--s-5) var(--s-6); display: grid; gap: var(--s-3); justify-items: start; }
+.scene { border: 1px solid var(--rule); background: #FFFFFF; border-radius: 2px; overflow: clip; padding: 52px var(--s-5) var(--s-6); display: grid; gap: var(--s-3); justify-items: start; }
 .scene__when { font: 600 var(--fs--1)/1.3 "Libre Franklin"; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 .scene__price { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; font-variant-numeric: tabular-nums; color: var(--muted); }
 .scene__price strong { font: 700 var(--fs-2)/1 "Arvo", serif; color: var(--ink); }
@@ -412,7 +438,8 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
   .sw-motion .story { height: calc(4 * 55svh + 100svh); padding: 0; }
   .sw-motion .story__sticky { position: sticky; top: 0; height: 100svh; padding-top: var(--header-h); display: flex; align-items: center; }
   .sw-motion .story__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-7); align-items: center; }
-  .sw-motion .story__stage { display: grid; gap: var(--s-4); padding: var(--s-5); border: 1px solid var(--rule); background: #FFFFFF; color: var(--ink); }
+  .sw-motion .story__stage { display: grid; gap: var(--s-4); padding: 0; color: var(--ink); position: relative; }
+  .sw-motion .scene .plate { display: none; }
   .sw-motion .story__text .h2 { margin-bottom: var(--s-5); font-size: var(--fs-3); }
   .sw-motion .scenes { grid-template-columns: 1fr; }
   .sw-motion .scene { grid-area: 1 / 1; opacity: 0; visibility: hidden; transform: translateY(16px); transition: opacity var(--t-page) var(--ease-out), transform var(--t-page) var(--ease-out), visibility 0s linear var(--t-page); }
@@ -420,18 +447,47 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
   .sw-motion .scene.is-on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
 }
 @media (min-width: 640px) and (max-height: 700px) { .sw-motion .door { max-height: 34svh; } }
-.door { width: 100%; height: auto; max-height: 46svh; overflow: visible; }
+.door { width: 100%; height: auto; max-height: 40svh; overflow: visible; }
 .door .d { opacity: 0; transition: opacity var(--t-page) var(--ease-out); }
 [data-scene="1"] .d--sun, [data-scene="2"] .d--hail, [data-scene="3"] .d--ice, [data-scene="4"] .d--gap { opacity: 1; }
 .door .sun { fill: #F2A93B; opacity: .35; }
-.door .opener { fill: #14202E; }
+.door .opener { fill: #0F2340; stroke: currentColor; stroke-width: 1.5; }
 .door .heat { stroke: #8A4B06; }
-.door .d--hail circle { fill: none; stroke: #14202E; stroke-width: 2; }
+.door .d--hail circle { fill: rgba(238,243,247,.85); stroke: none; }
 .door .ice { fill: #A9C6E0; }
 .door .d--ice path { stroke: #4C7AA6; }
-.door .gap { fill: #EEF3F7; stroke: #B8321C; stroke-width: 3; }
+.door .gap { fill: rgba(238,243,247,.6); stroke: #B8321C; stroke-width: 3; }
 .door .bang { stroke: #B8321C; }
-.story__stage .stamp { justify-self: start; }
+.story__stage .stamp { position: absolute; left: var(--s-5); top: var(--s-5); z-index: 2; color: #EEF3F7; border-color: rgba(238,243,247,.7); background: rgba(15,35,64,.3); }
+.stage__win { position: relative; overflow: clip; border-radius: 2px; padding: calc(var(--s-6) + 10.5rem) var(--s-6) var(--s-5); color: #EEF3F7; isolation: isolate; }
+.stage__win::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: #F4F8FB;
+  --d: calc(var(--cold, 0) * 96px);
+  -webkit-mask: var(--rime) 0 0 / 220px 220px, linear-gradient(90deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000), linear-gradient(180deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000);
+  -webkit-mask-composite: source-in, source-over;
+  mask: var(--rime) 0 0 / 220px 220px, linear-gradient(90deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000), linear-gradient(180deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000);
+  mask-composite: intersect, add, add; opacity: calc(var(--cold, 0) * .95); }
+.stage__win .door { position: relative; z-index: 1; }
+.stage__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: filter var(--t-story) var(--ease-out); }
+[data-scene="1"] .stage__photo { filter: sepia(.45) saturate(1.35) brightness(1.08) contrast(.92); }
+[data-scene="2"] .stage__photo { filter: grayscale(.85) contrast(1.15) brightness(.72); }
+[data-scene="3"] .stage__photo { filter: grayscale(.4) brightness(.62) contrast(1.1); }
+[data-scene="4"] .stage__photo { filter: grayscale(1) brightness(1.15) contrast(.85); }
+.plates { position: absolute; inset: 0; z-index: 0; }
+.stage__win .plates { mix-blend-mode: soft-light; opacity: .95; }
+.stage__win .plates .plate--m8 { mix-blend-mode: color; }
+.stage__win::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,22,41,.35), rgba(8,22,41,.1) 40%, rgba(8,22,41,.45)); }
+[data-scene="4"] .stage__win::before { background: linear-gradient(180deg, rgba(238,243,247,.35), rgba(238,243,247,.15) 50%, rgba(238,243,247,.4)); }
+.plates .plate { position: absolute; inset: 0; opacity: 0; transition: opacity var(--t-story) var(--ease-out); }
+[data-scene="1"] .plate--104, [data-scene="2"] .plate--88, [data-scene="3"] .plate--34, [data-scene="4"] .plate--m8 { opacity: 1; }
+/* each reading, graded to its temperature */
+.plate { background-color: #1B3A60; }
+.plate--104 { background: radial-gradient(circle at 82% 8%, #FFF4D6 0 6%, rgba(255,226,174,.85) 14%, transparent 46%), linear-gradient(170deg, #E9B568 0%, #C9773A 52%, #7A4420 100%); }
+.plate--88 { background: repeating-linear-gradient(104deg, rgba(238,243,247,.2) 0 2px, transparent 2px 23px), radial-gradient(ellipse 90% 60% at 30% 0%, #9AA6B1, transparent 70%), linear-gradient(180deg, #5E6B78 0%, #3E4A57 60%, #262F3A 100%); }
+.plate--34 { background: linear-gradient(180deg, transparent 78%, rgba(201,227,247,.85) 79%, #A9C6E0 86%, #6E93BA 100%), radial-gradient(ellipse 60% 40% at 50% 78%, rgba(242,169,59,.55), transparent 70%), linear-gradient(180deg, #0B1B33 0%, #2B4F7C 48%, #6E93BA 78%); }
+.plate--m8 { background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,255,255,.55), transparent 70%), linear-gradient(180deg, #DCE7F1 0%, #AFC6DC 55%, #7F9DBC 100%); }
+[data-scene="4"] .stage__win, [data-scene="4"] .story__stage .stamp { color: #0F2340; }
+[data-scene="4"] .story__stage .stamp { border-color: #0F2340; background: rgba(238,243,247,.5); }
+.scene .plate { margin: -52px calc(-1 * var(--s-5)) var(--s-2); width: calc(100% + 2 * var(--s-5)); aspect-ratio: 16 / 6; border-bottom: 1px solid var(--rule); }
 .story__ticks { display: flex; gap: var(--s-2); list-style: none; padding: 0; margin: 0; font: 600 var(--fs--1)/1 "Libre Franklin"; letter-spacing: .06em; color: var(--muted); }
 .story__ticks li { flex: 1; border-top: 3px solid var(--rule); padding-top: 8px; }
 [data-scene="1"] .story__ticks li:nth-child(-n+1), [data-scene="2"] .story__ticks li:nth-child(-n+2),
@@ -448,8 +504,12 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .steps__n { font: 700 var(--fs-2)/1 "Arvo", serif; color: var(--accent); font-variant-numeric: tabular-nums; }
 .steps p { font-size: var(--fs-1); line-height: 1.35; }
 @media (min-width: 900px) {
-  .stop__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--s-9); }
-  .stop__btns { grid-column: 2; }
+  .stop__head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s-9); align-items: end; }
+  .stop__head .kicker { grid-column: 1 / -1; }
+  .stop__head .lead { margin-top: 0; }
+  .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 0; column-gap: var(--s-5); }
+  .steps li { grid-template-columns: 1fr; border-bottom: 0; border-top: 2px solid var(--rule); padding-top: var(--s-5); align-content: start; }
+  .steps__n { font-size: var(--fs-4); }
 }
 
 /* ---------- 4 services ---------- */
@@ -462,19 +522,23 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .svc__blurb { color: var(--muted); max-width: 52ch; }
 .svc__cta { justify-self: start; }
 @media (min-width: 900px) {
-  .svcs__list { grid-template-columns: 1fr 1fr; column-gap: var(--s-8); }
+  .svcs__list { grid-template-columns: 1fr; }
   .svc { grid-template-columns: 3rem 1fr auto; align-items: baseline; }
   .svc__n { grid-row: span 2; }
   .svc__cta { grid-column: 3; grid-row: 1; }
   .svc__blurb { grid-column: 2 / 4; }
 }
-@media (min-width: 1200px) { .svcs .wrap { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-8); } .svcs__head { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; } .svcs__list { grid-template-columns: 1fr; } }
+.svcs__first { margin-top: var(--s-6); padding: var(--s-5); border: 1px solid var(--rule); border-radius: 2px; background: #FFFFFF; display: grid; gap: var(--s-3); justify-items: start; max-width: 34ch; }
+.svcs__first p:not(.stamp) { color: var(--muted); }
+@media (min-width: 900px) { .svcs .wrap { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-8); } .svcs__head { position: sticky; top: 120px; align-self: start; margin-bottom: 0; } .svcs__head .h2 { font-size: var(--fs-3); } }
 
 /* ---------- 5 break ---------- */
 .break { position: relative; padding: var(--pad-loose) 0; overflow: clip; text-align: center; --pane: 1; }
 .pane { position: absolute; inset: 0; background: rgba(238,243,247,.5); pointer-events: none;
-  -webkit-mask: var(--frost-top) top left / 480px calc(var(--pane) * 96px) repeat-x, var(--frost-bot) bottom left / 480px calc(var(--pane) * 96px) repeat-x;
-  mask: var(--frost-top) top left / 480px calc(var(--pane) * 96px) repeat-x, var(--frost-bot) bottom left / 480px calc(var(--pane) * 96px) repeat-x; }
+  --d: calc(var(--pane) * 18%);
+  -webkit-mask: var(--rime) 0 0 / 220px 220px, radial-gradient(ellipse 75% 80% at 50% 50%, transparent calc(100% - var(--d) * 2.4), #000);
+  -webkit-mask-composite: source-in;
+  mask: var(--rime) 0 0 / 220px 220px, radial-gradient(ellipse 75% 80% at 50% 50%, transparent calc(100% - var(--d) * 2.4), #000); mask-composite: intersect; }
 .break::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(242,169,59,.16), transparent 70%); }
 .break__in { position: relative; z-index: 1; display: grid; justify-items: center; gap: var(--s-5); }
 .break__flake { color: #F2A93B; }
@@ -494,7 +558,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .sheet__what p { color: var(--muted); font-size: var(--fs--1); margin-top: 2px; }
 .sheet__range { font: 700 var(--fs-2)/1 "Arvo", serif; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 @media (min-width: 640px) { .sheet__row { grid-template-columns: 6.5rem 1fr auto; } .sheet__row .stamp { grid-row: auto; } }
-@media (min-width: 1100px) { .prices__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-9); } .prices__head { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; } }
+@media (min-width: 900px) { .prices__head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s-9); align-items: end; } .prices__head .kicker, .prices__head .h2 { grid-column: 1; } .prices__head .h2 { max-width: 18ch; grid-row: 2 / span 2; } .prices__head .lead, .prices__head .prices__guar { grid-column: 2; } .prices__head .lead { grid-row: 2; margin-top: 0; } .prices__head .prices__guar { grid-row: 3; } .sheet__row { grid-template-columns: 9rem 1fr auto; padding-inline: var(--s-5); } }
 
 /* ---------- 7 proof ---------- */
 .proof { padding: var(--pad-normal) 0; }
@@ -541,7 +605,8 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .dents span { height: 26px; border: 1.5px solid var(--muted); background: #EEF3F7; transition: background-color var(--t-ui) var(--ease-out); }
 .dents[data-n="1"] span:nth-child(-n+1), .dents[data-n="2"] span:nth-child(-n+2), .dents[data-n="3"] span:nth-child(-n+3), .dents[data-n="4"] span {
   background: radial-gradient(circle at 20% 50%, #4A5A6C 0 3px, transparent 4px), radial-gradient(circle at 55% 40%, #4A5A6C 0 2.5px, transparent 3.5px), radial-gradient(circle at 80% 60%, #4A5A6C 0 3px, transparent 4px), #DCE5EE; }
-.sw-est-range { display: block; font: 700 var(--fs-2)/1.1 "Arvo", serif; font-variant-numeric: tabular-nums; margin-top: 4px; }
+.sw-est-range { display: inline-block; font: 700 var(--fs-2)/1 "Arvo", serif; font-variant-numeric: tabular-nums; margin: 8px 0 6px; padding: .2em .32em .14em; border: 2px solid currentColor; border-radius: 2px; letter-spacing: -.02em; }
+.tool--hail [data-est-out] { display: grid; justify-items: start; }
 .sw-est-note { display: block; color: var(--muted); font-weight: 400; font-size: var(--fs--1); }
 @media (min-width: 900px) { .tools__grid { grid-template-columns: 1fr 1fr; gap: var(--s-6); } .tool { padding: var(--s-7) var(--s-6); } }
 
@@ -598,8 +663,9 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
   transition: color var(--t-page) var(--ease-out); }
 .ftr__stamp sup { font-size: .42em; margin-top: .1em; }
 .ftr__stamp::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: rgba(238,243,247,.55);
-  -webkit-mask: var(--frost-top) top left / 320px 48px repeat-x, var(--frost-bot) bottom left / 320px 40px repeat-x;
-  mask: var(--frost-top) top left / 320px 48px repeat-x, var(--frost-bot) bottom left / 320px 40px repeat-x; transition: opacity var(--t-page) var(--ease-out); }
+  -webkit-mask: var(--rime) 0 0 / 220px 220px, linear-gradient(180deg, #000, transparent 30%, transparent 70%, #000);
+  -webkit-mask-composite: source-in;
+  mask: var(--rime) 0 0 / 220px 220px, linear-gradient(180deg, #000, transparent 30%, transparent 70%, #000); mask-composite: intersect; transition: opacity var(--t-page) var(--ease-out); }
 .ftr__stamp:is(:hover, :focus-visible) { color: #F2A93B; }
 .ftr__stamp:is(:hover, :focus-visible)::before { opacity: 0; }
 .ftr__name { font: 700 var(--fs-1)/1.2 "Arvo", serif; }
@@ -622,7 +688,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 @media (min-width: 900px) { .mbar { display: none; } }
 
 /* ---------- motion start states (only under .sw-motion) ---------- */
-.sw-motion .mask__frost { transition: none; }
+.hero__window { contain: paint; }
 
 @media (prefers-reduced-motion: reduce) {
   .frost::before { transition: none; }
@@ -633,10 +699,14 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
   :focus-visible { outline-color: Highlight; }
 }
 @media print {
-  .hdr, .mbar, .hero__mask, .pane, .story__stage { display: none !important; }
+  .hdr, .mbar, .hero__window, .pane, .story__stage { display: none !important; }
   .sw-motion .story { height: auto; }
   .sw-motion .scene { opacity: 1; visibility: visible; transform: none; grid-area: auto; }
 }
+/* round 1: kicker chip on the frost; the stage line art is only a label layer over the photo */
+.hero__kicker { justify-self: start; background: rgba(15,35,64,.88); color: #EEF3F7; padding: 6px 10px; border-radius: 2px; }
+.stage__win .door__panels, .stage__win .door > rect, .stage__win .door > g:not([class]), .stage__win .door > line { display: none; }
+.stage__win .door__spring line, .stage__win .door__spring path { stroke-width: 2.5; }
 
 </style>
 </head>
@@ -671,91 +741,77 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 
 <main id="main">
 
-  <!-- 1 HERO -->
+  <!-- 1 HERO: one frosted window, the −8° wiped clear -->
   <section id="top" class="hero t-deep" data-layout="mask" aria-labelledby="h1">
-    <div class="hero__grid wrap">
-      <div class="hero__mask" data-sw-signature aria-hidden="true">
-        <svg class="mask" viewBox="0 -50 1000 570" preserveAspectRatio="xMinYMid meet" focusable="false">
-          <defs>
-            <clipPath id="mask-digits">
-              <rect x="14" y="262" width="262" height="86" rx="4"/><text x="296" y="508" class="mask__glyphs">8°</text>
-            </clipPath>
-            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#2B4F7C"/>
-              <stop offset=".45" stop-color="#5A84B0"/>
-              <stop offset=".72" stop-color="#9DB9D4"/>
-              <stop offset="1" stop-color="#C8D8E7"/>
-            </linearGradient>
-            <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#B9CBDD"/>
-              <stop offset="1" stop-color="#EEF3F7"/>
-            </linearGradient>
-            <radialGradient id="glow" cx=".5" cy="1" r=".9">
-              <stop offset="0" stop-color="#FFD58A"/>
-              <stop offset=".5" stop-color="#F2A93B"/>
-              <stop offset="1" stop-color="#B86A12"/>
-            </radialGradient>
-            <linearGradient id="spill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#F2A93B" stop-opacity=".95"/>
-              <stop offset="1" stop-color="#F2A93B" stop-opacity="0"/>
-            </linearGradient>
-            <filter id="frost-noise" x="0" y="0" width="100%" height="100%">
-              <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="8" result="n"/>
-              <feColorMatrix in="n" type="matrix" values="0 0 0 0 .93  0 0 0 0 .95  0 0 0 0 .97  0 0 0 2.4 -1.05"/>
-            </filter>
-            <radialGradient id="clear-soft">
-              <stop offset=".55" stop-color="#000"/>
-              <stop offset="1" stop-color="#fff"/>
-            </radialGradient>
-            <mask id="frost-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="520">
-              <rect width="1000" height="520" fill="#fff"/>
-              <circle class="mask__clear" cx="500" cy="300" r="520" fill="url(#clear-soft)"/>
-            </mask>
-          </defs>
-          <g clip-path="url(#mask-digits)">
-            <rect width="1000" height="520" fill="url(#sky)"/>
-            <g fill="#EEF3F7" opacity=".7">
-              <circle cx="90" cy="70" r="2"/><circle cx="210" cy="140" r="1.6"/><circle cx="330" cy="60" r="2.2"/><circle cx="460" cy="120" r="1.4"/><circle cx="610" cy="50" r="2"/><circle cx="720" cy="150" r="1.8"/><circle cx="850" cy="80" r="2.4"/><circle cx="940" cy="170" r="1.5"/><circle cx="140" cy="230" r="1.6"/><circle cx="560" cy="200" r="1.4"/><circle cx="900" cy="250" r="1.8"/><circle cx="40" cy="300" r="2"/>
-            </g>
-            <path fill="#22426A" d="M0 330 L80 312 L170 326 L250 306 L340 322 L340 420 L0 420Z"/>
-            <path fill="#0B1A30" d="M30 420 V300 L150 236 L280 300 V420Z"/>
-            <path fill="#EEF3F7" opacity=".85" d="M22 302 L150 230 L288 302 L280 310 L150 242 L30 310Z"/>
-            <rect x="96" y="300" width="44" height="38" fill="#F2A93B"/>
-            <rect x="170" y="300" width="44" height="38" fill="#F2A93B" opacity=".7"/>
-            <path fill="#0B1A30" d="M300 420 V250 L540 130 L790 250 V420Z"/>
-            <path fill="#EEF3F7" opacity=".9" d="M288 252 L540 122 L802 252 L792 262 L540 136 L298 262Z"/>
-            <rect x="372" y="282" width="296" height="138" fill="url(#glow)"/>
-            <g fill="#D7E1EC" stroke="#8FA6BE" stroke-width="2"><rect x="372" y="282" width="296" height="22"/><rect x="372" y="304" width="296" height="22"/></g>
-            <rect x="372" y="326" width="296" height="3" fill="#FFE2AE"/>
-            <rect y="420" width="1000" height="100" fill="url(#snow)"/>
-            <path fill="url(#spill)" d="M372 420 H668 L800 520 H250Z"/>
-            <g stroke="#6F8AA8" stroke-width="2" opacity=".5" fill="none"><path d="M410 430 L350 520M450 430 L420 520M592 430 L640 520M630 430 L700 520"/></g>
-            <path fill="#16304F" d="M790 420 V330 L860 300 L1000 300 V420Z"/>
-            <rect x="830" y="350" width="40" height="34" fill="#F2A93B" opacity=".8"/>
-            <rect width="1000" height="520" filter="url(#frost-noise)" mask="url(#frost-mask)" class="mask__frost"/>
-          </g>
-          <g class="mask__outline"><rect x="14" y="262" width="262" height="86" rx="4"/><text x="296" y="508" class="mask__glyphs">8°</text></g>
-        </svg>
-      </div>
+    <div class="hero__window" data-sw-signature aria-hidden="true">
+      <svg class="win" width="100%" height="100%" focusable="false">
+        <defs>
+          <linearGradient id="sky-d" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#081629"/><stop offset=".34" stop-color="#1C3A62"/><stop offset=".55" stop-color="#4F77A3"/>
+            <stop offset=".66" stop-color="#9DB9D4"/><stop offset=".7" stop-color="#E4ECF3"/><stop offset=".74" stop-color="#B7CADD"/><stop offset="1" stop-color="#5D7895"/>
+          </linearGradient>
+          <linearGradient id="sky-m" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#081629"/><stop offset=".12" stop-color="#1C3A62"/><stop offset=".2" stop-color="#4F77A3"/>
+            <stop offset=".26" stop-color="#9DB9D4"/><stop offset=".285" stop-color="#E4ECF3"/><stop offset=".31" stop-color="#B7CADD"/><stop offset=".42" stop-color="#5D7895"/><stop offset="1" stop-color="#0F2340"/>
+          </linearGradient>
+          <radialGradient id="glow"><stop offset="0" stop-color="#FFE9C2"/><stop offset=".28" stop-color="#F6BE63" stop-opacity=".9"/><stop offset=".62" stop-color="#F2A93B" stop-opacity=".32"/><stop offset="1" stop-color="#F2A93B" stop-opacity="0"/></radialGradient>
+          <linearGradient id="scrim-d" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0F2340" stop-opacity=".1"/><stop offset=".5" stop-color="#0F2340" stop-opacity="0"/><stop offset=".68" stop-color="#0F2340" stop-opacity=".72"/><stop offset=".82" stop-color="#0F2340" stop-opacity=".94"/><stop offset="1" stop-color="#0F2340"/>
+          </linearGradient>
+          <linearGradient id="scrim-m" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0F2340" stop-opacity=".1"/><stop offset=".22" stop-color="#0F2340" stop-opacity="0"/><stop offset=".34" stop-color="#0F2340" stop-opacity=".8"/><stop offset=".4" stop-color="#0F2340"/><stop offset="1" stop-color="#0F2340"/>
+          </linearGradient>
+          <filter id="grain" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="n"/>
+            <feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .55  0 0 0 0 .62  0 0 0 .55 0"/>
+          </filter>
+          <filter id="rime" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="3" seed="8" result="n"/>
+            <feColorMatrix in="n" type="matrix" values="0 0 0 0 .93  0 0 0 0 .95  0 0 0 0 .98  0 0 0 2.2 -.92"/>
+          </filter>
+          <mask id="clear-zone" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+            <rect width="100%" height="100%" fill="#000"/>
+            <circle class="win__clear" fill="#fff"/>
+          </mask>
+          <mask id="frost-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+            <rect width="100%" height="100%" fill="#fff"/>
+            <g mask="url(#clear-zone)"><text class="run run--cut"><tspan class="run__minus">−</tspan>8°</text></g>
+          </mask>
+        </defs>
+        <g class="win__scene">
+          <rect class="win__sky" width="100%" height="100%"/>
+          <circle class="win__glow" fill="url(#glow)"/>
+          <image class="win__photo" href="media/finished-carriage.webp" preserveAspectRatio="xMidYMid slice"/>
+          <rect class="win__grade" width="100%" height="100%"/>
+          <rect width="100%" height="100%" filter="url(#grain)" opacity=".35"/>
+        </g>
+        <g class="win__frost" mask="url(#frost-cut)">
+          <rect width="100%" height="100%" fill="#B9CBDD" opacity=".62"/>
+          <rect width="100%" height="100%" filter="url(#rime)" opacity=".85"/>
+        </g>
+        <rect class="win__scrim" width="100%" height="100%"/>
+        <text class="run run--line"><tspan class="run__minus">−</tspan>8°</text>
+      </svg>
+    </div>
 
-      <aside class="reading frost" style="--cold:1" aria-label="Today's reading">
-        <p class="stamp stamp--sm"><span>−8</span><sup>°F</sup></p>
-        <p class="reading__line">The morning springs snap</p>
-        <p class="reading__item">Torsion spring pair</p>
-        <p class="reading__price">$250–$420</p>
-        <p class="reading__note">most two-car doors · <span class="sample-tag">Sample pricing</span></p>
-      </aside>
-
-      <div class="hero__copy">
-        <p class="kicker">Garage door repair · Omaha, NE</p>
-        <h1 id="h1" class="h1" data-split="lines">Door won’t lift on the coldest morning? We come out.</h1>
-      </div>
+    <div class="hero__body wrap">
+      <p class="kicker hero__kicker">Garage door repair · Omaha, NE</p>
+      <h1 id="h1" class="h1" data-split="lines">Garage door won’t lift in Omaha? We come out.</h1>
       <div class="hero__act">
-        <p class="lead">Springs snap below zero, usually with the car inside. Call or text a photo of the door: we’ll tell you what broke and the price range before we drive over.</p>
-        <div class="btns">
+        <div class="btns" data-mobilebar-hide>
           <a class="btn btn-call btn--primary" href="tel:+14025550148"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (402) 555-0148</span></a>
           <a class="btn btn--secondary" href="sms:+14025550148"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-text"/></svg><span>Text a photo</span></a>
-          <a class="btn btn--text" href="#contact" data-service="Spring repair">Price my repair</a>
+          <a class="btn btn--text hero__price-link" href="#contact" data-service="Spring repair">Price my repair</a>
+        </div>
+        <p class="lead">Springs snap below zero, usually with the car inside. Text a photo of the door: we’ll tell you what broke and the price range before we drive over.</p>
+      </div>
+      <div class="hero__proof">
+        <div class="reading">
+          <p class="stamp stamp--sm"><span>−8</span><sup>°F</sup></p>
+          <div class="reading__body">
+            <p class="reading__item">Torsion spring pair <strong class="reading__price">$250–$420</strong></p>
+            <p class="reading__note">most two-car doors</p><p class="reading__note"><span class="sample-tag">Sample pricing</span></p>
+          </div>
         </div>
         <p class="proofline"><span data-open-now>Mon–Fri 7 am – 6 pm · Sat 8 am – 2 pm</span> <span aria-hidden="true">·</span> Emergency calls taken <span aria-hidden="true">·</span> <span class="nowrap">4.9 <span class="sample-tag">Sample rating</span> (143)</span></p>
       </div>
@@ -767,7 +823,10 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
     <div class="story__sticky">
       <div class="story__grid wrap">
         <div class="story__stage frost" aria-hidden="true" data-stage data-scene="1">
-          <p class="stamp stamp--xl" data-story-stamp><span data-story-num>104</span><sup>°F</sup></p>
+          <div class="stage__win">
+            <img src="media/home-texas-1170.webp" srcset="media/home-texas-1170.webp 1170w, media/home-texas.webp 2340w" sizes="100vw" alt="Two-story brick house with two raised-panel steel garage doors and a wide driveway" width="1170" height="780" loading="lazy" decoding="async" data-photo="home-texas" data-slot="story" class="stage__photo">
+            <div class="plates"><span class="plate plate--104"></span><span class="plate plate--88"></span><span class="plate plate--34"></span><span class="plate plate--m8"></span></div>
+            <p class="stamp stamp--xl" data-story-stamp><span data-story-num>104</span><sup>°F</sup></p>
           <svg class="door" viewBox="0 0 480 360" focusable="false">
             <rect x="20" y="20" width="440" height="320" fill="none" stroke="currentColor" stroke-width="3"/>
             <g class="door__spring">
@@ -802,40 +861,44 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
               <path class="bang" fill="none" stroke-width="3" d="M188 4 v12 M170 10 l8 8 M206 10 l-8 8"/>
             </g>
           </svg>
+          </div>
           <ol class="story__ticks" role="list">
             <li>104°</li><li>88°</li><li>34°</li><li>−8°</li>
           </ol>
         </div>
 
         <div class="story__text">
-          <p class="kicker">Four readings, one year</p>
           <h2 id="readings-h" class="h2">Omaha’s year, read off the thermometer.</h2>
           <ol class="scenes" role="list">
             <li class="scene frost" style="--cold:0" data-scene-i="1">
+              <div class="plate plate--104" aria-hidden="true"></div>
               <p class="stamp stamp--md"><span>104</span><sup>°F</sup></p>
               <p class="scene__when">July</p>
               <h3 class="h3">The opener overheats in the sun.</h3>
               <p>Quiet belt or wall-mount openers, with battery backup for spring storm outages.</p>
               <p class="scene__price"><span>Opener with battery backup</span> <strong>$520–$900</strong> <span class="sample-tag">Sample pricing</span></p>
-              <a class="btn btn--text" href="#contact" data-service="New opener">Price it</a>
+              <a class="btn btn--text" href="#contact" data-service="New opener">Price my repair</a>
             </li>
             <li class="scene frost" style="--cold:.35" data-scene-i="2">
+              <div class="plate plate--88" aria-hidden="true"></div>
               <p class="stamp stamp--md"><span>88</span><sup>°F</sup></p>
               <p class="scene__when">May to July</p>
               <h3 class="h3">Hail dents the panels.</h3>
               <p>Dented panels judged honestly: replace one section, or the whole door when the steel is creased.</p>
               <p class="scene__price"><span>Hail-dent section, per section</span> <strong>$380–$850</strong> <span class="sample-tag">Sample pricing</span></p>
-              <a class="btn btn--text" href="#contact" data-service="Hail damage">Price it</a>
+              <a class="btn btn--text" href="#contact" data-service="Hail damage">Price my repair</a>
             </li>
             <li class="scene frost" style="--cold:.7" data-scene-i="3">
+              <div class="plate plate--34" aria-hidden="true"></div>
               <p class="stamp stamp--md"><span>34</span><sup>°F</sup></p>
               <p class="scene__when">First ice storm</p>
               <h3 class="h3">The bottom seal freezes to the slab.</h3>
               <p>Bottom seal frozen to the slab? We free it without tearing the rubber or straining the opener.</p>
-              <p class="scene__price"><span>Stop pressing the button. Call, and we price it on the phone.</span></p>
+              <p class="scene__price"><span>Stop pressing the button. Call and we’ll price it on the phone.</span></p>
               <a class="btn btn--text" href="tel:+14025550148">Call (402) 555-0148</a>
             </li>
             <li class="scene frost" style="--cold:1" data-scene-i="4">
+              <div class="plate plate--m8" aria-hidden="true"></div>
               <p class="stamp stamp--md"><span>−8</span><sup>°F</sup></p>
               <p class="scene__when">January</p>
               <h3 class="h3">The spring lets go.</h3>
@@ -852,7 +915,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 
   <!-- 3 STOP -->
   <section id="stop" class="stop t-mid" data-layout="steps" aria-labelledby="stop-h">
-    <div class="wrap stop__grid">
+    <div class="wrap stop__grid stop__grid--row">
       <div class="stop__head" data-reveal>
         <p class="kicker">Heard a bang from the garage?</p>
         <h2 id="stop-h" class="h2 stop__h"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-stop"/></svg> Don’t touch the spring.</h2>
@@ -875,8 +938,8 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
   <section id="services" class="svcs t-paper" data-layout="index" aria-labelledby="svc-h">
     <div class="wrap">
       <div class="svcs__head">
-        <p class="kicker">What we fix</p>
         <h2 id="svc-h" class="h2">Ten jobs, from the first bang to the fall tune-up.</h2>
+        <div class="svcs__first frost" style="--cold:1"><p class="stamp stamp--md"><span>−8</span><sup>°F</sup></p><p>Row 01 is the one that can’t wait: Cold-snap spring repair, the morning the door won’t lift.</p></div>
       </div>
       <ol class="svcs__list" role="list" data-reveal-stagger>
         
@@ -884,70 +947,70 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
           <span class="svc__n">01</span>
           <h3 class="svc__name">Cold-snap spring repair</h3>
           <p class="svc__blurb">Springs that snap on the coldest mornings replaced in pairs and balanced before we leave.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Spring repair">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Spring repair">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">02</span>
           <h3 class="svc__name">Hail-damaged doors</h3>
           <p class="svc__blurb">Dented panels judged honestly: replace one section, or the whole door when the steel is creased.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Hail damage">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Hail damage">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">03</span>
           <h3 class="svc__name">Door frozen to the floor</h3>
           <p class="svc__blurb">Bottom seal frozen to the slab? We free it without tearing the rubber or straining the opener.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Frozen door">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Frozen door">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">04</span>
           <h3 class="svc__name">Opener installation</h3>
           <p class="svc__blurb">Quiet belt or wall-mount openers, with battery backup for spring storm outages.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="New opener">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="New opener">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">05</span>
           <h3 class="svc__name">Insulated door upgrade</h3>
           <p class="svc__blurb">Insulated steel doors for garages under a bedroom or used as a winter workshop.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Insulated door">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Insulated door">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">06</span>
           <h3 class="svc__name">Cable &amp; track repair</h3>
           <p class="svc__blurb">Snapped cables, bent track and a door hanging crooked fixed, then rebalanced.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Cables &amp; track">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Cables &amp; track">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">07</span>
           <h3 class="svc__name">Weatherstripping</h3>
           <p class="svc__blurb">New perimeter seal and bottom rubber so blowing snow stays on the driveway.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Weatherstrip">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Weatherstrip">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">08</span>
           <h3 class="svc__name">Sensors &amp; safety reverse</h3>
           <p class="svc__blurb">Sensors cleaned, aligned and tested so the door stops for kids, pets and snow shovels.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Sensors">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Sensors">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">09</span>
           <h3 class="svc__name">Remote &amp; keypad setup</h3>
           <p class="svc__blurb">Remotes, keypads and the button in your car paired; old codes cleared out.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Remotes">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Remotes">Price my repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">10</span>
           <h3 class="svc__name">Fall tune-up</h3>
           <p class="svc__blurb">A pre-winter visit: springs, cables, rollers, seals and opener force checked and set.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Fall tune-up">Price it</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Fall tune-up">Price my repair</a>
         </li>
         
       </ol>
@@ -969,7 +1032,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
     <div class="wrap prices__grid">
       <div class="prices__head">
         <p class="kicker"><span class="sample-tag">Sample pricing</span></p>
-        <h2 id="prices-h" class="h2">The price sheet, coldest reading first.</h2>
+        <h2 id="prices-h" class="h2">The price sheet, coldest reading first, then the seasons.</h2>
         <p class="lead">Ranges, not quotes. We confirm the number on the phone, before anyone drives over.</p>
         <p class="prices__guar"><strong>Springs we install are covered for 5 years, including the cold-snap breaks winter is known for.</strong> <span class="sample-tag">Sample guarantee</span></p>
       </div>
@@ -980,13 +1043,13 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
           <p class="sheet__range">$250–$420</p>
         </li>
         <li class="sheet__row frost" style="--cold:.85">
-          <p class="stamp stamp--sm"><span>10</span><sup>°F</sup></p>
+          <p class="stamp stamp--sm stamp--word"><span>All winter</span></p>
           <div class="sheet__what"><h3 class="h3">New 16x7 insulated door</h3><p>installed, old door hauled off</p></div>
           <p class="sheet__range">$1,800–$4,000</p>
         </li>
         <li class="sheet__row frost" style="--cold:.6">
-          <p class="stamp stamp--sm"><span>34</span><sup>°F</sup></p>
-          <div class="sheet__what"><h3 class="h3">Fall tune-up</h3><p>Before the first freeze</p></div>
+          <p class="stamp stamp--sm stamp--word"><span>October</span></p>
+          <div class="sheet__what"><h3 class="h3">Fall tune-up</h3><p>Before the first freeze, springs to seals</p></div>
           <p class="sheet__range">$99–$160</p>
         </li>
         <li class="sheet__row frost" style="--cold:.2">
@@ -1008,7 +1071,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
     <div class="wrap">
       <div class="proof__head">
         <p class="kicker"><span class="sample-tag">Sample reviews</span></p>
-        <h2 id="proof-h" class="h2">What the neighbours said after the cold snap.</h2>
+        <h2 id="proof-h" class="h2">What the neighbors said after the cold snap.</h2>
         <p class="proof__rating"><strong>4.9</strong> out of 5 · 143 reviews · <span class="sample-tag">Sample rating</span></p>
       </div>
       <div class="wall" data-reveal-stagger>
@@ -1051,7 +1114,6 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
   <section id="tools" class="tools t-paper" data-layout="tools" aria-labelledby="tools-h">
     <div class="wrap">
       <div class="tools__head">
-        <p class="kicker">Two checks you can do from the driveway</p>
         <h2 id="tools-h" class="h2">Is your door ready for January?</h2>
       </div>
       <div class="tools__grid">
@@ -1092,7 +1154,6 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
   <section id="area" class="area t-deep" data-layout="split" aria-labelledby="area-h">
     <div class="wrap area__grid">
       <div class="area__zip">
-        <p class="kicker">Service area</p>
         <h2 id="area-h" class="h2">Omaha, and the towns around it.</h2>
         <ul class="towns" role="list">
           
@@ -1111,11 +1172,11 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
           <li>Council Bluffs</li>
           
         </ul>
-        <form class="zip" data-zip data-zip-yes="Yes, we come out to {zip}." data-zip-no="{zip} is outside our usual map. Call {phone}, we’ll tell you who to ring.">
+        <form class="zip" data-zip data-zip-yes="Yes, we come out to {zip}." data-zip-no="{zip} is outside our usual map. Call {phone} and we’ll tell you who to ring.">
           <label class="lbl" for="zip-in">Your ZIP code</label>
           <div class="zip__row">
             <input id="zip-in" class="input" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5">
-            <button class="btn btn--primary" type="submit">Check</button>
+            <button class="btn btn--primary" type="submit">Check my ZIP</button>
           </div>
           <p class="zip__out" data-zip-result></p>
         </form>
@@ -1139,7 +1200,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
         <a class="btn btn-call btn--dark" href="tel:+14025550148"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (402) 555-0148</span></a>
         <p class="contact__now"><span data-open-now>Mon–Fri 7 am – 6 pm · Sat 8 am – 2 pm</span></p>
       </div>
-      <form class="leadform" data-lead method="dialog" novalidate data-thanks="Thanks, {name}. In your version this goes straight to your phone and inbox.">
+      <form class="leadform" data-lead method="dialog" novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to Zero Degree.">
         <fieldset data-step>
           <legend>What’s wrong?</legend>
           <div class="opts">
@@ -1201,7 +1262,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
         <div class="lead__nav" data-form-nav>
           <button class="btn btn--secondary" type="button" data-back>Back</button>
           <button class="btn btn--dark" type="button" data-next>Next</button>
-          <button class="btn btn--dark" type="submit" data-submit>Send my request</button>
+          <button class="btn btn--dark" type="submit" data-submit>Price my repair</button>
         </div>
         <p class="lead__micro">We’ll call back to confirm the price range and a time.</p>
       </form>
@@ -1217,7 +1278,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
       <p class="ftr__name">Zero Degree Door Co.</p>
       <p>Garage Door Repair in Omaha, NE</p>
       <p><a class="tel-plain" href="tel:+14025550148">(402) 555-0148</a> · <a class="tel-plain" href="mailto:hello@zero-degree-door.example">hello@zero-degree-door.example</a></p>
-      <p>Licence # (sample) SAMPLE-NE-41562</p>
+      <p>License # (sample) SAMPLE-NE-41562</p>
     </div>
     <nav class="ftr__nav" aria-label="Footer">
       <a href="#readings">Readings</a>
@@ -1230,7 +1291,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
     </nav>
     <div class="ftr__legal">
       <p>Sample website by Site Sledge. Business details are illustrative.</p>
-      <ul class="credits"></ul>
+      <ul class="credits"><li>Photo by SharonPapierdreams on <a href="https://commons.wikimedia.org/wiki/File:Jacob_S._Engle_House_carriage_house_Abilene_Kansas.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Pikoshak on <a href="https://commons.wikimedia.org/wiki/File:Garage_Door.png" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="noopener license" target="_blank">CC0</a></li></ul>
       <p>© 2026 Zero Degree Door Co.</p>
     </div>
   </div>

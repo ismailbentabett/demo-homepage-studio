@@ -1044,9 +1044,9 @@ SW.mod('media-fallback', function (SW) {
   var gsap = window.gsap;
 
   /* 1. Intro: frost clears from the centre of the −8° (900 ms). Any tap or scroll ends it. */
-  var clear = document.querySelector('.mask__clear');
+  var clear = document.querySelector('.win__clear');
   if (clear) {
-    var intro = gsap.fromTo(clear, { attr: { r: 0 } }, { attr: { r: 520 }, duration: 0.9, ease: 'power3.out', delay: 0.1 });
+    var intro = gsap.fromTo(clear, { '--clear': 0 }, { '--clear': 1, duration: 0.8, ease: 'power2.out' });
     var skip = function () { intro.progress(1); window.removeEventListener('pointerdown', skip); window.removeEventListener('wheel', skip); };
     window.addEventListener('pointerdown', skip, { passive: true });
     window.addEventListener('wheel', skip, { passive: true });
