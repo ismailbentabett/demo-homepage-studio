@@ -37,3 +37,6 @@ Mobile bar (<900, `data-mobilebar`): Call (tel:) · Text (sms:) · Price it (#co
 
 ## Open issues
 (none yet)
+
+## Round 1
+Elevate photo + mobile: swapped the antique oak-door lever for `stucco-homes` (a real Florida opening). Every photo now has the same night + label-yellow grade and the paper sticker frame with a one-line PHOTO caption (hero, openings, compare, break). On phones the hero puts the label sticker straight after the h1 over a thin photo slice, and #label becomes stacked peel tabs (name on top, big value below, meaning opens under a curled corner on tap, everything visible with motion off). This answers the mustFix overlap and the missing peel state. I also applied all 9 shoulds and every copy-1 replacement. Open note: the h1 is 3 balanced lines at 1440 because it now names the trade and the city.
