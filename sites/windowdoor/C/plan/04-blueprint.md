@@ -1,5 +1,9 @@
 # windowdoor-C · Blueprint (11 sections + header/footer)
 
+## Round 1
+Re-cut the hero (h1 now carries the outcome, beside one large drawn 6-over-1 whose lower sash lifts on load, with the photo seen through it as Stop 1, route stub leaving the sill, marquee as a riverbank on paper), and made the oak break a window-shaped clip that widens to full bleed with scroll (--bp). Both photos now share one cool `.grade`. Why: the two weakest categories were photo (8.0) and first screen (8.5). Also: US spelling, the header pill stays outline until the hero leaves, 5 of 9 eyebrows cut, services numerals dropped, the #area hours card replaced by a ZIP answer panel, a checklist default verdict drawn with Restore/Replace elevations, a scale-contrast #repair h2, and fewer tracked caps. Hero family stays a statement-led hero in concept.json (the text still leads, the window is the second column).
+
+
 Media rev (curator, 2026-10-28): hero-C1 dropped (readable real-house marker). Hero photo = hero-C1-2 (white bungalow under
 a live oak) as the hero "riverbank" band under the statement, behind the elevation marquee. Break = oak-canopy-street.
 door-hardware is sibling B's. The river is drawn SVG (no river photo exists). Photos keep colour with one cool grade

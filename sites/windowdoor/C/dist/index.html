@@ -357,6 +357,10 @@ section { position: relative; }
 }
 .nav__cta { align-self: flex-start; }
 @media (min-width: 640px) { .hdr__cta { display: inline-flex; } }
+/* header pill stays quiet (outline) while the hero Call is in view, fills brick once the hero leaves */
+.hdr__cta { background: transparent; color: var(--ink); border-color: currentColor; transition: background-color var(--t-page) var(--ease-out), color var(--t-page) var(--ease-out), border-color var(--t-page); }
+.is-past-hero .hdr__cta { background: var(--brick); color: #fff; border-color: var(--brick); }
+@media (hover: hover) { .hdr__cta:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); } .is-past-hero .hdr__cta:hover { background: var(--brick-d); } }
 @media (min-width: 900px) {
   .menu-btn { display: none; }
   .nav, html:not(.sw-js) .nav { display: block; position: static; }
@@ -371,30 +375,53 @@ section { position: relative; }
 
 /* ---------- hero ---------- */
 .hero { min-height: calc(100svh - var(--header-h)); display: flex; flex-direction: column; padding-top: clamp(24px, 4svh, 48px); overflow: clip; }
-.hero__text { width: min(100% - 2 * var(--side), 1100px); margin-inline: auto; text-align: center; display: flex; flex-direction: column; align-items: center; }
-.hero__text .kicker { justify-content: center; color: var(--bark); }
-.hero__h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -.025em; line-height: .92; max-width: 14ch; color: var(--ink); }
-.hero__lead { margin-top: var(--s-5); font-size: var(--fs-1); font-weight: 450; line-height: 1.45; color: var(--muted); max-width: 46ch; }
-.hero__btns { margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-3); justify-content: center; }
-.hero__proof { margin-top: var(--s-5); font-size: var(--fs--1); color: var(--muted); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 10px; row-gap: 6px; }
+.hero__top { width: min(100% - 2 * var(--side), 1280px); margin-inline: auto; display: grid; gap: var(--s-6); }
+.hero__text { display: flex; flex-direction: column; align-items: flex-start; }
+.hero__text .kicker { color: var(--bark); }
+.hero__h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -.025em; line-height: .92; max-width: 13ch; color: var(--ink); }
+.hero__h1-b { color: var(--brick); }
+.hero__lead { margin-top: var(--s-5); font-size: var(--fs-1); font-weight: 450; line-height: 1.45; color: var(--muted); max-width: 44ch; }
+.hero__btns { margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.hero__proof { margin-top: var(--s-5); font-size: var(--fs--1); color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 6px; }
 .hero__proof .sample-tag { margin-left: 4px; }
+.hero__proof .dotsep:nth-last-child(2) { display: none; }
+.hero__proof > span:last-child { flex-basis: 100%; }
 .dotsep { color: var(--brick); font-weight: 700; }
 @media (max-width: 639px) { .dotsep { display: none; } .hero__proof { column-gap: 16px; } }
-.hero__route { display: block; width: 24px; height: clamp(28px, 6svh, 64px); margin: var(--s-4) auto 0; overflow: visible; }
+
+/* the hero window: the photo seen through one drawn 6-over-1 sash (stop 1) */
+.win { margin: 0 auto; display: flex; flex-direction: column; align-items: center; width: min(100%, 340px); }
+.win__cap { align-self: flex-start; font-size: var(--fs--1); color: var(--bark); margin-bottom: var(--s-2); }
+.win__box { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #fff; box-shadow: 0 0 0 1.5px var(--ink); }
+.win__photo.frame { position: absolute; inset: 12px; margin: 0; background: var(--band); overflow: clip; }
+.win__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 42% 50%; }
+.win__upper, .win__lower { position: absolute; left: 12px; right: 12px; height: calc(50% - 12px); border: 8px solid #fff; box-shadow: 0 0 0 1.5px var(--ink), inset 0 0 0 1.5px var(--ink); }
+.win__upper { top: 12px; background:
+  linear-gradient(90deg, transparent calc(33.33% - 3px), #fff 0, #fff calc(33.33% + 3px), transparent 0, transparent calc(66.66% - 3px), #fff 0, #fff calc(66.66% + 3px), transparent 0),
+  linear-gradient(180deg, transparent calc(50% - 3px), #fff 0, #fff calc(50% + 3px), transparent 0), #D7E3EA26; }
+.win__lower { bottom: 12px; z-index: 2; background: #D7E3EA59; transform: translateY(-58%); }
+.win__lower span { position: absolute; left: 50%; bottom: -6px; width: 28px; height: 4px; margin-left: -14px; background: var(--ink); border-radius: 2px; }
+.sw-motion .win__lower { animation: sash-up 900ms var(--ease-out) 250ms both; }
+@keyframes sash-up { from { transform: translateY(0); } to { transform: translateY(-58%); } }
+.win__sill { display: block; width: calc(100% + 24px); height: 12px; background: #fff; box-shadow: 0 0 0 1.5px var(--ink); margin-top: 1.5px; }
+.hero__route { display: block; width: 24px; height: clamp(28px, 6svh, 64px); margin: 0 auto; overflow: visible; }
 .hero__route path { fill: none; stroke: var(--river); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
-.sw-motion .hero__route path { animation: draw 600ms var(--ease-out) 300ms both; }
+.sw-motion .hero__route path { animation: draw 600ms var(--ease-out) 600ms both; }
 @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-.bank { position: relative; margin-top: auto; padding-top: 0; flex: 1 0 auto; min-height: clamp(260px, 36svh, 380px); display: flex; flex-direction: column; justify-content: flex-end; }
-.bank { background: linear-gradient(0deg, var(--mid) 0, var(--mid) 64px, transparent 64px); }
-.bank__photo.frame { position: absolute; inset: 0 0 64px 0; margin: 0; background: var(--band); }
-.bank__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 46%; filter: saturate(.78) contrast(1.04) hue-rotate(-6deg); }
-.bank__photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--paper) 0%, #EEF0EA00 30%), linear-gradient(0deg, #0F243366 0%, #0F243300 40%); pointer-events: none; }
-.bank__rail { position: relative; z-index: 1; padding-block: var(--s-4) var(--s-4); }
+
+/* one cool moss/river grade for both photos */
+.grade img { filter: saturate(.7) contrast(1.06) brightness(1.03) hue-rotate(-8deg); }
+.grade::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #2F6E95, #1F4E6E); mix-blend-mode: soft-light; opacity: .55; pointer-events: none; }
+
+/* the riverbank: the elevation marquee runs along a drawn river line */
+.bank { position: relative; margin-top: auto; padding-top: var(--s-3); }
+.bank::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; background: var(--river); opacity: .7; }
+.bank__rail { position: relative; z-index: 1; padding-block: var(--s-3) var(--s-5); }
 .bank__rail .sw-marquee-group { gap: var(--s-3); padding-right: var(--s-3); }
 .bank__card { flex: none; width: 132px; background: #fff; color: var(--ink); border: 1.5px solid #14324A26; padding: 12px 12px 10px; display: flex; flex-direction: column; gap: 8px; margin: 0; }
 .bank__card .elev { width: 100%; height: 92px; color: var(--ink); }
 .bank__card figcaption { font-size: .8125rem; line-height: 1.25; color: var(--muted); }
-.bank__card b { display: block; font-family: var(--f-display); font-weight: 650; font-size: .95rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+.bank__card b { display: block; font-family: var(--f-display); font-weight: 650; font-size: .95rem; letter-spacing: .02em; color: var(--ink); }
 html:not(.sw-motion) .bank__rail { overflow-x: auto; }
 html:not(.sw-motion) .bank__rail .sw-marquee-group, html:not(.sw-js) .bank__rail { display: flex; gap: var(--s-3); padding-inline: var(--side); }
 @media (min-width: 640px) {
@@ -402,11 +429,16 @@ html:not(.sw-motion) .bank__rail .sw-marquee-group, html:not(.sw-js) .bank__rail
   .bank__card .elev { height: 112px; }
 }
 @media (min-width: 900px) {
-  .hero__h1 { max-width: 21ch; font-size: clamp(2.9rem, min(7vw, 9.6svh), 6rem); }
-  .hero__lead { max-width: 60ch; margin-top: var(--s-4); }
+  .hero { padding-top: clamp(16px, 3svh, 40px); }
+  .hero__top { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); align-items: center; column-gap: clamp(40px, 6vw, 96px); flex: 1 0 auto; }
+  .hero__h1 { max-width: none; font-size: clamp(2.9rem, min(4.6vw, 8svh), 4.5rem); }
+  .hero__h1-b { display: block; font-size: 1.32em; line-height: .88; margin-top: .04em; }
+  .hero__lead { margin-top: var(--s-4); }
   .hero__btns { margin-top: var(--s-5); }
-  .bank { min-height: clamp(280px, 36svh, 380px); }
-  .bank__card .elev { height: 96px; }
+  .win { width: auto; margin: 0; justify-self: center; }
+  .win__box { width: auto; height: clamp(300px, calc(100svh - var(--header-h) - 290px), 620px); }
+  .bank__card .elev { height: 84px; }
+  .bank__card { padding: 10px 12px 8px; }
 }
 
 /* ---------- route sections (signature) ---------- */
@@ -422,7 +454,7 @@ html:not(.sw-motion) .bank__rail .sw-marquee-group, html:not(.sw-js) .bank__rail
 .sw-motion .stop:not(.is-reached) .stop__dot { background: var(--bg); }
 .sw-motion .stop.is-reached .stop__dot::after { animation: halo 400ms var(--ease-out) 1; }
 @keyframes halo { from { transform: scale(1); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
-.stop__no { font-family: var(--f-display); font-weight: 600; font-size: var(--fs--1); letter-spacing: .08em; text-transform: uppercase; color: var(--brick); }
+.stop__no { font-family: var(--f-display); font-weight: 600; font-size: var(--fs-0); letter-spacing: .01em; color: var(--brick); }
 .stop__name { font-size: var(--fs-3); font-weight: 650; text-transform: uppercase; letter-spacing: .04em; line-height: 1; margin-top: 4px; }
 .stop__years { font-family: var(--f-display); font-weight: 600; font-size: var(--fs-1); color: var(--bark); margin: 6px 0 var(--s-4); font-variant-numeric: tabular-nums; }
 .stop__text > p:not([class]) { max-width: 54ch; }
@@ -431,7 +463,7 @@ html:not(.sw-motion) .bank__rail .sw-marquee-group, html:not(.sw-js) .bank__rail
 .stop__text .btn--text { margin-top: var(--s-3); }
 .stop__elev { margin: 0; display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-3); }
 .stop__elev .elev { width: auto; height: 180px; color: var(--ink); overflow: visible; }
-.stop__elev figcaption { font-family: var(--f-display); font-weight: 600; font-size: var(--fs--1); letter-spacing: .06em; text-transform: uppercase; color: var(--bark); display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+.stop__elev figcaption { font-family: var(--f-display); font-weight: 600; font-size: var(--fs-0); color: var(--bark); display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
 .stop__hint { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); }
 .stop__hint .i { width: 16px; height: 16px; }
 .sw-motion .stop__hint { display: none; }
@@ -463,8 +495,9 @@ html:not(.sw-motion) .bank__rail .sw-marquee-group, html:not(.sw-js) .bank__rail
 
 /* ---------- repair ---------- */
 .repair { padding-block: var(--pad-tight); }
-.split { display: grid; gap: var(--s-7); }
-.repair h2 { color: #fff; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+.check__acts .btn { white-space: normal; text-align: center; }
+.repair h2 { color: #fff; font-size: clamp(2.75rem, 1.2rem + 5.4vw, 6rem); font-weight: 800; line-height: .9; letter-spacing: -.03em; max-width: 9ch; }
 .repair .kicker { color: var(--sand); }
 .pull { margin-top: var(--s-5); font-family: var(--f-display); font-weight: 700; font-size: var(--fs-2); line-height: 1.12; color: var(--sand); max-width: 26ch; }
 .mini-prices { margin-top: var(--s-6); display: grid; gap: 0; border-top: 1.5px solid var(--rule); }
@@ -480,6 +513,18 @@ html:not(.sw-motion) .bank__rail .sw-marquee-group, html:not(.sw-js) .bank__rail
 .check__row input { appearance: none; flex: none; width: 24px; height: 24px; border: 2px solid var(--mist-d); border-radius: 999px; display: grid; place-items: center; margin: 0; cursor: pointer; transition: background-color var(--t-ui) var(--ease-out), border-color var(--t-ui); }
 .check__row input:checked { background: var(--coral); border-color: var(--coral); box-shadow: inset 0 0 0 4px var(--deep); }
 .check__row.is-checked span { color: #fff; }
+.verdict { margin-top: var(--s-5); display: flex; gap: var(--s-6); align-items: flex-end; min-height: 136px; }
+.verdict__unit { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--paper); }
+.verdict__unit .elev { width: 72px; height: 108px; overflow: visible; }
+.verdict__unit span { font-family: var(--f-display); font-weight: 600; font-size: var(--fs-0); color: var(--sand); }
+.verdict .v-glass { fill: var(--deep); }
+.verdict .v-air { fill: var(--band); }
+.verdict .v-sash { transform-box: fill-box; transform: translateY(-40%); }
+.verdict__unit--new { display: none; }
+.check[data-checked="3"] .verdict__unit--new, .check[data-checked="4"] .verdict__unit--new { display: flex; }
+.check[data-checked="5"] .verdict__unit--new, .check[data-checked="6"] .verdict__unit--new { display: flex; }
+.check[data-checked="5"] .verdict__unit--restore, .check[data-checked="6"] .verdict__unit--restore { display: none; }
+.sw-motion .verdict__unit { animation: unclip 420ms var(--ease-out) both; }
 .check__out { margin-top: var(--s-5); font-family: var(--f-display); font-weight: 700; font-size: var(--fs-2); line-height: 1.1; color: var(--sand); min-height: 2.2em; }
 .check__meter { margin-top: var(--s-3); height: 3px; background: var(--rule); position: relative; }
 .check__meter span { position: absolute; inset: 0; background: var(--coral); transform-origin: left; transform: scaleX(calc(var(--checked, 0) / var(--total, 6))); transition: transform var(--t-page) var(--ease-out); }
@@ -593,7 +638,12 @@ html:not(.sw-js) [data-est-send] { display: none; }
 
 /* ---------- break ---------- */
 .break { position: relative; background: var(--deep); }
-.break__frame.frame { margin: 0; aspect-ratio: 4 / 5; overflow: clip; background: var(--band); }
+.break { --bp: 1; overflow: clip; }
+.break__frame.frame { margin: 0; aspect-ratio: 4 / 5; overflow: clip; background: var(--band); position: relative; clip-path: inset(calc((1 - var(--bp)) * 10%) calc((1 - var(--bp)) * 30%)); }
+.break__sash { position: absolute; inset: calc((1 - var(--bp)) * 10%) calc((1 - var(--bp)) * 30%); border: 10px solid #fff; box-shadow: inset 0 0 0 1.5px var(--ink); opacity: clamp(0, calc(1 - var(--bp) * 1.6), 1); pointer-events: none; }
+.break__sash::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 10px; margin-top: -5px; background: #fff; }
+.break__route { position: absolute; left: 50%; top: 0; width: 24px; margin-left: -12px; height: calc((1 - var(--bp)) * 10%); opacity: clamp(0, calc(1 - var(--bp) * 1.6), 1); overflow: visible; }
+.break__route path { fill: none; stroke: var(--river); stroke-width: 3; stroke-linecap: round; }
 .break__frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; filter: saturate(.78) contrast(1.04) hue-rotate(-6deg); }
 .break__cap { position: absolute; left: var(--side); bottom: var(--s-5); right: var(--side); max-width: 40ch; background: #0F2433CC; color: var(--paper); padding: 10px 14px; font-size: var(--fs--1); }
 @media (min-width: 900px) {
@@ -636,7 +686,12 @@ html:not(.sw-js) .reach__btns { display: none; }
 .zip label { display: block; font-size: var(--fs--1); font-weight: 650; margin-bottom: 6px; }
 .zip__row { display: flex; flex-wrap: wrap; gap: var(--s-3); }
 .zip__row input { flex: 1 1 140px; min-height: 52px; border: 1.5px solid var(--mist-d); background: #fff; color: var(--ink); padding: 10px 14px; font: inherit; font-variant-numeric: tabular-nums; border-radius: 0; }
-.zip__out { margin-top: var(--s-4); min-height: 1.5em; color: var(--paper); }
+.zip__out { margin-top: var(--s-4); min-height: 1.5em; color: var(--paper); font-family: var(--f-display); font-weight: 600; font-size: var(--fs-1); line-height: 1.25; }
+@media (min-width: 900px) {
+  .zip { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s-7); }
+  .zip > * { grid-column: 1; }
+  .zip > .zip__out { grid-column: 2; grid-row: 1 / span 3; margin: 0; padding-left: var(--s-6); border-left: 1.5px solid var(--rule); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+}
 .zip__out a, .zip__out button { color: var(--deep); }
 .zip__out .btn, .zip__out button { margin-top: var(--s-3); background: var(--sand); color: var(--deep); min-height: 48px; border-radius: 999px; padding: 0 20px; border: 0; font-weight: 650; display: inline-flex; align-items: center; cursor: pointer; text-decoration: none; }
 .hours-box__now { color: var(--sand); font-weight: 650; margin-bottom: var(--s-3); }
@@ -666,7 +721,7 @@ html:not(.sw-js) .reach__btns { display: none; }
   .map__stop:nth-child(10) { right: 7%; top: 82%; flex-direction: row-reverse; }
   .map__sea-label { display: block; position: absolute; right: 0; top: 0; writing-mode: vertical-rl; font-family: var(--f-display); font-weight: 600; letter-spacing: .3em; text-transform: uppercase; font-size: var(--fs--1); color: var(--mist); padding: 8px 12px; }
 }
-@media (min-width: 900px) { .area__cols { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } .zip, .hours-box { padding: var(--s-6); } }
+@media (min-width: 900px) { .zip { padding: var(--s-6); } }
 
 /* ---------- faq ---------- */
 .faq { padding-block: var(--pad-tight); }
@@ -824,20 +879,30 @@ html:not(.sw-js) .reach__btns { display: none; }
 <main id="main">
 
 <section id="top" class="hero t-paper" aria-labelledby="hero-title">
-  <div class="hero__text">
-    <p class="kicker">Window &amp; door work · Jacksonville, FL</p>
-    <h1 id="hero-title" class="hero__h1" data-split="lines">Every Jacksonville window, Riverside to the Beaches.</h1>
-    <p class="hero__lead">Old wood sashes restored, sliders that stop leaking, impact glass near the ocean. We price the repair before the replacement.</p>
-    <div class="hero__btns">
-      <a class="btn btn-call btn--primary" href="tel:+19045550145"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (904) 555-0145</span></a>
-      <a class="btn btn--secondary" href="sms:+19045550145"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg><span>Text a photo</span></a>
+  <div class="hero__top">
+    <div class="hero__text">
+      <p class="kicker">Window &amp; door work · Jacksonville, FL</p>
+      <h1 id="hero-title" class="hero__h1" data-split="lines">Jacksonville windows and doors. <span class="hero__h1-b">Repair priced first.</span></h1>
+      <p class="hero__lead">Old wood sashes restored, sliders that stop leaking, impact glass near the ocean. From Riverside to the Beaches.</p>
+      <div class="hero__btns">
+        <a class="btn btn-call btn--primary" href="tel:+19045550145"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (904) 555-0145</span></a>
+        <a class="btn btn--secondary" href="sms:+19045550145"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg><span>Text a photo</span></a>
+      </div>
+      <p class="hero__proof"><span>4.9 from 132 reviews <span class="sample-tag">Sample rating</span></span><span class="dotsep" aria-hidden="true">·</span><span><span data-open-now>Mon–Fri 7:30 am – 4:30 pm · Sat 9 am – noon</span></span><span class="dotsep" aria-hidden="true">·</span><span>Restore and replace, priced side by side</span></p>
     </div>
-    <p class="hero__proof"><span>4.9 from 132 reviews <span class="sample-tag">Sample rating</span></span><span class="dotsep" aria-hidden="true">·</span><span><span data-open-now>Mon–Fri 7:30 am – 4:30 pm · Sat 9 am – noon</span></span><span class="dotsep" aria-hidden="true">·</span><span>Repair priced first</span></p>
+    <figure class="win" data-hook="hero-sash">
+      <figcaption class="win__cap">Stop 1 · a 6-over-1 with its lower sash up</figcaption>
+      <div class="win__box">
+        <figure class="frame win__photo grade" data-fallback="White bungalow with a shaded porch half hidden under a spreading live oak"><img src="media/hero-C1-2-1170.webp" srcset="media/hero-C1-2-1170.webp 1170w, media/hero-C1-2.webp 2340w" alt="White bungalow with a shaded porch half hidden under a spreading live oak" width="1170" height="878" fetchpriority="high" decoding="async" data-photo="hero-C1-2" data-slot="hero" sizes="(min-width: 900px) 34vw, 92vw"></figure>
+        <span class="win__upper" aria-hidden="true"></span>
+        <span class="win__lower" aria-hidden="true"><span></span></span>
+      </div>
+      <span class="win__sill" aria-hidden="true"></span>
+      <svg class="hero__route" viewBox="0 0 24 80" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-route-intro><path pathLength="1" d="M12 0 C 6 20, 18 40, 12 80"/></svg>
+    </figure>
   </div>
-  <svg class="hero__route" viewBox="0 0 24 80" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-route-intro><path pathLength="1" d="M12 0 C 6 20, 18 40, 12 80"/></svg>
   <div class="bank">
-    <figure class="frame bank__photo" data-fallback="White bungalow with a shaded porch half hidden under a spreading live oak"><img src="media/hero-C1-2-1170.webp" srcset="media/hero-C1-2-1170.webp 1170w, media/hero-C1-2.webp 2340w" alt="White bungalow with a shaded porch half hidden under a spreading live oak" width="1170" height="878" fetchpriority="high" decoding="async" data-photo="hero-C1-2" data-slot="hero" sizes="100vw"></figure>
-    <div class="bank__rail" data-marquee="34" data-hook="elevation-bank" aria-label="Window types by neighbourhood">
+    <div class="bank__rail" data-marquee="34" data-hook="elevation-bank" aria-label="Window types by neighborhood">
       <figure class="bank__card"><svg class="elev" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#elev-6over1"/></svg><figcaption><b>Riverside</b>6-over-1 double-hung</figcaption></figure>
       <figure class="bank__card"><svg class="elev" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#elev-2over2"/></svg><figcaption><b>Springfield</b>2-over-2 sash</figcaption></figure>
       <figure class="bank__card"><svg class="elev" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#elev-casement"/></svg><figcaption><b>San Marco</b>Steel casement</figcaption></figure>
@@ -854,8 +919,7 @@ html:not(.sw-js) .reach__btns { display: none; }
   <div class="wrap">
     <svg class="route" viewBox="0 0 40 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-route><path class="route__line" pathLength="1" d="M20 0 C 10 60, 30 120, 20 200 S 10 330, 20 400 S 30 530, 20 600 S 10 730, 20 800 S 30 930, 20 1000"/></svg>
     <header class="sec-head route-body">
-      <p class="kicker">Down the river</p>
-      <h2 id="stops-title">Five neighbourhoods, five kinds of window.</h2>
+      <h2 id="stops-title">Five neighborhoods, five kinds of window.</h2>
       <p class="lead">The St. Johns sorts the city’s houses by age. Find your stop: the window drawn there is probably the one in your wall.</p>
     </header>
     <ol class="stop-list" role="list">
@@ -951,7 +1015,7 @@ html:not(.sw-js) .reach__btns { display: none; }
       <p class="mini-note"><span class="sample-tag">Sample pricing</span> Ranges from the price list below.</p>
     </div>
     <div class="split__b">
-      <fieldset class="check" data-checklist data-hook="repair-or-replace" data-checklist-results="0:Tick what you see.|1:One or two of these: restoring the sash usually covers it.|3:Three or more: we’ll price restoring and replacing side by side.|5:Most of the list: send a photo, this one may need a new unit.">
+      <fieldset class="check" data-checklist data-hook="repair-or-replace" data-checklist-results="0:Nothing checked yet. A sound sash is usually worth restoring.|1:One or two of these: restoring the sash usually covers it.|3:Three or more: we’ll price restoring and replacing side by side.|5:Most of the list: send a photo, this one may need a new unit.">
         <legend>What do you see at the window?</legend>
         <label class="check__row"><input type="checkbox"><span>The sill is soft when you press it</span></label>
         <label class="check__row"><input type="checkbox"><span>A pane is cracked</span></label>
@@ -959,10 +1023,14 @@ html:not(.sw-js) .reach__btns { display: none; }
         <label class="check__row"><input type="checkbox"><span>It’s painted shut</span></label>
         <label class="check__row"><input type="checkbox"><span>The house was built before 1950</span></label>
         <label class="check__row"><input type="checkbox"><span>It’s in a historic district</span></label>
-        <p class="check__out" data-checklist-result>Tick what you see.</p>
+        <div class="verdict" aria-hidden="true">
+          <div class="verdict__unit verdict__unit--restore"><svg class="elev" viewBox="0 0 120 180" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"><rect x="4" y="4" width="112" height="164"/><rect x="0" y="168" width="120" height="8"/><rect class="v-air" x="12" y="88" width="96" height="74" stroke="none"/><rect x="12" y="12" width="96" height="76"/><path d="M44 12v76M76 12v76M12 50h96"/><g class="v-sash"><rect class="v-glass" x="12" y="86" width="96" height="76"/><rect x="19" y="93" width="82" height="62"/></g></g></svg><span>Restore</span></div>
+          <div class="verdict__unit verdict__unit--new"><svg class="elev" viewBox="0 0 120 180" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"><rect x="4" y="4" width="112" height="164"/><rect x="0" y="168" width="120" height="8"/><rect x="12" y="12" width="96" height="76"/><rect x="17" y="17" width="86" height="66"/><rect class="v-glass" x="12" y="86" width="96" height="76"/><rect x="17" y="91" width="86" height="66"/></g></svg><span>Replace</span></div>
+        </div>
+        <p class="check__out" data-checklist-result>Nothing checked yet. A sound sash is usually worth restoring.</p>
         <div class="check__meter" aria-hidden="true"><span></span></div>
         <div class="check__acts">
-          <a class="btn btn--primary" href="#contact" data-service="Wood window restoration">Price it</a>
+          <a class="btn btn--primary" href="#contact" data-service="Wood window restoration">Price restore and replace</a>
           <a class="btn btn--secondary" href="sms:+19045550145"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg><span>Text a photo</span></a>
         </div>
       </fieldset>
@@ -974,7 +1042,6 @@ html:not(.sw-js) .reach__btns { display: none; }
   <div class="wrap">
     <header class="sec-head sec-head--row">
       <div>
-        <p class="kicker">The work</p>
         <h2 id="services-title">What we do on a window or door.</h2>
       </div>
       <p class="lead">Eight jobs, from one broken cord to a whole house of impact glass. Each card goes straight to the form.</p>
@@ -983,7 +1050,6 @@ html:not(.sw-js) .reach__btns { display: none; }
       
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-1"/></svg>
-        <p class="svc__no">01</p>
         <h3 class="svc__name">Wood window restoration</h3>
         <p class="svc__blurb">Old sashes taken out, repaired, reglazed and rehung with new cords, keeping the original glass.</p>
         <a class="svc__cta" href="#contact" data-service="Wood window restoration">Price it <span class="sr-only">: Wood window restoration</span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -991,7 +1057,6 @@ html:not(.sw-js) .reach__btns { display: none; }
       
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-2"/></svg>
-        <p class="svc__no">02</p>
         <h3 class="svc__name">Window replacement</h3>
         <p class="svc__blurb">Vinyl, fiberglass or wood windows in styles that match the age of your house.</p>
         <a class="svc__cta" href="#contact" data-service="Window replacement">Price it <span class="sr-only">: Window replacement</span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -999,7 +1064,6 @@ html:not(.sw-js) .reach__btns { display: none; }
       
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-3"/></svg>
-        <p class="svc__no">03</p>
         <h3 class="svc__name">Impact windows near the beach</h3>
         <p class="svc__blurb">Impact glass for beach and river homes where salt air and storms are part of the year.</p>
         <a class="svc__cta" href="#contact" data-service="Impact windows near the beach">Price it <span class="sr-only">: Impact windows near the beach</span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -1007,7 +1071,6 @@ html:not(.sw-js) .reach__btns { display: none; }
       
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-4"/></svg>
-        <p class="svc__no">04</p>
         <h3 class="svc__name">Patio and sliding doors</h3>
         <p class="svc__blurb">Sliders and swinging patio doors fitted to old and new openings, sealed against sideways rain.</p>
         <a class="svc__cta" href="#contact" data-service="Patio and sliding doors">Price it <span class="sr-only">: Patio and sliding doors</span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -1015,7 +1078,6 @@ html:not(.sw-js) .reach__btns { display: none; }
       
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-5"/></svg>
-        <p class="svc__no">05</p>
         <h3 class="svc__name">Entry doors</h3>
         <p class="svc__blurb">Front doors in wood or fiberglass, with transoms and sidelights matched to the porch.</p>
         <a class="svc__cta" href="#contact" data-service="Entry doors">Price it <span class="sr-only">: Entry doors</span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -1023,7 +1085,6 @@ html:not(.sw-js) .reach__btns { display: none; }
       
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-6"/></svg>
-        <p class="svc__no">06</p>
         <h3 class="svc__name">Sash cord and balance repair</h3>
         <p class="svc__blurb">Broken ropes and balances replaced so double-hung windows open and stay where you leave them.</p>
         <a class="svc__cta" href="#contact" data-service="Sash cord and balance repair">Price it <span class="sr-only">: Sash cord and balance repair</span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -1031,7 +1092,6 @@ html:not(.sw-js) .reach__btns { display: none; }
       
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-7"/></svg>
-        <p class="svc__no">07</p>
         <h3 class="svc__name">Rot and sill repair</h3>
         <p class="svc__blurb">Soft sills and frames cut out and rebuilt with wood epoxy or new stock, then painted.</p>
         <a class="svc__cta" href="#contact" data-service="Rot and sill repair">Price it <span class="sr-only">: Rot and sill repair</span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -1039,7 +1099,6 @@ html:not(.sw-js) .reach__btns { display: none; }
       
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-8"/></svg>
-        <p class="svc__no">08</p>
         <h3 class="svc__name">Historic district help</h3>
         <p class="svc__blurb">We check what your district needs before work and prepare the window details for review.</p>
         <a class="svc__cta" href="#contact" data-service="Historic district help">Price it <span class="sr-only">: Historic district help</span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -1053,7 +1112,6 @@ html:not(.sw-js) .reach__btns { display: none; }
   <div class="wrap">
     <div class="age__grid" data-tabs data-hook="style-by-age" data-tabs-start="1">
       <div class="age__head">
-        <p class="kicker">A mini river of decades</p>
         <h2 id="age-title">When was your house built?</h2>
         <p class="lead">Pick the decade. The window that usually fits is drawn on the right.</p>
         <div class="age__river" data-tablist aria-label="Decade the house was built">
@@ -1163,8 +1221,10 @@ html:not(.sw-js) .reach__btns { display: none; }
   </div>
 </section>
 
-<section class="break t-deep" aria-label="Live oaks over a street">
-  <figure class="frame break__frame" data-fallback="Quiet residential street under arching live oaks hung with Spanish moss"><img src="media/oak-canopy-street-1170.webp" srcset="media/oak-canopy-street-1170.webp 1170w, media/oak-canopy-street.webp 2340w" sizes="100vw" alt="Quiet residential street under arching live oaks hung with Spanish moss" width="1170" height="658" loading="lazy" decoding="async" data-photo="oak-canopy-street" data-slot="oaks"></figure>
+<section class="break t-deep" aria-label="Live oaks over a street" data-break>
+  <figure class="frame break__frame grade" data-fallback="Quiet residential street under arching live oaks hung with Spanish moss"><img src="media/oak-canopy-street-1170.webp" srcset="media/oak-canopy-street-1170.webp 1170w, media/oak-canopy-street.webp 2340w" sizes="100vw" alt="Quiet residential street under arching live oaks hung with Spanish moss" width="1170" height="658" loading="lazy" decoding="async" data-photo="oak-canopy-street" data-slot="oaks"></figure>
+  <span class="break__sash" aria-hidden="true"></span>
+  <svg class="break__route" viewBox="0 0 24 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M12 0 C 6 20, 18 40, 12 80"/></svg>
   <p class="break__cap">Live oaks and Spanish moss over a quiet street.</p>
 </section>
 
@@ -1172,8 +1232,7 @@ html:not(.sw-js) .reach__btns { display: none; }
   <div class="wrap">
     <header class="sec-head sec-head--row">
       <div>
-        <p class="kicker">Heard along the river</p>
-        <h2 id="reviews-title">What neighbours said.</h2>
+        <h2 id="reviews-title">What neighbors said.</h2>
       </div>
       <p class="reviews__score"><b>4.9</b> from 132 reviews <span class="sample-tag">Sample rating</span></p>
     </header>
@@ -1238,7 +1297,7 @@ html:not(.sw-js) .reach__btns { display: none; }
         <p class="kicker">Where we work</p>
         <h2 id="area-title">From Orange Park to the ocean.</h2>
       </div>
-      <p class="lead">Jacksonville and Riverside, Avondale, San Marco, Springfield, Mandarin, Jacksonville Beach, Atlantic Beach, Neptune Beach, Orange Park and Ponte Vedra Beach.</p>
+      <p class="lead">Both banks of the St. Johns, Orange Park to Ponte Vedra Beach. Not sure? Check your ZIP below.</p>
     </header>
     <div class="map">
       <svg class="map__river" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="map__water" d="M40 300 C 110 250, 210 250, 260 200 S 300 120, 370 112 S 520 70, 650 74 S 860 50, 1000 46"/><rect class="map__sea" x="955" y="0" width="45" height="300"/></svg>
@@ -1268,20 +1327,15 @@ html:not(.sw-js) .reach__btns { display: none; }
       <p class="map__sea-label" aria-hidden="true">Atlantic</p>
     </div>
     <div class="area__cols">
-      <form class="zip" data-zip data-hook="zip-check">
+      <form class="zip" data-zip data-hook="zip-check" data-zip-yes="{zip} is on our route. We come to you." data-zip-no="{zip} is past our last stop. Call {phone} and we’ll say who can help.">
         <h3>Do we come to you?</h3>
         <label for="zip-in">Your ZIP code</label>
         <div class="zip__row">
           <input id="zip-in" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}">
           <button class="btn btn--primary" type="submit">Check my ZIP</button>
         </div>
-        <p class="zip__out" data-zip-result></p>
+        <p class="zip__out" data-zip-result>Your answer shows here. Inside the area, one tap starts your price.</p>
       </form>
-      <div class="hours-box">
-        <h3>Hours</h3>
-        <p class="hours-box__now"><span data-open-now>Mon–Fri 7:30 am – 4:30 pm · Sat 9 am – noon</span></p>
-        <dl class="hours"><div><dt>Mon</dt><dd>7:30 am – 4:30 pm</dd></div><div><dt>Tue</dt><dd>7:30 am – 4:30 pm</dd></div><div><dt>Wed</dt><dd>7:30 am – 4:30 pm</dd></div><div><dt>Thu</dt><dd>7:30 am – 4:30 pm</dd></div><div><dt>Fri</dt><dd>7:30 am – 4:30 pm</dd></div><div><dt>Sat</dt><dd>9 am – noon</dd></div><div><dt>Sun</dt><dd>Closed</dd></div></dl>
-      </div>
     </div>
   </div>
 </section>
@@ -1302,7 +1356,6 @@ html:not(.sw-js) .reach__btns { display: none; }
 <section id="contact" class="contact t-mid" aria-labelledby="contact-title">
   <div class="wrap split split--contact">
     <div class="split__a">
-      <p class="kicker">The one form</p>
       <h2 id="contact-title">Send us the window.</h2>
       <p class="lead">Text a photo to (904) 555-0145 or fill this in. We’ll call you back to set up a measure.</p>
       <div class="contact__btns">
@@ -1313,7 +1366,7 @@ html:not(.sw-js) .reach__btns { display: none; }
       <p class="contact__mail"><a class="tlink" href="mailto:hello@oak-canopy-window-door.example"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span>hello@oak-canopy-window-door.example</span></a></p>
     </div>
     <div class="split__b">
-      <form class="lead-form t-light" data-lead method="dialog" novalidate data-thanks="Thanks, {name}. In your version of this site, this goes straight to your phone and inbox." aria-label="Request a measure">
+      <form class="lead-form t-light" data-lead method="dialog" novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to Oak Canopy." aria-label="Request a measure">
         <div class="lead-form__bar" data-form-progress aria-label="Form progress"><span></span></div>
         <fieldset data-step>
           <legend><span class="lead-form__no">1/4</span> The job</legend>
@@ -1409,7 +1462,7 @@ html:not(.sw-js) .reach__btns { display: none; }
       <div>
         <p id="foot-title" class="foot__name">Oak Canopy Window &amp; Door</p>
         <p>Window &amp; Door Installer · Jacksonville, FL</p>
-        <p>Licence SAMPLE-FL-CGC-0145 <span class="sample-tag">Sample licence</span></p>
+        <p>License SAMPLE-FL-CGC-0145 <span class="sample-tag">Sample license</span></p>
       </div>
       <div>
         <p class="foot__k">Reach us</p>

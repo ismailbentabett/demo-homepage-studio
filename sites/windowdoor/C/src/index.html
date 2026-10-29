@@ -67,20 +67,30 @@
 <main id="main">
 
 <section id="top" class="hero t-paper" aria-labelledby="hero-title">
-  <div class="hero__text">
-    <p class="kicker">Window &amp; door work · {{biz.city}}, {{biz.state}}</p>
-    <h1 id="hero-title" class="hero__h1" data-split="lines">Every {{biz.city}} window, {{biz.areas.0}} to the Beaches.</h1>
-    <p class="hero__lead">Old wood sashes restored, sliders that stop leaking, impact glass near the ocean. We price the repair before the replacement.</p>
-    <div class="hero__btns">
-      [[call btn--primary]]
-      <a class="btn btn--secondary" href="sms:{{biz.phoneE164}}">[[i msg]]<span>Text a photo</span></a>
+  <div class="hero__top">
+    <div class="hero__text">
+      <p class="kicker">Window &amp; door work · {{biz.city}}, {{biz.state}}</p>
+      <h1 id="hero-title" class="hero__h1" data-split="lines">{{biz.city}} windows and doors. <span class="hero__h1-b">Repair priced first.</span></h1>
+      <p class="hero__lead">Old wood sashes restored, sliders that stop leaking, impact glass near the ocean. From {{biz.areas.0}} to the Beaches.</p>
+      <div class="hero__btns">
+        [[call btn--primary]]
+        <a class="btn btn--secondary" href="sms:{{biz.phoneE164}}">[[i msg]]<span>Text a photo</span></a>
+      </div>
+      <p class="hero__proof"><span>{{proof.rating}} from {{proof.reviewCount}} reviews [[sample rating]]</span><span class="dotsep" aria-hidden="true">·</span><span>{{hours|today}}</span><span class="dotsep" aria-hidden="true">·</span><span>Restore and replace, priced side by side</span></p>
     </div>
-    <p class="hero__proof"><span>{{proof.rating}} from {{proof.reviewCount}} reviews [[sample rating]]</span><span class="dotsep" aria-hidden="true">·</span><span>{{hours|today}}</span><span class="dotsep" aria-hidden="true">·</span><span>Repair priced first</span></p>
+    <figure class="win" data-hook="hero-sash">
+      <figcaption class="win__cap">Stop 1 · a 6-over-1 with its lower sash up</figcaption>
+      <div class="win__box">
+        [[frame hero win__photo grade | | eager sizes="(min-width: 900px) 34vw, 92vw"]]
+        <span class="win__upper" aria-hidden="true"></span>
+        <span class="win__lower" aria-hidden="true"><span></span></span>
+      </div>
+      <span class="win__sill" aria-hidden="true"></span>
+      <svg class="hero__route" viewBox="0 0 24 80" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-route-intro><path pathLength="1" d="M12 0 C 6 20, 18 40, 12 80"/></svg>
+    </figure>
   </div>
-  <svg class="hero__route" viewBox="0 0 24 80" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-route-intro><path pathLength="1" d="M12 0 C 6 20, 18 40, 12 80"/></svg>
   <div class="bank">
-    [[frame hero bank__photo | | eager sizes="100vw"]]
-    <div class="bank__rail" data-marquee="34" data-hook="elevation-bank" aria-label="Window types by neighbourhood">
+    <div class="bank__rail" data-marquee="34" data-hook="elevation-bank" aria-label="Window types by neighborhood">
       <figure class="bank__card"><svg class="elev" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#elev-6over1"/></svg><figcaption><b>{{biz.areas.0}}</b>6-over-1 double-hung</figcaption></figure>
       <figure class="bank__card"><svg class="elev" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#elev-2over2"/></svg><figcaption><b>{{biz.areas.3}}</b>2-over-2 sash</figcaption></figure>
       <figure class="bank__card"><svg class="elev" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#elev-casement"/></svg><figcaption><b>{{biz.areas.2}}</b>Steel casement</figcaption></figure>
@@ -97,8 +107,7 @@
   <div class="wrap">
     <svg class="route" viewBox="0 0 40 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false" data-route><path class="route__line" pathLength="1" d="M20 0 C 10 60, 30 120, 20 200 S 10 330, 20 400 S 30 530, 20 600 S 10 730, 20 800 S 30 930, 20 1000"/></svg>
     <header class="sec-head route-body">
-      <p class="kicker">Down the river</p>
-      <h2 id="stops-title">Five neighbourhoods, five kinds of window.</h2>
+      <h2 id="stops-title">Five neighborhoods, five kinds of window.</h2>
       <p class="lead">The St. Johns sorts the city’s houses by age. Find your stop: the window drawn there is probably the one in your wall.</p>
     </header>
     <ol class="stop-list" role="list">
@@ -194,7 +203,7 @@
       <p class="mini-note">[[sample pricing]] Ranges from the price list below.</p>
     </div>
     <div class="split__b">
-      <fieldset class="check" data-checklist data-hook="repair-or-replace" data-checklist-results="0:Tick what you see.|1:One or two of these: restoring the sash usually covers it.|3:Three or more: we’ll price restoring and replacing side by side.|5:Most of the list: send a photo, this one may need a new unit.">
+      <fieldset class="check" data-checklist data-hook="repair-or-replace" data-checklist-results="0:Nothing checked yet. A sound sash is usually worth restoring.|1:One or two of these: restoring the sash usually covers it.|3:Three or more: we’ll price restoring and replacing side by side.|5:Most of the list: send a photo, this one may need a new unit.">
         <legend>What do you see at the window?</legend>
         <label class="check__row"><input type="checkbox"><span>The sill is soft when you press it</span></label>
         <label class="check__row"><input type="checkbox"><span>A pane is cracked</span></label>
@@ -202,10 +211,14 @@
         <label class="check__row"><input type="checkbox"><span>It’s painted shut</span></label>
         <label class="check__row"><input type="checkbox"><span>The house was built before 1950</span></label>
         <label class="check__row"><input type="checkbox"><span>It’s in a historic district</span></label>
-        <p class="check__out" data-checklist-result>Tick what you see.</p>
+        <div class="verdict" aria-hidden="true">
+          <div class="verdict__unit verdict__unit--restore"><svg class="elev" viewBox="0 0 120 180" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"><rect x="4" y="4" width="112" height="164"/><rect x="0" y="168" width="120" height="8"/><rect class="v-air" x="12" y="88" width="96" height="74" stroke="none"/><rect x="12" y="12" width="96" height="76"/><path d="M44 12v76M76 12v76M12 50h96"/><g class="v-sash"><rect class="v-glass" x="12" y="86" width="96" height="76"/><rect x="19" y="93" width="82" height="62"/></g></g></svg><span>Restore</span></div>
+          <div class="verdict__unit verdict__unit--new"><svg class="elev" viewBox="0 0 120 180" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"><rect x="4" y="4" width="112" height="164"/><rect x="0" y="168" width="120" height="8"/><rect x="12" y="12" width="96" height="76"/><rect x="17" y="17" width="86" height="66"/><rect class="v-glass" x="12" y="86" width="96" height="76"/><rect x="17" y="91" width="86" height="66"/></g></svg><span>Replace</span></div>
+        </div>
+        <p class="check__out" data-checklist-result>Nothing checked yet. A sound sash is usually worth restoring.</p>
         <div class="check__meter" aria-hidden="true"><span></span></div>
         <div class="check__acts">
-          <a class="btn btn--primary" href="#contact" data-service="{{services.0.name}}">Price it</a>
+          <a class="btn btn--primary" href="#contact" data-service="{{services.0.name}}">Price restore and replace</a>
           <a class="btn btn--secondary" href="sms:{{biz.phoneE164}}">[[i msg]]<span>Text a photo</span></a>
         </div>
       </fieldset>
@@ -217,7 +230,6 @@
   <div class="wrap">
     <header class="sec-head sec-head--row">
       <div>
-        <p class="kicker">The work</p>
         <h2 id="services-title">What we do on a window or door.</h2>
       </div>
       <p class="lead">Eight jobs, from one broken cord to a whole house of impact glass. Each card goes straight to the form.</p>
@@ -226,7 +238,6 @@
       <!-- each services -->
       <li class="svc">
         <svg class="glyph" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#s-{{#}}"/></svg>
-        <p class="svc__no">{{#2}}</p>
         <h3 class="svc__name">{{.name}}</h3>
         <p class="svc__blurb">{{.blurb}}</p>
         <a class="svc__cta" href="#contact" data-service="{{.name}}">Price it <span class="sr-only">: {{.name}}</span>[[i arrow]]</a>
@@ -240,7 +251,6 @@
   <div class="wrap">
     <div class="age__grid" data-tabs data-hook="style-by-age" data-tabs-start="1">
       <div class="age__head">
-        <p class="kicker">A mini river of decades</p>
         <h2 id="age-title">When was your house built?</h2>
         <p class="lead">Pick the decade. The window that usually fits is drawn on the right.</p>
         <div class="age__river" data-tablist aria-label="Decade the house was built">
@@ -322,8 +332,10 @@
   </div>
 </section>
 
-<section class="break t-deep" aria-label="Live oaks over a street">
-  [[frame oaks break__frame]]
+<section class="break t-deep" aria-label="Live oaks over a street" data-break>
+  [[frame oaks break__frame grade]]
+  <span class="break__sash" aria-hidden="true"></span>
+  <svg class="break__route" viewBox="0 0 24 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M12 0 C 6 20, 18 40, 12 80"/></svg>
   <p class="break__cap">Live oaks and Spanish moss over a quiet street.</p>
 </section>
 
@@ -331,8 +343,7 @@
   <div class="wrap">
     <header class="sec-head sec-head--row">
       <div>
-        <p class="kicker">Heard along the river</p>
-        <h2 id="reviews-title">What neighbours said.</h2>
+        <h2 id="reviews-title">What neighbors said.</h2>
       </div>
       <p class="reviews__score"><b>{{proof.rating}}</b> from {{proof.reviewCount}} reviews [[sample rating]]</p>
     </header>
@@ -362,7 +373,7 @@
         <p class="kicker">Where we work</p>
         <h2 id="area-title">From {{biz.areas.8}} to the ocean.</h2>
       </div>
-      <p class="lead">{{biz.city}} and {{biz.areas|list}}.</p>
+      <p class="lead">Both banks of the St. Johns, {{biz.areas.8}} to {{biz.areas.9}}. Not sure? Check your ZIP below.</p>
     </header>
     <div class="map">
       <svg class="map__river" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="map__water" d="M40 300 C 110 250, 210 250, 260 200 S 300 120, 370 112 S 520 70, 650 74 S 860 50, 1000 46"/><rect class="map__sea" x="955" y="0" width="45" height="300"/></svg>
@@ -374,20 +385,15 @@
       <p class="map__sea-label" aria-hidden="true">Atlantic</p>
     </div>
     <div class="area__cols">
-      <form class="zip" data-zip data-hook="zip-check">
+      <form class="zip" data-zip data-hook="zip-check" data-zip-yes="{zip} is on our route. We come to you." data-zip-no="{zip} is past our last stop. Call {phone} and we’ll say who can help.">
         <h3>Do we come to you?</h3>
         <label for="zip-in">Your ZIP code</label>
         <div class="zip__row">
           <input id="zip-in" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}">
           <button class="btn btn--primary" type="submit">Check my ZIP</button>
         </div>
-        <p class="zip__out" data-zip-result></p>
+        <p class="zip__out" data-zip-result>Your answer shows here. Inside the area, one tap starts your price.</p>
       </form>
-      <div class="hours-box">
-        <h3>Hours</h3>
-        <p class="hours-box__now">{{hours|today}}</p>
-        {{hours|table}}
-      </div>
     </div>
   </div>
 </section>
@@ -408,7 +414,6 @@
 <section id="contact" class="contact t-mid" aria-labelledby="contact-title">
   <div class="wrap split split--contact">
     <div class="split__a">
-      <p class="kicker">The one form</p>
       <h2 id="contact-title">Send us the window.</h2>
       <p class="lead">Text a photo to {{biz.phone}} or fill this in. We’ll call you back to set up a measure.</p>
       <div class="contact__btns">
@@ -419,7 +424,7 @@
       <p class="contact__mail"><a class="tlink" href="mailto:{{biz.email}}">[[i mail]]<span>{{biz.email}}</span></a></p>
     </div>
     <div class="split__b">
-      <form class="lead-form t-light" data-lead method="dialog" novalidate data-thanks="Thanks, {name}. In your version of this site, this goes straight to your phone and inbox." aria-label="Request a measure">
+      <form class="lead-form t-light" data-lead method="dialog" novalidate data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to {{biz.short}}." aria-label="Request a measure">
         <div class="lead-form__bar" data-form-progress aria-label="Form progress"><span></span></div>
         <fieldset data-step>
           <legend><span class="lead-form__no">1/4</span> The job</legend>
@@ -483,7 +488,7 @@
       <div>
         <p id="foot-title" class="foot__name">{{biz.name}}</p>
         <p>{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
-        <p>Licence {{proof.license}} [[sample licence]]</p>
+        <p>License {{proof.license}} [[sample license]]</p>
       </div>
       <div>
         <p class="foot__k">Reach us</p>

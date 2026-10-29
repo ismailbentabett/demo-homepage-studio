@@ -62,6 +62,14 @@
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeDot);
     }
 
+    /* --- header pill: outline while the hero is in view, brick once it leaves --- */
+    var hero = document.getElementById('top');
+    if (hero && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        document.documentElement.classList.toggle('is-past-hero', !en[0].isIntersecting);
+      }, { rootMargin: '-120px 0px 0px 0px' }).observe(hero);
+    }
+
     if (!motion || !window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
@@ -82,6 +90,17 @@
           onEnter: function () { stop.classList.add('is-reached'); },
           onLeaveBack: function () { stop.classList.remove('is-reached'); }
         });
+      });
+    }
+
+    /* --- break: the river reaches a window-shaped frame that widens to full bleed (--bp 0 -> 1) --- */
+    var brk = document.querySelector('[data-break]');
+    if (brk) {
+      brk.style.setProperty('--bp', 0);
+      ScrollTrigger.create({
+        trigger: brk, start: 'top 85%', end: 'center 45%', scrub: 0.5,
+        onUpdate: function (self) { brk.style.setProperty('--bp', self.progress.toFixed(4)); },
+        onLeave: function () { brk.style.setProperty('--bp', 1); }
       });
     }
 
