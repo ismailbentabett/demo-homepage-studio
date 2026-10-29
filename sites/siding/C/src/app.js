@@ -43,6 +43,9 @@
     });
   });
 
+  // services on phone: one row per plate, the blurb behind its disclosure
+  if (window.matchMedia('(max-width: 639px)').matches) $$('.svc__more').forEach(function (d) { d.removeAttribute('open'); });
+
   // squares calculator: wall area from length × stories, plus gables, minus openings
   var calc = $('[data-hook="squares-calculator"]');
   var lastArea = 0;
@@ -76,6 +79,7 @@
   // hero intro: the word fills from the bottom course up; the h1 is never touched
   var word = $('.mask-word__in');
   var heroCut = $('.hero .cut');
+  var story0 = $('#under');
   var intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
   if (word) intro.fromTo(word, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .7, ease: steps(7), clearProps: 'clipPath' }, 0);
   if (heroCut) intro.fromTo(heroCut, { '--sw-p': 0 }, { '--sw-p': 1, duration: .45, ease: steps(16) }, .55);
@@ -83,7 +87,7 @@
   // every other cut is laid tile by tile as it reaches the viewport
   if (window.ScrollTrigger) {
     $$('.cut').forEach(function (c) {
-      if (c === heroCut) return;
+      if (c === heroCut || (story0 && story0.contains(c))) return;
       gsap.set(c, { '--sw-p': 0 });
       ScrollTrigger.create({
         trigger: c, start: 'top 95%', once: true,
@@ -92,43 +96,34 @@
     });
   }
 
-  // the story: strip, check, wrap, then lay the courses bottom-up
+  // the story: the wall is built as you scroll (frame → sheathing → wrap → courses bottom-up),
+  // it un-builds when you scroll back, and the section's own staggered edge is the last course.
   var story = $('#under');
   if (story && window.ScrollTrigger) {
-    var wall = $('.wall__svg', story);
-    var old = $('.w-old', story), soft = $('.w-soft', story);
-    var wrap = $$('.w-wrap, .w-flash', story);
+    var wall = $('.wall', story);
+    var studs = $('.w-studs', story), sheath = $('.w-sheath', story), soft = $('.w-soft', story);
+    var wrapEl = $('.w-wrap', story), flash = $('.w-flash', story);
     var courses = $$('.w-course', story);
+    var storyCut = $(':scope > .cut', story);
     var stepEls = $$('.step', story);
-    function setStep(i) { stepEls.forEach(function (s, j) { s.classList.toggle('is-active', j === i); }); }
-    function build() {
-      if (old) old.style.display = 'inline';
-      var tl = gsap.timeline({ paused: true });
-      tl.set(soft, { opacity: 0 }).set(wrap, { opacity: 0 }).set(courses, { opacity: 0, y: 14 });
-      tl.call(setStep, [0], 0)
-        .to(old, { opacity: 0, y: 24, duration: 1, ease: 'power2.in' }, 0)
-        .call(setStep, [1], 1)
-        .to(soft, { opacity: 1, duration: .6, ease: steps(3) }, 1)
-        .call(setStep, [2], 2)
-        .to(wrap, { opacity: 1, duration: .8, stagger: .3, ease: 'power2.out' }, 2)
-        .call(setStep, [3], 3)
-        .to(courses, { opacity: 1, y: 0, duration: .4, stagger: .14, ease: 'power3.out' }, 3);
-      return tl;
-    }
+    var cur = -1;
+    function setStep(i) { if (i === cur) return; cur = i; stepEls.forEach(function (s, j) { s.classList.toggle('is-active', j === i); }); }
+    var tl = gsap.timeline({ paused: true, defaults: { ease: 'none' }, onUpdate: function () { setStep(Math.min(3, Math.floor(tl.time()))); } });
+    tl.fromTo(studs, { opacity: .4 }, { opacity: 1, duration: 1 }, 0)
+      .fromTo(sheath, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: .8, ease: steps(4) }, 1)
+      .fromTo(soft, { opacity: 0 }, { opacity: 1, duration: .2, ease: steps(2) }, 1.75)
+      .fromTo(wrapEl, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: .7, ease: steps(4) }, 2)
+      .fromTo(flash, { opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' }, { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: .3 }, 2.7)
+      .fromTo(courses, { opacity: 0, y: -26 }, { opacity: 1, y: 0, duration: .25, stagger: .11, ease: 'power2.out' }, 3);
+    if (storyCut) tl.fromTo(storyCut, { '--sw-p': 0 }, { '--sw-p': 1, duration: .5, ease: steps(14) }, 4);
     ScrollTrigger.matchMedia({
-      '(min-width: 900px) and (min-height: 700px)': function () {
-        var tl = build();
-        var st = ScrollTrigger.create({
-          trigger: story, start: 'top top+=68', end: 'bottom bottom', scrub: .6,
-          animation: tl,
-          onUpdate: function (self) { setStep(Math.min(3, Math.floor(self.progress * 4))); }
-        });
-        return function () { st.kill(); tl.progress(1).kill(); if (old) old.style.display = ''; gsap.set([soft].concat(wrap, courses), { clearProps: 'all' }); stepEls.forEach(function (s) { s.classList.remove('is-active'); }); };
+      '(min-width: 900px)': function () {
+        var st = ScrollTrigger.create({ trigger: story, start: 'top 25%', end: 'bottom bottom', scrub: .5, animation: tl });
+        return function () { st.kill(); };
       },
-      '(max-width: 899px), (max-height: 699px)': function () {
-        var tl = build();
-        var st = ScrollTrigger.create({ trigger: wall || story, start: 'top 70%', once: true, onEnter: function () { tl.duration(3.2).play(); } });
-        return function () { st.kill(); tl.progress(1).kill(); if (old) old.style.display = ''; gsap.set([soft].concat(wrap, courses), { clearProps: 'all' }); };
+      '(max-width: 899px)': function () {
+        var st = ScrollTrigger.create({ trigger: wall || story, start: 'top 80%', end: 'bottom 30%', scrub: .5, animation: tl });
+        return function () { st.kill(); };
       }
     });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });

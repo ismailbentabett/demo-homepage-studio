@@ -1,3 +1,6 @@
+## Round 1
+Re-cut the hero so FISHSCALE stands on the scallop course, with the edge and its PL. 03 tag inside the first screen and paper peeking under it. The trade word is now in the h1. "Under the courses" no longer pins: the wall is built on a reversible scroll scrub (frame, then sheathing with the soft board flagged, then wrap and flashing, then courses laid bottom-up), and it ends by laying in the section's own staggered edge. This removes the empty pin gap. Shoulds 3–11 and copy-1 are applied: the photo band has a process line and no Sample tag, one booking name, a warm grade on the vinyl frame, sentence-case proof labels, 16px ink step text, phone service rows with disclosures, an ink FAQ cross, a calculator with a clapboard head and no shadow, and a full-width colors h2.
+
 # siding-C · Blueprint (top -> bottom)
 Tone rhythm: deep · paper · mid · paper · break · accent · paper · deep · paper · mid · ink. No two dark bands touch (the break photo sits between paper and salmon). Dark: deep, ink. Color: accent, mid. Hooks: tabs x2, estimator, zip, form, open-now, signature (`data-sw-signature`). Layout families: mask-stack, plate split, grid, pinned stack, break, mosaic, elevation rail, split tool, accordion, split form, index rail (no neighbours share one).
 

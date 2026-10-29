@@ -272,7 +272,7 @@ html.lenis, html.lenis body { height: auto; }
   --fs-3:clamp(1.8rem,1.4rem + 1.8vw,2.75rem);
   --fs-4:clamp(2.15rem,1.6rem + 2.8vw,3.75rem);
   --fs-h1:clamp(2.4rem,min(6.2vw,7.4svh) + .1rem,4.5rem);
-  --fs-mask:min(23.6vw,21rem);
+  --fs-mask:min(23.6vw,21rem,36svh);
   --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px; --s-10:120px;
   --pad-tight:clamp(56px,7vw,80px); --pad:clamp(80px,9vw,120px); --pad-loose:clamp(104px,12vw,160px);
   --max:1320px; --margin:clamp(20px,5vw,64px); --gutter:clamp(16px,2vw,24px);
@@ -397,36 +397,41 @@ html:not(.sw-js) .menu{position:static;display:none}
 @media (min-width:900px) and (hover:hover){ .nav a:hover::after{transform:scaleX(1)} }
 
 /* ---------- 1 hero ---------- */
-.hero{min-height:calc(100svh - var(--header-h));display:flex;flex-direction:column;padding-top:clamp(20px,3.5svh,48px);padding-bottom:calc(clamp(36px,6svh,72px) + var(--cut-h))}
+.hero{min-height:calc(100svh - var(--header-h));display:flex;flex-direction:column;padding-top:clamp(20px,3.5svh,48px)}
+/* the word stands on the scallop course; the paper band peeks under it */
+section.hero{min-height:calc(100svh - var(--header-h) - clamp(64px,9svh,96px));padding-bottom:var(--cut-h)}
 .hero__inner{flex:1;display:flex;flex-direction:column}
 .hero .kicker{margin-bottom:var(--s-2)}
-.mask-word{font-family:var(--f-display);font-size:var(--fs-mask);line-height:.84;letter-spacing:-.045em;margin:0 0 clamp(16px,3svh,36px) -.04em;white-space:nowrap;color:var(--paper);padding-bottom:.04em}
+.mask-word{font-family:var(--f-display);font-size:var(--fs-mask);line-height:.74;letter-spacing:-.045em;margin:auto 0 0 -.04em;padding-top:clamp(16px,3svh,32px);white-space:nowrap;color:var(--paper);position:relative;z-index:1}
 .mask-word__in{display:inline-block}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   .mask-word__in{background-image:url("media/hero-C2-1170.webp");background-size:cover;background-position:50% 45%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:saturate(.9) contrast(1.12) brightness(1.18)}
   @media (min-width:900px){ .mask-word__in{background-image:url("media/hero-C2.webp")} }
 }
-.hero__grid{display:grid;gap:var(--s-6);margin-top:auto}
+.hero__grid{display:grid;gap:var(--s-5)}
+.hero .cut__tag{bottom:auto;top:calc(100% + 12px);color:var(--cedar)}
 .hero h1{font-size:var(--fs-h1);line-height:.98;letter-spacing:-.025em;max-width:22ch}
-.hero .lead{margin-top:var(--s-4);font-size:var(--fs-1);font-weight:450;line-height:1.4;color:var(--muted);max-width:44ch}
+.hero .lead{margin-top:var(--s-4);font-size:var(--fs-1);font-weight:450;line-height:1.4;color:var(--muted);max-width:50ch}
 .btn-row{display:flex;flex-wrap:wrap;gap:var(--s-3);margin-top:var(--s-5)}
 .btn-row .btn{flex:1 1 auto}
 .hero__sms{margin-top:var(--s-4)}
 .hero__proof{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule);font-size:var(--fs--1)}
 .hero__proof li{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:10px 0;border-bottom:1px solid var(--rule)}
-.proof__k{font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);min-width:9.5em}
+.proof__k{font-weight:500;font-size:15px;color:var(--muted);min-width:8.5em}
 .proof__v{font-variant-numeric:tabular-nums;font-weight:500}
 @media (min-width:640px){ .btn-row .btn{flex:0 0 auto} }
 @media (min-width:1024px){
   .hero__grid{grid-template-columns:minmax(0,7fr) minmax(0,4fr);column-gap:clamp(32px,5vw,96px);align-items:end}
   .hero__proof li{flex-wrap:nowrap}
 }
-@media (max-width:639px){ .hero .lead{font-size:var(--fs-0)} .hero__proof li:nth-child(4){display:none} }
+@media (max-width:639px){ .hero .lead{font-size:var(--fs-0)} .hero__proof li:nth-child(4){display:none} .hero__sms{display:none} .btn-row{margin-top:var(--s-4)} .hero__proof li{padding:8px 0;flex-wrap:nowrap} .hero__proof li:nth-child(2){display:none} .proof__k{min-width:0;font-size:14px} .hero__proof .sample-tag{font-size:11px;padding:2px 4px} .hero__grid{gap:var(--s-4)} section.hero{min-height:calc(100svh - var(--header-h) - 160px)} }
 
 /* ---------- section heads ---------- */
 .sec-head{display:grid;gap:var(--s-4);margin-bottom:clamp(32px,5vw,64px);max-width:62rem}
 .sec-head .kicker{margin-bottom:0}
 .sec-head__lead{color:var(--muted);max-width:56ch;font-size:var(--fs-1);line-height:1.4}
+.sec-head--wide{max-width:none}
+.sec-head--wide h2{max-width:24ch;font-size:clamp(2.4rem,1.6rem + 3.4vw,4.5rem)}
 @media (min-width:1024px){ .sec-head--row{grid-template-columns:minmax(0,4fr) minmax(0,8fr);max-width:none;align-items:start} .sec-head--row h2{max-width:20ch} }
 
 /* ---------- 2 pattern book ---------- */
@@ -470,7 +475,20 @@ html:not(.sw-js) .menu{position:static;display:none}
 .svc__top{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s-2)}
 .svc__no{font-weight:700;font-size:13px;letter-spacing:.12em;color:#33413B}
 .svc h3{font-size:var(--fs-1);line-height:1.12}
-.svc p{color:var(--ink);font-size:var(--fs--1);line-height:1.5;flex:1}
+.svc p{color:var(--ink);font-size:var(--fs--1);line-height:1.5}
+.svc__more{flex:1}
+.svc__more summary{display:none}
+@media (max-width:639px){
+  .svc{display:grid;grid-template-columns:44px minmax(0,1fr) auto;grid-template-areas:"top title title" "top more link";gap:2px 12px;padding:14px 16px;align-items:center}
+  .svc__top{grid-area:top;flex-direction:column;gap:6px;margin:0;align-self:start}
+  .svc h3{grid-area:title;font-size:var(--fs-1)}
+  .svc__more{grid-area:more}
+  .svc__more summary{display:flex;align-items:center;gap:8px;min-height:44px;font-weight:700;font-size:var(--fs--1);cursor:pointer;list-style:none;text-decoration:underline;text-underline-offset:3px}
+  .svc__more summary::-webkit-details-marker{display:none}
+  .svc__more p{padding-bottom:8px}
+  .svc__link{grid-area:link;margin:0;min-height:44px;padding-block:0;align-self:start}
+  .svc__link::after{bottom:8px}
+}
 .svc__link{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding-block:12px;margin-block:-4px -12px;font-weight:700;color:var(--ink);text-decoration:none;position:relative}
 .svc__link::after{content:"";position:absolute;left:0;right:0;bottom:8px;height:2px;background:var(--ink);transform-origin:left;transition:transform var(--t-ui) var(--ease-out)}
 @media (hover:hover){ .svc__link:hover::after{transform:scaleX(.3)} .svc:hover{background:rgba(244,238,223,.35)} }
@@ -483,19 +501,19 @@ html:not(.sw-js) .menu{position:static;display:none}
 @media (min-width:1100px){ .svc-grid{grid-template-columns:repeat(4,minmax(0,1fr))} .svc{min-height:300px} }
 
 /* ---------- 4 story: under the courses ---------- */
-.story{padding-top:var(--pad);padding-bottom:calc(var(--pad) + 36px)}
+.story{padding-top:var(--pad)}
 .story__grid{display:grid;gap:var(--s-7)}
 .story h2{font-size:var(--fs-4);max-width:16ch;margin-bottom:var(--s-6)}
 .steps{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--rule)}
 .step{display:grid;grid-template-columns:3.2rem 1fr;gap:var(--s-3);padding:var(--s-4) 0;border-bottom:1px solid var(--rule);position:relative}
 .step__no{font-family:var(--f-display);font-size:var(--fs-2);line-height:1;color:var(--cedar)}
 .step h3{font-family:var(--f-text);font-weight:700;font-size:var(--fs-0);letter-spacing:0;margin-bottom:4px}
-.step p{font-size:var(--fs--1);color:var(--muted);line-height:1.5}
+.step p{font-size:1rem;color:var(--ink);line-height:1.55}
 .step::before{content:"";position:absolute;left:0;top:-1px;width:100%;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform var(--t-page) var(--ease-out)}
 .step.is-active::before{transform:scaleX(1)}
 .step.is-active .step__no{color:var(--accent)}
 .wall{margin:0}
-.wall__svg{width:100%;height:auto;border:2px solid var(--ink);background:#fff}
+.wall__svg{width:100%;height:auto;border:2px solid var(--ink);background:#fff;display:block}
 .w-studs rect{fill:#E8D3B0;stroke:var(--ink);stroke-width:2}
 .w-sheath rect{fill:#D7BE8F;stroke:var(--ink);stroke-width:2}
 .w-sheath path{fill:none;stroke:var(--ink);stroke-opacity:.45;stroke-width:1.5}
@@ -504,25 +522,20 @@ html:not(.sw-js) .menu{position:static;display:none}
 .w-wrap path{fill:none;stroke:var(--mid);stroke-width:2}
 .w-flash{fill:#8E9A94;stroke:var(--ink);stroke-width:1.5}
 .w-course rect{fill:var(--signal);stroke:var(--deep);stroke-width:2}
-.w-old{display:none}
-.w-old rect{fill:#B9BDB3;stroke:var(--ink);stroke-width:2}
-.w-old path{fill:none;stroke:var(--ink);stroke-opacity:.4;stroke-width:2}
 .wall__cap{margin-top:var(--s-3);font-size:var(--fs--1);color:var(--muted)}
 @media (min-width:900px){
-  .story__grid{grid-template-columns:minmax(0,6fr) minmax(0,6fr);column-gap:clamp(32px,5vw,88px);align-items:center}
-}
-@media (min-width:900px) and (min-height:700px){
-  .sw-motion .story{height:calc(4 * 55svh + 100svh);padding:0}
-  .sw-motion .story__stage{position:sticky;top:var(--header-h);height:calc(100svh - var(--header-h));display:flex;align-items:center;padding-bottom:36px}
-  .sw-motion .story h2{font-size:var(--fs-3);margin-bottom:var(--s-5)}
-  .sw-motion .wall__svg{max-height:calc(100svh - var(--header-h) - 150px);width:auto;margin-inline:auto}
+  .story__grid{grid-template-columns:minmax(0,6fr) minmax(0,6fr);column-gap:clamp(32px,5vw,88px);align-items:start}
+  .step{padding:var(--s-5) 0}
+  .wall{position:sticky;top:calc(var(--header-h) + 24px)}
+  .wall__svg{max-height:calc(100svh - var(--header-h) - 120px);width:auto;max-width:100%;margin-inline:auto}
 }
 
 /* ---------- 5 break ---------- */
 .break{padding:0;position:relative}
 .break__fig{position:relative;margin:0;height:62svh;min-height:380px;overflow:hidden}
-.break__img{position:absolute;left:0;top:0;width:100%;height:175%;max-width:none;object-fit:cover;object-position:45% 0}
-.break__fig::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(62,90,75,.55),rgba(62,90,75,0) 45%);pointer-events:none}
+.break__img{position:absolute;left:0;top:0;width:100%;height:175%;max-width:none;object-fit:cover;object-position:45% 0;filter:sepia(.3) saturate(.78) hue-rotate(-6deg) contrast(.96) brightness(1.02)}
+.break__fig::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(214,170,120,.22),rgba(138,90,54,.18));mix-blend-mode:multiply;pointer-events:none}
+.break__fig::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(62,90,75,.55),rgba(62,90,75,0) 45%);pointer-events:none}
 .break__cap{position:absolute;left:var(--margin);right:var(--margin);bottom:var(--s-5);z-index:2;display:grid;gap:var(--s-3);max-width:40rem;background:var(--deep);color:#fff;padding:var(--s-5);font-size:var(--fs--1)}
 .break__fig-no{font-weight:700;letter-spacing:.04em;color:#D7E0CF}
 .break__quote{font-family:var(--f-display);font-size:var(--fs-1);line-height:1.3}
@@ -605,7 +618,8 @@ html:not(.sw-js) .menu{position:static;display:none}
 .clap__item{font-family:var(--f-display);font-size:var(--fs-2);line-height:1.1}
 .clap__range{font-weight:700;font-size:var(--fs-1);font-variant-numeric:tabular-nums}
 .clap__note{color:var(--muted);font-size:var(--fs--1)}
-.calc{padding:var(--s-6) var(--s-5);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.calc{position:relative;padding:calc(var(--s-6) + 28px) var(--s-5) var(--s-6);border:2px solid var(--ink)}
+.calc::before{content:"";position:absolute;left:0;right:0;top:0;height:28px;background:var(--deep);-webkit-mask:var(--cut-clapboard) repeat-x 0 0/44px 28px;mask:var(--cut-clapboard) repeat-x 0 0/44px 28px}
 .calc h3{font-size:var(--fs-2);margin-bottom:var(--s-5)}
 .calc__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4)}
 .field{display:grid;gap:6px}
@@ -622,7 +636,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .calc__fine{margin:var(--s-3) 0 var(--s-5);font-size:var(--fs--1);color:var(--muted)}
 .calc__nojs{margin-bottom:var(--s-4);font-weight:700}
 .field-error{color:var(--accent);font-weight:700;font-size:var(--fs--1)}
-@media (min-width:1100px){ .prices__grid{grid-template-columns:minmax(0,6fr) minmax(0,6fr);column-gap:clamp(40px,6vw,96px);align-items:start} .calc{padding:var(--s-7)} }
+@media (min-width:1100px){ .prices__grid{grid-template-columns:minmax(0,6fr) minmax(0,6fr);column-gap:clamp(40px,6vw,96px);align-items:start} .calc{padding:calc(var(--s-7) + 28px) var(--s-7) var(--s-7)} }
 
 /* ---------- 9 faq ---------- */
 .faq{padding-block:var(--pad-tight) var(--pad)}
@@ -632,7 +646,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .faq details{border-bottom:1px solid var(--rule)}
 .faq summary{list-style:none;display:flex;justify-content:space-between;gap:var(--s-4);align-items:center;min-height:64px;padding:16px 0;font-weight:700;font-size:var(--fs-1);line-height:1.3}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-family:var(--f-display);font-size:1.6em;line-height:1;color:var(--accent);flex:none;transition:transform var(--t-ui) var(--ease-out)}
+.faq summary::after{content:"";width:18px;height:18px;flex:none;background:linear-gradient(var(--ink),var(--ink)) center/100% 2px no-repeat,linear-gradient(var(--ink),var(--ink)) center/2px 100% no-repeat;transition:transform var(--t-ui) var(--ease-out)}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq details > div{padding:0 0 var(--s-5)}
 .faq details p{max-width:62ch;color:var(--ink)}
@@ -709,8 +723,8 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
 @media (min-width:900px){ .footer__top{grid-template-columns:minmax(0,3fr) minmax(0,9fr);align-items:end} .footer__grid{grid-template-columns:repeat(4,minmax(0,1fr))} }
 
 /* ---------- mobile bar ---------- */
-.mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:1.1fr 1.3fr .8fr;gap:8px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(30,42,43,.18)}
-.mobile-bar .btn{min-height:48px;padding:0 10px;font-size:var(--fs--1)}
+.mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:.9fr 1.25fr 1fr;gap:8px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(30,42,43,.18)}
+.mobile-bar .btn{min-height:48px;padding:0 8px;font-size:var(--fs--1);white-space:nowrap}
 .mobile-bar .btn-line{color:var(--paper)}
 @media (min-width:900px){ .mobile-bar{display:none} }
 
@@ -782,11 +796,10 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
 <section id="top" class="hero t-deep" data-layout="mask-stack" aria-labelledby="hero-title">
   <div class="wrap hero__inner">
     <p class="kicker">Siding for old houses · Providence, RI</p>
-    <p class="mask-word" aria-hidden="true"><span class="mask-word__in">Fishscale</span></p>
     <div class="hero__grid">
       <div class="hero__text">
-        <h1 id="hero-title">Old Providence walls, matched course by course.</h1>
-        <p class="lead">Cedar shingles, fish gables, clapboard and triple-deckers. We cut new courses to match the ones still on your house.</p>
+        <h1 id="hero-title">Old Providence siding, matched course by course.</h1>
+        <p class="lead">Cedar shingles, fish-scale gables, clapboard and triple-deckers. We cut new courses to match the ones still on your house.</p>
         <div class="btn-row">
           <a class="btn btn-call btn-cream" href="tel:+14015550130"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (401) 555-0130</span></a>
           <a class="btn btn-line" href="#contact">Book a measure visit <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
@@ -800,6 +813,7 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
         <li><span class="proof__k">Area</span> <span class="proof__v">Providence, Cranston, Pawtucket and nearby</span></li>
       </ul>
     </div>
+    <p class="mask-word" aria-hidden="true"><span class="mask-word__in">Fishscale</span></p>
   </div>
   <div class="cut" data-cut="fish" data-next="paper" data-sw-signature>
     <p class="cut__tag">Pl. 03 · Fish-scale · 1880s</p>
@@ -907,56 +921,56 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
       <li class="svc">
         <div class="svc__top"><span class="svc__no">PL. 01</span><span class="swatch swatch--xs" aria-hidden="true"></span></div>
         <h3>Cedar shingle siding</h3>
-        <p>Hand-laid cedar shingles in straight, staggered or fancy-cut courses, matched to the house&#39;s era.</p>
+        <details class="svc__more" open><summary>What it involves</summary><p>Hand-laid cedar shingles in straight, staggered or fancy-cut courses, matched to the house&#39;s era.</p></details>
         <a class="svc__link" href="#contact" data-service="Cedar shingles">Price it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </li>
       
       <li class="svc">
         <div class="svc__top"><span class="svc__no">PL. 02</span><span class="swatch swatch--xs" aria-hidden="true"></span></div>
         <h3>Fishscale and fancy-cut repair</h3>
-        <p>Fishscale, diamond and hexagon gable shingles cut and fitted to match the run that is left.</p>
+        <details class="svc__more" open><summary>What it involves</summary><p>Fishscale, diamond and hexagon gable shingles cut and fitted to match the run that is left.</p></details>
         <a class="svc__link" href="#contact" data-service="Fancy-cut shingles">Price it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </li>
       
       <li class="svc">
         <div class="svc__top"><span class="svc__no">PL. 03</span><span class="swatch swatch--xs" aria-hidden="true"></span></div>
         <h3>Clapboard repair</h3>
-        <p>Split and rotten clapboards replaced to the same reveal, primed on all sides against salt air.</p>
+        <details class="svc__more" open><summary>What it involves</summary><p>Split and rotten clapboards replaced to the same reveal, primed on all sides against salt air.</p></details>
         <a class="svc__link" href="#contact" data-service="Clapboard">Price it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </li>
       
       <li class="svc">
         <div class="svc__top"><span class="svc__no">PL. 04</span><span class="swatch swatch--xs" aria-hidden="true"></span></div>
         <h3>Triple-decker re-siding</h3>
-        <p>Three-story re-sides with the porches, bays and trim lines kept so the house does not look flat.</p>
+        <details class="svc__more" open><summary>What it involves</summary><p>Three-story re-sides with the porches, bays and trim lines kept so the house does not look flat.</p></details>
         <a class="svc__link" href="#contact" data-service="Triple-deckers">Price it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </li>
       
       <li class="svc">
         <div class="svc__top"><span class="svc__no">PL. 05</span><span class="swatch swatch--xs" aria-hidden="true"></span></div>
         <h3>Trim and cornice repair</h3>
-        <p>Corner boards, window casings and cornice brackets rebuilt in wood and painted to match.</p>
+        <details class="svc__more" open><summary>What it involves</summary><p>Corner boards, window casings and cornice brackets rebuilt in wood and painted to match.</p></details>
         <a class="svc__link" href="#contact" data-service="Trim">Price it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </li>
       
       <li class="svc">
         <div class="svc__top"><span class="svc__no">PL. 06</span><span class="swatch swatch--xs" aria-hidden="true"></span></div>
         <h3>Storm repair</h3>
-        <p>Shingles and boards torn off in a nor&#39;easter replaced and matched before the next storm.</p>
+        <details class="svc__more" open><summary>What it involves</summary><p>Shingles and boards torn off in a nor&#39;easter replaced and matched before the next storm.</p></details>
         <a class="svc__link" href="#contact" data-service="Storm repair">Price it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </li>
       
       <li class="svc">
         <div class="svc__top"><span class="svc__no">PL. 07</span><span class="swatch swatch--xs" aria-hidden="true"></span></div>
         <h3>Vinyl siding</h3>
-        <p>Vinyl for owners who want less upkeep, with real trim details kept around windows and doors.</p>
+        <details class="svc__more" open><summary>What it involves</summary><p>Vinyl for owners who want less upkeep, with real trim details kept around windows and doors.</p></details>
         <a class="svc__link" href="#contact" data-service="Vinyl">Price it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </li>
       
       <li class="svc">
         <div class="svc__top"><span class="svc__no">PL. 08</span><span class="swatch swatch--xs" aria-hidden="true"></span></div>
         <h3>Color consults</h3>
-        <p>Body, trim and accent colors chosen from Providence&#39;s painted houses and tried on a drawing.</p>
+        <details class="svc__more" open><summary>What it involves</summary><p>Body, trim and accent colors chosen from Providence&#39;s painted houses and tried on a drawing.</p></details>
         <a class="svc__link" href="#contact" data-service="Color">Price it <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </li>
       
@@ -964,8 +978,8 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
   </div>
 </section>
 
-<!-- 4 · UNDER THE COURSES (pinned story on desktop) -->
-<section id="under" class="story t-paper" data-layout="pinned-stack" aria-labelledby="under-title" data-hook="story">
+<!-- 4 · UNDER THE COURSES (scrubbed wall build) -->
+<section id="under" class="story t-paper" data-layout="scrub-build" aria-labelledby="under-title" data-hook="story">
   <div class="story__stage">
     <div class="wrap story__grid">
       <div class="story__text">
@@ -1003,10 +1017,6 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
 <g class="w-course"><rect x="10" y="360" width="27" height="32"/><rect x="39" y="360" width="56" height="32"/><rect x="97" y="360" width="38" height="32"/><rect x="137" y="360" width="34" height="32"/><rect x="173" y="360" width="48" height="32"/><rect x="223" y="360" width="42" height="32"/><rect x="267" y="360" width="28" height="32"/><rect x="297" y="360" width="50" height="32"/><rect x="349" y="360" width="36" height="32"/><rect x="387" y="360" width="44" height="32"/><rect x="433" y="360" width="32" height="32"/><rect x="467" y="360" width="41" height="32"/></g>
 <g class="w-course"><rect x="10" y="330" width="12" height="32"/><rect x="24" y="330" width="48" height="32"/><rect x="74" y="330" width="42" height="32"/><rect x="118" y="330" width="28" height="32"/><rect x="148" y="330" width="50" height="32"/><rect x="200" y="330" width="36" height="32"/><rect x="238" y="330" width="44" height="32"/><rect x="284" y="330" width="32" height="32"/><rect x="318" y="330" width="56" height="32"/><rect x="376" y="330" width="38" height="32"/><rect x="416" y="330" width="34" height="32"/><rect x="452" y="330" width="56" height="32"/></g>
           </g>
-          <g class="w-old">
-            <rect x="10" y="120" width="500" height="420"/>
-            <path d="M10 148H510M10 176H510M10 204H510M10 232H510M10 260H510M10 288H510M10 316H510M10 344H510M10 372H510M10 400H510M10 428H510M10 456H510M10 484H510M10 512H510"/>
-          </g>
         </svg>
         <figcaption id="wall-cap" class="wall__cap">Fig. 3 — A wall in section: studs, sheathing with a soft board marked, wrap, flashing, then the shingle courses.</figcaption>
       </figure>
@@ -1023,7 +1033,7 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
     <img src="media/hero-C3-1170.webp" srcset="media/hero-C3-1170.webp 1170w, media/hero-C3.webp 2340w" sizes="100vw" alt="Three-story New England triple-decker with white vinyl lap siding and teal porch railings" width="1170" height="936" loading="lazy" decoding="async" data-photo="hero-C3" data-slot="break" class="break__img">
     <figcaption class="break__cap">
       <span class="break__fig-no">Fig. 4 — A three-decker's bays and cornice, the lines a re-side has to keep.</span>
-      <span class="break__quote">“They re-sided our triple-decker and kept every porch line and both bay windows. It looks like the original house, just straight and tight again.” <span class="break__who">Joseph A., Pawtucket</span> <span class="sample-tag">Sample review</span></span>
+      <span class="break__quote">A re-side keeps the bays, the cornice and the porch lines. If the house looks flat afterwards, the job isn't done.</span>
     </figcaption>
   </figure>
 </section>
@@ -1092,7 +1102,7 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
 <!-- 7 · COLOR BY STREET -->
 <section id="colors" class="colors t-paper" data-layout="elevation-rail" aria-labelledby="colors-title">
   <div class="wrap">
-    <div class="sec-head sec-head--row">
+    <div class="sec-head sec-head--wide">
       <p class="kicker">Color by street</p>
       <h2 id="colors-title">Try a scheme on a triple-decker before you pick one.</h2>
     </div>
@@ -1222,10 +1232,10 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
 <section id="contact" class="contact t-mid" data-layout="split-form" aria-labelledby="contact-title">
   <div class="wrap contact__grid">
     <div class="contact__main">
-      <p class="kicker">Measure and price visit</p>
+      <p class="kicker">Book a measure visit</p>
       <h2 id="contact-title">Tell us about the wall. We come and measure it.</h2>
       <p class="contact__lead">Four short steps. We call you back to set up the visit.</p>
-      <form class="lead t-light" data-lead data-hook="quote-form" data-thanks="Thanks, {name}. In your version of this site, this request goes straight to your phone and inbox." aria-label="Book a measure visit">
+      <form class="lead t-light" data-lead data-hook="quote-form" data-thanks="Thanks, {name}. This is a demo, nothing was sent. On the real site this goes to Fishscale." aria-label="Book a measure visit">
         <div class="lead__bar" data-form-progress aria-label="Form progress"><span></span></div>
         <fieldset data-step>
           <legend><span class="lead__no">1/4</span> The job</legend>
@@ -1349,7 +1359,7 @@ form.lead{border:2px solid var(--ink);padding:var(--s-5)}
 <div class="mobile-bar t-ink" data-mobilebar>
   <a class="btn btn-salmon" href="tel:+14015550130"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call</span></a>
   <a class="btn btn-line" href="sms:+14015550130"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-msg"/></svg><span>Text a photo</span></a>
-  <a class="btn btn-line" href="#contact">Visit</a>
+  <a class="btn btn-line" href="#contact">Book visit</a>
 </div>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Fishscale & Clapboard Co.","short":"Fishscale","phone":"(401) 555-0130","phoneE164":"+14015550130","sms":true,"email":"hello@fishscale-and-clapboard.example","city":"Providence","state":"RI","timezone":"America/New_York","areas":["Cranston","Pawtucket","East Providence","North Providence","Warwick","Barrington","Johnston"],"zips":["02903","02906","02908","02909","02910","02920","02860","02914","02904","02886","02806","02919"],"hours":{"mon":["07:30","16:30"],"tue":["07:30","16:30"],"wed":["07:30","16:30"],"thu":["07:30","16:30"],"fri":["07:30","15:30"],"sat":null,"sun":null},"emergency":false},"services":[{"name":"Cedar shingle siding","short":"Cedar shingles"},{"name":"Fishscale and fancy-cut repair","short":"Fancy-cut shingles"},{"name":"Clapboard repair","short":"Clapboard"},{"name":"Triple-decker re-siding","short":"Triple-deckers"},{"name":"Trim and cornice repair","short":"Trim"},{"name":"Storm repair","short":"Storm repair"},{"name":"Vinyl siding","short":"Vinyl"},{"name":"Color consults","short":"Color"}],"proof":{"label":"Sample","prices":[{"item":"Cedar shingle siding","from":"$14","to":"$24","unit":"per sq ft","note":"installed, natural or primed"},{"item":"Clapboard section repair","from":"$800","to":"$3,500","note":"a few courses up to one wall"},{"item":"Triple-decker vinyl re-side","from":"$28,000","to":"$55,000","note":"three stories, trim details kept"},{"item":"Trim and cornice repair","from":"$1,200","to":"$4,500","note":"wood, primed and painted"}]},"hours":{"mon":["07:30","16:30"],"tue":["07:30","16:30"],"wed":["07:30","16:30"],"thu":["07:30","16:30"],"fri":["07:30","15:30"],"sat":null,"sun":null},"timezone":"America/New_York","zips":["02903","02906","02908","02909","02910","02920","02860","02914","02904","02886","02806","02919"],"areas":["Cranston","Pawtucket","East Providence","North Providence","Warwick","Barrington","Johnston"],"phone":"(401) 555-0130","phoneE164":"+14015550130"}</script>
 <script defer src="vendor/gsap.min.js"></script>
