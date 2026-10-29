@@ -33,3 +33,6 @@ Fixed page cylinder (`data-progress`, `--p`) in the 72px left margin ≥ 1024px;
 - The calculators are plain glue in app.js (they are not motion), so they work under reduced motion; JS off shows the 623-gal example + call.
 - "insured" is never written (banned word list), only the sample licence.
 - Media: kept hero-B3 (filmstrip frame) + hero-B2 (break) as planned; both exist in the approved manifest. The coordinator's hero-B1 / extra break keys were not added (media.json is only changed on a critic photo-swap request).
+
+## Round 1
+Elevate photo + firstScreen: photos became measured specimens (hero B3 inside a large graduated cylinder beside a 6-word h1 naming {{biz.city}} gutters, ledger rows tick into it, ZIP folded in as a ledger row; break B2 gets a tick scale + 312 gal level line and never starts blank; new third frame B1 as the sticky services specimen). Also: 5 eyebrows cut, h2s shortened, one CTA name "Price my roof", reviews snap rail < 640, unit column on prices, byline fix, strip pause moved to a labelled bar, area/contact gaps, entrances by role (ledger wipes, specimen fills), printable gallon sheet.
