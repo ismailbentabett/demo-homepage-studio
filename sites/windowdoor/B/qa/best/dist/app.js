@@ -912,6 +912,7 @@ SW.mod('media-fallback', function (SW) {
       var pick = function (i) {
         btns.forEach(function (b, j) { b.setAttribute('aria-pressed', String(i === j)); });
         asks.forEach(function (a, j) { a.classList.toggle('is-on', i === j); });
+        btns.forEach(function (b, j) { b.parentNode.classList.toggle('is-open', i === j); });
       };
       btns.forEach(function (b, i) { b.addEventListener('click', function () { pick(i); }); });
       pick(0);
