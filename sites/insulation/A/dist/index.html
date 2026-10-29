@@ -335,8 +335,6 @@ strong, b { font-weight: 650; }
 
 .lvl { display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 2px; margin: 0 0 var(--s-5) calc(-1 * var(--riser-w)); font-family: var(--f-display); font-variation-settings: "opsz" 10; font-weight: 700; font-size: var(--fs--1); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .lvl b { color: var(--accent-sm); font-weight: 800; }
-.lvl .tmp { font-family: var(--f-text); font-weight: 600; letter-spacing: .02em; text-transform: none; flex-basis: 100%; padding-left: calc(var(--riser-w) + 10px); }
-@media (min-width: 640px) { .lvl .tmp { flex-basis: auto; padding-left: 0; } .lvl .tmp::before { content: "· "; } }
 .riser-notch { display: inline-grid; place-items: center; width: var(--riser-w); flex: none; }
 .riser-notch svg { width: min(40px, var(--riser-w) + 8px); height: auto; overflow: visible; }
 .riser-notch path { fill: none; }
@@ -379,7 +377,18 @@ strong, b { font-weight: 650; }
 @media (min-width: 1320px) { .hdr__open { display: block; } }
 
 /* ---------- 1 hero ---------- */
-.hero { min-height: calc(100svh - var(--header-h)); padding: var(--s-6) 0 var(--s-7); display: flex; align-items: center; }
+.hero { min-height: calc(100svh - var(--header-h)); padding: var(--s-5) 0 var(--s-6); display: flex; align-items: center; overflow: clip; }
+.h1wrap { position: relative; }
+.h1__city { display: block; color: var(--ice); }
+.h1__stitch { position: absolute; z-index: 1; left: calc(-1 * var(--riser-w)); top: 0; width: var(--riser-w); height: calc(var(--fs-h1) * .9); display: grid; place-items: center; }
+.h1__stitch svg { width: min(40px, var(--riser-w) + 8px); height: auto; overflow: visible; background: var(--deep); }
+.h1__stitch path { fill: none; }
+.h1__stitch .gap { stroke: var(--amber); stroke-width: 2; }
+.h1__stitch .st { stroke: var(--ice); stroke-width: 2.5; stroke-linecap: square; stroke-dasharray: 14; stroke-dashoffset: 0; transition: stroke-dashoffset 260ms var(--ease-out); }
+.h1__stitch .st:nth-child(3) { transition-delay: 80ms; } .h1__stitch .st:nth-child(4) { transition-delay: 160ms; }
+.sw-motion .hero:not(.is-stitched) .h1__stitch .st { stroke-dashoffset: 14; }
+.h1__stitch::after { content: ""; position: absolute; z-index: -1; left: 50%; top: 50%; width: 2px; margin-left: -1px; height: 100vh; background: var(--ice); }
+@media (max-width: 639px) { .h1__stitch::after { width: 1.5px; margin-left: -.75px; } }
 .hero__grid { display: grid; gap: var(--s-6); align-items: center; width: min(100% - 2 * var(--m), var(--max)); }
 .hero__text { display: grid; gap: var(--s-4); justify-items: start; }
 .hero__text .lvl { margin-bottom: 0; }
@@ -392,9 +401,8 @@ strong, b { font-weight: 650; }
 
 .mosaic { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding-top: 40px; }
 .mosaic__photo { grid-column: 1 / -1; margin: 0; position: relative; aspect-ratio: 4 / 3; }
-.mosaic__photo .ph, .mosaic__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 42% 30%; clip-path: polygon(0 16%, 50% 0, 100% 16%, 100% 100%, 0 100%); filter: saturate(.8) contrast(1.06) brightness(.92) hue-rotate(-6deg); }
+.mosaic__photo .ph, .mosaic__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 46% 30%; object-view-box: inset(0% 18% 30% 14%); clip-path: polygon(0 16%, 50% 0, 100% 16%, 100% 100%, 0 100%); filter: saturate(.8) contrast(1.06) brightness(.92) hue-rotate(-6deg); }
 .mosaic__photo::after { content: ""; position: absolute; inset: 0; clip-path: polygon(0 16%, 50% 0, 100% 16%, 100% 100%, 0 100%); background: linear-gradient(180deg, rgba(11,23,28,0) 40%, rgba(11,23,28,.6)); mix-blend-mode: multiply; pointer-events: none; }
-.mosaic__photo::before { content: ""; position: absolute; z-index: 1; left: 0; right: 0; top: 46%; height: 28%; border-block: 1px solid rgba(238,241,236,.28); pointer-events: none; }
 .mosaic__photo figcaption { position: absolute; z-index: 2; left: 0; bottom: 0; padding: 6px 10px; background: var(--deep); color: var(--muted); font-size: .8125rem; }
 .mosaic__leak { position: absolute; z-index: 2; left: 50%; top: -42px; width: 44px; margin-left: -22px; overflow: visible; }
 .mosaic__leak path { fill: none; stroke: var(--amber); stroke-width: 3; stroke-linecap: square; }
@@ -414,16 +422,24 @@ strong, b { font-weight: 650; }
 .tile .tick { stroke: #8FD3E0; stroke-width: 1.6; }
 .tile figcaption { padding: 6px 8px; font-size: .8125rem; line-height: 1.25; color: var(--muted); border-top: 1px solid rgba(169,188,194,.22); }
 .tile figcaption b { font-family: var(--f-display); color: var(--amber); letter-spacing: .06em; }
-@media (max-width: 639px) { .tile__d { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } .tile svg { aspect-ratio: 10 / 7; } }
+.tile--row { display: none; }
+@media (max-width: 639px) {
+  .tile--row { display: grid; grid-template-columns: 104px minmax(0, 1fr); grid-template-rows: auto; align-items: stretch; width: 100%; }
+  .tile--row svg { min-height: 0; height: 72px; border-right: 1px solid rgba(169,188,194,.22); }
+  .tile--row figcaption, .mosaic .tile figcaption { border-top: 0; align-self: center; padding: 8px 12px; font-size: .875rem; color: #C7D3D6; }
+  .mosaic .tile--l1 { display: none; }
+  .mosaic .tile { grid-column: 1 / -1; grid-template-columns: 104px minmax(0, 1fr); grid-template-rows: auto; }
+  .mosaic .tile svg { height: 72px; min-height: 0; border-right: 1px solid rgba(169,188,194,.22); }
+}
 @media (min-width: 640px) {
   .mosaic { grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); grid-template-rows: repeat(3, minmax(0, 1fr)); }
   .mosaic__photo { grid-column: 1; grid-row: 1 / 4; aspect-ratio: auto; min-height: 420px; }
   .mosaic__leak { left: calc((100% - 8px) * 1.65 / 2.65 / 2); }
 }
 @media (min-width: 1100px) {
-  .hero { padding-block: var(--s-5) var(--s-6); }
+  .hero { min-height: min(calc(100svh - var(--header-h) - 88px), 820px); padding-block: var(--s-5); }
   .hero__grid { grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: var(--s-7); }
-  .mosaic { height: min(660px, calc(100svh - var(--header-h) - 96px)); }
+  .mosaic { height: min(640px, calc(100svh - var(--header-h) - 136px)); }
   .mosaic__photo { min-height: 0; }
 }
 
@@ -471,6 +487,7 @@ strong, b { font-weight: 650; }
 .step__tag b { color: var(--amber); margin-right: 6px; }
 .step p:last-child { color: var(--muted); max-width: 48ch; }
 .order__fig { margin: 0; display: grid; gap: var(--s-3); align-content: center; }
+.house { position: relative; }
 .house svg { width: 100%; height: auto; max-height: 72svh; color: #A9BCC2; overflow: visible; }
 .house path { fill: none; }
 .house .warm { stroke: var(--ice); stroke-width: 3; stroke-linecap: square; opacity: .55; transition: stroke var(--t-ui), opacity var(--t-ui); }
@@ -484,6 +501,10 @@ strong, b { font-weight: 650; }
 .order.is-story .leak.is-on .warm { stroke-width: 4; }
 .order.is-story .house:not(.is-done) .snow-p { opacity: .9; }
 .order.is-story .house:not(.is-done) .snow-e { stroke-dashoffset: 100; }
+.order__after { margin-top: var(--s-4); width: min(100%, 420px); display: grid; gap: 0; }
+.order__after .cut { aspect-ratio: 4 / 3; clip-path: polygon(0 14%, 50% 0, 100% 14%, 100% 100%, 0 100%); }
+.cut__cap { margin: 0; padding: 8px 12px; background: var(--deep); color: #C7D3D6; font-size: .875rem; line-height: 1.3; border-left: 2px solid var(--ice); }
+.cut__cap b { font-family: var(--f-display); letter-spacing: .06em; text-transform: uppercase; color: var(--ice); margin-right: 6px; }
 .order__cap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: var(--fs--1); color: var(--muted); }
 .sealed-count { font-family: var(--f-display); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ice); }
 @media (min-width: 900px) {
@@ -494,7 +515,18 @@ strong, b { font-weight: 650; }
   .order.is-pinned .step { grid-area: 1 / 1; opacity: 0; transform: translateY(18px); transition: opacity 360ms var(--ease-out), transform 360ms var(--ease-out); }
   .order.is-pinned .step.is-on { opacity: 1; transform: none; }
   .order.is-pinned .lead { font-size: var(--fs-0); }
+  .order.is-pinned .order__after { position: absolute; right: -8px; bottom: 2%; width: 40%; margin: 0; box-shadow: 0 18px 40px rgba(0,0,0,.45); transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); }
+  .sw-motion .order.is-pinned .house:not(.is-done) .order__after { opacity: 0; transform: translateY(24px); }
 }
+
+/* photo cuts: ink + ice duotone, clipped like a level */
+.cut { position: relative; overflow: hidden; background: #8FD3E0; isolation: isolate; }
+.cut img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.4) brightness(1.12); mix-blend-mode: multiply; }
+.cut--duo::after { content: ""; position: absolute; inset: 0; background: #0B171C; mix-blend-mode: screen; pointer-events: none; }
+.card__photo { width: 100%; display: grid; justify-self: stretch; }
+.card .cut__cap { color: #C7D3D6; max-width: none; margin: 0; }
+.card__photo .cut { aspect-ratio: 16 / 9; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 calc(50% + 14px), 16px 50%, 0 calc(50% - 14px)); }
+.card__photo .cut__cap { background: #0F1C22; }
 
 /* ---------- 4 break ---------- */
 .break { min-height: clamp(340px, 52svh, 560px); padding-top: var(--pad-tight); display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
@@ -535,6 +567,9 @@ strong, b { font-weight: 650; }
   .rung__cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .rung__cards > :only-child { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr) auto; align-items: center; column-gap: var(--s-6); padding-block: var(--s-6); }
   .rung__cards > :only-child p { margin: 0; }
+  .rung__cards > .card--photo:only-child { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); grid-template-rows: auto auto 1fr; align-items: start; row-gap: var(--s-4); }
+  .card--photo > :not(.card__photo) { grid-column: 1; }
+  .card--photo > .card__photo { grid-column: 2; grid-row: 1 / 4; }
 }
 
 /* ---------- 6 picker ---------- */
@@ -580,7 +615,8 @@ strong, b { font-weight: 650; }
 .q__lvl b { color: var(--ink); }
 .q__lvl::before { content: ""; width: 28px; height: 16px; background: repeating-linear-gradient(115deg, #1F6F80 0 3px, transparent 3px 8px); }
 .q blockquote { margin: 0; font-size: var(--fs-1); line-height: 1.4; max-width: 46ch; }
-.q__by { margin: 0; font-size: var(--fs--1); color: var(--muted); }
+.q__by { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: var(--fs--1); color: #2E3B40; }
+.q__by b { color: #0F1C22; }
 @media (min-width: 900px) {
   .quotes { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-8); row-gap: var(--s-7); }
   .q:nth-child(even) { transform: translateY(var(--s-8)); }
@@ -603,6 +639,7 @@ strong, b { font-weight: 650; }
 .ptable__r { font-family: var(--f-display); font-weight: 750; font-size: var(--fs-2); color: var(--amber); white-space: nowrap; }
 .ptable td:nth-child(3), .ptable td:nth-child(4) { color: var(--muted); font-size: var(--fs--1); }
 .ptable td:nth-child(3) { white-space: nowrap; }
+.nw { white-space: nowrap; }
 @media (max-width: 699px) {
   .ptable thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .ptable tr { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
@@ -679,13 +716,14 @@ input:focus-visible, textarea:focus-visible { border-color: var(--focus); }
 .formbox { background: var(--deep); --ink: #EEF1EC; --muted: #A9BCC2; --rule: rgba(169,188,194,.22); color: var(--ink); padding: var(--s-6) var(--s-5); clip-path: polygon(16px 0, 100% 0, 100% 100%, 0 100%, 0 16px); }
 .lead-form { display: grid; gap: var(--s-5); counter-reset: stp var(--step, 1); }
 .fprog { display: flex; align-items: center; gap: 14px; }
-.fprog svg { width: 96px; height: 24px; overflow: visible; }
+.fprog { gap: 10px; }
+.fprog svg { flex: none; width: 96px; height: 24px; overflow: visible; }
 .fprog path { fill: none; }
 .fprog .gap { stroke: var(--amber); stroke-width: 2; }
 .fprog .fst { stroke: var(--ice); stroke-width: 3; stroke-linecap: square; stroke-dasharray: 18; stroke-dashoffset: 0; transition: stroke-dashoffset var(--t-ui) var(--ease-out); }
 .sw-js .lead-form[data-step-current="1"] .fst:nth-of-type(n+3),
 .sw-js .lead-form[data-step-current="2"] .fst:nth-of-type(n+4),
-.sw-js .lead-form[data-step-current="3"] .fst:nth-of-type(n+5) { stroke-dashoffset: 18; }
+.sw-js .lead-form[data-step-current="3"] .fst:nth-of-type(n+5) { stroke: var(--muted); opacity: .35; }
 .fprog__t { font-family: var(--f-display); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: var(--fs--1); color: var(--muted); }
 .fprog__n::after { content: counter(stp); color: var(--ice); }
 .lead-form fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; min-width: 0; }
@@ -826,15 +864,28 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
 <section id="top" class="hero t-deep lv" data-layout="mosaic" aria-labelledby="h1">
   <div class="wrap hero__grid">
     <div class="hero__text">
-      <p class="lvl lvl--top"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><b>L1</b> Roof peak <span class="tmp">Sample January night · −8 °F out / 68 °F in</span></p>
-      <p class="kicker">Attic insulation and ice dams · Duluth, MN</p>
-      <h1 id="h1" class="h1" data-split="lines">Seal the top of the house first. <span class="h1__then">Then insulate.</span></h1>
-      <p class="lead hero__lead">Ice dams start in the attic, not the gutters. Warm air leaks up past the chimney, the wires and the bath fan and melts the snow from underneath. We close those gaps before any insulation goes in.</p>
+      <p class="lvl lvl--top"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><b>L1</b> Roof peak, attic insulation and ice dams</p>
+      <div class="h1wrap">
+        <span class="h1__stitch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span>
+        <h1 id="h1" class="h1" data-split="lines"><span class="h1__city">Duluth attics:</span> seal the top first. <span class="h1__then">Then insulate.</span></h1>
+      </div>
+      <p class="lead hero__lead">Ice dams start in the attic, not the gutters. Warm air leaks up past the chimney, the wires and the bath fan. We close those gaps before any insulation goes in.</p>
       <div class="btns">
         <a class="btn btn-call btn-primary" href="tel:+12185550164"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (218) 555-0164</span></a>
         <a class="btn btn-line" href="#price">Price my attic <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </div>
       <p class="proof-line"><span><span data-open-now>Mon–Thu 7 am – 5 pm · Fri 7 am – 4 pm · Sat 8 am – noon</span></span><span>4.8 from 164 reviews <span class="sample-tag">Sample rating</span></span><span>Attic sealing from $900 <span class="sample-tag">Sample pricing</span></span></p>
+      <figure class="tile tile--row" aria-labelledby="tile0">
+        <svg viewBox="0 0 200 140" aria-hidden="true" focusable="false">
+          <path class="ln" d="M6 124L194 34M6 112L194 22"/>
+          <path class="snow" d="M8 106L80 72M128 49L194 18"/>
+          <path class="ice" d="M6 112c10-14 26-20 40-20l-6 14z"/>
+          <path class="ln" d="M14 122v12M22 118v16M30 114v10M38 110v14"/>
+          <path class="warm" d="M110 98l22-26M124 70h9v10"/>
+          <path class="warm" d="M86 108l18-22M96 84h9v10"/>
+        </svg>
+        <figcaption id="tile0"><b>L1</b> Roof deck: warm air melts the snow from under. That's an ice dam starting.</figcaption>
+      </figure>
     </div>
     <div class="mosaic" data-hook="hero-mosaic">
       <figure class="mosaic__photo frame" data-fallback="Lit windows behind bare trees on a snowy night">
@@ -842,7 +893,7 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
         <svg class="mosaic__leak" viewBox="0 0 60 70" aria-hidden="true" focusable="false"><path d="M18 52l12-10 12 10M18 34l12-10 12 10M18 16l12-10 12 10"/></svg>
         <figcaption>Lit windows behind bare trees on a snowy night.</figcaption>
       </figure>
-      <figure class="tile" aria-labelledby="tile1">
+      <figure class="tile tile--l1" aria-labelledby="tile1">
         <svg viewBox="0 0 200 140" aria-hidden="true" focusable="false">
           <path class="ln" d="M6 124L194 34M6 112L194 22"/>
           <path class="snow" d="M8 106L80 72M128 49L194 18"/>
@@ -922,17 +973,18 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
     <div class="wrap order__grid">
       <div class="order__copy">
         <p class="lvl"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><b>L2–L5</b> Attic to rim joist</p>
-        <h2 id="order-h" class="h2">Six steps, always in this order.</h2>
-        <ol class="rail" role="list" aria-label="The order of work">
-          <li><b>1</b> Look</li><li><b>2</b> Measure</li><li class="is-key"><b>3</b> Seal the leaks</li><li><b>4</b> Insulate</li><li><b>5</b> Keep the vents clear</li><li><b>6</b> Check again</li>
+        <h2 id="order-h" class="h2">Five leaks first. Then the insulation.</h2>
+        <ol class="rail" role="list" aria-label="The whole job, in order">
+          <li><b>1</b> Look</li><li><b>2</b> Measure</li><li class="is-key"><b>3</b> Seal the 5 leaks</li><li><b>4</b> Insulate</li><li><b>5</b> Keep the vents clear</li><li><b>6</b> Check again</li>
         </ol>
-        <p class="lead">More insulation over open gaps is a warmer blanket with holes in it. So step 3 comes first, and we work from the top of the house down.</p>
+        <p class="lead">More insulation over open gaps is a warmer blanket with holes in it. So step 3 comes first: the five leaks below, from the top of the house down.</p>
         <ol class="steps" role="list">
-          <li class="step" data-step-i="1"><p class="step__tag"><b>01</b> L2 · Chimney chase</p><h3 class="h3">Close the gap around the chimney.</h3><p>It is often a hand wide. We cover it with metal flashing and fire-rated sealant, never foam against the brick.</p></li>
-          <li class="step" data-step-i="2"><p class="step__tag"><b>02</b> L2 · Bath fan</p><h3 class="h3">Send the bath fan outside.</h3><p>A fan that blows into the attic frosts the roof boards. We run the duct out through a roof or wall cap.</p></li>
-          <li class="step" data-step-i="3"><p class="step__tag"><b>03</b> L3 · Knee walls</p><h3 class="h3">Block the floor behind the knee walls.</h3><p>Behind the short walls upstairs, the floor cavity is open to the cold. We block it, seal it, then insulate.</p></li>
-          <li class="step" data-step-i="4"><p class="step__tag"><b>04</b> L4 · Wall tops</p><h3 class="h3">Seal every hole in the top plates.</h3><p>Wires and pipes pass through the top of each wall. Each hole gets sealed from above before the blown-in goes down.</p></li>
-          <li class="step" data-step-i="5"><p class="step__tag"><b>05</b> L5 · Rim joist</p><h3 class="h3">Foam the rim joist.</h3><p>Cold air comes back in at the basement band joist. Closed-cell foam seals it, usually in a morning.</p></li>
+          <li class="step" data-step-i="1"><p class="step__tag"><b>Leak 1/5</b> L2 chimney chase</p><h3 class="h3">Close the gap around the chimney.</h3><p>It is often a hand wide. We cover it with metal flashing and fire-rated sealant, never foam against the brick.</p></li>
+          <li class="step" data-step-i="2"><p class="step__tag"><b>Leak 2/5</b> L2 bath fan</p><h3 class="h3">Send the bath fan outside.</h3><p>A fan that blows into the attic frosts the roof boards. We run the duct out through a roof or wall cap.</p></li>
+          <li class="step" data-step-i="3"><p class="step__tag"><b>Leak 3/5</b> L3 knee walls</p><h3 class="h3">Block the floor behind the knee walls.</h3><p>Behind the short walls upstairs, the floor cavity is open to the cold. We block it, seal it, then insulate.</p></li>
+          <li class="step" data-step-i="4"><p class="step__tag"><b>Leak 4/5</b> L4 wall tops</p><h3 class="h3">Seal every hole in the top plates.</h3><p>Wires and pipes pass through the top of each wall. Each hole gets sealed from above before the blown-in goes down.</p></li>
+          <li class="step" data-step-i="5"><p class="step__tag"><b>Leak 5/5</b> L5 rim joist</p><h3 class="h3">Foam the rim joist.</h3><p>Cold air comes back in at the basement band joist. Closed-cell foam seals it, usually in a morning.</p></li>
+          <li class="step step--after" data-step-i="6"><p class="step__tag"><b>Steps 4–6</b> All five sealed</p><h3 class="h3">Then insulate, and come back after the first cold snap.</h3><p>The frost stays on the outside of the glass. The snow sits even on the roof, and we look in the attic again to make sure.</p></li>
         </ol>
       </div>
       <figure class="order__fig">
@@ -948,8 +1000,12 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
             <g class="leak" data-leak="4"><path class="warm" d="M470 268C474 244 480 222 488 196M480 202l8-8 4 10"/><g class="sts"><path d="M476 212l16 4"/><path d="M476 220l16 4"/><path d="M476 228l16 4"/></g></g>
             <g class="leak" data-leak="5"><path class="warm" d="M140 462H58M68 454l-10 8 10 8"/><g class="sts"><path d="M100 452v20"/><path d="M106 452v20"/><path d="M112 452v20"/></g></g>
           </svg>
+          <div class="order__after">
+            <div class="cut cut--duo"><img src="media/detail-frost-window-1170.webp" srcset="media/detail-frost-window-1170.webp 1170w, media/detail-frost-window.webp 2340w" alt="Feathered frost crystals on a window pane, lit amber from inside and blue from outside" width="1170" height="749" loading="lazy" decoding="async" data-photo="detail-frost-window" data-slot="coldsnap" sizes="(min-width: 900px) 24vw, 70vw" class="ph"></div>
+            <p class="cut__cap"><b>After</b> The first cold snap: frost on the glass, not in the attic.</p>
+          </div>
         </div>
-        <figcaption class="order__cap"><span class="sealed-count" aria-hidden="true"><b data-sealed>5</b> of 5 sealed</span><span>Drawn section of a story-and-a-half house</span></figcaption>
+        <figcaption class="order__cap"><span class="sealed-count" aria-hidden="true">Leaks sealed <b data-sealed>5</b> / 5</span><span>Drawn section of a story-and-a-half house</span></figcaption>
       </figure>
     </div>
   </div>
@@ -986,39 +1042,39 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
       <li class="rung">
         <p class="rung__lvl"><b>L1</b> Roof deck</p>
         <ul class="rung__cards" role="list" data-reveal-stagger>
-          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Ice dam prevention</h3><p>We find the warm air melting the snow on your roof and stop it at the source.</p><a class="btn btn-small" href="#contact" data-service="Ice dams">Price it</a></li>
+          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Ice dam prevention</h3><p>We find the warm air melting the snow on your roof and stop it at the source.</p><a class="btn btn-small" href="#contact" data-service="Ice dams">Price my ice dam fix</a></li>
         </ul>
       </li>
       <li class="rung">
         <p class="rung__lvl"><b>L2</b> Attic</p>
         <ul class="rung__cards" role="list" data-reveal-stagger>
-          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Attic air sealing</h3><p>We seal the gaps around chimneys, wires and top plates before any insulation goes in.</p><a class="btn btn-small" href="#contact" data-service="Air sealing">Price it</a></li>
-          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Attic insulation top-up</h3><p>Blown-in insulation brought to an even depth, with rulers stapled where you can read them.</p><a class="btn btn-small" href="#contact" data-service="Attic top-up">Price it</a></li>
-          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Bath fan and attic hatch fixes</h3><p>Bath fans vented outside instead of into the attic, and a hatch that seals and is insulated.</p><a class="btn btn-small" href="#contact" data-service="Fans and hatches">Price it</a></li>
+          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Attic air sealing</h3><p>We seal the gaps around chimneys, wires and top plates before any insulation goes in.</p><a class="btn btn-small" href="#contact" data-service="Air sealing">Price my air sealing</a></li>
+          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Attic insulation top-up</h3><p>Blown-in insulation brought to an even depth, with rulers stapled where you can read them.</p><a class="btn btn-small" href="#contact" data-service="Attic top-up">Price my attic top-up</a></li>
+          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Bath fan and attic hatch fixes</h3><p>Bath fans vented outside instead of into the attic, and a hatch that seals and is insulated.</p><a class="btn btn-small" href="#contact" data-service="Fans and hatches">Price my fan or hatch</a></li>
         </ul>
       </li>
       <li class="rung">
         <p class="rung__lvl"><b>L3</b> Knee walls</p>
         <ul class="rung__cards" role="list" data-reveal-stagger>
-          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Knee walls and sloped ceilings</h3><p>Story-and-a-half rooms sealed and insulated behind the short walls, where most hillside houses leak.</p><a class="btn btn-small" href="#contact" data-service="Knee walls">Price it</a></li>
+          <li class="card card--photo"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Knee walls and sloped ceilings</h3><p>Story-and-a-half rooms sealed and insulated behind the short walls, where most hillside houses leak.</p><a class="btn btn-small" href="#contact" data-service="Knee walls">Price my knee walls</a><div class="card__photo"><div class="cut cut--duo"><img src="media/process-batts-1170.webp" srcset="media/process-batts-1170.webp 1170w, media/process-batts.webp 2340w" alt="Faced fiberglass batts stapled between wood studs, the R-21 rating printed on the paper" width="1170" height="878" loading="lazy" decoding="async" data-photo="process-batts" data-slot="kneewall" sizes="(min-width: 1000px) 30vw, 90vw" class="ph"></div><p class="cut__cap"><b>L3</b> Faced batts between the studs, R-value printed on the paper.</p></div></li>
         </ul>
       </li>
       <li class="rung">
         <p class="rung__lvl"><b>L4</b> Walls</p>
         <ul class="rung__cards" role="list" data-reveal-stagger>
-          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Dense-pack walls</h3><p>Cellulose blown tight into the hollow walls of older houses through small holes, then patched.</p><a class="btn btn-small" href="#contact" data-service="Wall dense-pack">Price it</a></li>
+          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Dense-pack walls</h3><p>Cellulose blown tight into the hollow walls of older houses through small holes, then patched.</p><a class="btn btn-small" href="#contact" data-service="Wall dense-pack">Price my walls</a></li>
         </ul>
       </li>
       <li class="rung">
         <p class="rung__lvl"><b>L5</b> Rim joist</p>
         <ul class="rung__cards" role="list" data-reveal-stagger>
-          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Rim joist spray foam</h3><p>Closed-cell foam on the basement band joist, where frost and drafts come in at floor level.</p><a class="btn btn-small" href="#contact" data-service="Rim joists">Price it</a></li>
+          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Rim joist spray foam</h3><p>Closed-cell foam on the basement band joist, where frost and drafts come in at floor level.</p><a class="btn btn-small" href="#contact" data-service="Rim joists">Price my rim joist</a></li>
         </ul>
       </li>
       <li class="rung">
         <p class="rung__lvl"><b>L6</b> Floors</p>
         <ul class="rung__cards" role="list" data-reveal-stagger>
-          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Crawl space and porch floors</h3><p>Cold floors over crawl spaces and old porches insulated and sealed from below.</p><a class="btn btn-small" href="#contact" data-service="Crawl spaces">Price it</a></li>
+          <li class="card"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><h3 class="h3">Crawl space and porch floors</h3><p>Cold floors over crawl spaces and old porches insulated and sealed from below.</p><a class="btn btn-small" href="#contact" data-service="Crawl spaces">Price my crawl space</a></li>
         </ul>
       </li>
     </ol>
@@ -1057,7 +1113,7 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
           <h3 class="h3">Attic: gaps first, then depth</h3>
           <p><strong>What usually leaks:</strong> the chimney chase, the top plates of every wall, wire and pipe holes, and the hatch.</p>
           <p><strong>How we fix it:</strong> seal those gaps, add baffles at the eaves, then blow in to an even depth with rulers stapled where you can read them.</p>
-          <p class="pp__price">Sealing $900–$2,200 · top-up $1,500–$3,500 per attic <span class="sample-tag">Sample pricing</span></p>
+          <p class="pp__price">Sealing $900–$2,200; top-up $1,500–$3,500 per attic <span class="sample-tag">Sample pricing</span></p>
           <a class="btn btn-primary" href="#contact" data-service="Air sealing">Get this level priced</a>
         </section>
         <section class="pp" data-tabpanel aria-label="Top-floor ceiling">
@@ -1114,12 +1170,12 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
       <p class="proof__rating"><span class="proof__num">4.8</span><span>average from 164 reviews <span class="sample-tag">Sample rating</span></span></p>
     </div>
     <ol class="quotes" role="list">
-      <li class="q"><p class="q__lvl"><b>L1</b> Roof deck</p><blockquote><p>Every January we had icicles to the ground over the back bedroom. They showed us the gaps around the chimney in the attic, sealed those first, then blew in insulation. This winter the roof stayed white.</p></blockquote><p class="q__by">Karin L., Duluth · Ice dam prevention · 5 of 5 <span class="sample-tag">Sample review</span></p></li>
-      <li class="q"><p class="q__lvl"><b>L2</b> Bath fan</p><blockquote><p>The crew noticed my bathroom fan was blowing into the attic and the roof boards were frosted. They ran the duct outside before insulating. I would never have known to ask about that.</p></blockquote><p class="q__by">Eli S., Superior · Bath fan and attic hatch fixes · 5 of 5 <span class="sample-tag">Sample review</span></p></li>
-      <li class="q"><p class="q__lvl"><b>L2</b> Attic</p><blockquote><p>I got a written plan with the order of work: seal, insulate, vent baffles, then a check after the first cold snap. They came back in December and looked again, which nobody else offered.</p></blockquote><p class="q__by">Mark W., Cloquet · Attic insulation top-up · 5 of 5 <span class="sample-tag">Sample review</span></p></li>
-      <li class="q"><p class="q__lvl"><b>L3</b> Knee walls</p><blockquote><p>Our story-and-a-half house had a freezing upstairs and a knee wall you could feel the wind through. They crawled behind it, sealed the floor edge and filled the gaps. The kids sleep upstairs again.</p></blockquote><p class="q__by">Tom B., Hermantown · Knee walls and sloped ceilings · 5 of 5 <span class="sample-tag">Sample review</span></p></li>
-      <li class="q"><p class="q__lvl"><b>L4</b> Walls</p><blockquote><p>Old house up the shore with hollow walls. The dense-pack day was noisy, but the patches outside are hard to find and the front room no longer feels like a porch in February.</p></blockquote><p class="q__by">Ingrid H., Two Harbors · Dense-pack walls · 4 of 5 <span class="sample-tag">Sample review</span></p></li>
-      <li class="q"><p class="q__lvl"><b>L5</b> Rim joist</p><blockquote><p>Short version: they measured the attic in six spots, showed me the photos, and told me the rim joist was the bigger problem. The foam went on in one morning.</p></blockquote><p class="q__by">Rhonda K., Proctor · Rim joist spray foam · 5 of 5 <span class="sample-tag">Sample review</span></p></li>
+      <li class="q"><p class="q__lvl"><b>L1</b> Roof deck</p><blockquote><p>Every January we had icicles to the ground over the back bedroom. They showed us the gaps around the chimney in the attic, sealed those first, then blew in insulation. This winter the roof stayed white.</p></blockquote><p class="q__by"><span><b>Karin L.</b>, Duluth</span><span>Ice dam prevention, 5 of 5 stars</span><span class="sample-tag">Sample review</span></p></li>
+      <li class="q"><p class="q__lvl"><b>L2</b> Bath fan</p><blockquote><p>The crew noticed my bathroom fan was blowing into the attic and the roof boards were frosted. They ran the duct outside before insulating. I would never have known to ask about that.</p></blockquote><p class="q__by"><span><b>Eli S.</b>, Superior</span><span>Bath fan and attic hatch fixes, 5 of 5 stars</span><span class="sample-tag">Sample review</span></p></li>
+      <li class="q"><p class="q__lvl"><b>L2</b> Attic</p><blockquote><p>I got a written plan with the order of work: seal, insulate, vent baffles, then a check after the first cold snap. They came back in December and looked again, which nobody else offered.</p></blockquote><p class="q__by"><span><b>Mark W.</b>, Cloquet</span><span>Attic insulation top-up, 5 of 5 stars</span><span class="sample-tag">Sample review</span></p></li>
+      <li class="q"><p class="q__lvl"><b>L3</b> Knee walls</p><blockquote><p>Our story-and-a-half house had a freezing upstairs and a knee wall you could feel the wind through. They crawled behind it, sealed the floor edge and filled the gaps. The kids sleep upstairs again.</p></blockquote><p class="q__by"><span><b>Tom B.</b>, Hermantown</span><span>Knee walls and sloped ceilings, 5 of 5 stars</span><span class="sample-tag">Sample review</span></p></li>
+      <li class="q"><p class="q__lvl"><b>L4</b> Walls</p><blockquote><p>Old house up the shore with hollow walls. The dense-pack day was noisy, but the patches outside are hard to find and the front room no longer feels like a porch in February.</p></blockquote><p class="q__by"><span><b>Ingrid H.</b>, Two Harbors</span><span>Dense-pack walls, 4 of 5 stars</span><span class="sample-tag">Sample review</span></p></li>
+      <li class="q"><p class="q__lvl"><b>L5</b> Rim joist</p><blockquote><p>Short version: they measured the attic in six spots, showed me the photos, and told me the rim joist was the bigger problem. The foam went on in one morning.</p></blockquote><p class="q__by"><span><b>Rhonda K.</b>, Proctor</span><span>Rim joist spray foam, 5 of 5 stars</span><span class="sample-tag">Sample review</span></p></li>
     </ol>
   </div>
 </section>
@@ -1185,25 +1241,7 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
   </div>
 </section>
 
-<!-- 10 · FAQ ============================================================ -->
-<section id="faq" class="faq t-snow lv" data-layout="accordion" aria-labelledby="faq-h">
-  <div class="wrap faq__grid">
-    <div class="faq__head">
-      <p class="lvl"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><b>Questions</b> Before the ladder</p>
-      <h2 id="faq-h" class="h2">What people ask before we go up the ladder.</h2>
-    </div>
-    <div class="faq__list" data-accordion>
-      <details><summary>There is grey-brown gravel in my attic. Is it asbestos?</summary><div><p>It may be vermiculite, which can contain asbestos. If we see it, we stop. Leave it alone, keep kids and storage out of the attic and get a sample lab-tested. We will not blow anything over it or disturb it until you know what it is.</p></div></details>
-      <details><summary>Will someone's foot come through my ceiling?</summary><div><p>We lay boards across the joists before anyone walks the attic, and we use drop cloths from the door to the hatch. The hose comes in through the hatch, not through your hallway carpet.</p></div></details>
-      <details><summary>Won't more insulation block the vents and cause mold?</summary><div><p>Only if it is done wrong. We put baffles at every eave so air can still move from the soffits to the roof vents, and we make sure the bath fan goes outside, not into the attic.</p></div></details>
-      <details><summary>How do I know you actually put in what you said?</summary><div><p>We staple depth rulers to the trusses before we blow, and photograph them after. You, or the next buyer's inspector, can read the depth from the hatch.</p></div></details>
-      <details><summary>Can you work on an attic in January?</summary><div><p>Yes. Sealing and blown-in go on all winter. Spray foam needs a warm surface, so on cold days we heat the basement before the rim joist goes on.</p></div></details>
-      <details><summary>How long does an attic take?</summary><div><p>Most attics are sealed and insulated in one or two days. Knee walls and dense-pack walls take longer; we tell you the number of days in the written plan.</p></div></details>
-    </div>
-  </div>
-</section>
-
-<!-- 11 · CONTACT ======================================================== -->
+<!-- 10 · CONTACT ======================================================== -->
 <section id="contact" class="contact t-mid lv" data-layout="form" aria-labelledby="contact-h">
   <div class="wrap contact__grid">
     <div class="contact__side">
@@ -1298,6 +1336,24 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
   </div>
 </section>
 
+<!-- 11 · FAQ ============================================================ -->
+<section id="faq" class="faq t-snow lv" data-layout="accordion" aria-labelledby="faq-h">
+  <div class="wrap faq__grid">
+    <div class="faq__head">
+      <p class="lvl"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><b>Questions</b> Before the ladder</p>
+      <h2 id="faq-h" class="h2">What people ask before we go up the ladder.</h2>
+    </div>
+    <div class="faq__list" data-accordion>
+      <details><summary>There is grey-brown gravel in my attic. Is it asbestos?</summary><div><p>It may be vermiculite, which can contain asbestos. If we see it, we stop. Leave it alone, keep kids and storage out of the attic and get a sample lab-tested. We will not blow anything over it or disturb it until you know what it is.</p></div></details>
+      <details><summary>Will someone's foot come through my ceiling?</summary><div><p>We lay boards across the joists before anyone walks the attic, and we use drop cloths from the door to the hatch. The hose comes in through the hatch, not through your hallway carpet.</p></div></details>
+      <details><summary>Won't more insulation block the vents and cause mold?</summary><div><p>Only if it is done wrong. We put baffles at every eave so air can still move from the soffits to the roof vents, and we make sure the bath fan goes outside, not into the attic.</p></div></details>
+      <details><summary>How do I know you actually put in what you said?</summary><div><p>We staple depth rulers to the trusses before we blow, and photograph them after. You, or the next buyer's inspector, can read the depth from the hatch.</p></div></details>
+      <details><summary>Can you work on an attic in January?</summary><div><p>Yes. Sealing and blown-in go on all winter. Spray foam needs a warm surface, so on cold days we heat the basement before the rim joist goes on.</p></div></details>
+      <details><summary>How long does an attic take?</summary><div><p>Most attics are sealed and insulated in one or two days. Knee walls and dense-pack walls take longer; we tell you the number of days in the written plan.</p></div></details>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="foot t-deep">
@@ -1305,7 +1361,7 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
     <div class="foot__ground" aria-hidden="true">
       <svg viewBox="0 0 1200 60" preserveAspectRatio="none" focusable="false"><path class="fg-line" d="M0 8H1200"/><path class="fg-frost" d="M20 18l-14 14M60 18l-14 14M100 18l-14 14M140 18l-14 14M180 18l-14 14M220 18l-14 14M260 18l-14 14M300 18l-14 14M340 18l-14 14M380 18l-14 14M420 18l-14 14M460 18l-14 14M500 18l-14 14M540 18l-14 14M580 18l-14 14M620 18l-14 14M660 18l-14 14M700 18l-14 14M740 18l-14 14M780 18l-14 14M820 18l-14 14M860 18l-14 14M900 18l-14 14M940 18l-14 14M980 18l-14 14M1020 18l-14 14M1060 18l-14 14M1100 18l-14 14M1140 18l-14 14M1180 18l-14 14"/><path class="fg-line fg-frostline" d="M0 46H1200"/></svg>
     </div>
-    <p class="lvl lvl--foot"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><b>L0</b> Footing · below the frost line, everything sealed</p>
+    <p class="lvl lvl--foot"><span class="riser-notch" aria-hidden="true"><svg viewBox="0 0 40 24"><path class="gap" d="M0 12H12M28 12H40"/><path class="st" d="M14 6l4 12"/><path class="st" d="M19 6l4 12"/><path class="st" d="M24 6l4 12"/></svg></span><b>L0</b> Footing, below the frost line:, everything sealed</p>
     <div class="foot__grid">
       <div class="foot__brand">
         <p class="foot__name">Stack Effect Insulation Co.</p>
@@ -1330,7 +1386,7 @@ html:not(.sw-js) .lead-form fieldset + fieldset { border-top: 1px solid var(--ru
     <div class="foot__legal">
       <p>Sample website by Site Sledge. Business details are illustrative.</p>
       <p>© 2026 Stack Effect Insulation Co..</p>
-      <ul class="credits"><li>Photo by Wilfredor on <a href="https://commons.wikimedia.org/wiki/File:Snow-covered_park_at_night_in_Quebec_City.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="noopener license" target="_blank">CC0</a></li></ul>
+      <ul class="credits"><li>Photo by Wilfredor on <a href="https://commons.wikimedia.org/wiki/File:Snow-covered_park_at_night_in_Quebec_City.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="noopener license" target="_blank">CC0</a></li><li>Photo by Alexandr frolov on <a href="https://commons.wikimedia.org/wiki/File:Frost_on_the_window_03.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Baechler, Adams, Hefty, Gilbride, Love on <a href="https://commons.wikimedia.org/wiki/File:TE221_insulinstall7_PNNLinsul_5-3-13.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:TE221_insulinstall7_PNNLinsul_5-3-13.jpg" rel="noopener license" target="_blank">Public domain</a></li></ul>
       <a class="totop" href="#top" data-totop><svg class="i" aria-hidden="true" focusable="false"><use href="#i-up"/></svg><span>Back to the roof</span></a>
     </div>
   </div>

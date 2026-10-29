@@ -31,3 +31,7 @@
 
 ## Open issues
 (none yet)
+
+## Round 1
+Re-cut the hero so "tagged" is a tag label crossing the frame, with a leader line to the W1 window (CSS anchors, ≥1200). The hero is 88px short so the coral key plan peeks in; at 390 the order is photo, then tags, then Call, then the paragraph. The key plan is now the hero's own Florida House shot from the drive (stucco-homes), with 5 tags re-placed on its openings, an "A-1" sheet title block, and tags that wait for the photo to load. All frames share one warm grade. Also: one name for the action ("Start my window schedule"), the office hours moved from #area to #contact, 16px body on cards and tools, 48px filter buttons, shorter process steps, and the copy-1 replacements.
+Note: the only other approved Florida house frames are sibling heroes, so the key plan reuses the hero's house from a second angle (a different photo). The story becomes "one house, every opening tagged".

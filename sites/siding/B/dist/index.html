@@ -252,6 +252,8 @@ html.lenis, html.lenis body { height: auto; }
 
 /* siding-B · Fieldtest Siding Co. · "Five-Cell Reading" test report */
 @property --p { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --a { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --b { syntax: "<number>"; inherits: true; initial-value: 1; }
 
 :root{
   --f-display:"Red Hat Display",ui-sans-serif,sans-serif;
@@ -364,7 +366,7 @@ a{color:inherit;text-decoration:none}
 .btn-text{display:inline-flex;align-items:center;min-height:48px;font-weight:600;color:var(--accent);position:relative}
 .ul,.btn-text{background:linear-gradient(currentColor,currentColor) left calc(100% - 10px)/0 1.5px no-repeat;transition:background-size var(--t-ui) var(--ease-out)}
 @media (hover:hover){.ul:hover,.btn-text:hover{background-size:100% 1.5px} }
-.btn-text::after{content:"→";margin-left:8px}
+.btn-text--go::after{content:"→";margin-left:8px}
 
 /* ---------- header ---------- */
 .hdr{position:sticky;top:0;z-index:50;height:var(--header-h);border-bottom:1px solid var(--rule);transition:transform var(--t-page) var(--ease-out)}
@@ -400,9 +402,9 @@ a{color:inherit;text-decoration:none}
 .proof .sample-tag{color:var(--ink)}
 .plate{background:#fff;padding:10px;border:1px solid var(--rule);margin:0}
 .plate__img{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--mid)}
-.plate__img img{width:100%;height:100%;object-fit:cover;object-position:22% 45%}
-img{filter:saturate(.82) contrast(1.06) hue-rotate(-4deg) brightness(1.02)}
-.dim{position:absolute;right:12%;top:14%;height:56%;width:24px;stroke:var(--ink);stroke-width:1.5;fill:none;vector-effect:non-scaling-stroke;mix-blend-mode:multiply}
+.plate__img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:22% 45%}
+.break__fig img{filter:saturate(.82) contrast(1.06) hue-rotate(-4deg) brightness(1.02)}
+.dim{position:absolute;right:12%;top:14%;height:56%;width:24px;stroke:var(--ink);stroke-width:1.5;fill:none;vector-effect:non-scaling-stroke}
 .dim path{vector-effect:non-scaling-stroke}
 .dim__chip{position:absolute;right:calc(12% + 30px);top:38%;background:#fff;color:var(--ink);font:500 .75rem/1 var(--f-mono);font-stretch:87.5%;text-transform:uppercase;letter-spacing:.06em;padding:6px 8px;border:1px solid var(--ink)}
 .cap{font:500 var(--fs--1)/1.4 var(--f-mono);font-stretch:87.5%;color:var(--muted);padding-top:10px}
@@ -523,8 +525,6 @@ textarea{min-height:96px}
 .sheet{background:#fff;border:1px solid var(--rule);padding:var(--s-5);display:grid;gap:var(--s-3);box-shadow:0 1px 0 #8A8F98,0 12px 28px -18px rgba(20,27,51,.35)}
 .sheet h3{font:800 var(--fs-2)/1.05 var(--f-display);letter-spacing:-.02em}
 .sheet p:not(.hdr-row){color:var(--muted);max-width:52ch}
-.sw-motion .sheet{transition:clip-path var(--t-story) var(--ease-io)}
-.sw-motion .sheet:not(.is-in){clip-path:inset(0 0 100% 0)}
 @media (min-width:640px){.sheets{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (min-width:900px){
   .method__grid{grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start;gap:var(--s-8)}
@@ -533,7 +533,7 @@ textarea{min-height:96px}
   html.sw-stack .method{padding-block:0}
   html.sw-stack .method__pin{min-height:100svh;display:flex;align-items:center;padding-block:var(--s-8)}
   html.sw-stack .method .wrap{width:100%}
-  html.sw-stack .sheets{display:block;position:relative;height:min(440px,62svh)}
+  html.sw-stack .sheets{display:block;position:relative;height:min(400px,60svh)}
   html.sw-stack .sheet{position:absolute;inset:0;clip-path:none;transform-origin:50% 0}
 }
 
@@ -728,6 +728,95 @@ textarea{min-height:96px}
 @media (min-width:1100px){.hero__grid{grid-template-rows:minmax(0,1fr) auto} }
 @media (min-width:640px){.unfold{align-items:start}.wall--gable{align-self:end} }
 
+/* ---------- round 1 ---------- */
+.i--cells{width:44px;height:10px}
+@media (max-width:899px){.hero{padding-bottom:calc(var(--s-6) + 72px)} }
+
+/* specimens: photos as the report's test pieces */
+.specs{list-style:none;margin:0 0 var(--s-3);padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4) var(--gut)}
+.spec__fig{margin:0}
+.spec__img{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--mid);border:1px solid var(--rule)}
+.spec__img img{position:absolute;left:-17.5%;top:-17.5%;width:135%;height:135%;max-width:none;object-fit:cover}
+.spec__img--a img{object-position:85% 55%}
+.spec__img--b img{object-position:22% 42%}
+.spec__img--c img{object-position:28% 88%}
+.spec__img--d img{object-position:50% 38%}
+.spec__dim{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:6px}
+.spec__dim i{display:block;width:8px;height:34px;border-block:1.5px solid #fff;background:linear-gradient(#fff,#fff) center/1.5px 100% no-repeat;filter:drop-shadow(0 0 1px rgba(20,27,51,.8))}
+.spec__dim b{font:500 .75rem/1 var(--f-mono);font-stretch:87.5%;text-transform:uppercase;letter-spacing:.04em;background:#fff;color:var(--ink);padding:5px 6px;border:1px solid var(--ink)}
+.spec__read{position:absolute;left:10px;bottom:10px;background:#fff;color:var(--ink);padding:6px 8px;border:1px solid var(--ink);--accent:var(--ultra);gap:8px}
+.spec__read .cells{--cell:9px;gap:2px}
+.spec figcaption{display:grid;gap:2px;padding-top:10px}
+.spec__mat{display:flex;align-items:center;gap:8px;font:700 var(--fs-0)/1.2 var(--f-display)}
+.spec__mat .sw{width:18px;height:12px}
+.spec__src{font-size:.875rem;color:var(--muted);line-height:1.35}
+.specs__note{font-size:.875rem;color:var(--muted);max-width:80ch;margin:var(--s-3) 0 var(--s-6)}
+@media (min-width:640px){.spec__dim b{font-size:.8125rem} .spec__read .cells{--cell:11px} }
+@media (min-width:900px){.specs{grid-template-columns:repeat(4,minmax(0,1fr))} .spec__img{aspect-ratio:3/4} }
+
+/* method: cross-section drawing fills the sheet */
+.xsec{display:block;width:100%;height:64px;margin-top:var(--s-3);fill:none;stroke:var(--ink);stroke-width:1.25;vector-effect:non-scaling-stroke}
+.xsec *{vector-effect:non-scaling-stroke}
+.xsec .x-dim{stroke:var(--rule-c);stroke-dasharray:3 3}
+.xsec .x-sid rect,.xsec .x-wrap,.xsec .x-sh,.xsec .x-stud rect{fill:var(--paper)}
+.xsec--measure .x-dim{stroke:var(--ultra);stroke-dasharray:none;stroke-width:2}
+.xsec--sheath .x-sh{fill:var(--ultra)}
+.xsec--wrap .x-wrap{fill:var(--hi);stroke:var(--ink)}
+.xsec--siding .x-sid rect{fill:var(--ultra)}
+.xsec--siding .x-sid path{stroke:#fff}
+.sheet .hdr-row{color:var(--muted)}
+@media (min-width:900px){
+  .sheet{min-height:280px;grid-template-rows:auto auto auto 1fr auto}
+  .xsec{height:86px;align-self:end}
+  .method .page>.pg-no{position:static}
+}
+
+/* services: ruled list on phones, cards from 640 */
+.svc{background:transparent;border:0;border-top:1px solid var(--rule);padding:var(--s-4) 0;gap:var(--s-2)}
+.svc-grid{gap:0;border-bottom:1px solid var(--rule)}
+.svc h3{font:800 var(--fs-1)/1.15 var(--f-display);letter-spacing:-.02em}
+.svc>p:not(.hdr-row){font-size:var(--fs-0);color:var(--ink);line-height:1.45}
+.svc__foot{border-top:0;padding-top:0}
+.svc__sw{display:block;width:48px;height:12px}
+.svc--go{--accent:var(--ultra)}
+.svc--go h3{color:var(--ultra)}
+@media (min-width:640px){
+  .svc-grid{gap:var(--s-4);border-bottom:0}
+  .svc{background:var(--paper);border:1px solid var(--rule);padding:var(--s-5)}
+  .svc__foot{border-top:1px solid var(--rule);padding-top:8px}
+  .svc--mat{background:#fff}
+  .svc--mat .svc__sw{width:auto;height:14px;margin:calc(-1 * var(--s-5)) calc(-1 * var(--s-5)) var(--s-2)}
+  .svc--go{background:var(--ultra);color:#fff;border-color:var(--ultra);--accent:#fff;--muted:#C9CEDB;--rule:rgba(255,255,255,.35)}
+  .svc--go h3{color:#fff}
+  .svc--go>p:not(.hdr-row){color:#fff}
+}
+
+/* price sheet: per sq ft / my house */
+.ps-mode{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3) var(--s-5);margin:0 0 var(--s-5)}
+.ps-mode[hidden]{display:none}
+.ps-mode__btns{display:inline-flex;border:1.5px solid var(--ink)}
+.ps-btn{min-height:48px;padding:0 16px;background:transparent;color:var(--ink);border:0;font:600 .9375rem/1 var(--f-text);cursor:pointer;transition:background var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out)}
+.ps-btn+.ps-btn{border-left:1.5px solid var(--ink)}
+.ps-btn[aria-pressed="true"]{background:var(--ink);color:#fff}
+.ps-btn [data-ps-sq]{font-family:var(--f-mono);font-stretch:87.5%;font-variant-numeric:tabular-nums}
+.ps-mode__out{font-size:.9375rem;color:var(--muted);max-width:60ch}
+[data-price-row]{transition:--a var(--t-story) var(--ease-out),--b var(--t-story) var(--ease-out)}
+.ledger__range{white-space:nowrap}
+@media (min-width:900px){.ledger__row{grid-template-columns:56px minmax(0,1.2fr) minmax(0,1.2fr) minmax(0,2.2fr) minmax(180px,auto)} }
+
+/* calc link + badge */
+.calc__out .btn-text{justify-self:start}
+.rates__head{justify-content:space-between}
+.rates__head .sample-tag{margin-left:0;line-height:1.2}
+
+/* hours: one column on phones */
+@media (max-width:559px){
+  .hours{grid-template-columns:minmax(0,1fr)}
+  .hours>div{gap:1rem}
+  .hours dt{min-width:3.5ch;flex:none}
+  .hours dd{white-space:nowrap}
+}
+
 </style>
 </head>
 <body>
@@ -736,6 +825,7 @@ textarea{min-height:96px}
   <symbol id="i-text" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M4 5h16v11H9l-5 4z"/></symbol>
   <symbol id="i-ruler" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M3 16 16 3l5 5L8 21zM7 12l2 2M10 9l2 2M13 6l2 2"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-cells" viewBox="0 0 44 10"><g fill="none" stroke="currentColor" stroke-width="1.5"><rect x=".75" y=".75" width="7" height="8.5" fill="currentColor"/><rect x="9.75" y=".75" width="7" height="8.5"/><rect x="18.75" y=".75" width="7" height="8.5"/><rect x="27.75" y=".75" width="7" height="8.5"/><rect x="36.75" y=".75" width="6.5" height="8.5"/></g></symbol>
   <symbol id="i-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M20 12H5M11 6l-6 6 6 6"/></symbol>
 </svg>
 <a class="skip-link" href="#main">Skip to the report</a>
@@ -753,7 +843,7 @@ textarea{min-height:96px}
       <a class="ul" href="#prices">Prices</a>
     </nav>
     <a class="hdr__tel ul" href="tel:+18605550129">(860) 555-0129</a>
-    <a class="btn btn--primary hdr__cta" href="#contact">Book a measure visit<span class="mini" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></a>
+    <a class="btn btn--primary hdr__cta" href="#contact">Book a measure visit</a>
   </div>
 </header>
 
@@ -764,11 +854,11 @@ textarea{min-height:96px}
   <div class="wrap hero__grid">
     <p class="pg-no" aria-hidden="true">p. 01</p>
     <div class="hero__text">
-      <p class="hdr-row"><span>Report No. 01</span><span>Hartford, CT</span><span>Siding</span></p>
-      <h1 id="hero-h" class="hero__h1"><span class="hero__q">Which siding for a Hartford house?</span> Four sidings, five tests.</h1>
+      <p class="hdr-row"><span>Field report · Hartford, CT</span></p>
+      <h1 id="hero-h" class="hero__h1">Four sidings, five tests.</h1>
       <p class="lead">Vinyl, fiber cement, cedar clapboard and engineered wood, scored on impact, cold and moisture, upkeep, look and price per square foot. Read the results, then measure your own walls.</p>
       <div class="btns">
-        <a class="btn btn--primary" href="#squares">Measure my house<span class="mini" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></a>
+        <a class="btn btn--primary" href="#squares">Measure my house<svg class="i i--cells" aria-hidden="true" focusable="false"><use href="#i-cells"/></svg></a>
         <a class="btn btn--ghost" href="tel:+18605550129"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (860) 555-0129</span></a>
       </div>
       <p class="proof"><span data-open-now>Mon–Thu 7:30 am – 5 pm · Fri 7:30 am – 4 pm · Sat 9 am – noon</span> <span class="dot" aria-hidden="true">·</span> Hartford and nearby towns <span class="dot" aria-hidden="true">·</span> <span class="num">4.9</span> from 88 reviews <span class="sample-tag">Sample rating</span></p>
@@ -782,7 +872,7 @@ textarea{min-height:96px}
       <figcaption class="cap"><span>Plate 01</span> Painted clapboard on a Colonial Revival, Danbury, CT</figcaption>
     </figure>
     <div class="cover" data-sw-intro>
-      <p class="hdr-row cover__head"><span>Cover</span><span>Overall reading</span><span>Sample price / sq ft</span> <span class="sample-tag">Sample readings</span></p>
+      <p class="hdr-row cover__head"><span>Overall reading</span><span>Sample price / sq ft</span> <span class="sample-tag">Sample readings</span></p>
       <ol class="cover__rows" role="list">
         <li class="cover__row"><span class="cover__mat"><span class="sw sw--vinyl" aria-hidden="true"></span>Vinyl</span>
           <span class="reading" style="--v:3.6"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">3.6/5</span></span>
@@ -806,11 +896,54 @@ textarea{min-height:96px}
   <div class="wrap page">
     <p class="pg-no" aria-hidden="true">p. 02</p>
     <div class="page__body">
-      <p class="hdr-row"><span>Tests 01–05</span><span>Four materials</span><span>Sample readings</span></p>
+      <p class="hdr-row"><span>Five tests</span><span>Sample readings</span></p>
       <div class="sec-head">
         <h2 id="compare-h">The results, side by side.</h2>
         <p class="lead">Five plain tests, each scored out of five. Readings are our field judgement; prices are sample ranges per square foot, installed.</p>
       </div>
+      <ol class="specs" role="list" aria-label="Four specimens, one per siding">
+        <li class="spec">
+          <figure class="spec__fig" data-fallback="Lap courses on a row of triple-deckers">
+            <div class="spec__img spec__img--a">
+              <img src="media/hero-C3-2-1170.webp" srcset="media/hero-C3-2-1170.webp 1170w, media/hero-C3-2.webp 2340w" width="1170" height="885" loading="lazy" decoding="async" data-photo="hero-C3-2" data-slot="spec-vinyl" sizes="(min-width: 1100px) 22vw, 50vw" alt="Close crop of painted lap courses on a row of New England triple-deckers">
+              <span class="spec__dim" aria-hidden="true"><i></i><b>Reveal ≈ 4 in.</b></span>
+              <span class="spec__read reading" style="--v:3.6"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">3.6/5</span></span>
+            </div>
+            <figcaption><span class="spec__mat"><span class="sw sw--vinyl" aria-hidden="true"></span>Vinyl</span><span class="spec__src">The look: lap walls on a triple-decker row</span></figcaption>
+          </figure>
+        </li>
+        <li class="spec">
+          <figure class="spec__fig" data-fallback="Painted lap on a Queen Anne house">
+            <div class="spec__img spec__img--b">
+              <img src="media/hero-B3-3-1170.webp" srcset="media/hero-B3-3-1170.webp 1170w, media/hero-B3-3.webp 2340w" width="1170" height="878" loading="lazy" decoding="async" data-photo="hero-B3-3" data-slot="spec-fiber" sizes="(min-width: 1100px) 22vw, 50vw" alt="Close crop of wide painted lap boards on a yellow Queen Anne house">
+              <span class="spec__dim" aria-hidden="true"><i></i><b>Reveal ≈ 7 in.</b></span>
+              <span class="spec__read reading" style="--v:4"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">4.0/5</span></span>
+            </div>
+            <figcaption><span class="spec__mat"><span class="sw sw--fiber" aria-hidden="true"></span>Fiber cement</span><span class="spec__src">The look: wide painted plank, Queen Anne</span></figcaption>
+          </figure>
+        </li>
+        <li class="spec">
+          <figure class="spec__fig" data-fallback="Clapboard under a scalloped-shingle gable">
+            <div class="spec__img spec__img--c">
+              <img src="media/hero-B3-2-1170.webp" srcset="media/hero-B3-2-1170.webp 1170w, media/hero-B3-2.webp 2340w" width="1170" height="878" loading="lazy" decoding="async" data-photo="hero-B3-2" data-slot="spec-cedar" sizes="(min-width: 1100px) 22vw, 50vw" alt="Close crop of narrow clapboard courses under a white scalloped-shingle gable">
+              <span class="spec__dim" aria-hidden="true"><i></i><b>Reveal ≈ 4 in.</b></span>
+              <span class="spec__read reading" style="--v:3"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">3.0/5</span></span>
+            </div>
+            <figcaption><span class="spec__mat"><span class="sw sw--cedar" aria-hidden="true"></span>Cedar clapboard</span><span class="spec__src">The look: narrow courses under a shingled gable</span></figcaption>
+          </figure>
+        </li>
+        <li class="spec">
+          <figure class="spec__fig" data-fallback="Lap siding on a foursquare">
+            <div class="spec__img spec__img--d">
+              <img src="media/hero-C1-3-1170.webp" srcset="media/hero-C1-3-1170.webp 1170w, media/hero-C1-3.webp 2340w" width="1170" height="788" loading="lazy" decoding="async" data-photo="hero-C1-3" data-slot="spec-eng" sizes="(min-width: 1100px) 22vw, 50vw" alt="Close crop of pale yellow lap siding on a foursquare with a deep porch">
+              <span class="spec__dim" aria-hidden="true"><i></i><b>Reveal ≈ 7 in.</b></span>
+              <span class="spec__read reading" style="--v:3.8"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">3.8/5</span></span>
+            </div>
+            <figcaption><span class="spec__mat"><span class="sw sw--eng" aria-hidden="true"></span>Engineered wood</span><span class="spec__src">The look: long painted lap on a foursquare</span></figcaption>
+          </figure>
+        </li>
+      </ol>
+      <p class="specs__note">Specimens show the look of each lap profile on houses like ours, not the exact product. Overall reading and typical reveal (the visible height of one board) are sample figures.</p>
       <div class="ctable" data-sw-signature="five-cell" data-hook="compare">
         <div class="ctable__scroll" tabindex="0" role="region" aria-label="Material compare table, scroll sideways on small screens">
         <table>
@@ -879,7 +1012,7 @@ textarea{min-height:96px}
 <!-- 3 · BREAK -->
 <section class="break t-deep" data-layout="break" aria-label="Plate 02, lap siding on a farmhouse">
   <figure class="break__fig" data-fallback="White lap siding on a hip-roof farmhouse">
-    <img src="media/hero-C1-1170.webp" srcset="media/hero-C1-1170.webp 1170w, media/hero-C1.webp 2340w" width="1170" height="785" loading="lazy" decoding="async" data-photo="hero-C1" data-slot="break" sizes="100vw" alt="White lap siding and porch columns on a hip-roof farmhouse in late-winter light" data-reveal="clip">
+    <img src="media/hero-C1-1170.webp" srcset="media/hero-C1-1170.webp 1170w, media/hero-C1.webp 2340w" width="1170" height="785" loading="lazy" decoding="async" data-photo="hero-C1" data-slot="break" sizes="100vw" alt="White lap siding and porch columns on a hip-roof farmhouse in late-winter light">
     <figcaption class="cap cap--rev"><span>Plate 02</span> White lap siding on a hip-roof farmhouse in late-winter light</figcaption>
   </figure>
 </section>
@@ -889,7 +1022,7 @@ textarea{min-height:96px}
   <div class="wrap page">
     <p class="pg-no" aria-hidden="true">p. 03</p>
     <div class="page__body">
-      <p class="hdr-row"><span>Test 06</span><span>Your house</span><span>Squares</span></p>
+      <p class="hdr-row"><span>Your house, in squares</span></p>
       <div class="squares__grid" data-hook="estimator">
         <form class="calc" data-squares novalidate aria-labelledby="squares-h">
           <h2 id="squares-h">Measure your house in squares.</h2>
@@ -926,7 +1059,8 @@ textarea{min-height:96px}
             <li><span>Cedar clapboard</span><span class="mono">$14–$24</span></li>
             <li><span>Engineered wood</span><span class="mono">$9–$15</span></li>
           </ul>
-          <a class="btn btn--primary" href="#contact" data-sq-go>Book a measure visit with these numbers<span class="mini" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></a>
+          <a class="btn-text" href="#prices" data-sq-sheet>Put my <span data-sq-sq3>21.9</span> squares on the price sheet</a>
+          <a class="btn btn--primary" href="#contact" data-sq-go>Book a measure visit with these numbers<svg class="i i--cells" aria-hidden="true" focusable="false"><use href="#i-cells"/></svg></a>
           <p class="small">A drawing is not a tape measure. The visit measures every wall and gives you exact squares.</p>
         </div>
       </div>
@@ -941,33 +1075,37 @@ textarea{min-height:96px}
       <p class="pg-no" aria-hidden="true">p. 04</p>
       <div class="page__body method__grid">
         <div class="method__intro">
-          <p class="hdr-row"><span>Test 07</span><span>The job</span><span>4 pages</span></p>
+          <p class="hdr-row"><span>The job, in 4 pages</span></p>
           <h2 id="method-h">What happens under the old siding.</h2>
           <p class="lead">Four pages, in the order the work happens. Nothing new goes on until the wall behind it has been checked.</p>
         </div>
         <ol class="sheets" role="list">
           <li class="sheet" data-sheet>
-            <p class="hdr-row"><span>Page 1 of 4</span><span>Measure</span></p>
+            <p class="hdr-row"><span>Page 1 of 4</span></p>
             <h3>Measure every wall.</h3>
             <p>Each wall, gable and opening gets measured. You get the squares and four material prices side by side, on paper.</p>
+            <svg class="xsec xsec--measure" viewBox="0 0 300 74" aria-hidden="true" focusable="false" preserveAspectRatio="none"><path class="x-dim" d="M2 6H298M2 1V11M298 1V11"/><g class="x-sid"><rect x="0" y="18" width="300" height="13"/><path d="M48 18V31M108 18V31M168 18V31M228 18V31M288 18V31"/></g><rect class="x-wrap" x="0" y="34" width="300" height="3"/><rect class="x-sh" x="0" y="40" width="300" height="8"/><g class="x-stud"><rect x="14" y="51" width="12" height="22"/><rect x="84" y="51" width="12" height="22"/><rect x="154" y="51" width="12" height="22"/><rect x="224" y="51" width="12" height="22"/><rect x="284" y="51" width="12" height="22"/></g></svg>
             <span class="reading" style="--v:1.25"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">1/4</span></span>
           </li>
           <li class="sheet" data-sheet>
-            <p class="hdr-row"><span>Page 2 of 4</span><span>Tear-off &amp; sheathing</span></p>
+            <p class="hdr-row"><span>Page 2 of 4</span></p>
             <h3>Tear-off, then a sheathing check.</h3>
             <p>Old siding comes off one wall at a time. If the sheathing under it is soft, you see it and the per-sheet price before we replace it.</p>
+            <svg class="xsec xsec--sheath" viewBox="0 0 300 74" aria-hidden="true" focusable="false" preserveAspectRatio="none"><path class="x-dim" d="M2 6H298M2 1V11M298 1V11"/><g class="x-sid"><rect x="0" y="18" width="300" height="13"/><path d="M48 18V31M108 18V31M168 18V31M228 18V31M288 18V31"/></g><rect class="x-wrap" x="0" y="34" width="300" height="3"/><rect class="x-sh" x="0" y="40" width="300" height="8"/><g class="x-stud"><rect x="14" y="51" width="12" height="22"/><rect x="84" y="51" width="12" height="22"/><rect x="154" y="51" width="12" height="22"/><rect x="224" y="51" width="12" height="22"/><rect x="284" y="51" width="12" height="22"/></g></svg>
             <span class="reading" style="--v:2.5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">2/4</span></span>
           </li>
           <li class="sheet" data-sheet>
-            <p class="hdr-row"><span>Page 3 of 4</span><span>Wrap &amp; flashing</span></p>
+            <p class="hdr-row"><span>Page 3 of 4</span></p>
             <h3>Wrap and flashing.</h3>
             <p>New house wrap with taped seams, and flashing bent around every window, door and deck ledger before a board goes up.</p>
+            <svg class="xsec xsec--wrap" viewBox="0 0 300 74" aria-hidden="true" focusable="false" preserveAspectRatio="none"><path class="x-dim" d="M2 6H298M2 1V11M298 1V11"/><g class="x-sid"><rect x="0" y="18" width="300" height="13"/><path d="M48 18V31M108 18V31M168 18V31M228 18V31M288 18V31"/></g><rect class="x-wrap" x="0" y="34" width="300" height="3"/><rect class="x-sh" x="0" y="40" width="300" height="8"/><g class="x-stud"><rect x="14" y="51" width="12" height="22"/><rect x="84" y="51" width="12" height="22"/><rect x="154" y="51" width="12" height="22"/><rect x="224" y="51" width="12" height="22"/><rect x="284" y="51" width="12" height="22"/></g></svg>
             <span class="reading" style="--v:3.75"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">3/4</span></span>
           </li>
           <li class="sheet" data-sheet>
-            <p class="hdr-row"><span>Page 4 of 4</span><span>Courses &amp; trim</span></p>
+            <p class="hdr-row"><span>Page 4 of 4</span></p>
             <h3>Courses and trim.</h3>
             <p>Starter strip level, courses straight, corners and trim tight. Nails are swept with a magnet at the end of each day.</p>
+            <svg class="xsec xsec--siding" viewBox="0 0 300 74" aria-hidden="true" focusable="false" preserveAspectRatio="none"><path class="x-dim" d="M2 6H298M2 1V11M298 1V11"/><g class="x-sid"><rect x="0" y="18" width="300" height="13"/><path d="M48 18V31M108 18V31M168 18V31M228 18V31M288 18V31"/></g><rect class="x-wrap" x="0" y="34" width="300" height="3"/><rect class="x-sh" x="0" y="40" width="300" height="8"/><g class="x-stud"><rect x="14" y="51" width="12" height="22"/><rect x="84" y="51" width="12" height="22"/><rect x="154" y="51" width="12" height="22"/><rect x="224" y="51" width="12" height="22"/><rect x="284" y="51" width="12" height="22"/></g></svg>
             <span class="reading" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">4/4</span></span>
           </li>
         </ol>
@@ -981,93 +1119,79 @@ textarea{min-height:96px}
   <div class="wrap page">
     <p class="pg-no" aria-hidden="true">p. 05</p>
     <div class="page__body">
-      <p class="hdr-row"><span>Results</span><span>8 jobs</span><span>Scope scale</span></p>
       <div class="sec-head sec-head--row">
-        <h2 id="services-h">Every job we take, from one course to the whole house.</h2>
-        <p class="legend"><span class="reading" style="--v:1"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span> 1 cell = one course · 5 = the whole house</p>
+        <h2 id="services-h">Eight jobs, scored by how much of the house they touch.</h2>
+        <p class="legend"><span class="reading" style="--v:1"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span> One cell is a single course. Five is the whole house.</p>
       </div>
-      <ul class="svc-grid" role="list" data-reveal-stagger>
-        
-        <li class="svc">
-          <p class="hdr-row"><span>Result 01</span><span>Vinyl</span></p>
+      <ul class="svc-grid" role="list">
+        <li class="svc svc--mat">
+          <span class="svc__sw sw sw--vinyl" aria-hidden="true"></span>
           <h3>Vinyl siding</h3>
           <p>Lap and Dutch lap vinyl in dozens of colors, the lowest price per square foot we offer.</p>
           <div class="svc__foot">
-            <span class="reading svc__scope"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">Scope</span></span>
-            <a class="btn-text" href="#contact" data-service="Vinyl siding">Price it</a>
+            <span class="reading svc__scope" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only">Scope: 5 of 5</span></span>
+            <a class="btn-text" href="#squares">Work out my squares first</a>
           </div>
         </li>
-        
-        <li class="svc">
-          <p class="hdr-row"><span>Result 02</span><span>Fiber cement</span></p>
+        <li class="svc svc--mat">
+          <span class="svc__sw sw sw--fiber" aria-hidden="true"></span>
           <h3>Fiber cement siding</h3>
           <p>Heavy lap plank that takes knocks and holds paint well, a good fit for colonials.</p>
           <div class="svc__foot">
-            <span class="reading svc__scope"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">Scope</span></span>
-            <a class="btn-text" href="#contact" data-service="Fiber cement siding">Price it</a>
+            <span class="reading svc__scope" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only">Scope: 5 of 5</span></span>
+            <a class="btn-text" href="#compare">See how it scored</a>
           </div>
         </li>
-        
-        <li class="svc">
-          <p class="hdr-row"><span>Result 03</span><span>Cedar clapboard</span></p>
+        <li class="svc svc--mat">
+          <span class="svc__sw sw sw--cedar" aria-hidden="true"></span>
           <h3>Cedar clapboard</h3>
           <p>Real cedar clapboard for older capes and Victorians, primed on all sides before it goes up.</p>
           <div class="svc__foot">
-            <span class="reading svc__scope"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">Scope</span></span>
-            <a class="btn-text" href="#contact" data-service="Cedar clapboard">Price it</a>
+            <span class="reading svc__scope" style="--v:4"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only">Scope: 4 of 5</span></span>
+            <a class="btn-text" href="#contact" data-service="Cedar clapboard">Ask about cedar for an older house</a>
           </div>
         </li>
-        
-        <li class="svc">
-          <p class="hdr-row"><span>Result 04</span><span>Engineered wood</span></p>
+        <li class="svc svc--mat">
+          <span class="svc__sw sw sw--eng" aria-hidden="true"></span>
           <h3>Engineered wood siding</h3>
           <p>Wood-look lap that weighs less than fiber cement and comes factory-painted in long lengths.</p>
           <div class="svc__foot">
-            <span class="reading svc__scope"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">Scope</span></span>
-            <a class="btn-text" href="#contact" data-service="Engineered wood siding">Price it</a>
+            <span class="reading svc__scope" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only">Scope: 5 of 5</span></span>
+            <a class="btn-text" href="#prices">Check it on the price sheet</a>
           </div>
         </li>
-        
         <li class="svc">
-          <p class="hdr-row"><span>Result 05</span><span>Repairs</span></p>
           <h3>Repair and replacement</h3>
           <p>Cracked, loose or rotten boards replaced and matched, from a single course to one full wall.</p>
           <div class="svc__foot">
-            <span class="reading svc__scope"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">Scope</span></span>
-            <a class="btn-text" href="#contact" data-service="Repair and replacement">Price it</a>
+            <span class="reading svc__scope" style="--v:1.5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only">Scope: 1.5 of 5</span></span>
+            <a class="btn-text" href="#walls">Mark the wall that needs it</a>
           </div>
         </li>
-        
         <li class="svc">
-          <p class="hdr-row"><span>Result 06</span><span>Color</span></p>
           <h3>Color consults</h3>
           <p>Body, trim and accent colors tried on a drawing of your own house before you choose.</p>
           <div class="svc__foot">
-            <span class="reading svc__scope"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">Scope</span></span>
-            <a class="btn-text" href="#contact" data-service="Color consults">Price it</a>
+            <span class="reading svc__scope" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only">Scope: 5 of 5</span></span>
+            <a class="btn-text" href="#contact" data-service="Color consults">Book a color consult</a>
           </div>
         </li>
-        
         <li class="svc">
-          <p class="hdr-row"><span>Result 07</span><span>Soffit &amp; fascia</span></p>
           <h3>Soffit and fascia</h3>
           <p>Rotten fascia boards replaced and vented soffit added so the attic can breathe.</p>
           <div class="svc__foot">
-            <span class="reading svc__scope"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">Scope</span></span>
-            <a class="btn-text" href="#contact" data-service="Soffit and fascia">Price it</a>
+            <span class="reading svc__scope" style="--v:2"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only">Scope: 2 of 5</span></span>
+            <a class="btn-text" href="#contact" data-service="Soffit and fascia">Have the fascia checked</a>
           </div>
         </li>
-        
-        <li class="svc">
-          <p class="hdr-row"><span>Result 08</span><span>Measure visit</span></p>
+        <li class="svc svc--go">
           <h3>Measure and compare visits</h3>
           <p>We measure every wall and give you the squares and a price for each material side by side.</p>
           <div class="svc__foot">
-            <span class="reading svc__scope"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">Scope</span></span>
-            <a class="btn-text" href="#contact" data-service="Measure and compare visits">Price it</a>
+            <span class="reading svc__scope" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only">Scope: 5 of 5</span></span>
+            <a class="btn-text btn-text--go" href="#contact" data-service="Measure and compare visits">Book a measure visit</a>
           </div>
         </li>
-        
       </ul>
     </div>
   </div>
@@ -1079,11 +1203,11 @@ textarea{min-height:96px}
     <p class="pg-no" aria-hidden="true">p. 06</p>
     <div class="page__body walls__grid">
       <div class="walls__text">
-        <p class="hdr-row"><span>Test 08</span><span>Your walls</span><span>Elevation</span></p>
+        <p class="hdr-row"><span>Your walls</span></p>
         <h2 id="walls-h">Only two walls? Mark them.</h2>
         <p class="lead">Tick the sides you want done. The list goes into your request, so the price covers those walls and nothing else.</p>
         <p class="walls__out" data-walls-out aria-live="polite">No walls marked yet.</p>
-        <a class="btn btn--primary" href="#contact" data-walls-go>Add these walls to my request<span class="mini" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></a>
+        <a class="btn btn--primary" href="#contact" data-walls-go>Add these walls to my request</a>
       </div>
       <fieldset class="unfold" data-hook="walls">
         <legend class="sr-only">Walls to work on</legend>
@@ -1102,17 +1226,24 @@ textarea{min-height:96px}
   <div class="wrap page">
     <p class="pg-no" aria-hidden="true">p. 07</p>
     <div class="page__body">
-      <p class="hdr-row"><span>Price sheet</span><span>Sample pricing</span><span>Installed</span></p>
+      <p class="hdr-row"><span>Sample pricing</span><span>Installed</span></p>
       <div class="sec-head sec-head--row">
         <h2 id="prices-h">The price sheet.</h2>
-        <p class="lead">Ranges per square foot, installed, drawn on one shared scale. Your measure visit turns a range into one number.</p>
+        <p class="lead">Ranges per square foot, installed, drawn on one shared scale. Switch to your house and every bar carries the squares from your calculator.</p>
+      </div>
+      <div class="ps-mode" data-ps-mode hidden>
+        <div class="ps-mode__btns" role="group" aria-label="Show prices">
+          <button type="button" class="ps-btn" data-ps="ft" aria-pressed="true">Per sq ft</button>
+          <button type="button" class="ps-btn" data-ps="house" aria-pressed="false">My house, <span data-ps-sq>21.9</span> sq</button>
+        </div>
+        <p class="ps-mode__out" data-ps-out aria-live="polite">Per square foot, installed.</p>
       </div>
       <ol class="ledger" role="list" data-ledger>
         
         <li class="ledger__row" data-price-row>
           <span class="ledger__no mono">01</span>
           <span class="ledger__item">Vinyl siding</span>
-          <span class="ledger__range mono">$6–$12</span>
+          <span class="ledger__range mono" data-ps-range>$6–$12</span>
           <span class="ledger__note">installed, tear-off and wrap included</span>
           <span class="ruler" aria-hidden="true"><span class="ruler__bar"></span><span class="ruler__ticks"></span></span>
         </li>
@@ -1120,7 +1251,7 @@ textarea{min-height:96px}
         <li class="ledger__row" data-price-row>
           <span class="ledger__no mono">02</span>
           <span class="ledger__item">Fiber cement siding</span>
-          <span class="ledger__range mono">$11–$18</span>
+          <span class="ledger__range mono" data-ps-range>$11–$18</span>
           <span class="ledger__note">installed and painted</span>
           <span class="ruler" aria-hidden="true"><span class="ruler__bar"></span><span class="ruler__ticks"></span></span>
         </li>
@@ -1128,7 +1259,7 @@ textarea{min-height:96px}
         <li class="ledger__row" data-price-row>
           <span class="ledger__no mono">03</span>
           <span class="ledger__item">Cedar clapboard</span>
-          <span class="ledger__range mono">$14–$24</span>
+          <span class="ledger__range mono" data-ps-range>$14–$24</span>
           <span class="ledger__note">primed all sides, paint extra</span>
           <span class="ruler" aria-hidden="true"><span class="ruler__bar"></span><span class="ruler__ticks"></span></span>
         </li>
@@ -1136,7 +1267,7 @@ textarea{min-height:96px}
         <li class="ledger__row" data-price-row>
           <span class="ledger__no mono">04</span>
           <span class="ledger__item">Engineered wood siding</span>
-          <span class="ledger__range mono">$9–$15</span>
+          <span class="ledger__range mono" data-ps-range>$9–$15</span>
           <span class="ledger__note">factory-painted, installed</span>
           <span class="ruler" aria-hidden="true"><span class="ruler__bar"></span><span class="ruler__ticks"></span></span>
         </li>
@@ -1144,7 +1275,7 @@ textarea{min-height:96px}
         <li class="ledger__row" data-price-row>
           <span class="ledger__no mono">05</span>
           <span class="ledger__item">Siding repair</span>
-          <span class="ledger__range mono">$450–$2,000</span>
+          <span class="ledger__range mono" data-ps-range>$450–$2,000</span>
           <span class="ledger__note">one course up to one wall</span>
           <span class="ruler" aria-hidden="true"><span class="ruler__bar"></span><span class="ruler__ticks"></span></span>
         </li>
@@ -1163,7 +1294,7 @@ textarea{min-height:96px}
   <div class="wrap page">
     <p class="pg-no" aria-hidden="true">p. 08</p>
     <div class="page__body">
-      <p class="hdr-row"><span>Field notes</span><span>4.9 from 88 reviews</span> <span class="sample-tag">Sample rating</span></p>
+      <p class="hdr-row"><span>4.9 from 88 reviews</span> <span class="sample-tag">Sample rating</span></p>
       <div class="sec-head sec-head--row">
         <h2 id="reviews-h">Field notes from owners.</h2>
         <p class="guar"><span class="mono">Our promise</span> If our installation lets water in or a board comes loose, we come back and fix it at no charge.</p>
@@ -1172,49 +1303,49 @@ textarea{min-height:96px}
         <ol class="rail__track" data-carousel-track role="list">
           
           <li class="note">
-            <p class="hdr-row"><span>Field note 01</span><span>West Hartford</span></p>
+            <p class="hdr-row"><span>West Hartford</span></p>
             <span class="reading" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">5/5</span><span class="sr-only">5 out of 5 stars</span></span>
             <blockquote><p>The squares calculator said 22 to 25 squares for our colonial. Renata&#39;s measure came out at 23.5. Having that number before she arrived made the material compare actually useful.</p></blockquote>
             <p class="note__by">Peter G. · <span>Measure and compare visits</span> <span class="sample-tag">Sample review</span></p>
           </li>
           
           <li class="note">
-            <p class="hdr-row"><span>Field note 02</span><span>Glastonbury</span></p>
+            <p class="hdr-row"><span>Glastonbury</span></p>
             <span class="reading" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">5/5</span><span class="sr-only">5 out of 5 stars</span></span>
             <blockquote><p>We were stuck between fiber cement and engineered wood. The comparison showed weight, paint and price per square foot side by side, and we picked engineered wood for the long boards on our ranch.</p></blockquote>
             <p class="note__by">Alicia D. · <span>Engineered wood siding</span> <span class="sample-tag">Sample review</span></p>
           </li>
           
           <li class="note">
-            <p class="hdr-row"><span>Field note 03</span><span>Hartford</span></p>
+            <p class="hdr-row"><span>Hartford</span></p>
             <span class="reading" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">5/5</span><span class="sr-only">5 out of 5 stars</span></span>
             <blockquote><p>Our 1890 Victorian two-family had clapboards too split to paint again. They replaced the worst wall with primed cedar and matched the 4-inch reveal exactly.</p></blockquote>
             <p class="note__by">Samuel W. · <span>Cedar clapboard</span> <span class="sample-tag">Sample review</span></p>
           </li>
           
           <li class="note">
-            <p class="hdr-row"><span>Field note 04</span><span>Newington</span></p>
+            <p class="hdr-row"><span>Newington</span></p>
             <span class="reading" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">5/5</span><span class="sr-only">5 out of 5 stars</span></span>
             <blockquote><p>I clicked the back and the left side on the house drawing and sent it in. The quote came back for those two walls only, which is exactly what I wanted.</p></blockquote>
             <p class="note__by">Rosa M. · <span>Repair and replacement</span> <span class="sample-tag">Sample review</span></p>
           </li>
           
           <li class="note">
-            <p class="hdr-row"><span>Field note 05</span><span>Wethersfield</span></p>
+            <p class="hdr-row"><span>Wethersfield</span></p>
             <span class="reading" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">5/5</span><span class="sr-only">5 out of 5 stars</span></span>
             <blockquote><p>The color consult showed three schemes on a drawing of our cape. We went with the dark green body and cream trim, and it looks the way it did on the screen.</p></blockquote>
             <p class="note__by">Linda K. · <span>Color consults</span> <span class="sample-tag">Sample review</span></p>
           </li>
           
           <li class="note">
-            <p class="hdr-row"><span>Field note 06</span><span>Manchester</span></p>
+            <p class="hdr-row"><span>Manchester</span></p>
             <span class="reading" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">5/5</span><span class="sr-only">5 out of 5 stars</span></span>
             <blockquote><p>Vinyl on a 1960s split-level. Nine days, straight courses, and they replaced two soft sheets of sheathing at the per-sheet price they had quoted.</p></blockquote>
             <p class="note__by">James T. · <span>Vinyl siding</span> <span class="sample-tag">Sample review</span></p>
           </li>
           
           <li class="note">
-            <p class="hdr-row"><span>Field note 07</span><span>Bloomfield</span></p>
+            <p class="hdr-row"><span>Bloomfield</span></p>
             <span class="reading" style="--v:4"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">4/5</span><span class="sr-only">4 out of 5 stars</span></span>
             <blockquote><p>The fascia over our garage was soft enough to push a screwdriver through. They replaced it, added vented soffit, and the attic no longer smells damp in August.</p></blockquote>
             <p class="note__by">Carol B. · <span>Soffit and fascia</span> <span class="sample-tag">Sample review</span></p>
@@ -1236,7 +1367,6 @@ textarea{min-height:96px}
     <p class="pg-no" aria-hidden="true">p. 09</p>
     <div class="page__body area__grid">
       <div class="area__left">
-        <p class="hdr-row"><span>Coverage</span><span>Towns</span><span>Hours</span></p>
         <h2 id="area-h">Do you come to my street?</h2>
         <p class="lead">Hartford and West Hartford, Wethersfield, Glastonbury, Newington, Bloomfield, Windsor, Manchester and East Hartford.</p>
         <ul class="towns" role="list">
@@ -1291,7 +1421,7 @@ textarea{min-height:96px}
     <p class="pg-no" aria-hidden="true">p. 10</p>
     <div class="page__body contact__grid">
       <div class="contact__text">
-        <p class="hdr-row"><span>Next step</span><span>Measure visit</span><span>4 steps</span></p>
+        <p class="hdr-row"><span>4 steps</span></p>
         <h2 id="contact-h">Next step: measure your house.</h2>
         <p class="lead">Four short steps. We call back to set a visit time, then measure every wall.</p>
         <div class="contact__direct">
@@ -1365,7 +1495,7 @@ textarea{min-height:96px}
 <footer class="foot t-paper">
   <div class="wrap">
     <div class="foot__sign">
-      <p class="hdr-row"><span>End of report</span><span>Next step: measure your house</span></p>
+      <p class="hdr-row"><span>End of report</span></p>
       <span class="reading reading--lg" style="--v:5"><span class="cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="reading__val">5/5</span></span>
     </div>
     <div class="foot__cols">
@@ -1390,7 +1520,7 @@ textarea{min-height:96px}
         <p class="foot__small">© 2026 Fieldtest Siding Co.</p>
       </div>
     </div>
-    <div class="foot__credits"><ul class="credits"><li>Photo by Bmzuckerman on <a href="https://commons.wikimedia.org/wiki/File:Colonial_Revival_-_Danbury,_CT_-_W._C._Peffers_House_(1).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li><li>Photo by Indiana Landmarks on <a href="https://commons.wikimedia.org/wiki/File:House_(Fulton_County,_Ind.)_-_DPLA_-_e2ac19b8eb384556f18af80657b60792.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li></ul></div>
+    <div class="foot__credits"><ul class="credits"><li>Photo by Bmzuckerman on <a href="https://commons.wikimedia.org/wiki/File:Colonial_Revival_-_Danbury,_CT_-_W._C._Peffers_House_(1).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li><li>Photo by Pi.1415926535 on <a href="https://commons.wikimedia.org/wiki/File:Triple-decker_porches_on_Rosseter_Street,_Dorchester,_July_2013.JPG" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Bmzuckerman on <a href="https://commons.wikimedia.org/wiki/File:Hybrid_-_Late_Victorian_(Queen_Anne,_Colonial_Revival)_-_Danbury,_CT_-_John_McLean_House_(1).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li><li>Photo by Bmzuckerman on <a href="https://commons.wikimedia.org/wiki/File:Hybrid_-_Late_Victorian_(Queen_Anne,_Colonial_Revival)_-_Danbury,_CT_-_John_McLean_House_(2).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li><li>Photo by Indiana Landmarks on <a href="https://commons.wikimedia.org/wiki/File:Garkin-Tutewiler_House,_1432_Central_Avenue,_1978_(Indianapolis,_Ind.)_-_DPLA_-_1b9968a662d24a2f81d04270ce28d528.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li><li>Photo by Indiana Landmarks on <a href="https://commons.wikimedia.org/wiki/File:House_(Fulton_County,_Ind.)_-_DPLA_-_e2ac19b8eb384556f18af80657b60792.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener license" target="_blank">CC BY 4.0</a></li></ul></div>
   </div>
 </footer>
 

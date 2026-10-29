@@ -1,5 +1,8 @@
 # insulation-B · Stage 4 blueprint (fast)
 
+## Round 1
+Photo + motion elevate: two more plates (P-02 batts in #depth, uncovered by the rising fill line; P-03 frost pane in #contact; both approved into the niche manifest, used by no sibling), and the ruler now moves in four more places (rails fill per section, F-05 tool fills on entry, footer ruler draws its ticks, story stamps "Past R-49"). Story changed from sticky stage to sticky figure + scrolling readings (no blank pin spacer); R readout = floor(shown in × 3) so it matches the cards; phone: ledger blurbs behind "What we do" disclosures, notes as a scroll-snap row (390 page 16,654 → 14,511 px); feature note carries its quoted 3.5 in on a ruler; blurbs and review labels to ink.
+
 Every section carries the signature in a 72px left rail on desktop (finding tag + stapled ruler), a horizontal ruler strip above the h2 under 900px.
 
 | # | id | tone | purpose (objection or path) | layout family | content (tokens) | media keys | hooks | entrance |

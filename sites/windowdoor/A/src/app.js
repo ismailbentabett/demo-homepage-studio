@@ -50,6 +50,15 @@
     SW.prefillForm({ details: b.getAttribute('data-glass-note') + '. ' }, { focus: 'service' });
   });
 
+  /* ---- Key plan: tags wait for the house photo (start state lives under .sw-motion only) ---- */
+  var kpCrop = document.querySelector('.keyplan__crop');
+  if (kpCrop) {
+    var kpImg = kpCrop.querySelector('img');
+    var kpReady = function () { kpCrop.classList.add('kp-ready'); };
+    if (!kpImg || (kpImg.complete && kpImg.naturalWidth)) kpReady();
+    else { kpImg.addEventListener('load', kpReady); kpImg.addEventListener('error', kpReady); }
+  }
+
   /* ---- Story: the schedule strip ticks as each opening passes (motion only, no pin) ---- */
   if (SW.reduced || !root.classList.contains('sw-motion') || !('IntersectionObserver' in window)) return;
   var proc = document.querySelector('.process');

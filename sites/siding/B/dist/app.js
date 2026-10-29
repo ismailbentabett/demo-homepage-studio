@@ -1009,36 +1009,76 @@ SW.ready(function (SW) {
   var root = document.documentElement;
   var motion = !SW.reduced && root.classList.contains('sw-motion');
 
-  /* ---------- price ledger: range bars on a shared scale, from facts ---------- */
+  /* plates are content: decode them in step with paint so no frame ever shows empty */
+  SW.$$('img[data-photo]').forEach(function (im) { im.decoding = 'sync'; });
+
+  /* ---------- price ledger: range bars on a shared scale, per sq ft or for the visitor's own house ---------- */
   var prices = SW.fact('proof.prices') || [];
   var num = function (s) { return parseFloat(String(s || '').replace(/[^\d.]/g, '')) || 0; };
-  var perFt = prices.filter(function (p) { return /sq/.test(p.unit || ''); });
-  var ftMax = Math.max.apply(null, perFt.map(function (p) { return num(p.to); }).concat([1]));
-  var cur = '$';
-  SW.$$('[data-price-row]').forEach(function (row, i) {
-    var p = prices[i];
-    if (!p) return;
-    var sq = /sq/.test(p.unit || '');
-    var max = sq ? ftMax : Math.ceil(num(p.to) / 500) * 500;
-    var a = num(p.from) / max, b = num(p.to) / max;
-    var bar = SW.$('.ruler__bar', row), ticks = SW.$('.ruler__ticks', row);
-    row.style.setProperty('--a', a.toFixed(4));
-    row.style.setProperty('--b', b.toFixed(4));
-    if (ticks) {
-      var mid = sq ? max / 2 : max / 2;
-      var fmt = function (n) { return cur + Math.round(n).toLocaleString('en-US'); };
-      ticks.innerHTML = '';
-      [0, mid, max].forEach(function (n, k) {
-        var s = document.createElement('span');
-        s.textContent = fmt(n) + (k === 2 && sq ? ' /sq ft' : '');
-        ticks.appendChild(s);
-      });
-    }
-    if (bar && motion) {
-      bar.style.transform = 'scaleX(0)';
-      SW.inView(row, function () { bar.style.transform = 'scaleX(1)'; }, { rootMargin: '0px 0px -10% 0px' });
-    }
-  });
+  var cur = String((prices[0] || {}).from || '').replace(/[\d.,\s]/g, '');
+  var isFt = function (p) { return /sq/.test(p.unit || ''); };
+  var ftMax = Math.max.apply(null, prices.filter(isFt).map(function (p) { return num(p.to); }).concat([1]));
+  var nice = function (n) { var k = Math.pow(10, Math.floor(Math.log10(Math.max(n, 1)))); return Math.ceil(n / k * 2) / 2 * k; };
+  var fmt = function (n) { return cur + Math.round(n).toLocaleString('en-US'); };
+  var psRows = SW.$$('[data-price-row]');
+  var psMode = 'ft', sqVal = 21.9, shown = psRows.map(function () { return null; });
+  var psOut = SW.$('[data-ps-out]');
+  function tweenText(el, from, to, done) {
+    if (!motion || !from) { el.textContent = done; return; }
+    var t0 = performance.now(), D = 900;
+    (function step(t) {
+      var k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(from[0] + (to[0] - from[0]) * e) + '–' + fmt(from[1] + (to[1] - from[1]) * e);
+      if (k < 1) requestAnimationFrame(step); else el.textContent = done;
+    })(t0);
+  }
+  function renderPrices() {
+    var house = psMode === 'house', area = sqVal * 100;
+    var houseMax = nice(ftMax * 100 * Math.max(sqVal, 30));
+    psRows.forEach(function (row, i) {
+      var p = prices[i]; if (!p) return;
+      var ft = isFt(p), lo = num(p.from), hi = num(p.to), max;
+      if (ft && house) { lo = Math.round(lo * area / 100) * 100; hi = Math.round(hi * area / 100) * 100; max = houseMax; }
+      else max = ft ? ftMax : Math.ceil(hi / 500) * 500;
+      row.style.setProperty('--a', (lo / max).toFixed(4));
+      row.style.setProperty('--b', (hi / max).toFixed(4));
+      var ticks = SW.$('.ruler__ticks', row);
+      if (ticks) {
+        ticks.innerHTML = '';
+        [0, max / 2, max].forEach(function (n, k) {
+          var s = document.createElement('span');
+          s.textContent = fmt(n) + (k === 2 && ft && !house ? ' /sq ft' : '');
+          ticks.appendChild(s);
+        });
+      }
+      var rg = SW.$('[data-ps-range]', row);
+      if (rg && ft) {
+        var label = house ? fmt(lo) + '–' + fmt(hi) : p.from + '–' + p.to;
+        tweenText(rg, shown[i], [lo, hi], label);
+        shown[i] = [lo, hi];
+      }
+    });
+    SW.$$('[data-ps]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-ps') === psMode)); });
+    SW.$$('[data-ps-sq]').forEach(function (s) { s.textContent = sqVal.toFixed(1); });
+    if (psOut) psOut.textContent = house
+      ? 'Your house: ' + sqVal.toFixed(1) + ' squares, ' + Math.round(sqVal * 100).toLocaleString('en-US') + ' sq ft with waste, times each sample rate. Repairs stay per job.'
+      : 'Per square foot, installed.';
+  }
+  function setMode(m) { psMode = m; renderPrices(); }
+  var psBox = SW.$('[data-ps-mode]');
+  if (psBox) {
+    psBox.hidden = false;
+    SW.$$('[data-ps]', psBox).forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-ps')); }); });
+  }
+  renderPrices();
+  var ledgerEl = SW.$('[data-ledger]');
+  if (motion && ledgerEl) {
+    psRows.forEach(function (row) { var bar = SW.$('.ruler__bar', row); if (bar) bar.style.transform = 'scaleX(0)'; });
+    SW.inView(ledgerEl, function () {
+      psRows.forEach(function (row, i) { var bar = SW.$('.ruler__bar', row); if (bar) setTimeout(function () { bar.style.transform = 'scaleX(1)'; }, i * 80); });
+      setTimeout(function () { if (psMode === 'ft') setMode('house'); }, 1100);
+    }, { rootMargin: '0px 0px -15% 0px' });
+  }
 
   /* ---------- squares calculator ---------- */
   var calc = SW.$('[data-squares]');
@@ -1055,6 +1095,8 @@ SW.ready(function (SW) {
     SW.$('[data-sq-area]').textContent = fmtN(net);
     SW.$('[data-sq-sq]').textContent = squaresNow;
     SW.$('[data-sq-sq2]').textContent = squaresNow;
+    var s3 = SW.$('[data-sq-sq3]'); if (s3) s3.textContent = squaresNow;
+    if (sq > 0) { sqVal = sq; if (psMode === 'house') renderPrices(); else SW.$$('[data-ps-sq]').forEach(function (s) { s.textContent = squaresNow; }); }
     SW.$('[data-sq-bar]').style.setProperty('--v', Math.min(5, sq / 5).toFixed(2));
     var svg = SW.$('[data-elev]');
     if (svg) svg.style.setProperty('--st', st);
@@ -1065,6 +1107,8 @@ SW.ready(function (SW) {
     calc.addEventListener('submit', function (e) { e.preventDefault(); });
     runCalc();
   }
+  var sqSheet = SW.$('[data-sq-sheet]');
+  if (sqSheet) sqSheet.addEventListener('click', function () { setMode('house'); });
   var sqGo = SW.$('[data-sq-go]');
   if (sqGo) sqGo.addEventListener('click', function (e) {
     e.preventDefault();
@@ -1110,21 +1154,11 @@ SW.ready(function (SW) {
     rows.forEach(function (r) { io.observe(r); });
   } else rows.forEach(function (r) { r.classList.add('is-in'); });
 
-  /* method sheets on small screens: clip reveal */
-  var sheets = SW.$$('[data-sheet]');
-  function sheetIO() {
-    if (!('IntersectionObserver' in window)) { sheets.forEach(function (s) { s.classList.add('is-in'); }); return; }
-    var sio = new IntersectionObserver(function (es) {
-      es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); sio.unobserve(en.target); } });
-    }, { rootMargin: '0px 0px -5% 0px', threshold: 0.02 });
-    sheets.forEach(function (s) { sio.observe(s); });
-  }
-
   /* ---------- story 2: the method sheets stack like a clipboard (≥ 900px, pinned) ---------- */
-  if (!window.gsap || !window.ScrollTrigger) { sheetIO(); return; }
+  if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
   var mm = ScrollTrigger.matchMedia;
-  sheets.forEach(function (s) { s.classList.add('is-in'); });
+  var sheets = SW.$$('[data-sheet]');
   mm({
     '(min-width: 900px)': function () {
       var sec = SW.$('#method'), pin = SW.$('.method__pin');
@@ -1139,17 +1173,13 @@ SW.ready(function (SW) {
         scrollTrigger: { trigger: sec, start: 'top top', end: function () { return '+=' + Math.round(window.innerHeight * 0.55 * n); }, pin: pin, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true }
       });
       for (var i = 1; i < n; i++) {
-        tl.to(sheets[i], { yPercent: i * 2.5, rotation: 0, '--p': 1, duration: 1, ease: 'power2.out' }, i - 1);
-        for (var j = 0; j < i; j++) tl.to(sheets[j], { scale: 1 - (i - j) * 0.035, yPercent: -(i - j) * 4, duration: 1 }, i - 1);
+        tl.to(sheets[i], { yPercent: 0, rotation: 0, '--p': 1, duration: 1, ease: 'power2.out' }, i - 1);
+        for (var j = 0; j < i; j++) tl.to(sheets[j], { scale: 1 - (i - j) * 0.03, y: -(i - j) * 10, duration: 1 }, i - 1);
       }
       return function () {
         root.classList.remove('sw-stack');
         gsap.set(sheets, { clearProps: 'all' });
       };
-    },
-    '(max-width: 899px)': function () {
-      sheets.forEach(function (s) { s.classList.remove('is-in'); });
-      sheetIO();
     }
   });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });

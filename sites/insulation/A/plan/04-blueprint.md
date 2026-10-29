@@ -1,5 +1,10 @@
 # insulation-A · Blueprint (Stack Effect · top of the house down)
 
+## Round 1
+Elevate photo + firstScreen: photography joins the level system (ink+ice duotone, level masks: detail-frost-window as the gabled payoff frame in the story, process-batts in the L3 knee-wall card with a riser-notch cut). The h1 now leads with "{{biz.city}} attics:" and an ice stitch on the riser at the h1, with ice below it. At 1440 the hero is capped so the paper band peeks about 88px. At 390 a captioned L1 tile sits above the fold.
+- Should items: byline ink #2E3B40 with no middle dots; FAQ moved after #contact so mid never touches the footer's deep (…deep · paper · mid · snow · deep); story is "Five leaks first", counter "Leaks sealed n / 5", and a 6th payoff step; hero hairlines removed; form progress shows all 4 stitches (pending ones dimmed); R-values kept on one line (JS glue); every service CTA names its job; mobile hero tiles are captioned rows.
+- Photo limit: the manifest has only two approved frames that no sibling uses as a hero (process-batts, detail-frost-window). The drafts would warn, so the page carries 3 photos: hero = L1, knee walls = L3, payoff = story.
+
 Every section is a level of the same house. The 64px riser column (amber warm-air line, ice when sealed) runs down the left
 of every section; each level opens with a level tag on a leak notch that gets stitched when it enters view.
 
@@ -14,8 +19,8 @@ of every section; each level opens with a level tag on a leak notch that gets st
 | 7 #proof | t-snow | "will it actually stop the ice?" | stagger (reviews hung on levels) | {{proof.rating}} / {{proof.reviewCount}} [[sample rating]]; 6 reviews via repeater [[sample review]] | none | — | notches stitch |
 | 8 #price | t-deep | "no price clue" + the come-back promise | table | proof.prices repeater (item, from–to, unit, note) [[sample pricing]]; {{proof.guarantee}} (Sample); [[call]] | none | — | rows rise |
 | 9 #season | t-paper | "when should I book?" | tabs | season planner: 6 month groups, honest work + lead time in words; "Book for …" → form timing | drawn snow-depth bars | — | none |
-| 10 #faq | t-snow | vermiculite, ceiling/mess, vents/mold, depth rulers, winter work | accordion | 6 questions | none | — | still (quiet) |
-| 11 #contact | t-mid | the form + area + hours | form (two-column) | ZIP checker {{biz.zips}}, {{biz.areas|list}}, {{hours|table}}, [[tel]], 4-step form, thanks text | none | — | form notch counts stitches per step |
+| 11 #faq | t-snow | vermiculite, ceiling/mess, vents/mold, depth rulers, winter work | accordion | 6 questions | none | — | still (quiet) |
+| 10 #contact | t-mid | the form + area + hours | form (two-column) | ZIP checker {{biz.zips}}, {{biz.areas|list}}, {{hours|table}}, [[tel]], 4-step form, thanks text | none | — | form notch counts stitches per step |
 | footer | t-deep | L0 footing: frost line, licence, disclaimer | footer | {{proof.license}} (sample), {{demo.disclaimer}}, [[credits]] | drawn frost line | — | riser ends sealed |
 
 Mobile bar (< 900): Call | Text | Price it.

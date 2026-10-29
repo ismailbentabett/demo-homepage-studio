@@ -35,3 +35,6 @@ Mobile: the sticky bar (Call · Text · Quote) is always on; the hero cover stri
 
 ## Open issues
 - None blocking. Checks clean (static + render, 0 warnings).
+
+## Round 1
+Elevated photo + motion: the photos became the report's specimens (4 cropped lap plates in #compare, each carrying its five-cell reading and typical-reveal gauge, keys hero-C3-2 / hero-B3-3 / hero-B3-2 / hero-C1-3, none used twice), and the squares calculator now drives the price sheet (Per sq ft ↔ My house toggle, auto-switches on scroll-in, bars re-scale via registered --a/--b, totals count up). Also fixed: empty frames in full-page captures (photos decode sync, no reveal/filter/blend layer on plates), hours list single column under 560px, services unrolled into 8 token cards (ruled list on phones, material swatches, ultramarine measure-visit card), method sheets get a cross-section drawing and a clean stack, the mobile clip reveal is gone (so no gap), the ruler glyph is now an aria-hidden SVG on primary CTAs only, and the mono labels were thinned per copy-1.

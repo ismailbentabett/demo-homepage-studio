@@ -12,6 +12,11 @@
     });
   });
 
+  // glue: keep R-values on one line ("R-49" never breaks at the hyphen)
+  document.querySelectorAll('.ptable td, .pp p').forEach(function (el) {
+    if (/R-\d/.test(el.innerHTML)) el.innerHTML = el.innerHTML.replace(/R-(\d+)/g, function (m) { return '<span class="nw">' + m + '</span>'; });
+  });
+
   if (!(!SW.reduced && root.classList.contains('sw-motion'))) return;
   if (!window.gsap || !window.ScrollTrigger) return;
   var gsap = window.gsap, ST = window.ScrollTrigger;
@@ -58,10 +63,10 @@
           onUpdate: function (s) {
             var p = s.progress;
             var i = Math.min(n - 1, Math.floor(p * n));
-            var sealed = Math.min(n, Math.floor(p * n + 0.35));
+            var sealed = Math.min(leaks.length, Math.floor(p * n + 0.35));
             steps.forEach(function (el, k) { el.classList.toggle('is-on', k === i); });
             leaks.forEach(function (l, k) { l.classList.toggle('is-sealed', k < sealed); l.classList.toggle('is-on', k === i && k >= sealed); });
-            house.classList.toggle('is-done', p > 0.96);
+            house.classList.toggle('is-done', i === n - 1);
             if (count) count.textContent = sealed;
           }
         });
@@ -73,10 +78,12 @@
       },
       '(max-width: 899px)': function () {
         // phones: no pin; each leak stitches when its step scrolls past
+        if (count) count.textContent = 0;
         var sts = [];
         steps.forEach(function (s, k) {
           sts.push(ST.create({ trigger: s, start: 'top 70%', onEnter: function () {
             if (leaks[k]) leaks[k].classList.add('is-sealed');
+            if (count) count.textContent = Math.min(leaks.length, k + 1);
             if (k === n - 1) house.classList.add('is-done');
           } }));
         });
@@ -94,6 +101,7 @@
   if (hero) {
     var lvlTop = hero.querySelector('.lvl');
     if (lvlTop) setTimeout(function () { lvlTop.classList.add('is-sealed'); }, 650);
+    setTimeout(function () { hero.classList.add('is-stitched'); }, 900);
   }
 
   document.fonts && document.fonts.ready.then(function () { ST.refresh(); });

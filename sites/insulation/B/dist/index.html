@@ -560,15 +560,32 @@ a { text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .target--49 { bottom: calc(16.3 / 20 * 100%); }
 .target--60 { bottom: 100%; }
 .target.is-passed { border-top-color: var(--accent); color: var(--accent); }
-.story__attic { inline-size: 100%; max-inline-size: 420px; block-size: auto; }
-.story__attic-fill { transform: translateY(calc(282px - var(--val) * 7px)); }
-.story__read { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+/* P-02: the photo is uncovered by the rising fill line */
+.story__plate { align-self: stretch; rotate: 1deg; padding: 8px 8px 0; margin-top: 28px; display: flex; flex-direction: column; min-inline-size: 0; }
+.story__win { position: relative; flex: 1; min-block-size: 220px; overflow: hidden; background: #8a7f6c; }
+.story__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 50% 40%; filter: saturate(.8) contrast(1.05); }
+.story__cover {
+  position: absolute; inset: 0 0 auto 0; block-size: calc((1 - var(--val) / 20) * 100%);
+  background: rgba(30,42,51,.42); -webkit-backdrop-filter: grayscale(1) brightness(.8); backdrop-filter: grayscale(1) brightness(.8); border-bottom: 2px dashed var(--signal);
+}
+.story__cover::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -12px; block-size: 10px;
+  background-color: var(--fillc); background-image: var(--stipple); background-size: var(--stipple-size); border-radius: 0 0 50% 50% / 0 0 8px 8px; opacity: .9;
+}
+.story__stamp {
+  position: absolute; right: 10px; bottom: 12px; font: 600 13px/1 var(--f-mono); color: #fff; background: var(--accent);
+  padding: 7px 9px 6px; border-radius: 2px; rotate: -3deg; box-shadow: 0 6px 14px -8px rgba(0,0,0,.6);
+  transition: opacity 240ms var(--ease-out), scale 240ms var(--ease-out);
+}
+.sw-motion .story__fig:not(.is-past) .story__stamp { opacity: 0; scale: .8; }
+.story__read { grid-column: 1 / -1; display: grid; gap: 6px; justify-items: start; }
 .story__in { font: 500 var(--fs-read)/1 var(--f-mono); font-variation-settings: "wdth" 87.5; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; }
-.story__r { font: 600 var(--fs-1)/1.2 var(--f-display); }
+.unit, .story__unit { font-size: .45em; letter-spacing: 0; margin-left: .1em; }
+.story__r { font: 600 var(--fs-0)/1.2 var(--f-mono); font-variation-settings: "wdth" 87.5; font-variant-numeric: tabular-nums; }
 .story__steps { display: grid; gap: var(--s-4); counter-reset: s; }
 .sstep { position: relative; padding: 16px 18px 18px; border-left: 3px solid rgba(34,37,42,.25); background: rgba(255,255,255,.55); transition: border-color var(--t-ui) var(--ease-out), color var(--t-ui) var(--ease-out); }
 .sstep__val { display: block; font: 600 var(--fs-0)/1.2 var(--f-mono); font-variation-settings: "wdth" 87.5; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
-.sstep p { max-width: 46ch; }
+.sstep p { max-width: 46ch; color: var(--fg); }
 .sstep__bar { display: block; margin-top: 12px; block-size: 14px; border: 1px solid var(--ink); background: var(--signal) repeating-linear-gradient(to right, var(--ink) 0 1px, transparent 1px 5%) left bottom / 100% 40% no-repeat; position: relative; border-radius: 2px; }
 .sstep__bar::after { content: ""; position: absolute; inset: -3px auto -3px 0; inline-size: calc(var(--v) / 20 * 100%); background-color: var(--fillc); background-image: var(--stipple); background-size: var(--stipple-size); border-radius: 0 6px 6px 0; box-shadow: 0 0 0 1px rgba(34,37,42,.2); }
 .story__note { font-size: var(--fs--1); color: var(--muted); max-width: 64ch; }
@@ -581,11 +598,12 @@ a { text-underline-offset: 4px; text-decoration-thickness: 1px; }
   .story__steps { grid-column: 2; }
   .story__note { grid-column: 2; }
   .sstep__bar { display: none; }
-  .bigruler { --bh: min(46svh, 420px); }
-  .sw-motion .story { height: calc(var(--n) * 55svh + 100svh); padding: 0; }
-  .sw-motion .story__stage { position: sticky; top: var(--header-h); min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; padding-block: var(--s-6); }
-  .sw-motion .sstep { color: var(--muted); }
-  .sw-motion .sstep.is-active { color: var(--fg); }
+  .bigruler { --bh: min(52svh, 440px); }
+  /* scroll story: the figure sticks, the four readings scroll past it (no blank pin spacer) */
+  .sw-motion .story__fig { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; }
+  .sw-motion .story__steps { gap: 24svh; padding-block: 4svh 18svh; }
+  .sw-motion .sstep:not(.is-active) { opacity: .62; }
+  .sw-motion .sstep { transition: opacity var(--t-ui) var(--ease-out), border-color var(--t-ui) var(--ease-out), background-color var(--t-ui) var(--ease-out); }
 }
 @media (min-width: 900px) {
   .story__head { grid-column: 2 / span 12; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: var(--s-7); align-items: end; }
@@ -599,13 +617,13 @@ a { text-underline-offset: 4px; text-decoration-thickness: 1px; }
 }
 @media (min-width: 900px) and (max-height: 820px) {
   .story h2 { font-size: var(--fs-3); }
-  .bigruler { --bh: 38svh; }
+  .bigruler { --bh: 44svh; }
   .sstep { padding-block: 10px 12px; }
 }
 
 /* ---------- F-02 leaks ---------- */
 .leaks { padding-block: var(--pad-normal); }
-.leaks__svc { margin-top: var(--s-5); max-width: 44ch; color: var(--muted); }
+.leaks__svc { margin-top: var(--s-5); max-width: 44ch; color: var(--fg); }
 .leaks__svc strong { color: var(--fg); }
 .leaks__say .btn { margin-top: var(--s-5); }
 .log { margin-top: var(--s-7); border: 1px solid var(--rule); padding: var(--s-5) var(--s-4); }
@@ -642,7 +660,7 @@ a { text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .vents__list { display: grid; gap: var(--s-6); margin-top: var(--s-7); border-top: 1px solid var(--rule); padding-top: var(--s-6); }
 .vents__list li { display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 14px; }
 .vents__list h3 { font-size: var(--fs-1); }
-.vents__list p { grid-column: 2; color: var(--muted); margin-top: 6px; max-width: 40ch; }
+.vents__list p { grid-column: 2; color: var(--fg); margin-top: 6px; max-width: 40ch; }
 .vents__n { grid-row: 1 / span 2; inline-size: 36px; block-size: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--signal); color: var(--ink); font: 600 15px/1 var(--f-mono); }
 @media (max-width: 639px) { .vents__draw { inline-size: 170%; max-inline-size: none; margin-left: -35%; } .vents__fig { overflow: hidden; padding: 0; } }
 @media (min-width: 900px) { .vents__list { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--s-7); } }
@@ -656,8 +674,22 @@ a { text-underline-offset: 4px; text-decoration-thickness: 1px; }
   padding: var(--s-5) 0; border-bottom: 1px solid var(--rule); position: relative;
 }
 .line__no { font: 500 13px/1.6 var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
-.line__body p { color: var(--muted); margin-top: 6px; max-width: 46ch; }
+.line__body p { color: var(--fg); margin-top: 6px; max-width: 46ch; }
+.line__more summary { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font: 600 var(--fs--1)/1.2 var(--f-text); cursor: pointer; list-style: none; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.line__more summary::-webkit-details-marker { display: none; }
+.line__more summary::after { content: "+"; font: 500 15px/1 var(--f-mono); text-decoration: none; }
+.line__more[open] summary::after { content: "–"; }
+.line__more p { margin-top: 0; padding-bottom: 6px; }
+@media (min-width: 640px) { .sw-js .line__more summary { display: none; } .line__more p { margin-top: 6px; } }
 .line__go { grid-column: 3; justify-self: start; min-height: 48px; padding: 0 16px; border-color: var(--ink); color: var(--ink); font-size: var(--fs--1); }
+@media (max-width: 639px) {
+  .line { padding: var(--s-4) 0; row-gap: 4px; grid-template-columns: 36px 18px minmax(0, 1fr) auto; column-gap: 10px; }
+  .line h3 { font-size: var(--fs-0); font-weight: 600; }
+  .line .mini { block-size: 40px; inline-size: 14px; }
+  .line__go { grid-column: 4; grid-row: 1; padding: 0 12px; }
+  .line__body { grid-column: 3; grid-row: 1 / span 2; }
+  .line:nth-child(4) .mini { translate: 0 12px; }
+}
 .mini { --v: 8; position: relative; display: block; inline-size: 16px; block-size: 56px; margin-top: 2px; }
 .mini__card { position: absolute; inset: 0; background-color: var(--signal); border: 1px solid var(--ink); border-radius: 2px; background-image: repeating-linear-gradient(to top, var(--ink) 0 1px, transparent 1px 7px); background-size: 45% 100%; background-repeat: no-repeat; }
 .mini__fill { position: absolute; left: -5px; right: -5px; bottom: 0; block-size: calc(var(--v) / 20 * 100%); background-color: var(--fillc); background-image: var(--stipple); background-size: var(--stipple-size); border-radius: 50% 50% 0 0 / 6px 6px 0 0; box-shadow: 0 0 0 1px rgba(34,37,42,.2); transition: block-size var(--t-ui) var(--ease-out); }
@@ -782,7 +814,7 @@ a { text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .stub { position: absolute; top: -26px; left: 22px; inline-size: 18px; block-size: 64px; background-color: var(--signal); border: 1px solid var(--ink); border-radius: 2px; rotate: -4deg;
   background-image: repeating-linear-gradient(to top, var(--ink) 0 1px, transparent 1px 8px); background-size: 45% 100%; background-repeat: no-repeat; background-position: left bottom; }
 .stub .ruler__staple { top: 6px; inline-size: 10px; }
-.note__svc { font: 600 13px/1.4 var(--f-mono); color: var(--muted); padding-left: 32px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.note__svc { font: 600 13px/1.4 var(--f-mono); color: var(--ink); padding-left: 32px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .note__svc .sample-tag { font-family: var(--f-text); color: var(--ink); }
 .note blockquote { margin: var(--s-4) 0 0; }
 .note blockquote p { font-size: var(--fs-0); line-height: 1.5; }
@@ -791,7 +823,27 @@ a { text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .note:nth-child(2) { rotate: .5deg; }
 .note:nth-child(3) { rotate: -.4deg; }
 .note:nth-child(5) { rotate: .3deg; }
+@media (max-width: 639px) {
+  .notes__grid { grid-auto-flow: column; grid-auto-columns: 84%; gap: var(--s-4); overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    margin-inline: calc(-1 * var(--margin)); padding: 34px var(--margin) var(--s-5); scroll-padding-inline: var(--margin); }
+  .note { scroll-snap-align: start; rotate: none !important; }
+  .notes__head { margin-bottom: var(--s-4); }
+}
 @media (min-width: 640px) { .notes__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .note:nth-child(1) { grid-column: 1 / -1; } }
+/* the feature note carries its own reading: the 3.5 in it quotes, on a ruler */
+.note:nth-child(1) { display: flex; flex-direction: column; }
+.note:nth-child(1) .note__who { margin-bottom: var(--s-5); }
+.note:nth-child(1)::before {
+  content: ""; order: 9; margin-top: auto; block-size: 34px; border: 1px solid var(--ink); border-radius: 2px;
+  background:
+    linear-gradient(var(--fillc), var(--fillc)) left / calc(3.5 / 20 * 100%) 100% no-repeat,
+    repeating-linear-gradient(to right, var(--ink) 0 1px, transparent 1px 2.5%) left top / 100% 30% no-repeat,
+    repeating-linear-gradient(to right, var(--ink) 0 2px, transparent 2px 10%) left top / 100% 60% no-repeat,
+    var(--signal);
+}
+.note:nth-child(1)::after {
+  content: "3.5 in · over the bedroom" / ""; order: 10; margin-top: 10px; font: 500 var(--fs-2)/1 var(--f-mono); font-variation-settings: "wdth" 87.5; color: var(--accent); letter-spacing: -0.02em;
+}
 @media (min-width: 900px) {
   .notes__head { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: var(--s-7); align-items: end; }
   .notes__head .kicker { grid-column: 1 / -1; }
@@ -836,6 +888,9 @@ a { text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .visit { display: grid; gap: 12px; margin-top: var(--s-6); }
 .visit li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 12px; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
 .visit span { font: 500 13px/1 var(--f-mono); color: var(--ink); background: var(--signal); padding: 5px 0; text-align: center; border-radius: 2px; }
+.contact__plate { margin-top: var(--s-6); rotate: -1deg; max-inline-size: 520px; }
+.contact__img { inline-size: 100%; aspect-ratio: 21 / 9; object-fit: cover; object-position: 50% 45%; filter: saturate(.85); background: #9fb0c0; }
+@media (min-width: 640px) { .contact__img { aspect-ratio: 2 / 1; } }
 .zip { margin-top: var(--s-7); }
 .zip__row { display: flex; gap: 8px; }
 .zip__row input { flex: 1; min-width: 0; max-width: 200px; }
@@ -984,7 +1039,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
       <div class="hero__text">
         <p class="kicker"><span class="ftag">F-00</span> Insulation · Fargo, ND</p>
         <h1 id="h-top" data-split="lines">Measured in six spots before any price.</h1>
-        <p class="lead">A written attic check: depth in inches, leaks photographed, an estimated R-value, then a number.</p>
+        <p class="lead">A written attic check: depth in inches, leaks photographed, an estimated R&#8209;value, then&nbsp;a&nbsp;number.</p>
         <div class="btn-row">
           <a class="btn btn-call btn--primary" href="tel:+17015550165"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (701) 555-0165</span></a>
           <a class="btn btn--ghost" href="#ruler"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ruler"/></svg><span>Read your attic depth</span></a>
@@ -1021,55 +1076,41 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
   </section>
 
   <!-- 2 · STORY · F-01 Depth -->
-  <section id="depth" class="story t-mid" data-layout="pin-story" data-hook="depth-story" aria-labelledby="h-depth" style="--n:4">
-    <div class="story__stage">
-      <div class="wrap rail-grid story__grid">
-        <div class="rail" aria-hidden="true"><span class="rail__tag">F-01</span><span class="ruler ruler--rail" style="--val:17; --in:20"><span class="ruler__staple"></span></span></div>
-        <div class="story__head">
-          <p class="kicker"><span class="ftag">F-01</span> Depth</p>
-          <h2 id="h-depth">Your price starts from an inch number.</h2>
-          <p class="lead">One ruler, read four times. The fill climbs to the depth your report promises.</p>
-        </div>
-
-        <figure class="story__fig" data-story-fig style="--val:17">
-          <div class="bigruler" aria-hidden="true">
-            <span class="bigruler__card"><span class="ruler__staple"></span></span>
-            <span class="bigruler__nums"><span>20</span><span>18</span><span>16</span><span>14</span><span>12</span><span>10</span><span>8</span><span>6</span><span>4</span><span>2</span><span>0</span></span>
-            <span class="bigruler__fill"></span>
-            <span class="target target--49" data-target="49"><span>R-49</span></span>
-            <span class="target target--60" data-target="60"><span>R-60</span></span>
-          </div>
-          <svg class="story__attic" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
-            <defs>
-              <pattern id="stip" width="18" height="18" patternUnits="userSpaceOnUse">
-                <rect width="18" height="18" fill="#DDD8CC"/>
-                <circle cx="3" cy="4" r="1.4" fill="#FFFFFF"/><circle cx="11" cy="2" r="1.1" fill="#B9C2C9"/>
-                <circle cx="15" cy="9" r="1.5" fill="#FFFFFF"/><circle cx="7" cy="11" r="1.2" fill="#B9C2C9"/>
-                <circle cx="2" cy="15" r="1" fill="#FFFFFF"/><circle cx="12" cy="15" r="1.3" fill="#FFFFFF"/>
-              </pattern>
-              <clipPath id="atticClip"><path d="M0 280 L200 40 L400 280 Z"/></clipPath>
-            </defs>
-            <path d="M0 280 L200 40 L400 280" fill="#F4F1EA" stroke="#22252A" stroke-width="2"/>
-            <g clip-path="url(#atticClip)">
-              <rect class="story__attic-fill" x="0" y="0" width="400" height="300" fill="url(#stip)"/>
-            </g>
-            <path d="M200 40 V280 M120 136 V280 M280 136 V280" stroke="#22252A" stroke-opacity=".25" stroke-width="1.5"/>
-            <path d="M0 280 H400" stroke="#22252A" stroke-width="3"/>
-            <path d="M0 292 H400" stroke="#22252A" stroke-width="1.5"/>
-            <path d="M20 256 L60 208" stroke="#E9C44A" stroke-width="6" stroke-linecap="round"/>
-            <path d="M380 256 L340 208" stroke="#E9C44A" stroke-width="6" stroke-linecap="round"/>
-          </svg>
-          <figcaption class="story__read" aria-live="off"><span class="story__in"><span data-story-in>17</span> in</span><span class="story__r">about R-<span data-story-r>51</span></span></figcaption>
-        </figure>
-
-        <ol class="story__steps" role="list">
-          <li class="sstep" style="--v:3.5"><span class="sstep__val">3.5 in · about R-10</span><p>What a thin attic reads over a bedroom. The ceiling below is doing a third of its job.</p><span class="sstep__bar" aria-hidden="true"></span></li>
-          <li class="sstep" style="--v:10"><span class="sstep__val">10 in · about R-30</span><p>Seal first. Top plates, wire holes and light boxes get foam before any fill goes in.</p><span class="sstep__bar" aria-hidden="true"></span></li>
-          <li class="sstep" style="--v:14"><span class="sstep__val">14 in · about R-42</span><p>Fill to the depth on your report, with baffles keeping the eave vents open.</p><span class="sstep__bar" aria-hidden="true"></span></li>
-          <li class="sstep" style="--v:17"><span class="sstep__val">17 in · about R-51</span><p>Past R-49, the typical target here. The rulers stay stapled to the rafters for the next inspector.</p><span class="sstep__bar" aria-hidden="true"></span></li>
-        </ol>
-        <p class="story__note">R per inch is about 3 for blown cellulose (typical). R-49 to R-60 is the typical ENERGY STAR / DOE attic range for climate zone 6.</p>
+  <section id="depth" class="story t-mid" data-layout="pin-story" data-hook="depth-story" aria-labelledby="h-depth" style="--n:3">
+    <div class="wrap rail-grid story__grid">
+      <div class="rail" aria-hidden="true"><span class="rail__tag">F-01</span><span class="ruler ruler--rail" style="--val:17; --in:20"><span class="ruler__staple"></span></span></div>
+      <div class="story__head">
+        <p class="kicker"><span class="ftag">F-01</span> Depth</p>
+        <h2 id="h-depth">Your price starts from an inch number.</h2>
+        <p class="lead">One ruler, read four times. The fill climbs to the depth your report promises.</p>
       </div>
+
+      <div class="story__fig" data-story-fig style="--val:17">
+        <div class="bigruler" aria-hidden="true">
+          <span class="bigruler__card"><span class="ruler__staple"></span></span>
+          <span class="bigruler__nums"><span>20</span><span>18</span><span>16</span><span>14</span><span>12</span><span>10</span><span>8</span><span>6</span><span>4</span><span>2</span><span>0</span></span>
+          <span class="bigruler__fill"></span>
+          <span class="target target--49" data-target="49"><span>R-49</span></span>
+          <span class="target target--60" data-target="60"><span>R-60</span></span>
+        </div>
+        <figure class="plate story__plate">
+          <div class="story__win">
+            <img src="media/process-batts-1170.webp" srcset="media/process-batts-1170.webp 1170w, media/process-batts.webp 2340w" alt="Faced fiberglass batts stapled between wood studs, the R-21 rating printed on the paper" width="1170" height="878" loading="lazy" decoding="async" data-photo="process-batts" data-slot="attic" class="story__img" sizes="(min-width: 900px) 26vw, (min-width: 640px) 34vw, 70vw">
+            <span class="story__cover" aria-hidden="true"></span>
+            <span class="story__stamp" aria-hidden="true">Past R-49</span>
+          </div>
+          <figcaption class="plate__cap"><span>P-02</span> Faced batts between studs, R-21 printed on the paper</figcaption>
+        </figure>
+        <p class="story__read"><span class="story__in"><span data-story-in>17</span><span class="story__unit">in</span></span><span class="story__r">about R-<span data-story-r>51</span></span></p>
+      </div>
+
+      <ol class="story__steps" role="list">
+        <li class="sstep" style="--v:3.5"><span class="sstep__val">3.5 in · about R-10</span><p>What a thin attic reads over a bedroom. The ceiling below is doing a third of its job.</p><span class="sstep__bar" aria-hidden="true"></span></li>
+        <li class="sstep" style="--v:10"><span class="sstep__val">10 in · about R-30</span><p>Seal first. Top plates, wire holes and light boxes get foam before any fill goes in.</p><span class="sstep__bar" aria-hidden="true"></span></li>
+        <li class="sstep" style="--v:14"><span class="sstep__val">14 in · about R-42</span><p>Fill to the depth on your report, with baffles keeping the eave vents open.</p><span class="sstep__bar" aria-hidden="true"></span></li>
+        <li class="sstep" style="--v:17"><span class="sstep__val">17 in · about R-51</span><p>Past R-49, the typical target here. The rulers stay stapled to the rafters for the next inspector.</p><span class="sstep__bar" aria-hidden="true"></span></li>
+      </ol>
+      <p class="story__note">R per inch is about 3 for blown cellulose (typical). R-49 to R-60 is the typical ENERGY STAR / DOE attic range for climate zone 6.</p>
     </div>
   </section>
 
@@ -1177,7 +1218,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
           <span class="mini" aria-hidden="true"><span class="mini__card"></span><span class="mini__fill"></span></span>
           <div class="line__body">
             <h3>Written attic check</h3>
-            <p>Depth measured in six spots, leaks photographed, and a written report before any price.</p>
+            <details class="line__more" data-open-wide><summary>What we do</summary><p>Depth measured in six spots, leaks photographed, and a written report before any price.</p></details>
           </div>
           <a class="btn line__go" href="#contact" data-service="Attic check">Price it</a>
         </li>
@@ -1187,7 +1228,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
           <span class="mini" aria-hidden="true"><span class="mini__card"></span><span class="mini__fill"></span></span>
           <div class="line__body">
             <h3>Blown-in attic top-up</h3>
-            <p>Loose-fill added to the depth on your report, with depth rulers left in the attic.</p>
+            <details class="line__more" data-open-wide><summary>What we do</summary><p>Loose-fill added to the depth on your report, with depth rulers left in the attic.</p></details>
           </div>
           <a class="btn line__go" href="#contact" data-service="Attic top-up">Price it</a>
         </li>
@@ -1197,7 +1238,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
           <span class="mini" aria-hidden="true"><span class="mini__card"></span><span class="mini__fill"></span></span>
           <div class="line__body">
             <h3>Attic air sealing</h3>
-            <p>Top plates, wire holes and light boxes sealed with foam and caulk, each one photographed.</p>
+            <details class="line__more" data-open-wide><summary>What we do</summary><p>Top plates, wire holes and light boxes sealed with foam and caulk, each one photographed.</p></details>
           </div>
           <a class="btn line__go" href="#contact" data-service="Air sealing">Price it</a>
         </li>
@@ -1207,7 +1248,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
           <span class="mini" aria-hidden="true"><span class="mini__card"></span><span class="mini__fill"></span></span>
           <div class="line__body">
             <h3>Rim joist spray foam</h3>
-            <p>Foam along the basement band joist, the spot prairie wind finds first in most ranches.</p>
+            <details class="line__more" data-open-wide><summary>What we do</summary><p>Foam along the basement band joist, the spot prairie wind finds first in most ranches.</p></details>
           </div>
           <a class="btn line__go" href="#contact" data-service="Rim joists">Price it</a>
         </li>
@@ -1217,7 +1258,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
           <span class="mini" aria-hidden="true"><span class="mini__card"></span><span class="mini__fill"></span></span>
           <div class="line__body">
             <h3>Bonus room over the garage</h3>
-            <p>Cold floors and walls of rooms above garages opened, sealed and filled to the right depth.</p>
+            <details class="line__more" data-open-wide><summary>What we do</summary><p>Cold floors and walls of rooms above garages opened, sealed and filled to the right depth.</p></details>
           </div>
           <a class="btn line__go" href="#contact" data-service="Bonus rooms">Price it</a>
         </li>
@@ -1227,7 +1268,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
           <span class="mini" aria-hidden="true"><span class="mini__card"></span><span class="mini__fill"></span></span>
           <div class="line__body">
             <h3>Old vermiculite: test first</h3>
-            <p>If we see pebble-like fill, we stop, explain the lab test and leave it undisturbed.</p>
+            <details class="line__more" data-open-wide><summary>What we do</summary><p>If we see pebble-like fill, we stop, explain the lab test and leave it undisturbed.</p></details>
           </div>
           <a class="btn line__go" href="#contact" data-service="Vermiculite check">Price it</a>
         </li>
@@ -1237,7 +1278,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
           <span class="mini" aria-hidden="true"><span class="mini__card"></span><span class="mini__fill"></span></span>
           <div class="line__body">
             <h3>Split-level and ranch walls</h3>
-            <p>Hollow walls of 1950s to 1970s houses filled with dense-pack cellulose through small holes.</p>
+            <details class="line__more" data-open-wide><summary>What we do</summary><p>Hollow walls of 1950s to 1970s houses filled with dense-pack cellulose through small holes.</p></details>
           </div>
           <a class="btn line__go" href="#contact" data-service="Wall dense-pack">Price it</a>
         </li>
@@ -1247,7 +1288,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
           <span class="mini" aria-hidden="true"><span class="mini__card"></span><span class="mini__fill"></span></span>
           <div class="line__body">
             <h3>Bath fan venting</h3>
-            <p>Bath fans that dump into the attic rerouted outside, so moisture stops frosting the roof boards.</p>
+            <details class="line__more" data-open-wide><summary>What we do</summary><p>Bath fans that dump into the attic rerouted outside, so moisture stops frosting the roof boards.</p></details>
           </div>
           <a class="btn line__go" href="#contact" data-service="Bath fans">Price it</a>
         </li>
@@ -1288,7 +1329,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
         </fieldset>
 
         <div class="tool__out" data-ar-out aria-live="polite">
-          <p class="tool__read"><span data-ar-in>3.5</span> in</p>
+          <p class="tool__read"><span data-ar-in>3.5</span><span class="unit">in</span></p>
           <p class="tool__r" data-ar-r>About R-9 to R-13 today.</p>
           <p class="tool__add" data-ar-add>Add about 13 to 17 in to reach the typical R-49 to R-60.</p>
           <p class="tool__stop" data-ar-stop hidden>Stop here. Pebbles like these can be vermiculite. Leave them alone and read <a href="#pebbles">F-06 · Test first</a>.</p>
@@ -1421,6 +1462,10 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
       <div class="contact__say">
         <p class="kicker"><span class="ftag">F-09</span> The visit</p>
         <h2 id="h-contact">One visit, one written report, then a number.</h2>
+        <figure class="plate contact__plate">
+          <img src="media/detail-frost-window-1170.webp" srcset="media/detail-frost-window-1170.webp 1170w, media/detail-frost-window.webp 2340w" alt="Feathered frost crystals on a window pane, lit amber from inside and blue from outside" width="1170" height="749" loading="lazy" decoding="async" data-photo="detail-frost-window" data-slot="frost" class="contact__img" sizes="(min-width: 900px) 34vw, 90vw">
+          <figcaption class="plate__cap"><span>P-03</span> Frost on a cold pane, the winter the report is for</figcaption>
+        </figure>
         <ol class="visit" role="list">
           <li><span>1</span>Boards across the joists, so no foot comes through your ceiling.</li>
           <li><span>2</span>Depth read in six spots, written down.</li>
@@ -1543,7 +1588,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
 
 <footer class="site-footer t-deep">
   <div class="wrap">
-    <div class="signoff" aria-hidden="true">
+    <div class="signoff" aria-hidden="true" data-signoff>
       <span class="signoff__card"><span class="ruler__staple ruler__staple--flat"></span></span>
       <span class="signoff__nums"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span></span>
     </div>
@@ -1577,7 +1622,7 @@ html:not(.sw-js) [data-form-nav] [data-next], html:not(.sw-js) [data-form-nav] [
     <div class="foot__legal">
       <p>Licence # (sample) SAMPLE-ND-IN-55107 · © 2026 Inchwise Insulation</p>
       <p>Sample website by Site Sledge. Business details are illustrative.</p>
-      <ul class="credits"><li>Photo by Nyttend on <a href="https://commons.wikimedia.org/wiki/File:Richard_from_Smith,_Brook_Park.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:Richard_from_Smith,_Brook_Park.jpg" rel="noopener license" target="_blank">Public domain</a></li></ul>
+      <ul class="credits"><li>Photo by Nyttend on <a href="https://commons.wikimedia.org/wiki/File:Richard_from_Smith,_Brook_Park.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:Richard_from_Smith,_Brook_Park.jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by Baechler, Adams, Hefty, Gilbride, Love on <a href="https://commons.wikimedia.org/wiki/File:TE221_insulinstall7_PNNLinsul_5-3-13.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:TE221_insulinstall7_PNNLinsul_5-3-13.jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by Alexandr frolov on <a href="https://commons.wikimedia.org/wiki/File:Frost_on_the_window_03.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul>
     </div>
   </div>
 </footer>
