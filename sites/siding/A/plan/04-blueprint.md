@@ -34,3 +34,10 @@
 
 ## Open issues
 (none yet)
+
+## Round 1
+Made the type literally the siding: the #layers h2 is now a full-width stack of display lines, each one course tall and nailed at the top. All C-0N chips and tracked-caps labels are gone, so mono now only marks measurements. The calculator and visualizer answers are now one "wall readout": ember numerals on lap boards, a single aria-live sentence and 3px focus rings. That answers the two weakest categories (type, a11y) and the must.
+- Cause of the must: the tone selector `[class*="t-"]` matched the estimator's `sw-est-range` / `sw-est-note` spans. Tones now use explicit class selectors.
+- Hero: h1 carries the city and the trade. On desktop it is capped at 100svh − header − 120px so the services band peeks in. Under 640px the gable moves above the h1 as a 3:2 band, clear of the mobile bar.
+- Layers story: empty dashed slots fill one course at a time, and each course laps over the nail line below it. The slots only open once the section arrives, so full-page captures show the finished wall.
+- The break photo uses the hero's duotone grade (shared `.grade` class) with a scrubbed push-in, never hidden. Reviews: one featured course plus five equal lap boards, all at 18px body. Towns are plain text, every radius is 2px, and the primary action is called "Price my walls" everywhere.

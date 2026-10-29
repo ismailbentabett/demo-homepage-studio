@@ -1105,9 +1105,24 @@ SW.mod('media-fallback', function (SW) {
       out('sq').textContent = String(squares);
       out('band').textContent = BANDS[band];
       if (size && size.value !== String(band)) { size.value = String(band); size.dispatchEvent(new Event('input', { bubbles: true })); }
-      last = { net: Math.round(net), squares: squares, S: S, G: G };
+      last = { net: Math.round(net), squares: squares, S: S, G: G, band: BANDS[band] };
+      speak();
     };
-    SW.$$('[data-sq]', calc).forEach(function (el) { el.addEventListener('input', compute); el.addEventListener('change', compute); });
+    // one live sentence for the whole readout (the estimator's own line is silenced)
+    var live = SW.$('[data-readout-live]', calc), estOut = SW.$('[data-est-out]', calc), tmr = 0;
+    var speak = function () {
+      if (!live || !speak.on) return;
+      clearTimeout(tmr);
+      tmr = setTimeout(function () {
+        var r = estOut && SW.$('.sw-est-range', estOut);
+        live.textContent = last.squares + ' squares, about ' + last.net.toLocaleString('en-US') + ' square feet of wall, ' + last.band.toLowerCase() + '. ' + (r ? r.textContent + ', sample price.' : '');
+      }, 450);
+    };
+    var act = function () { speak.on = true; compute(); };
+    SW.$$('[data-sq]', calc).forEach(function (el) { el.addEventListener('input', act); el.addEventListener('change', act); });
+    var matSel = q('mat');
+    if (matSel) matSel.addEventListener('change', function () { speak.on = true; speak(); });
+    setTimeout(function () { if (estOut) estOut.setAttribute('aria-live', 'off'); }, 0);
     compute();
     var send = SW.$('[data-sq-send]', calc);
     if (send) send.addEventListener('click', function () {
@@ -1144,9 +1159,11 @@ SW.mod('media-fallback', function (SW) {
       }
       lines.setAttribute('d', d);
       var label = tab.textContent.trim();
-      if (visOut) visOut.textContent = prof === 'bb'
-        ? label + ': a batten every 12 in. across the wall.'
-        : label + ': about ' + n + ' courses on an 8 ft wall.';
+      if (visOut) {
+        var big = SW.$('.rb__n', visOut), small = SW.$('.rb__s', visOut);
+        if (prof === 'bb') { big.textContent = '12 in.'; small.textContent = 'between battens, ' + label.toLowerCase(); }
+        else { big.textContent = String(n); small.textContent = 'courses on an 8 ft wall, ' + label; }
+      }
       if (motion && lines.animate) {
         lines.setAttribute('pathLength', '1');
         lines.style.strokeDasharray = '1';
@@ -1167,14 +1184,7 @@ SW.mod('media-fallback', function (SW) {
   var skip = function () { root.classList.add('sw-skip'); ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (e) { window.removeEventListener(e, skip); }); };
   ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (e) { window.addEventListener(e, skip, { passive: true }); });
 
-  // stacked layers (no pin): each course clips in as it arrives
   var layerEls = SW.$$('#layers .layer');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (ens) {
-      ens.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
-    }, { rootMargin: '0px 0px -5% 0px', threshold: 0.02 });
-    layerEls.forEach(function (l) { io.observe(l); });
-  } else layerEls.forEach(function (l) { l.classList.add('is-in'); });
 
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
@@ -1202,11 +1212,14 @@ SW.mod('media-fallback', function (SW) {
   var counter = sec && SW.$('[data-layer-no]', sec);
   if (sec && stage && layerEls.length) {
     ScrollTrigger.matchMedia({
-      '(min-width: 1200px) and (min-height: 760px)': function () {
+      '(min-width: 1200px) and (min-height: 760px) and (max-height: 1600px)': function () {
         sec.classList.add('is-pinned');
         var n = layerEls.length;
         var rest = layerEls.slice(1);
-        gsap.set(rest, { y: -46, autoAlpha: 0 });
+        // empty slots are drawn first; each course fills its slot and laps over the nail line below
+        // slots open only as the section arrives, so a page seen from the top shows the finished wall
+        var empty = function () { if (tl.progress() === 0) { gsap.set(rest, { '--fill': 0 }); if (counter) counter.textContent = '01'; } };
+        var full = function () { gsap.set(rest, { '--fill': 1 }); if (counter) counter.textContent = '07'; };
         var tl = gsap.timeline({
           defaults: { ease: 'power2.out', duration: 1 },
           scrollTrigger: {
@@ -1218,15 +1231,24 @@ SW.mod('media-fallback', function (SW) {
             }
           }
         });
-        rest.forEach(function (l, i) { tl.to(l, { y: 0, autoAlpha: 1 }, i); });
-        if (counter) counter.textContent = '01';
+        rest.forEach(function (l, i) { tl.fromTo(l, { '--fill': 0 }, { '--fill': 1, immediateRender: false }, i + 0.25); });
+        var gate = ScrollTrigger.create({ trigger: sec, start: 'top 85%', onEnter: empty, onLeaveBack: full });
+        if (!gate.isActive && gate.progress === 0) full();
+        // counter follows the gate
         return function () {
+          gate.kill();
           sec.classList.remove('is-pinned');
-          gsap.set(layerEls, { clearProps: 'all' });
+          layerEls.forEach(function (l) { l.style.removeProperty('--fill'); });
           if (counter) counter.textContent = '07';
         };
       }
     });
+  }
+
+  // the winter break: a slow push-in, never hidden
+  var brk = SW.$('#winter .break__crop');
+  if (brk) {
+    gsap.fromTo(brk, { '--zoom': 1.12 }, { '--zoom': 1, ease: 'none', scrollTrigger: { trigger: brk, start: 'top bottom', end: 'bottom top', scrub: true } });
   }
 
   if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(function () { ScrollTrigger.refresh(); });
