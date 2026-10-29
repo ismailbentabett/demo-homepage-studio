@@ -92,6 +92,65 @@
     });
   }
 
+  // ---------- review text: curly apostrophes ----------
+  Array.prototype.forEach.call(document.querySelectorAll('.rev blockquote p'), function (p) {
+    if (p.textContent.indexOf("'") > -1) p.textContent = p.textContent.replace(/'/g, '’');
+  });
+
+  // ---------- hero: the ruler drops onto the real gutter, runs to its outlet, down the spout ----------
+  // Points traced on the (mirrored) hero photo, in the image's own 0-1 coordinates.
+  var heroEl = document.querySelector('.hero');
+  var joinSvg = document.querySelector('[data-hero-join]');
+  var joinRun = joinSvg && joinSvg.querySelector('.hero__join-run');
+  var joinTicks = joinSvg && joinSvg.querySelector('.hero__join-ticks');
+  var joinDrop = joinSvg && joinSvg.querySelector('.hero__join-drop');
+  var heroImg = document.querySelector('.hero__img');
+  var heroLine = document.querySelector('.hero__line');
+  var join = { len: 0, path: null };
+  function lipV(u) { var x = u * 800; return (262 - .325 * (x - 170)) / 533; }
+  var SPOUT = [[.47, .47], [.468, .544], [.48, .713], [.548, .825], [.66, .976]];
+  function buildJoin() {
+    if (!joinSvg || !heroImg || !heroLine || !heroEl) return;
+    if (!window.matchMedia('(min-width: 900px)').matches || !heroImg.naturalWidth) { join.len = 0; return; }
+    var hr = heroEl.getBoundingClientRect(), ir = heroImg.getBoundingClientRect(), lr = heroLine.getBoundingClientRect();
+    var W = ir.width, H = ir.height, iw = heroImg.naturalWidth, ih = heroImg.naturalHeight;
+    var s = Math.max(W / iw, H / ih), w = iw * s, h = ih * s;
+    var pos = (getComputedStyle(heroImg).objectPosition || '50% 50%').split(' ');
+    var px = (parseFloat(pos[0]) || 50) / 100, py = (parseFloat(pos[1]) || 50) / 100;
+    var ox = (W - w) * px, oy = (H - h) * py;
+    var L = ir.left - hr.left, T = ir.top - hr.top;
+    var pt = function (u, v) { return [L + W - (ox + u * w), T + oy + v * h]; };
+    var sx = lr.left - hr.left + heroLine.offsetWidth, sy = lr.top + lr.height / 2 - hr.top;
+    // where the lip sits under the ruler's end
+    var u0 = (W - (sx + 36 - L) - ox) / w;
+    u0 = Math.min(.98, Math.max(.56, u0));
+    var pts = [];
+    for (var u = u0; u > .485; u -= .02) pts.push(pt(u, lipV(u) - .012));
+    SPOUT.forEach(function (p) { pts.push(pt(p[0], p[1])); });
+    var f = function (n) { return n.toFixed(1); };
+    var d = 'M' + f(sx) + ' ' + f(sy) + ' L' + f(pts[0][0]) + ' ' + f(pts[0][1]);
+    for (var i = 1; i < pts.length; i++) d += ' L' + f(pts[i][0]) + ' ' + f(pts[i][1]);
+    joinRun.setAttribute('d', d);
+    // ticks across the lip, every ~10% of the photo's run
+    var t = '', lipN = Math.floor((u0 - .49) / .06);
+    for (var k = 0; k <= lipN; k++) {
+      var uu = u0 - k * .06, a = pt(uu, lipV(uu) - .012);
+      t += 'M' + f(a[0]) + ' ' + f(a[1] - 8) + ' L' + f(a[0]) + ' ' + f(a[1] + 1) + ' ';
+    }
+    joinTicks.setAttribute('d', t || 'M0 0');
+    join.len = joinRun.getTotalLength();
+    join.path = joinRun;
+    var rest = joinRun.getPointAtLength(join.len * .5);
+    var out = pt(.481, .47);
+    joinDrop.setAttribute('cx', f(out[0])); joinDrop.setAttribute('cy', f(out[1]));
+    if (rest) joinSvg.style.setProperty('--jl', join.len.toFixed(1));
+  }
+  var joinQ = 0;
+  function queueJoin() { cancelAnimationFrame(joinQ); joinQ = requestAnimationFrame(buildJoin); }
+  if (heroImg) { if (heroImg.complete) buildJoin(); else heroImg.addEventListener('load', buildJoin); }
+  window.addEventListener('resize', queueJoin);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(queueJoin);
+
   // ---------- motion ----------
   var reduced = window.SW ? SW.reduced : !root.classList.contains('sw-motion');
   if (reduced || !root.classList.contains('sw-motion')) return;
@@ -141,6 +200,13 @@
     var skip = function () { tl.progress(1); off(); };
     var off = function () { ['wheel', 'keydown', 'touchstart'].forEach(function (e) { window.removeEventListener(e, skip); }); };
     ['wheel', 'keydown', 'touchstart'].forEach(function (e) { window.addEventListener(e, skip, { passive: true }); });
+    if (join.len && joinRun && joinDrop) {
+      var jp = { p: 0 };
+      tl.fromTo(joinSvg, { '--jo': join.len }, { '--jo': 0, duration: .5, ease: 'power1.inOut' }, .45);
+      tl.fromTo(jp, { p: 0 }, { p: 1, duration: .5, ease: 'power2.in', onUpdate: function () {
+        var q = join.path.getPointAtLength(jp.p * join.len); joinDrop.setAttribute('cx', q.x.toFixed(1)); joinDrop.setAttribute('cy', q.y.toFixed(1));
+      } }, .7);
+    }
     tl.eventCallback('onComplete', off);
   }
 
@@ -164,6 +230,14 @@
         fits[0] && fits[0].classList.add('is-on');
         ScrollTrigger.refresh();
         return function () { st.kill(); how.classList.remove('is-story'); how.style.removeProperty('--sw-p'); fits.forEach(function (f) { f.classList.remove('is-on'); }); };
+      }
+    });
+    var brk = document.querySelector('.break__fig');
+    if (brk) ScrollTrigger.matchMedia({
+      '(min-width: 640px)': function () {
+        var tw = gsap.fromTo(brk, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', ease: 'none',
+          scrollTrigger: { trigger: brk, start: 'top 85%', end: 'top 35%', scrub: true } });
+        return function () { tw.scrollTrigger && tw.scrollTrigger.kill(); tw.kill(); gsap.set(brk, { clearProps: 'clipPath' }); };
       }
     });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });

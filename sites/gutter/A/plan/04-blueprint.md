@@ -34,3 +34,7 @@ Fixed left rail (≥1100px, outside the sections): `.rail` = 3px copper line (#C
 
 ## Open issues
 (none yet)
+
+## Round 1
+Elevate (first screen + photo): the hero's copper ruler now drops off its 40 ft end onto the real gutter lip in the (mirrored) hero photo, runs it to the outlet and down the spout, with the drop rolling the whole path on intro; the three frames (hero, new end-cap detail in #services, break) share one grade, and the break is cropped to the roofline with the run + ft ticks sitting on the real eave and a scroll clip that follows the run. Fixes: inactive story steps keep full-contrast text (state shown by icon/dot only), story run falls 4deg, h1 names Memphis gutters, one action name ("Price my run" / "Price this run"), stacked tools head, compact phone service list, 16px ink card body, 2px Sample tags, footer links 48px in 2 columns, bar spacer in footer tone, curly apostrophes in review text (app.js).
+Open: on phones the break photo still shows the whole house (a tighter crop would upscale the 1170 file).

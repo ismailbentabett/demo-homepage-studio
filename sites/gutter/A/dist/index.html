@@ -306,7 +306,7 @@ html.lenis, html.lenis body { height: auto; }
 html { background: var(--paper); }
 body {
   font-family: var(--f-text); font-size: var(--fs-0); line-height: 1.5; color: var(--ink);
-  background: var(--paper); font-variant-numeric: tabular-nums; padding-bottom: 80px;
+  background: var(--paper); font-variant-numeric: tabular-nums;
 }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; }
 h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -.03em; line-height: .96; max-width: 13ch; }
@@ -315,7 +315,7 @@ h3 { font-size: var(--fs-1); font-weight: 650; line-height: 1.15; letter-spacing
 p { text-wrap: pretty; }
 :focus-visible { outline: 3px solid var(--focus, var(--signal)); outline-offset: 3px; }
 ::selection { background: var(--copper); color: #FFFFFF; }
-img { filter: saturate(.82) contrast(1.06) sepia(.12) brightness(1.02); }
+img { filter: saturate(.66) sepia(.18) contrast(1.06) brightness(1.01); }
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .i { width: 1.2em; height: 1.2em; flex: none; }
 .wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--side); }
@@ -323,7 +323,7 @@ img { filter: saturate(.82) contrast(1.06) sepia(.12) brightness(1.02); }
 .lead { font-size: var(--fs-1); line-height: 1.4; max-width: 34ch; color: var(--ink-t); }
 .sample-tag {
   font: 500 13px/1.3 var(--f-mono); letter-spacing: .02em; text-transform: none;
-  padding: 2px 8px; border: 1px solid currentColor; border-radius: 999px; vertical-align: .1em; white-space: nowrap;
+  padding: 2px 8px; border: 1px solid currentColor; border-radius: var(--radius); vertical-align: .1em; white-space: nowrap;
 }
 .hide-sm { display: none; }
 .skip-link { padding: 0 18px; }
@@ -694,7 +694,9 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
   .sw-motion .hero__photo { transition: clip-path 600ms var(--ease-io) 150ms; }
   .sw-motion .hero__drop { transform: translateX(var(--dx, 0)) rotate(-45deg); }
   .sw-motion .fit { transition: opacity var(--t-page) var(--ease-out); }
-  .sw-motion .how.is-story .fit:not(.is-on) { opacity: .38; }
+  .sw-motion .how.is-story .fit:not(.is-on) .fit__art { color: rgb(247 242 232 / .32); }
+  .sw-motion .how.is-story .fit:not(.is-on)::before { border-color: rgb(247 242 232 / .32); }
+  .sw-motion .how.is-story .fit.is-on::before { background: var(--copper-hi); }
   .sw-motion .how.is-story .fit.is-on .fit__art { color: var(--copper-hi); }
   @media (min-width: 900px) {
     .sw-motion .how.is-story { height: calc(6 * 55svh + 100svh); padding-block: 0; }
@@ -740,6 +742,81 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
   .hero__cap { left: auto; right: var(--side); bottom: var(--s-5); max-width: 26ch; }
   .hang ul.svc-grid { padding-top: 34px; }
   .how__track ol.fits { padding: 40px 0 0; }
+}
+
+/* ================= round 1 ================= */
+/* one grade on every frame: cool shadows, copper-warm highlights */
+.graded { position: relative; }
+.graded::after, .hero__photo::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgb(30 60 96 / .10), rgb(150 71 27 / .12)); mix-blend-mode: multiply; opacity: 1; }
+.hero__img { transform: scaleX(-1); }
+
+/* hero: the h1 carries trade + town */
+.hero h1 { font-size: clamp(2.2rem, min(6.3vw, 7.3svh) + .1rem, 4.3rem); max-width: 17ch; line-height: .98; }
+.hero__join { display: none; }
+
+/* section heads: three different shapes */
+.sec-head--stack .lead { max-width: 52ch; font-size: var(--fs-0); color: var(--ink-t); }
+.sec-head--photo { display: grid; gap: var(--s-6); }
+.sec-head--photo .lead { color: var(--ink-t); }
+.svc-detail { margin: 0; overflow: hidden; border-radius: var(--radius); border-top: 3px solid var(--copper); }
+.svc-detail__img { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; object-position: 60% 50%; }
+.svc-detail figcaption { position: absolute; left: 0; bottom: 0; z-index: 1; display: flex; gap: 10px; align-items: baseline; padding: 8px 12px; background: rgb(36 26 18 / .88); color: var(--paper); font-size: 14px; max-width: 34ch; }
+.svc-detail figcaption span { font: 500 13px/1 var(--f-mono); color: var(--copper-hi); white-space: nowrap; }
+
+/* service card body: 16px+, full ink */
+.svc p:not(.svc__mark) { color: var(--ink); font-size: var(--fs-0); }
+
+/* break: tighter on the roofline, the run sits on the real gutter */
+.break__ticks { position: absolute; left: 0; right: 0; top: calc(34% + 14px); z-index: 1; list-style: none; margin: 0; padding: 0 var(--side);
+  display: flex; justify-content: space-between; font: 500 13px/1 var(--f-mono); color: var(--paper); }
+.break__ticks li { background: rgb(36 26 18 / .82); padding: 4px 6px; border-radius: var(--radius); }
+.break__ticks li:nth-child(2), .break__ticks li:nth-child(3) { display: none; }
+.break__run { top: 34%; }
+
+/* footer: tap-height links + the bar spacer takes the footer tone */
+.site-foot { padding-bottom: calc(var(--s-9) + 72px + env(safe-area-inset-bottom)); }
+.mbar { grid-template-columns: 1fr 1fr 1.35fr; }
+.mbar .btn { white-space: nowrap; padding: 0 8px; }
+
+@media (max-width: 639.98px) {
+  /* services: one compact list hung on the run */
+  .hang ul.svc-grid { padding-top: 0; gap: 0; border-top: 3px solid var(--copper); }
+  .svc { background: transparent; border: 0; border-bottom: 1px solid rgb(43 32 24 / .18); border-radius: 0; padding: 18px 0 10px 60px; gap: 6px; }
+  .svc .hanger { top: 0; left: 19px; height: 16px; }
+  .svc__glyph { position: absolute; left: 0; top: 22px; width: 40px; height: 40px; }
+  .svc .svc__mark { position: absolute; left: 0; top: 70px; width: 44px; text-align: center; font-size: 12px; }
+  .svc h3 { font-size: 1.2rem; }
+  .foot__nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+  .foot__nav a { padding-block: 12px; }
+}
+@media (min-width: 640px) {
+  .break__fig { height: clamp(420px, 41vw, 640px); min-height: 0; }
+  .break__img { transform: none; object-position: 50% 0%; }
+  .break__run { top: 62%; }
+  .break__ticks { top: calc(62% + 16px); }
+  .break__ticks li:nth-child(2), .break__ticks li:nth-child(3) { display: block; }
+}
+@media (min-width: 900px) {
+  body { padding-bottom: 0; }
+  .site-foot { padding-bottom: var(--s-9); }
+  .hero__text { width: 58%; }
+  .hero__join { display: block; position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; }
+  .hero__join-run { fill: none; stroke: var(--copper); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+  .hero__join-ticks { fill: none; stroke: var(--copper); stroke-width: 1.5; }
+  .hero__join-drop { fill: var(--copper); stroke: var(--paper); stroke-width: 2; }
+  .sec-head--photo { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: var(--s-8); align-items: end; }
+  .sec-head--stack { max-width: 62ch; }
+  /* the story run falls a visible pitch */
+  .how__run { --fall: 4deg; }
+  .fit { transform: translateY(calc(var(--k) * 13.5px)); }
+  .how .sec-head { margin-bottom: var(--s-6); }
+}
+@media (min-width: 1100px) {
+  .hero__text { width: 56%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sw-motion .hero__join-run { stroke-dasharray: var(--jl, 0) var(--jl, 0); stroke-dashoffset: var(--jo, 0); }
 }
 
 </style>
@@ -815,26 +892,31 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
         <li>0 ft</li><li>10 ft</li><li>20 ft</li><li>30 ft</li><li>40 ft · fall 1 in</li>
       </ol>
     </div>
-    <p class="kicker">Seamless gutters · cleaning · downspouts · Memphis, TN</p>
-    <h1 id="hero-h" data-split="lines">A quarter inch every ten feet.</h1>
+    <p class="kicker">Seamless gutters, cleaning and downspouts</p>
+    <h1 id="hero-h" data-split="lines">Memphis gutters, hung a quarter inch every ten feet.</h1>
     <p class="lead">That’s the fall we hang every run at. The water runs to the outlet, down the drop and away from your foundation, not over the front edge.</p>
     <div class="hero__ctas">
       <a class="btn btn-call btn--primary" href="tel:+19015550113"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (901) 555-0113</span></a>
       <a class="btn btn--secondary" href="sms:+19015550113"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg><span>Text a photo of your gutter</span></a>
     </div>
-    <p class="proofline"><span><span data-open-now>Mon–Fri 7 am – 5 pm · Sat 8 am – noon</span></span> <span>Germantown and nearby</span> <span>4.8 from 184 reviews <span class="sample-tag">Sample rating</span></span> <span>Gutters from $9/ft <span class="sample-tag">Sample pricing</span></span></p>
+    <p class="proofline"><span><span data-open-now>Mon–Fri 7 am – 5 pm · Sat 8 am – noon</span></span> <span>Memphis, Germantown and nearby</span> <span>4.8 from 184 reviews <span class="sample-tag">Sample rating</span></span> <span>Gutters from $9/ft <span class="sample-tag">Sample pricing</span></span></p>
     <a class="btn--text hero__price" href="#size">Price my run<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
   </div>
+  <svg class="hero__join" aria-hidden="true" focusable="false" data-hero-join><path class="hero__join-run" d="M0 0"/><path class="hero__join-ticks" d="M0 0"/><circle class="hero__join-drop" r="7" cx="-20" cy="-20"/></svg>
 </section>
 
 <section id="services" class="services t-mid" data-layout="hung-row" aria-labelledby="svc-h">
   <div class="wrap">
-    <header class="sec-head sec-head--split">
+    <header class="sec-head sec-head--photo">
       <div>
         <p class="kicker">What we hang, clean and fix</p>
         <h2 id="svc-h">Eight jobs, all on the same run.</h2>
+        <p class="lead">Most overflow isn’t the gutter. It’s a run hung flat, or one outlet doing the work of three. We start with where the water goes.</p>
       </div>
-      <p class="lead">Most overflow isn’t the gutter. It’s a run hung flat, or one outlet doing the work of three. We start with where the water goes.</p>
+      <figure class="svc-detail graded">
+        <img src="media/equip-end-cap-1170.webp" srcset="media/equip-end-cap-1170.webp 1170w, media/equip-end-cap.webp 2340w" alt="White K-style gutter end cap lying on a gray concrete floor" width="1170" height="878" loading="lazy" decoding="async" data-photo="equip-end-cap" data-slot="detail" class="svc-detail__img" sizes="(min-width: 900px) 34vw, 100vw">
+        <figcaption><span aria-hidden="true">0 ft</span> A K-style end cap, the first fitting on every run.</figcaption>
+      </figure>
     </header>
     <div class="hang">
       <div class="run hang__run" aria-hidden="true"></div>
@@ -843,73 +925,73 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
         <li class="svc">
           <span class="hanger" aria-hidden="true"></span>
           <svg class="svc__glyph" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><use href="#p-1"/></svg>
-          <p class="svc__mark">01 · Seamless gutters</p>
+          <p class="svc__mark">10 ft</p>
           <h3>Seamless gutter installation</h3>
           <p>Aluminum gutters formed on site in one piece per run and hung at a steady quarter-inch pitch.</p>
-          <a class="btn btn--text" href="#contact" data-service="Seamless gutters">Price it</a>
+          <a class="btn btn--text" href="#contact" data-service="Seamless gutters">Price this run</a>
         </li>
         
         <li class="svc">
           <span class="hanger" aria-hidden="true"></span>
           <svg class="svc__glyph" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><use href="#p-2"/></svg>
-          <p class="svc__mark">02 · 6-inch gutters</p>
+          <p class="svc__mark">20 ft</p>
           <h3>Six-inch gutter upgrades</h3>
           <p>Larger troughs and 3x4 downspouts for long ranch roofs that overflow in spring storms.</p>
-          <a class="btn btn--text" href="#contact" data-service="6-inch gutters">Price it</a>
+          <a class="btn btn--text" href="#contact" data-service="6-inch gutters">Price this run</a>
         </li>
         
         <li class="svc">
           <span class="hanger" aria-hidden="true"></span>
           <svg class="svc__glyph" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><use href="#p-3"/></svg>
-          <p class="svc__mark">03 · Cleaning</p>
+          <p class="svc__mark">30 ft</p>
           <h3>Gutter cleaning</h3>
           <p>Gutters scooped by hand, downspouts flushed, and every bag of debris hauled away.</p>
-          <a class="btn btn--text" href="#contact" data-service="Cleaning">Price it</a>
+          <a class="btn btn--text" href="#contact" data-service="Cleaning">Price this run</a>
         </li>
         
         <li class="svc">
           <span class="hanger" aria-hidden="true"></span>
           <svg class="svc__glyph" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><use href="#p-4"/></svg>
-          <p class="svc__mark">04 · Downspouts</p>
+          <p class="svc__mark">40 ft</p>
           <h3>Downspout additions</h3>
           <p>Extra drops and elbows placed where the water collects, turned away from the foundation.</p>
-          <a class="btn btn--text" href="#contact" data-service="Downspouts">Price it</a>
+          <a class="btn btn--text" href="#contact" data-service="Downspouts">Price this run</a>
         </li>
         
         <li class="svc">
           <span class="hanger" aria-hidden="true"></span>
           <svg class="svc__glyph" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><use href="#p-5"/></svg>
-          <p class="svc__mark">05 · Re-pitching</p>
+          <p class="svc__mark">50 ft</p>
           <h3>Re-pitching and re-hanging</h3>
           <p>Sagging or flat runs re-hung on hidden hangers so the water runs to the outlet.</p>
-          <a class="btn btn--text" href="#contact" data-service="Re-pitching">Price it</a>
+          <a class="btn btn--text" href="#contact" data-service="Re-pitching">Price this run</a>
         </li>
         
         <li class="svc">
           <span class="hanger" aria-hidden="true"></span>
           <svg class="svc__glyph" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><use href="#p-6"/></svg>
-          <p class="svc__mark">06 · Guards</p>
+          <p class="svc__mark">60 ft</p>
           <h3>Gutter guards</h3>
           <p>Micro-mesh or screen guards picked for sweetgum balls, oak tassels and pine straw.</p>
-          <a class="btn btn--text" href="#contact" data-service="Guards">Price it</a>
+          <a class="btn btn--text" href="#contact" data-service="Guards">Price this run</a>
         </li>
         
         <li class="svc">
           <span class="hanger" aria-hidden="true"></span>
           <svg class="svc__glyph" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><use href="#p-7"/></svg>
-          <p class="svc__mark">07 · Fascia</p>
+          <p class="svc__mark">70 ft</p>
           <h3>Fascia repair</h3>
           <p>Soft fascia boards replaced and painted before new gutters go back up.</p>
-          <a class="btn btn--text" href="#contact" data-service="Fascia">Price it</a>
+          <a class="btn btn--text" href="#contact" data-service="Fascia">Price this run</a>
         </li>
         
         <li class="svc">
           <span class="hanger" aria-hidden="true"></span>
           <svg class="svc__glyph" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><use href="#p-8"/></svg>
-          <p class="svc__mark">08 · Drain lines</p>
+          <p class="svc__mark">80 ft</p>
           <h3>Underground drain lines</h3>
           <p>Downspouts piped underground to a pop-up emitter, away from loess soil that washes out.</p>
-          <a class="btn btn--text" href="#contact" data-service="Drain lines">Price it</a>
+          <a class="btn btn--text" href="#contact" data-service="Drain lines">Price this run</a>
         </li>
         
       </ul>
@@ -921,7 +1003,7 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
   <div class="how__stage">
     <div class="wrap">
       <header class="sec-head">
-        <p class="kicker">How we hang a run · six fittings</p>
+        <p class="kicker">Six fittings, end to end</p>
         <h2 id="how-h">From the end cap to the splash block.</h2>
       </header>
       <div class="how__track">
@@ -941,11 +1023,9 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
 
 <section id="size" class="tools t-paper" data-layout="workbench" data-hook="size-check" aria-labelledby="size-h">
   <div class="wrap">
-    <header class="sec-head sec-head--split">
-      <div>
-        <p class="kicker">Two quick checks · no sign-up</p>
-        <h2 id="size-h">Price your run before anyone climbs a ladder.</h2>
-      </div>
+    <header class="sec-head sec-head--stack">
+      <p class="kicker">Two quick checks, no sign-up</p>
+      <h2 id="size-h">Price your run before anyone climbs a ladder.</h2>
       <p class="lead">Rules of thumb we use on the first visit. We confirm them with a tape on your fascia.</p>
     </header>
     <p class="nojs-note" data-nojs-only>These checks need JavaScript. Call <a class="tel-plain" href="tel:+19015550113">(901) 555-0113</a> and we’ll work it out with you.</p>
@@ -974,7 +1054,7 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
           </div>
         </div>
         <p class="tool__price">Seamless gutters $9 to $24 per linear ft <span class="sample-tag">Sample pricing</span></p>
-        <button class="btn btn--primary" type="button" data-sc-quote data-js-only>Put this on my quote</button>
+        <button class="btn btn--primary" type="button" data-sc-quote data-js-only>Add to my run price</button>
       </form>
 
       <form class="tool t-light" data-drop-count aria-labelledby="dc-h" novalidate>
@@ -994,16 +1074,17 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
         <p class="tool__verdict" aria-live="polite" data-dc-out>3 downspouts on a 70 ft run, about one every 23 ft.</p>
         <p class="tool__why">A 5-inch gutter wants a drop about every 30 ft, a 6-inch about every 40. A run that turns a corner gets one on each side.</p>
         <p class="tool__price">Downspout addition $175 to $900 <span class="sample-tag">Sample pricing</span></p>
-        <button class="btn btn--primary" type="button" data-dc-quote data-js-only>Put this on my quote</button>
+        <button class="btn btn--primary" type="button" data-dc-quote data-js-only>Add to my run price</button>
       </form>
     </div>
   </div>
 </section>
 
 <section class="break t-deep" data-layout="bleed" aria-label="A brick house with downspouts at both corners">
-  <figure class="break__fig" data-reveal="clip">
+  <figure class="break__fig graded">
     <img src="media/hero-A1-1170.webp" srcset="media/hero-A1-1170.webp 1170w, media/hero-A1.webp 2340w" alt="Red brick two-story house with white gutters and downspouts under bare oak trees" width="1170" height="878" loading="lazy" decoding="async" data-photo="hero-A1" data-slot="break" class="break__img" sizes="100vw">
     <div class="run break__run" aria-hidden="true"></div>
+    <ol class="break__ticks" aria-hidden="true" role="list"><li>0 ft</li><li>20 ft</li><li>40 ft</li><li>60 ft · fall 1½ in</li></ol>
     <figcaption class="break__cap"><span class="break__mark" aria-hidden="true">fall ¼ in / 10 ft</span> Two stories of brick, a downspout at each corner, trees overhead.</figcaption>
   </figure>
 </section>
@@ -1064,32 +1145,32 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
     <ul class="revs" role="list" data-reveal-stagger>
       
       <li class="rev">
-        <p class="rev__stamp"><span>10 ft</span> · Memphis · Seamless gutter installation</p>
+        <p class="rev__stamp"><span>10 ft</span> Seamless gutter installation</p>
         <blockquote><p>Our old gutters ran almost flat, so water spilled over the front every storm. Darnell&#39;s crew formed new seamless gutters in the driveway and hung them with a real slope. The front walk stays dry now.</p></blockquote>
         <p class="rev__by">Tonya B., Memphis · 5/5 <span class="sample-tag">Sample review</span></p>
       </li>
       
       <li class="rev">
-        <p class="rev__stamp"><span>20 ft</span> · Germantown · Gutter guards</p>
+        <p class="rev__stamp"><span>20 ft</span> Gutter guards</p>
         <blockquote><p>The sweetgum in our yard fills the gutters every spring. They showed us the difference between screen and micro-mesh with the actual seed balls and put mesh on the back side only, where the tree hangs.</p></blockquote>
         <p class="rev__by">Mark E., Germantown · 5/5 <span class="sample-tag">Sample review</span></p>
       </li>
       
       <li class="rev">
-        <p class="rev__stamp"><span>30 ft</span> · Bartlett · Underground drain lines</p>
+        <p class="rev__stamp"><span>30 ft</span> Underground drain lines</p>
         <blockquote><p>One downspout was dumping water at the corner of the house and the soil kept washing away. They added a second drop and ran it underground to the side yard. The corner has stayed dry since.</p></blockquote>
         <p class="rev__by">Alicia J., Bartlett · 5/5 <span class="sample-tag">Sample review</span></p>
       </li>
       
       
       <li class="rev">
-        <p class="rev__stamp"><span>50 ft</span> · Cordova · Fascia repair</p>
+        <p class="rev__stamp"><span>50 ft</span> Fascia repair</p>
         <blockquote><p>The back gutter sagged in two places. They found rotted fascia behind it, replaced the boards and re-hung the run. The repair took a day longer than planned because of the wood, but they called ahead.</p></blockquote>
         <p class="rev__by">Rita P., Cordova · 4/5 <span class="sample-tag">Sample review</span></p>
       </li>
       
       <li class="rev">
-        <p class="rev__stamp"><span>60 ft</span> · Lakeland · Six-inch gutter upgrades</p>
+        <p class="rev__stamp"><span>60 ft</span> Six-inch gutter upgrades</p>
         <blockquote><p>Our long ranch roof overflowed at the middle every heavy rain. Six-inch gutters and bigger downspouts fixed it. They explained the sizing with a sketch on the back of the estimate.</p></blockquote>
         <p class="rev__by">Bill H., Lakeland · 5/5 <span class="sample-tag">Sample review</span></p>
       </li>
@@ -1176,7 +1257,7 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
 <section id="contact" class="contact t-deep" data-layout="splash" aria-labelledby="ct-h">
   <div class="wrap contact__in">
     <div class="contact__side">
-      <p class="kicker">Get a number</p>
+      <p class="kicker">Price my run</p>
       <h2 id="ct-h">Tell us where the water lands.</h2>
       <p class="lead">Send a photo of the corner where the water comes over. We’ll tell you if it’s a cleaning or a new drop.</p>
       <div class="contact__ctas">
@@ -1281,7 +1362,7 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
         </ul>
       </nav>
       <p class="foot__demo">Sample website by Site Sledge. Business details are illustrative.</p>
-      <div class="foot__credits"><p>Photos</p><ul class="credits"><li>Photo by Shixart1985 on <a href="https://commons.wikimedia.org/wiki/File:Roof_gutter_under_cloudy_sky_with_water_downspout_on_a_building.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Andre Carrotflower on <a href="https://commons.wikimedia.org/wiki/File:Louis_E._Moschel_House,_Buffalo,_New_York_-_20211231.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul></div>
+      <div class="foot__credits"><p>Photos</p><ul class="credits"><li>Photo by Shixart1985 on <a href="https://commons.wikimedia.org/wiki/File:Roof_gutter_under_cloudy_sky_with_water_downspout_on_a_building.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener license" target="_blank">CC BY 2.0</a></li><li>Photo by Stilfehler on <a href="https://commons.wikimedia.org/wiki/File:K-Style_Rain_Gutter_Piece_04.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Andre Carrotflower on <a href="https://commons.wikimedia.org/wiki/File:Louis_E._Moschel_House,_Buffalo,_New_York_-_20211231.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul></div>
       <p class="foot__copy">© 2026 Quarter-Inch Gutter Co.</p>
     </div>
   </div>
@@ -1289,8 +1370,8 @@ input[type="radio"] { accent-color: var(--copper); width: 18px; height: 18px; }
 
 <nav class="mbar" data-mobilebar aria-label="Quick contact">
   <a class="btn btn--primary" href="tel:+19015550113"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call</span></a>
-  <a class="btn btn--secondary" href="sms:+19015550113"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg><span>Text a photo</span></a>
-  <a class="btn btn--secondary" href="#contact">Quote</a>
+  <a class="btn btn--secondary" href="sms:+19015550113"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg><span>Text</span></a>
+  <a class="btn btn--secondary" href="#contact">Price my run</a>
 </nav>
 <script type="application/json" id="sw-facts">{"biz":{"name":"Quarter-Inch Gutter Co.","short":"Quarter-Inch","phone":"(901) 555-0113","phoneE164":"+19015550113","sms":true,"email":"hello@quarter-inch-gutter.example","city":"Memphis","state":"TN","timezone":"America/Chicago","areas":["Germantown","Collierville","Bartlett","Cordova","Lakeland","Arlington"],"zips":["38104","38111","38112","38117","38119","38120","38138","38139","38017","38133","38134","38016","38018","38002"],"hours":{"mon":["07:00","17:00"],"tue":["07:00","17:00"],"wed":["07:00","17:00"],"thu":["07:00","17:00"],"fri":["07:00","17:00"],"sat":["08:00","12:00"],"sun":null},"emergency":false},"services":[{"name":"Seamless gutter installation","short":"Seamless gutters"},{"name":"Six-inch gutter upgrades","short":"6-inch gutters"},{"name":"Gutter cleaning","short":"Cleaning"},{"name":"Downspout additions","short":"Downspouts"},{"name":"Re-pitching and re-hanging","short":"Re-pitching"},{"name":"Gutter guards","short":"Guards"},{"name":"Fascia repair","short":"Fascia"},{"name":"Underground drain lines","short":"Drain lines"}],"proof":{"label":"Sample","prices":[{"item":"Seamless aluminum gutters","from":"$9","to":"$24","unit":"per linear ft","note":"5- or 6-inch, hangers and outlets included"},{"item":"Gutter cleaning","from":"$135","to":"$450","note":"one or two stories, debris hauled away"},{"item":"Gutter guards","from":"$9","to":"$30","unit":"per linear ft","note":"screen or micro-mesh"},{"item":"Downspout addition","from":"$175","to":"$900","note":"longer with an underground line"},{"item":"Fascia repair","from":"$350","to":"$1,500","note":"depends on length of rotted board"}]},"hours":{"mon":["07:00","17:00"],"tue":["07:00","17:00"],"wed":["07:00","17:00"],"thu":["07:00","17:00"],"fri":["07:00","17:00"],"sat":["08:00","12:00"],"sun":null},"timezone":"America/Chicago","zips":["38104","38111","38112","38117","38119","38120","38138","38139","38017","38133","38134","38016","38018","38002"],"areas":["Germantown","Collierville","Bartlett","Cordova","Lakeland","Arlington"],"phone":"(901) 555-0113","phoneE164":"+19015550113"}</script>
 <script defer src="vendor/gsap.min.js"></script>
