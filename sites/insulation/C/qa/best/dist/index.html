@@ -288,7 +288,7 @@ html.lenis, html.lenis body { height: auto; }
 /* ---------- tones ---------- */
 .t-paper{ --bg:var(--paper); --fg:var(--ink); --muted:var(--muted-paper); --rule:#13212C1f; --accent:var(--brick); --accent-2:var(--field); --focus:var(--field); --btn-bg:var(--brick); --btn-ink:#fff; --btn2-bg:transparent; --btn2-ink:var(--ink); --btn2-line:var(--ink); --band-ink:rgba(29,90,138,.34); --card:#fff; }
 .t-mid{ --bg:var(--mid); --fg:var(--ink); --muted:var(--muted-paper); --rule:#13212C26; --accent:var(--brick); --accent-2:var(--field); --focus:var(--field); --btn-bg:var(--brick); --btn-ink:#fff; --btn2-bg:transparent; --btn2-ink:var(--ink); --btn2-line:var(--ink); --band-ink:rgba(29,90,138,.34); --card:var(--paper); }
-.t-field{ --bg:var(--field); --fg:#fff; --muted:var(--muted-field); --rule:#FFFFFF33; --accent:#fff; --accent-2:#fff; --focus:var(--signal); --btn-bg:var(--brick); --btn-ink:#fff; --btn2-bg:var(--signal); --btn2-ink:var(--ink); --btn2-line:var(--signal); --band-ink:rgba(255,255,255,.2); --card:#235F90; }
+.t-field{ --bg:var(--field); --fg:#fff; --muted:var(--muted-field); --rule:#FFFFFF33; --accent:#fff; --accent-2:#fff; --focus:var(--signal); --btn-bg:var(--brick); --btn-ink:#fff; --btn2-bg:transparent; --btn2-ink:#fff; --btn2-line:#fff; --band-ink:rgba(255,255,255,.2); --card:#235F90; }
 .t-deep{ --bg:var(--deep); --fg:#fff; --muted:var(--muted-deep); --rule:#FFFFFF26; --accent:var(--signal); --accent-2:var(--signal); --focus:var(--signal); --btn-bg:var(--signal); --btn-ink:var(--deep); --btn2-bg:transparent; --btn2-ink:#fff; --btn2-line:#fff; --band-ink:rgba(255,255,255,.16); --card:#123450; }
 .t-brick{ --bg:var(--brick); --fg:#fff; --muted:#fff; --rule:#FFFFFF40; --accent:#fff; --accent-2:#fff; --focus:#fff; --btn-bg:#fff; --btn-ink:var(--brick); --btn2-bg:transparent; --btn2-ink:#fff; --btn2-line:#fff; --band-ink:rgba(255,255,255,.18); --card:#9A2B35; }
 .t-paper,.t-mid,.t-field,.t-deep,.t-brick{ background:var(--bg); color:var(--fg); }
@@ -325,8 +325,9 @@ a{ color:inherit; }
 @media (hover:hover){ .pin:hover .pin__bearing::before, .svc:hover .pin__bearing::before{ transform:rotate(calc(var(--brg,-22deg) - 14deg)); } }
 
 .band{ position:absolute; inset-inline:0; block-size:clamp(36px, 5vw, 64px); pointer-events:none; z-index:3;
-  background:repeating-linear-gradient(104deg, var(--band-ink) 0 2px, transparent 2px 10px);
-  background-position:calc(var(--sw-p, 0) * 900px) 0; transform:skewY(-2.4deg); }
+  background:repeating-linear-gradient(calc(104deg + var(--sw-p, 0) * 36deg), var(--band-ink) 0 2px, transparent 2px 10px);
+  transform:skewY(calc(-2.4deg + var(--sw-p, 0) * 4.8deg)); }
+.band--hero{ inset-inline:-10%; top:46%; block-size:clamp(90px, 14vw, 200px); z-index:0; transform:skewY(-6deg); --band-ink:rgba(255,255,255,.07); }
 .band--seam{ bottom:calc(clamp(36px, 5vw, 64px) / -2); }
 .band--top{ top:calc(clamp(36px, 5vw, 64px) / -2); bottom:auto; }
 
@@ -379,7 +380,8 @@ a{ color:inherit; }
 }
 
 /* ---------- hero ---------- */
-.hero{ min-height:calc(100svh - var(--header-h)); padding-block:var(--s-6) var(--s-9); display:flex; align-items:center; overflow:hidden; }
+.hero{ min-height:calc(100svh - var(--header-h)); padding-block:var(--s-6) var(--s-9); display:flex; align-items:center; overflow:hidden; position:relative; }
+.hero > .wrap{ position:relative; z-index:1; }
 .hero__grid{ display:grid; gap:var(--s-5); align-items:end; }
 .hero__h1{ font-size:var(--fs-h1); font-weight:800; font-variation-settings:"wdth" 118; line-height:.94; letter-spacing:-.03em; max-width:16ch; }
 .hero__title .pin{ margin-bottom:var(--s-4); }
@@ -406,28 +408,49 @@ a{ color:inherit; }
 .cmap__compass text{ font:500 13px var(--mono); fill:var(--label-field); }
 .plate{ position:absolute; left:2.5%; top:56.1%; width:30%; margin:0; z-index:2; }
 .plate__clip{ position:absolute; left:50%; top:-9px; width:18px; height:18px; margin-left:-9px; border-radius:999px; background:var(--brick); box-shadow:0 0 0 3px #fff; z-index:2; }
-.plate .plate__img{ display:block; width:100%; aspect-ratio:4/5; height:auto; object-fit:cover; object-position:8% 62%; border:6px solid #fff; box-shadow:0 8px 24px rgba(14,42,63,.22);
-  filter:saturate(.62) contrast(1.04) brightness(1.02) sepia(.06) hue-rotate(-4deg); }
-.plate::after{ content:""; position:absolute; left:6px; right:6px; top:6px; aspect-ratio:4/5; background:linear-gradient(180deg, rgba(220,231,239,.62), rgba(220,231,239,.18) 34%, rgba(14,42,63,0) 58%); mix-blend-mode:screen; pointer-events:none; }
-.plate__cap{ margin-top:var(--s-3); font:400 .8125rem/1.35 var(--mono); color:var(--label-field); max-width:30ch; }
+/* one shared lake-blue snow grade for every street plate */
+.plate__frame{ position:relative; display:block; border:6px solid #fff; background:#fff; box-shadow:0 8px 24px rgba(14,42,63,.22); isolation:isolate; }
+.plate__frame img{ display:block; width:100%; height:auto; object-fit:cover; filter:grayscale(1) contrast(1.12) brightness(1.06); }
+.plate__frame::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, #2E78B4, #0E2A3F); mix-blend-mode:screen; opacity:.5; pointer-events:none; }
+.plate__frame::before{ content:""; position:absolute; inset:0; z-index:1; background:#1D5A8A; mix-blend-mode:color; opacity:.55; pointer-events:none; }
+.plate .plate__img{ aspect-ratio:4/5; object-position:8% 62%; }
+.plate__cap{ margin-top:var(--s-3); font:400 .875rem/1.4 var(--mono); color:var(--label-field); max-width:30ch; }
+.mpin--hit circle{ fill:var(--signal); stroke:#fff; stroke-width:3; }
+.legend{ margin-top:var(--s-5); background:var(--deep); color:#fff; padding:var(--s-4) var(--s-5); border-top:4px solid var(--signal); }
+.legend__h{ font:700 .875rem/1.2 var(--display); font-variation-settings:"wdth" 140; letter-spacing:.06em; text-transform:uppercase; color:var(--signal); margin-bottom:var(--s-2); }
+.legend__list{ list-style:none; margin:0; padding:0; display:grid; gap:6px; }
+.legend__list li{ display:flex; align-items:center; gap:10px; font-size:1rem; line-height:1.3; }
+.legend__list b{ font:700 1rem/1.2 var(--display); font-variation-settings:"wdth" 120; margin-inline-end:6px; }
+.legend__dot{ flex:none; width:14px; height:14px; border-radius:999px; background:var(--signal); box-shadow:0 0 0 3px var(--deep), 0 0 0 4.5px #fff; }
 @media (max-width:639px){
-  .mpin:not(.mpin--city) text, .cmap__water-lab--s{ display:none; }
-  .mpin--city text{ font-size:34px; }
-  .cmap__water-lab{ font-size:24px; }
-  .plate{ width:30%; left:1.5%; top:63%; }
+  .hero__map{ aspect-ratio:auto; display:grid; grid-template-columns:minmax(0,4fr) minmax(0,6fr); gap:var(--s-5) var(--s-4); align-items:start; }
+  .cmap{ grid-column:1 / -1; aspect-ratio:800/720; height:auto; }
+  .mpin text{ font-size:28px; stroke-width:6px; }
+  .mpin:not(.mpin--b):not(.mpin--city) text, .cmap__compass{ display:none; }
+  .mpin--city text{ font-size:36px; }
+  .cmap__water-lab{ font-size:26px; letter-spacing:.2em; }
+  .cmap__water-lab{ transform:translateX(-230px); }
+  .plate{ position:relative; left:auto; top:auto; width:auto; transform:rotate(-2deg); margin-top:8px; }
   .plate__cap{ display:none; }
+  .legend{ margin:0; padding:var(--s-3) var(--s-4); }
+  .legend__list li{ font-size:.9375rem; }
+  .legend__list li span:last-child{ display:flex; flex-direction:column; }
 }
 @media (max-width:479px){ .hero__h1{ font-variation-settings:"wdth" 112; } }
 @media (min-width:640px){ .hero__h1{ font-variation-settings:"wdth" 128; } }
 @media (min-width:900px){
   .hero{ padding-block:var(--s-6) var(--s-8); }
-  .hero__grid{ grid-template-columns:minmax(0,5fr) minmax(0,7fr); grid-template-rows:auto 1fr; column-gap:var(--gutter); row-gap:var(--s-5); width:min(100% - 2*var(--margin), var(--max)); }
-  .hero__title{ grid-column:1 / -1; grid-row:1; position:relative; z-index:2; }
+  .hero{ min-height:calc(100svh - var(--header-h) - 112px); padding-block:var(--s-5) var(--s-7); }
+  .hero__grid{ grid-template-columns:minmax(0,5fr) minmax(0,7fr); grid-template-rows:auto 1fr; column-gap:var(--gutter); row-gap:var(--s-6); width:min(100% - 2*var(--margin), var(--max)); }
+  .hero__title{ grid-column:1 / -1; grid-row:1; position:relative; z-index:2; pointer-events:none; }
+  .hero__title *{ pointer-events:auto; }
   .hero__h1{ max-width:none; }
-  .hero__body{ grid-column:1; grid-row:2; align-self:center; position:relative; z-index:2; }
-  .hero__map{ grid-column:2; grid-row:2; margin:0; width:min(100%, calc((100svh - var(--header-h) - 360px) * 800 / 720)); justify-self:end; align-self:end; }
-  .plate{ transform:rotate(-2deg); }
-  .plate__cap{ width:210%; max-width:none; }
+  .hero__body{ grid-column:1; grid-row:2; align-self:start; position:relative; z-index:2; }
+  .hero__map{ grid-column:2; grid-row:1 / span 2; margin:0; width:min(100%, calc((100svh - var(--header-h) - 112px - 90px) * 800 / 720)); justify-self:end; align-self:end; }
+  .plate{ transform:rotate(-2deg); top:60%; width:27%; }
+  .plate__cap{ width:180%; max-width:none; }
+  .legend{ position:absolute; left:33%; bottom:0; margin:0; width:37%; min-width:240px; z-index:2; padding:var(--s-3) var(--s-4); }
+  .legend__list li{ font-size:.9375rem; white-space:nowrap; }
 }
 
 /* ---------- section heads ---------- */
@@ -439,6 +462,7 @@ a{ color:inherit; }
 
 /* ---------- story ---------- */
 .story{ padding-block:var(--pad-normal); }
+@media (min-width:900px){ .story{ padding-top:var(--s-8); } }
 .story__head{ margin-bottom:var(--s-7); }
 .story__head h2{ max-width:18ch; }
 .story__head .lead{ margin-top:var(--s-4); }
@@ -450,10 +474,18 @@ a{ color:inherit; }
 .smap__band{ fill:url(#hatch-l); }
 .smap__pin circle{ fill:var(--brick); stroke:#fff; stroke-width:2.5; }
 .smap__pin text{ font:700 13px var(--display); font-variation-settings:"wdth" 140; letter-spacing:.06em; text-transform:uppercase; fill:var(--ink); paint-order:stroke; stroke:#fff; stroke-width:3px; }
+@media (max-width:899px){ .smap__pin text{ font-size:30px; stroke-width:6px; } .smap__pin circle{ r:10px; } }
 .smap__county{ font:700 34px var(--display); font-variation-settings:"wdth" 150; letter-spacing:.2em; fill:#13212C2a; }
 .story__steps{ list-style:none; margin:0; padding:0; display:grid; gap:var(--s-6); }
 .step{ display:grid; gap:var(--s-5); background:#fff; border:1px solid var(--rule); padding:var(--s-5); }
-.step__house{ background:var(--paper); border:1px solid var(--rule); padding:var(--s-3); }
+.step__house{ background:var(--paper); border:1px solid var(--rule); padding:var(--s-3); position:relative; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:var(--s-3); align-items:center; }
+.splate{ margin:12px 0 0; position:relative; transform:rotate(-2deg); }
+.splate .plate__clip{ top:-9px; }
+.splate__img{ aspect-ratio:4/5; }
+.splate__cap{ margin-top:var(--s-2); font:400 .875rem/1.35 var(--mono); color:var(--muted); }
+.step[data-step-i="0"] .splate__img{ object-position:30% 40%; }
+.step[data-step-i="1"] .splate__img{ object-position:55% 30%; }
+.step[data-step-i="2"] .splate__img{ object-position:28% 50%; }
 .step__house svg{ width:100%; height:auto; }
 .step__text h3{ font-size:var(--fs-3); font-weight:780; font-variation-settings:"wdth" 118; line-height:1; margin-bottom:var(--s-3); }
 .step__era{ color:var(--muted); margin-bottom:var(--s-4); }
@@ -470,7 +502,7 @@ a{ color:inherit; }
 .seal path{ fill:none; stroke:var(--field); stroke-width:4; stroke-linecap:square; }
 .seal{ transition:opacity var(--t-page) var(--ease-out); }
 .plugs circle{ fill:var(--signal); stroke:var(--ink); stroke-width:1; }
-.hs-lab{ font:500 10px var(--mono); fill:var(--muted-paper); letter-spacing:.04em; }
+.hs-lab{ font:500 15px var(--mono); fill:var(--muted-paper); letter-spacing:.04em; }
 .sw-motion .step:not(.is-sealed) .seal{ opacity:0; }
 .step.is-sealed .leak{ opacity:.28; }
 @media (min-width:640px){
@@ -480,12 +512,17 @@ a{ color:inherit; }
   .story__stage{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:var(--s-7); align-items:start; }
   .story__map{ position:sticky; top:calc(var(--header-h) + 24px); margin:0; aspect-ratio:800/720; }
   .step{ grid-template-columns:1fr; }
-  .step__house{ max-width:520px; }
+  .step__house{ max-width:none; }
+  .story:not(.is-pinned) .smap__pin text{ font-size:19px; }
   .sw-motion .story.is-pinned .story__stage{ align-items:center; height:calc(100svh - var(--header-h) - 48px); }
   .sw-motion .story.is-pinned .story__map{ position:relative; top:0; max-height:100%; }
   .sw-motion .story.is-pinned .story__steps{ display:grid; }
   .sw-motion .story.is-pinned .step{ grid-area:1/1; grid-template-columns:minmax(0,6fr) minmax(0,5fr); opacity:0; visibility:hidden; transform:translateY(16px); transition:opacity var(--t-page) var(--ease-out), transform var(--t-page) var(--ease-out), visibility 0s linear var(--t-page); }
   .sw-motion .story.is-pinned .step.is-active{ opacity:1; visibility:visible; transform:none; transition-delay:0s; }
+  .sw-motion .story.is-pinned .splate{ transform:rotate(-7deg) translateY(18px); transition:transform var(--t-story) var(--ease-out); }
+  .sw-motion .story.is-pinned .step.is-active .splate{ transform:rotate(-2deg); }
+  .sw-motion .story.is-pinned .step{ grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:var(--s-6); }
+  .story.is-pinned .step__house{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); padding:var(--s-4); }
   .smap__pin text{ opacity:.0; transition:opacity var(--t-ui); }
   .smap__pin.is-on text, html:not(.sw-motion) .smap__pin text, .story:not(.is-pinned) .smap__pin text{ opacity:1; }
   .smap__pin.is-on circle{ fill:var(--signal); stroke:var(--brick); }
@@ -495,21 +532,24 @@ a{ color:inherit; }
 .services{ padding-block:var(--pad-loose) var(--pad-normal); }
 .svc-grid{ list-style:none; margin:0; padding:0; display:grid; gap:var(--s-6) var(--gutter); }
 .svc{ position:relative; background:var(--card); border:1px solid var(--rule); padding:var(--s-7) var(--s-5) var(--s-5); display:flex; flex-direction:column; gap:var(--s-3); transition:transform var(--t-ui) var(--ease-out); }
-.svc__band{ position:absolute; inset:0 0 auto; height:12px; background:repeating-linear-gradient(calc(90deg + var(--band-a, -14deg)), rgba(29,90,138,.5) 0 2px, transparent 2px 9px); background-position:calc(var(--sw-p,0) * 400px) 0; }
+.svc__band{ position:absolute; inset:0 0 auto; height:12px; background:repeating-linear-gradient(calc(76deg + var(--sw-p,0) * 36deg), rgba(29,90,138,.5) 0 2px, transparent 2px 9px); }
 .svc__top{ display:flex; justify-content:space-between; align-items:center; }
-.svc__num{ position:absolute; top:-16px; left:var(--s-5); display:inline-flex; align-items:center; gap:8px; background:var(--brick); color:#fff; font-size:var(--fs--1); padding:6px 12px 6px 8px; border-radius:999px; }
-.svc__num::before{ content:""; width:10px; height:10px; border-radius:999px; background:#fff; }
+.svc__where{ position:absolute; top:-17px; left:var(--s-5); max-width:calc(100% - 2 * var(--s-5)); display:inline-flex; align-items:center; gap:8px; background:var(--brick); color:#fff; font:700 .875rem/1.2 var(--display); font-variation-settings:"wdth" 125; letter-spacing:.03em; text-transform:uppercase; padding:7px 14px 7px 9px; border-radius:999px; }
+.svc__where::before{ content:""; flex:none; width:10px; height:10px; border-radius:999px; background:#fff; }
 .svc__icon{ width:44px; height:44px; color:var(--field); }
 .svc h3{ font-size:var(--fs-2); font-weight:780; font-variation-settings:"wdth" 115; }
-.svc p{ color:var(--muted); flex:1; }
+.svc p{ color:var(--muted); flex:1; font-size:var(--fs-0); }
 .svc .btn--text{ align-self:flex-start; }
 @media (hover:hover){ .svc:hover{ transform:translateY(-3px); } }
-@media (min-width:640px){ .svc-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } .svc:first-child{ grid-column:span 2; } }
+@media (min-width:640px){ .svc-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } .svc:first-child{ grid-column:1 / -1; } }
 @media (min-width:1100px){
-  .svc-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
-  .svc:first-child, .svc:last-child{ grid-column:span 2; }
-  .svc:first-child h3, .svc:last-child h3{ font-size:var(--fs-3); max-width:16ch; }
-  .svc:first-child p, .svc:last-child p{ max-width:44ch; font-size:var(--fs-1); }
+  .svc-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); row-gap:var(--s-7); }
+  .svc:first-child{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); column-gap:var(--s-8); align-items:end; padding-block:var(--s-8) var(--s-6); }
+  .svc:first-child .svc__top{ grid-column:1; grid-row:1 / span 3; align-self:start; justify-content:flex-start; }
+  .svc:first-child .svc__icon{ width:96px; height:96px; }
+  .svc:first-child h3{ grid-column:2; font-size:var(--fs-3); max-width:18ch; }
+  .svc:first-child p{ grid-column:2; max-width:52ch; font-size:var(--fs-1); }
+  .svc:first-child .btn--text{ grid-column:2; }
 }
 
 /* ---------- break: ice dam ---------- */
@@ -521,7 +561,7 @@ a{ color:inherit; }
 .icedam__steps li{ display:flex; gap:var(--s-4); align-items:baseline; color:var(--muted-deep); }
 .icedam__steps .mono{ flex:none; display:grid; place-items:center; width:32px; height:32px; border:2px solid var(--signal); border-radius:999px; color:#fff; font-size:var(--fs--1); }
 .icedam__line{ margin-top:var(--s-6); font:700 var(--fs-2)/1.15 var(--display); font-variation-settings:"wdth" 115; color:var(--signal); max-width:24ch; }
-.eave{ order:2; width:100%; height:auto; aspect-ratio:1200/600; margin-top:var(--s-6); display:block; }
+.eave{ order:2; width:calc(100% - 2 * var(--margin)); margin-inline:auto; height:auto; aspect-ratio:1200/600; margin-top:var(--s-6); margin-bottom:var(--pad-tight); display:block; border:1px solid var(--rule); }
 .eave__attic{ fill:#123450; }
 .eave__deck{ stroke:var(--muted-deep); stroke-width:6; fill:none; }
 .eave__snow{ fill:var(--paper); }
@@ -536,7 +576,7 @@ a{ color:inherit; }
 .eave__n text{ font:500 20px var(--mono); fill:#fff; text-anchor:middle; }
 @media (min-width:900px){
   .icedam{ min-height:min(760px, 92svh); padding-block:var(--pad-normal); justify-content:center; }
-  .eave{ position:absolute; right:0; top:50%; transform:translateY(-50%); height:auto; width:58%; margin:0; aspect-ratio:1200/600; }
+  .eave{ position:absolute; right:0; top:50%; transform:translateY(-50%); height:auto; width:58%; margin:0; aspect-ratio:1200/600; border:0; }
   .icedam__in{ max-width:var(--max); }
   .icedam__in > *{ max-width:34rem; }
 }
@@ -566,7 +606,16 @@ a{ color:inherit; }
 .tag input{ width:18px; height:18px; border-radius:999px; }
 .tag:has(input:checked){ background:var(--field); color:#fff; border-color:var(--field); }
 .tag input:checked{ background:var(--signal); border-color:#fff; }
-@media (min-width:900px){ .tools{ grid-template-columns:minmax(0,7fr) minmax(0,5fr); align-items:start; } .tool{ padding:var(--s-7) var(--s-6); } .tool--log{ margin-top:var(--s-8); } }
+.meter{ height:22px; transform:skewY(-2deg); }
+.meter i{ position:absolute; top:0; bottom:0; left:var(--x); width:2px; background:#fff; z-index:1; }
+.meter__scale{ display:grid; grid-template-columns:2fr 4fr 4fr; margin-top:-8px; font:500 .875rem/1.2 var(--mono); color:var(--muted); }
+.meter__scale span:nth-child(2){ padding-left:0; }
+.meter__scale span:last-child{ text-align:right; }
+.tool__out{ position:relative; padding-left:28px; }
+.tool__out::before{ content:""; position:absolute; left:0; top:.4em; width:14px; height:14px; border-radius:999px; background:var(--brick); box-shadow:0 0 0 3px #fff, 0 0 0 4.5px var(--brick); }
+.tool__out--note{ padding:var(--s-5) var(--s-4) var(--s-4) var(--s-5); border-left:0; border-top:10px solid transparent; border-image:repeating-linear-gradient(104deg, rgba(29,90,138,.55) 0 2px, transparent 2px 9px) 10; margin-top:var(--s-2); }
+.tool__out--note::before{ left:50%; top:-17px; margin-left:-7px; }
+@media (min-width:900px){ .tools{ grid-template-columns:minmax(0,7fr) minmax(0,5fr); align-items:stretch; } .tool{ padding:var(--s-7) var(--s-6); } }
 
 /* ---------- house type ---------- */
 .housetype{ padding-block:var(--pad-normal); }
@@ -696,7 +745,12 @@ html:not(.sw-js) .ht__panel h3::before{ content:""; }
 .faq__list details[open] summary::after{ transform:rotate(45deg); }
 .faq__list details > div{ padding-bottom:var(--s-5); color:var(--muted-deep); max-width:60ch; }
 .faq__list .sample-tag{ color:var(--signal); }
-@media (min-width:900px){ .faq__grid{ grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:var(--s-8); } .faq__head{ position:sticky; top:calc(var(--header-h) + 32px); align-self:start; } }
+@media (min-width:900px){
+  .faq__head{ display:flex; align-items:end; justify-content:space-between; gap:var(--s-8); border-bottom:2px solid var(--signal); padding-bottom:var(--s-5); }
+  .faq__head .kicker{ order:2; margin:0; text-align:right; }
+  .faq h2{ max-width:20ch; }
+  .faq__list{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:var(--s-8); align-items:start; }
+}
 
 /* ---------- contact ---------- */
 .contact{ padding-block:var(--pad-normal) var(--pad-loose); }
@@ -848,23 +902,24 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
 
 <!-- 1 HERO -->
 <section class="hero t-field" id="top" data-layout="map-hero" aria-labelledby="hero-h">
+  <div class="band band--hero" aria-hidden="true" data-hero-band></div>
   <div class="wrap hero__grid">
     <div class="hero__title">
       <p class="pin">Syracuse · Onondaga County <span class="pin__bearing">NNW · toward the lake</span></p>
-      <h1 id="hero-h" class="hero__h1">Built for the snow belt, street by street.</h1>
+      <h1 id="hero-h" class="hero__h1">Syracuse insulation, built for the snow belt.</h1>
     </div>
     <div class="hero__body">
       <p class="hero__lead">Ice dams start in the attic. Warm air leaks up, melts the snow from underneath, and it refreezes at the gutter. We know which leaks your kind of house has, and we seal those before we add any fill.</p>
       <div class="hero__cta">
         <a class="btn btn-call btn--primary btn--lg" href="tel:+13155550166"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call (315) 555-0166</span></a>
-        <a class="btn btn--secondary btn--lg" href="#house-type">Find my house type <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--secondary btn--lg" href="#house-type">Show me my house type <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </div>
       <p class="hero__proof"><span class="mono"><span data-open-now>Mon–Fri 7 am – 5 pm · Sat 8 am – 1 pm</span></span> <span class="dot" aria-hidden="true">·</span> <span><strong>4.8</strong> from 238 reviews</span> <span class="sample-tag">Sample rating</span></p>
     </div>
 
     <div class="hero__map" data-sw-signature>
       <svg class="cmap" viewBox="0 0 800 720" role="img" aria-labelledby="cmap-t">
-        <title id="cmap-t">Drawn map of Onondaga County with Lake Ontario to the north, lake-effect snow bands crossing it, and the towns we work in pinned</title>
+        <title id="cmap-t">Drawn map of Onondaga County with Lake Ontario to the north, three lake-effect snow bands crossing it, and the towns we work in pinned. Yellow pins mark Eastwood, Tipp Hill and Liverpool.</title>
         <path class="cmap__land" d="M0 172C90 160 170 128 262 126S420 104 500 86 650 58 800 40V720H0Z"/>
         <path class="cmap__shore" pathLength="1" d="M0 172C90 160 170 128 262 126S420 104 500 86 650 58 800 40"/>
         <path class="cmap__water" d="M548 262c18-28 96-38 176-30 44 4 76 16 76 28v24c-40 8-100 6-160 2-50-3-90-4-92-24Z"/>
@@ -873,30 +928,38 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
         <path class="cmap__shore" pathLength="1" d="M344 398c12-8 30 6 50 26 16 16 20 34 8 38-16 4-34-14-48-30-12-14-18-26-10-34Z"/>
         <path class="cmap__county" d="M188 300 300 252l260 40 44 40 18 368H196Z"/>
         <g class="cmap__bands">
-          <rect class="cmap__band" x="-200" y="150" width="1200" height="64" transform="rotate(14 400 182)"/>
+          <rect class="cmap__band" x="-200" y="196" width="1200" height="60" transform="rotate(14 400 226)"/>
           <rect class="cmap__band" x="-200" y="300" width="1200" height="84" transform="rotate(14 400 342)"/>
-          <rect class="cmap__band" x="-200" y="500" width="1200" height="56" transform="rotate(14 400 528)"/>
+          <rect class="cmap__band" x="-200" y="462" width="1200" height="60" transform="rotate(14 400 492)"/>
         </g>
-        <text class="cmap__water-lab" x="40" y="70">LAKE ONTARIO</text>
-        <text class="cmap__water-lab cmap__water-lab--s" x="612" y="258">ONEIDA LAKE</text>
+        <text class="cmap__water-lab" x="560" y="34">LAKE ONTARIO</text>
         <line class="cmap__string" x1="420" y1="490" x2="150" y2="474"/>
         <g class="cmap__pins">
-          <g class="mpin" style="--d:0" transform="translate(512 300)"><circle r="7"/><text x="13" y="5">Cicero</text></g>
+          <g class="mpin mpin--b" style="--d:0" transform="translate(512 300)"><circle r="7"/><text x="13" y="5">Cicero</text></g>
           <g class="mpin" style="--d:1" transform="translate(456 346)"><circle r="7"/><text x="13" y="5">North Syracuse</text></g>
           <g class="mpin" style="--d:2" transform="translate(258 360)"><circle r="7"/><text x="-13" y="5" text-anchor="end">Baldwinsville</text></g>
-          <g class="mpin" style="--d:3" transform="translate(398 382)"><circle r="7"/><text x="13" y="-6">Liverpool</text></g>
-          <g class="mpin" style="--d:4" transform="translate(300 452)"><circle r="7"/><text x="13" y="5">Camillus</text></g>
+          <g class="mpin mpin--hit mpin--b" style="--d:3" transform="translate(398 382)"><circle r="8"/><text x="14" y="-6">Liverpool</text></g>
+          <g class="mpin mpin--b" style="--d:4" transform="translate(300 452)"><circle r="7"/><text x="13" y="5">Camillus</text></g>
           <g class="mpin" style="--d:6" transform="translate(536 498)"><circle r="7"/><text x="13" y="-6">Fayetteville</text></g>
           <g class="mpin" style="--d:7" transform="translate(578 548)"><circle r="7"/><text x="13" y="5">Manlius</text></g>
-          <g class="mpin mpin--city" style="--d:5" transform="translate(420 490)"><circle r="11"/><text x="0" y="42" text-anchor="middle">Syracuse</text></g>
+          <g class="mpin mpin--city" style="--d:5" transform="translate(420 490)"><circle r="11"/><text x="0" y="46" text-anchor="middle">Syracuse</text></g>
+          <g class="mpin mpin--hit mpin--sm" style="--d:8" transform="translate(452 466)"><circle r="7"/></g>
+          <g class="mpin mpin--hit mpin--sm" style="--d:9" transform="translate(384 508)"><circle r="7"/></g>
         </g>
-        <g class="cmap__compass" transform="translate(724 640)"><circle r="26"/><path d="M0-18 7 6 0 1-7 6Z"/><text y="-32" text-anchor="middle">N</text></g>
+        <g class="cmap__compass" transform="translate(744 116)"><circle r="22"/><path d="M0-15 6 5 0 1-6 5Z"/><text y="-28" text-anchor="middle">N</text></g>
       </svg>
       <figure class="plate">
         <span class="plate__clip" aria-hidden="true"></span>
-        <img src="media/hero-C3-1170.webp" srcset="media/hero-C3-1170.webp 1170w, media/hero-C3.webp 2340w" alt="Row of pale blue and yellow clapboard houses with snow in the yards under blue sky" width="1170" height="778" fetchpriority="high" decoding="async" data-photo="hero-C3" data-slot="hero" class="plate__img" sizes="(min-width: 900px) 260px, 40vw">
-        <figcaption class="plate__cap">Clapboard two-storeys, porches and a thaw in the yards: the kind of street the bands roll over.</figcaption>
+        <span class="plate__frame"><img src="media/hero-C3-1170.webp" srcset="media/hero-C3-1170.webp 1170w, media/hero-C3.webp 2340w" alt="Row of pale blue and yellow clapboard houses with snow in the yards under blue sky" width="1170" height="778" fetchpriority="high" decoding="async" data-photo="hero-C3" data-slot="hero" class="plate__img" sizes="(min-width: 900px) 240px, 50vw"></span>
       </figure>
+      <div class="legend">
+        <p class="legend__h">Under the bands</p>
+        <ol class="legend__list" role="list">
+          <li><span class="legend__dot" aria-hidden="true"></span><span><b>Eastwood</b> knee walls</span></li>
+          <li><span class="legend__dot" aria-hidden="true"></span><span><b>Tipp Hill</b> hollow walls</span></li>
+          <li><span class="legend__dot" aria-hidden="true"></span><span><b>Liverpool</b> rim joists</span></li>
+        </ol>
+      </div>
     </div>
   </div>
   <div class="band band--seam" aria-hidden="true"></div>
@@ -905,7 +968,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
 <!-- 2 STORY -->
 <section class="story t-paper" id="houses" data-layout="pinned-story" data-hook="story" aria-labelledby="story-h">
   <div class="wrap story__head">
-    <p class="pin">Three neighbourhoods <span class="pin__bearing">NNW · toward the lake</span></p>
+    <p class="pin">Three neighborhoods</p>
     <h2 id="story-h">Same snow, three houses, three different leaks.</h2>
     <p class="lead">Lake-effect bands fall on every street in the county. What the heat does underneath depends on when your house was built.</p>
   </div>
@@ -930,6 +993,11 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
     <ol class="story__steps" role="list">
       <li class="step is-active" data-step-i="0">
         <div class="step__house">
+          <figure class="splate">
+            <span class="plate__clip" aria-hidden="true"></span>
+            <span class="plate__frame"><img src="media/detail-even-snow-roof-1170.webp" srcset="media/detail-even-snow-roof-1170.webp 1170w, media/detail-even-snow-roof.webp 2340w" alt="Snow loaded on dormer roofs of an old stone row house, icicles along the gutter" width="1170" height="780" loading="lazy" decoding="async" data-photo="detail-even-snow-roof" data-slot="eastwood" class="splate__img" sizes="(min-width: 900px) 200px, 40vw"></span>
+            <figcaption class="splate__cap">Like Eastwood: dormers, a loaded roof, icicles at the eave.</figcaption>
+          </figure>
           <svg viewBox="0 0 320 260" role="img" aria-labelledby="h1-t">
             <title id="h1-t">Cut-away of a two-and-a-half-story frame house: knee walls and sloped ceilings upstairs, with three leak arrows</title>
             <path class="hs-wall" d="M60 242V118h200v124M40 126 160 30l120 96"/>
@@ -959,6 +1027,11 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
       </li>
       <li class="step" data-step-i="1">
         <div class="step__house">
+          <figure class="splate">
+            <span class="plate__clip" aria-hidden="true"></span>
+            <span class="plate__frame"><img src="media/hero-A3-1170.webp" srcset="media/hero-A3-1170.webp 1170w, media/hero-A3.webp 2340w" alt="Row of long icicles hanging from a snowy eave over dark wood siding and two windows" width="1170" height="780" loading="lazy" decoding="async" data-photo="hero-A3" data-slot="tipphill" class="splate__img" sizes="(min-width: 900px) 200px, 40vw"></span>
+            <figcaption class="splate__cap">Like Tipp Hill: wood siding, icicles over every window.</figcaption>
+          </figure>
           <svg viewBox="0 0 320 260" role="img" aria-labelledby="h2-t">
             <title id="h2-t">Cut-away of a narrow clapboard house with hollow plaster walls open into the attic, with three leak arrows</title>
             <path class="hs-wall" d="M100 242V72h120v170M88 80l72-56 72 56"/>
@@ -989,6 +1062,11 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
       </li>
       <li class="step" data-step-i="2">
         <div class="step__house">
+          <figure class="splate">
+            <span class="plate__clip" aria-hidden="true"></span>
+            <span class="plate__frame"><img src="media/weather-snowdrift-1170.webp" srcset="media/weather-snowdrift-1170.webp 1170w, media/weather-snowdrift.webp 2340w" alt="Side of a sided suburban house after a snowstorm, shrubs bent under snow, clear blue sky" width="1170" height="565" loading="lazy" decoding="async" data-photo="weather-snowdrift" data-slot="colonial" class="splate__img" sizes="(min-width: 900px) 200px, 40vw"></span>
+            <figcaption class="splate__cap">Like Liverpool: a sided colonial the day after a storm.</figcaption>
+          </figure>
           <svg viewBox="0 0 320 260" role="img" aria-labelledby="h3-t">
             <title id="h3-t">Cut-away of a suburban colonial: attic floor, hatch, bath fan and the rim joist above the basement, with leak arrows</title>
             <path class="hs-wall" d="M40 214V100h240v114M28 104l132-62 132 62"/>
@@ -1027,87 +1105,93 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
 <section class="services t-mid" id="services" data-layout="pin-grid" data-hook="pins" aria-labelledby="svc-h">
   <div class="wrap">
     <div class="sec-head">
-      <p class="pin">What we do <span class="pin__bearing">NNW · toward the lake</span></p>
+      <p class="pin">What we do</p>
       <h2 id="svc-h">One house part at a time, only the ones you need.</h2>
       <p class="lead">Each job below has its own crew day. We tell you which ones your house needs, and which ones it doesn’t.</p>
     </div>
     <ul class="svc-grid" role="list" data-reveal-stagger>
       
-      <li class="svc" style="--band-a:calc((1 - 4) * 4deg)">
+      <li class="svc">
         <span class="svc__band" aria-hidden="true"></span>
         <div class="svc__top">
-          <span class="mono svc__num">01</span>
+          <span class="svc__where">Eastwood · 1920s frame</span>
           <svg class="svc__icon" aria-hidden="true" focusable="false"><use href="#i-svc-1"/></svg>
         </div>
         <h3>Knee walls in city frame houses</h3>
         <p>The short walls and slopes of two-and-a-half-story houses sealed and insulated, room by room.</p>
-        <a class="btn btn--text" href="#contact" data-service="Knee walls">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Knee walls">Price this job</a>
       </li>
       
-      <li class="svc" style="--band-a:calc((2 - 4) * 4deg)">
+      
+      <li class="svc">
         <span class="svc__band" aria-hidden="true"></span>
         <div class="svc__top">
-          <span class="mono svc__num">02</span>
+          <span class="svc__where">Every roof under the bands</span>
           <svg class="svc__icon" aria-hidden="true" focusable="false"><use href="#i-svc-2"/></svg>
         </div>
         <h3>Ice dam prevention</h3>
         <p>Warm attic air found and sealed so lake-effect snow stays on the roof instead of melting.</p>
-        <a class="btn btn--text" href="#contact" data-service="Ice dams">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Ice dams">Price this job</a>
       </li>
       
-      <li class="svc" style="--band-a:calc((3 - 4) * 4deg)">
+      
+      <li class="svc">
         <span class="svc__band" aria-hidden="true"></span>
         <div class="svc__top">
-          <span class="mono svc__num">03</span>
+          <span class="svc__where">Ranches · one long attic</span>
           <svg class="svc__icon" aria-hidden="true" focusable="false"><use href="#i-svc-3"/></svg>
         </div>
         <h3>Attic air sealing and top-up</h3>
         <p>Leaks sealed first, then loose-fill blown to an even depth across the whole attic floor.</p>
-        <a class="btn btn--text" href="#contact" data-service="Attic work">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Attic work">Price this job</a>
       </li>
       
-      <li class="svc" style="--band-a:calc((4 - 4) * 4deg)">
+      
+      <li class="svc">
         <span class="svc__band" aria-hidden="true"></span>
         <div class="svc__top">
-          <span class="mono svc__num">04</span>
+          <span class="svc__where">Tipp Hill · clapboard</span>
           <svg class="svc__icon" aria-hidden="true" focusable="false"><use href="#i-svc-4"/></svg>
         </div>
         <h3>Dense-pack for old walls</h3>
         <p>Hollow plaster walls filled with cellulose through the siding, then plugged to match the clapboard.</p>
-        <a class="btn btn--text" href="#contact" data-service="Old walls">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Old walls">Price this job</a>
       </li>
       
-      <li class="svc" style="--band-a:calc((5 - 4) * 4deg)">
+      
+      <li class="svc">
         <span class="svc__band" aria-hidden="true"></span>
         <div class="svc__top">
-          <span class="mono svc__num">05</span>
+          <span class="svc__where">Liverpool · colonials</span>
           <svg class="svc__icon" aria-hidden="true" focusable="false"><use href="#i-svc-5"/></svg>
         </div>
         <h3>Rim joist foam for colonials</h3>
         <p>Basement band joists in suburban colonials sealed with foam, ending the cold strip of floor.</p>
-        <a class="btn btn--text" href="#contact" data-service="Rim joists">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Rim joists">Price this job</a>
       </li>
       
-      <li class="svc" style="--band-a:calc((6 - 4) * 4deg)">
+      
+      <li class="svc">
         <span class="svc__band" aria-hidden="true"></span>
         <div class="svc__top">
-          <span class="mono svc__num">06</span>
+          <span class="svc__where">City porches · bump-outs</span>
           <svg class="svc__icon" aria-hidden="true" focusable="false"><use href="#i-svc-6"/></svg>
         </div>
         <h3>Porch and bump-out floors</h3>
         <p>Rooms over old porches and bump-outs sealed underneath so the floor stops feeling like the sidewalk.</p>
-        <a class="btn btn--text" href="#contact" data-service="Porch floors">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Porch floors">Price this job</a>
       </li>
       
-      <li class="svc" style="--band-a:calc((7 - 4) * 4deg)">
+      
+      <li class="svc">
         <span class="svc__band" aria-hidden="true"></span>
         <div class="svc__top">
-          <span class="mono svc__num">07</span>
+          <span class="svc__where">Bedrooms on busy streets</span>
           <svg class="svc__icon" aria-hidden="true" focusable="false"><use href="#i-svc-7"/></svg>
         </div>
         <h3>Quieter rooms</h3>
         <p>Mineral wool in walls and floors between rooms, or on the side facing a busy street.</p>
-        <a class="btn btn--text" href="#contact" data-service="Quieter rooms">Price it</a>
+        <a class="btn btn--text" href="#contact" data-service="Quieter rooms">Price this job</a>
       </li>
       
     </ul>
@@ -1141,7 +1225,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
       <li><span class="mono">2</span> It warms the roof deck and melts the snow from underneath.</li>
       <li><span class="mono">3</span> The water runs down to the cold eave and refreezes into a ridge.</li>
     </ol>
-    <p class="icedam__line">Seal the leaks and the snow sits evenly, like your neighbour’s roof.</p>
+    <p class="icedam__line">Seal the leaks and the snow sits evenly, like your neighbor’s roof.</p>
   </div>
 </section>
 
@@ -1150,7 +1234,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
   <div class="band band--seam band--top" aria-hidden="true"></div>
   <div class="wrap">
     <div class="sec-head sec-head--row">
-      <p class="pin">What winter does <span class="pin__bearing">NNW · toward the lake</span></p>
+      <p class="pin">What winter does</p>
       <h2 id="win-h">Two minutes with your own roof and rooms.</h2>
     </div>
     <div class="tools">
@@ -1162,14 +1246,15 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
         </div>
         <div class="tool__list">
           <label class="chk"><input type="checkbox" value="Icicles along the gutter every winter"><span>Icicles along the gutter every winter</span></label>
-          <label class="chk"><input type="checkbox" value="Bare stripes on the roof while the neighbours stay white"><span>Bare stripes on our roof while the neighbours’ stay white</span></label>
+          <label class="chk"><input type="checkbox" value="Bare stripes on the roof while the neighbors stay white"><span>Bare stripes on our roof while the neighbors’ stay white</span></label>
           <label class="chk"><input type="checkbox" value="Ceiling stains near an outside wall upstairs"><span>Stains on the ceiling near an outside wall upstairs</span></label>
           <label class="chk"><input type="checkbox" value="Slanted ceilings or knee walls upstairs"><span>Slanted ceilings or knee walls upstairs</span></label>
           <label class="chk"><input type="checkbox" value="Recessed lights or a bath fan on the top floor"><span>Recessed lights or a bath fan on the top floor</span></label>
         </div>
-        <div class="meter" aria-hidden="true"><span></span></div>
+        <div class="meter" aria-hidden="true"><span></span><i style="--x:20%"></i><i style="--x:40%"></i><i style="--x:80%"></i></div>
+        <div class="meter__scale" aria-hidden="true"><span>Light snow</span><span>Band</span><span>Heavy band</span></div>
         <p class="tool__out" data-checklist-result>Tick what you see from the street and the top floor.</p>
-        <a class="btn btn--primary" href="#contact" data-quiz-go data-js-only>Add this to my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--primary" href="#contact" data-quiz-go data-js-only>Add to my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </div>
 
       <div class="tool tool--log" data-log>
@@ -1194,7 +1279,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
           <label class="tag"><input type="radio" name="logwhen" value="all winter"><span>All winter</span></label>
         </fieldset>
         <p class="tool__out tool__out--note" data-log-out aria-live="polite">Your note shows up here. No JavaScript? Just tell us the rooms on the phone.</p>
-        <a class="btn btn--secondary" href="#contact" data-log-go data-js-only>Put this note in my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--secondary" href="#contact" data-log-go data-js-only>Add to my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </div>
     </div>
   </div>
@@ -1204,7 +1289,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
 <section class="housetype t-field" id="house-type" data-layout="tabs" aria-labelledby="ht-h">
   <div class="wrap">
     <div class="sec-head">
-      <p class="pin">Your kind of house <span class="pin__bearing">NNW · toward the lake</span></p>
+      <p class="pin">Your kind of house</p>
       <h2 id="ht-h">Pick your house. We’ll tell you where it leaks.</h2>
     </div>
     <div class="ht" data-tabs>
@@ -1223,7 +1308,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
           <ol class="ht__spots" role="list"><li>Knee walls and the floor gap behind them</li><li>Sloped ceilings over the stairs and bedrooms</li><li>The small top attic and its hatch</li></ol>
           <p class="ht__order"><strong>Order of work:</strong> seal behind the knee walls, insulate the slopes, fill the top attic last.</p>
           <p class="ht__price"><span>Knee wall attic sealing and insulation</span> <span class="mono">$2,800–$7,000</span> <span>per house</span> <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn--secondary" href="#contact" data-house="Two-and-a-half-story frame" data-house-svc="Knee walls in city frame houses">This is my house <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--secondary" href="#contact" data-house="Two-and-a-half-story frame" data-house-svc="Knee walls in city frame houses">Add my house to my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
         </div>
       </section>
       <section class="ht__panel" data-tabpanel aria-label="Story-and-a-half">
@@ -1233,7 +1318,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
           <ol class="ht__spots" role="list"><li>Knee walls on both sides of the upstairs rooms</li><li>The open floor joists behind them</li><li>The flat ceiling strip at the very top</li></ol>
           <p class="ht__order"><strong>Order of work:</strong> close the open joist bays, seal and insulate the knee walls, then top up the strip.</p>
           <p class="ht__price"><span>Knee wall attic sealing and insulation</span> <span class="mono">$2,800–$7,000</span> <span>per house</span> <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn--secondary" href="#contact" data-house="Story-and-a-half" data-house-svc="Knee walls in city frame houses">This is my house <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--secondary" href="#contact" data-house="Story-and-a-half" data-house-svc="Knee walls in city frame houses">Add my house to my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
         </div>
       </section>
       <section class="ht__panel" data-tabpanel aria-label="Ranch">
@@ -1243,7 +1328,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
           <ol class="ht__spots" role="list"><li>Ceiling lights and the bath fan into the attic</li><li>The attic hatch in the hallway</li><li>Thin, settled fill at the far eaves</li></ol>
           <p class="ht__order"><strong>Order of work:</strong> seal the lights, fan and hatch, set baffles at the eaves, then blow to an even depth.</p>
           <p class="ht__price"><span>Attic blown-in top-up</span> <span class="mono">$1,600–$3,600</span> <span>per attic</span> <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn--secondary" href="#contact" data-house="Ranch" data-house-svc="Attic air sealing and top-up">This is my house <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--secondary" href="#contact" data-house="Ranch" data-house-svc="Attic air sealing and top-up">Add my house to my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
         </div>
       </section>
       <section class="ht__panel" data-tabpanel aria-label="Split-level">
@@ -1253,7 +1338,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
           <ol class="ht__spots" role="list"><li>The bedroom floor over the garage</li><li>The wall where the two attics meet</li><li>The rim joist at the half-buried level</li></ol>
           <p class="ht__order"><strong>Order of work:</strong> seal the floor over the garage, close the open wall between attics, then foam the rim.</p>
           <p class="ht__price"><span>Rim joist spray foam</span> <span class="mono">$1,200–$3,000</span> <span>per basement</span> <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn--secondary" href="#contact" data-house="Split-level" data-house-svc="Porch and bump-out floors">This is my house <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--secondary" href="#contact" data-house="Split-level" data-house-svc="Porch and bump-out floors">Add my house to my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
         </div>
       </section>
       <section class="ht__panel" data-tabpanel aria-label="2000s two-story">
@@ -1263,11 +1348,11 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
           <ol class="ht__spots" role="list"><li>The bonus room over the garage</li><li>Its knee walls and sloped ceiling</li><li>The attic floor over the main house</li></ol>
           <p class="ht__order"><strong>Order of work:</strong> seal the floor over the garage, close the knee walls, then even out the main attic.</p>
           <p class="ht__price"><span>Attic air sealing</span> <span class="mono">$1,000–$2,400</span> <span>per attic</span> <span class="sample-tag">Sample pricing</span></p>
-          <a class="btn btn--secondary" href="#contact" data-house="2000s two-story" data-house-svc="Porch and bump-out floors">This is my house <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--secondary" href="#contact" data-house="2000s two-story" data-house-svc="Porch and bump-out floors">Add my house to my request <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
         </div>
       </section>
     </div>
-    <p class="ht__verm"><strong>Grey-brown pebbles in the attic?</strong> Don’t touch them. It may be vermiculite. We stop, have it tested, and never blow over it until you know.</p>
+    <p class="ht__verm"><strong>Gray-brown pebbles in the attic?</strong> Don’t touch them. It may be vermiculite. We stop, have it tested, and never blow over it until you know.</p>
   </div>
 </section>
 
@@ -1276,8 +1361,8 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
   <div class="wrap">
     <div class="sec-head sec-head--split">
       <div>
-        <p class="pin">Reviews on the map <span class="pin__bearing">NNW · toward the lake</span></p>
-        <h2 id="proof-h">Neighbours under the same bands.</h2>
+        <p class="pin">Reviews on the map</p>
+        <h2 id="proof-h">Neighbors under the same bands.</h2>
       </div>
       <p class="proof__rating"><span class="proof__num">4.8</span> <span>average from 238 reviews</span> <span class="sample-tag">Sample rating</span></p>
     </div>
@@ -1381,14 +1466,14 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
       </svg>
     </div>
     <div class="area__body">
-      <p class="pin">Where we work <span class="pin__bearing">NNW · toward the lake</span></p>
+      <p class="pin">Where we work · Onondaga County</p>
       <h2 id="area-h">From the city out to the snow-belt suburbs.</h2>
       <p class="lead">Syracuse, North Syracuse, Liverpool, Baldwinsville, Cicero, Camillus, Manlius and Fayetteville.</p>
       <form class="zip" data-zip data-zip-yes="You’re under the band: we work in {zip}." data-zip-no="{zip} is outside our usual map. Call {phone} and we’ll tell you straight.">
         <label for="zip-in">Your ZIP code</label>
         <div class="zip__row">
           <input id="zip-in" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}">
-          <button class="btn btn--primary" type="submit">Check my street</button>
+          <button class="btn btn--primary" type="submit">Check my ZIP</button>
         </div>
         <p class="zip__out" data-zip-result></p>
       </form>
@@ -1413,7 +1498,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
         <div><p>It may be vermiculite, which can contain asbestos. Leave it alone, keep kids out, and get a lab test. We stop work, explain the test and the options, and never blow insulation over it until you know.</p></div>
       </details>
       <details>
-        <summary>Will you cover my vents and cause mould?</summary>
+        <summary>Will you cover my vents and cause mold?</summary>
         <div><p>No. Baffles go in at every eave first so the soffits keep breathing, and bath fans get ducted outside, not into the attic.</p></div>
       </details>
       <details>
@@ -1430,7 +1515,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
       </details>
       <details>
         <summary>Are you insured? <span class="sample-tag">Sample</span></summary>
-        <div><p>Yes, insured, with the paperwork on file. Licence # SAMPLE-NY-LB-30652 <span class="sample-tag">Sample licence</span></p></div>
+        <div><p>Yes, insured, with the paperwork on file. License # SAMPLE-NY-LB-30652 <span class="sample-tag">Sample license</span></p></div>
       </details>
     </div>
   </div>
@@ -1440,7 +1525,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
 <section class="contact t-paper" id="contact" data-layout="form-split" data-hook="form-pin" aria-labelledby="contact-h">
   <div class="wrap contact__grid">
     <div class="contact__side">
-      <p class="pin">Your street <span class="pin__bearing">NNW · toward the lake</span></p>
+      <p class="pin">Your street</p>
       <h2 id="contact-h">Tell us your house. We’ll call before the next snow.</h2>
       <p class="lead">Four short steps. Or skip them and call: the person who answers knows the streets.</p>
       <div class="contact__call">
@@ -1489,7 +1574,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
           <legend><span class="mono">2/4</span> What winter does</legend>
           <div class="opts opts--chk">
             <label class="opt"><input type="checkbox" name="winter" value="Icicles along the gutter every winter"><span>Icicles along the gutter</span></label>
-            <label class="opt"><input type="checkbox" name="winter" value="Bare stripes on the roof while the neighbours stay white"><span>Bare stripes on the roof</span></label>
+            <label class="opt"><input type="checkbox" name="winter" value="Bare stripes on the roof while the neighbors stay white"><span>Bare stripes on the roof</span></label>
             <label class="opt"><input type="checkbox" name="winter" value="Ceiling stains near an outside wall upstairs"><span>Ceiling stains upstairs</span></label>
             <label class="opt"><input type="checkbox" name="winter" value="Slanted ceilings or knee walls upstairs"><span>Slanted ceilings or knee walls</span></label>
             <label class="opt"><input type="checkbox" name="winter" value="Recessed lights or a bath fan on the top floor"><span>Lights or bath fan on the top floor</span></label>
@@ -1544,7 +1629,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
       <p class="logo logo--foot"><span class="logo__pin" aria-hidden="true">LI</span><span class="logo__name">Lakeband Insulation</span></p>
       <p>Insulation for snow-belt houses · Syracuse, NY</p>
       <p class="footer__contact"><a class="tel-plain" href="tel:+13155550166">(315) 555-0166</a> <a class="tel-plain" href="mailto:hello@lakeband-insulation.example">hello@lakeband-insulation.example</a></p>
-      <p class="mono footer__lic">Licence # SAMPLE-NY-LB-30652 <span class="sample-tag">Sample</span></p>
+      <p class="mono footer__lic">License # SAMPLE-NY-LB-30652 <span class="sample-tag">Sample</span></p>
     </div>
     <svg class="fmap" viewBox="0 0 800 720" aria-hidden="true">
       <path class="fmap__land" d="M0 172C90 160 170 128 262 126S420 104 500 86 650 58 800 40V720H0Z"/>
@@ -1577,7 +1662,7 @@ html:not(.sw-js) [data-lead] fieldset + fieldset{ margin-top:var(--s-6); }
   </div>
   <div class="wrap footer__legal">
     <p>Sample website by Site Sledge. Business details are illustrative.</p>
-    <ul class="credits"><li>Photo by Nyttend on <a href="https://commons.wikimedia.org/wiki/File:Bedford_at_Oak_in_Paint.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:Bedford_at_Oak_in_Paint.jpg" rel="noopener license" target="_blank">Public domain</a></li></ul>
+    <ul class="credits"><li>Photo by Nyttend on <a href="https://commons.wikimedia.org/wiki/File:Bedford_at_Oak_in_Paint.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/File:Bedford_at_Oak_in_Paint.jpg" rel="noopener license" target="_blank">Public domain</a></li><li>Photo by Wilfredor on <a href="https://commons.wikimedia.org/wiki/File:Snow-covered_roofs_in_Quebec_City.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="noopener license" target="_blank">CC0</a></li><li>Photo by Helgi Halldórsson from Reykjavík, Iceland on <a href="https://commons.wikimedia.org/wiki/File:Ice_crystals_(2307769119).jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0" rel="noopener license" target="_blank">CC BY-SA 2.0</a></li><li>Photo by Famartin on <a href="https://commons.wikimedia.org/wiki/File:2016-01-24_14_12_25_Panorama_of_snow_drifts,_a_weather_station_and_arbovitae_in_the_side_and_back_yards_of_a_house_along_Tranquility_Court_in_the_Franklin_Farm_section_of_Oak_Hill,_Fairfax_County,_Virginia_on_the_day_after_the_Blizzard_of_2016.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul>
     <p class="mono">© 2026 Lakeband Insulation</p>
   </div>
 </footer>

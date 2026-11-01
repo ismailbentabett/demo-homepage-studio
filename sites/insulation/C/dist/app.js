@@ -1076,7 +1076,7 @@ SW.mod('media-fallback', function (SW) {
     });
   }
 
-  // "This is my house" → service + house type
+  // "Add my house to my request" → service + house type
   $$('[data-house]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       e.preventDefault();
@@ -1131,11 +1131,15 @@ SW.mod('media-fallback', function (SW) {
   var cmap = $('.cmap');
   if (cmap) {
     var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    var hb = $('[data-hero-band]');
+    if (hb) tl.fromTo(hb, { xPercent: -40, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 1.1, ease: 'power2.out' }, 0);
     tl.fromTo($$('.cmap__shore', cmap), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: .8, stagger: .08 }, 0)
-      .fromTo($$('.cmap__band', cmap), { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .7, stagger: .08 }, .15)
-      .fromTo($$('.mpin', cmap).sort(function (a, b) { return parseInt(a.style.getPropertyValue('--d'), 10) - parseInt(b.style.getPropertyValue('--d'), 10); }).reduce(function (a, g) { return a.concat(Array.prototype.slice.call(g.children)); }, []),
-        { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: .4, stagger: .06, ease: 'back.out(2)' }, .35);
-    gsap.from('.plate', { opacity: 0, y: 16, duration: .6, delay: .5, ease: 'power3.out' });
+      .fromTo($$('.cmap__band', cmap), { opacity: 0, x: -320 }, { opacity: 1, x: 0, duration: .9, stagger: .1, ease: 'power2.out' }, .05)
+      .fromTo($$('.mpin:not(.mpin--hit) circle', cmap), { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: .35, stagger: .04, ease: 'back.out(2)' }, .3)
+      .fromTo($$('.mpin text', cmap), { opacity: 0 }, { opacity: 1, duration: .3, stagger: .03 }, .45)
+      .fromTo($$('.mpin--hit circle', cmap), { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: .35, stagger: .08, ease: 'back.out(3)' }, .75)
+      .fromTo($$('.legend__list li'), { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: .3, stagger: .08 }, .7);
+    gsap.from('.plate', { y: 18, rotation: -6, duration: .7, delay: .4, ease: 'power3.out' });
   }
 
   if (!ST) return;

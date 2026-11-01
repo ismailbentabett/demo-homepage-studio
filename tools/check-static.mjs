@@ -233,7 +233,7 @@ function scanUrls(text, name, htmlMode) {
   while ((m = re.exec(text))) {
     const u = m[0];
     if (URL_OK.test(u)) continue;
-    if (htmlMode && [...creditHrefs].some((h) => h && decode(h).startsWith(decode(u))) &&/^https?:\/\/([a-z0-9-]+\.)*(pexels\.com|wikimedia\.org|creativecommons\.org|openverse\.org|flickr\.com)\//i.test(u)) continue;
+    if (htmlMode && [...creditHrefs].some((h) => h && decode(h).startsWith(decode(u))) &&/^https?:\/\/([a-z0-9-]+\.)*(pexels\.com|wikimedia\.org|creativecommons\.org|openverse\.org|flickr\.com|wordpress\.org)\//i.test(u)) continue;
     block("external-url", `Outside address ${short(u, 80)} (the page must work offline; only schema.org, w3.org and photo-credit / licence links inside ul.credits are allowed).`, `${name} line ${lineOf(text, m.index)}`);
   }
   if (htmlMode) {

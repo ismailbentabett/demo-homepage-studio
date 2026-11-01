@@ -835,6 +835,11 @@ SW.mod('media-fallback', function (SW) {
       ScrollTrigger.create({ trigger: p, start: 'top 78%', once: true, onEnter: function () { p.classList.add('is-drawn'); } });
       ScrollTrigger.create({ trigger: p, start: 'top 55%', end: 'bottom 45%', onToggle: function (st) { if (st.isActive) setActive(p.getAttribute('data-plate')); } });
     });
+    /* the maple habitat plate settles as it crosses the screen; the photo is never hidden */
+    var bimg = SW.$('.break__img');
+    if (bimg) gsap.fromTo(bimg, { scale: 1.08 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '.break', start: 'top bottom', end: 'bottom top', scrub: true } });
+    var nov = SW.$('.break__bar .now');
+    if (nov) gsap.from(nov, { scaleY: 0, transformOrigin: '50% 100%', duration: .6, ease: 'power3.out', scrollTrigger: { trigger: '.break', start: 'top 60%', once: true } });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   } else {
     plates.forEach(function (p) { p.classList.add('is-drawn'); });
@@ -854,6 +859,8 @@ SW.mod('media-fallback', function (SW) {
     var out = SW.$('[data-cal-result]', cal);
     var bar = SW.$('[data-cal-bar]', cal);
     var state = { visits: [], trees: [] };
+    var example = SW.$('[data-cal-example]', cal);
+    var touched = false;
     function plan() {
       var picked = boxes.filter(function (b) { return b.checked; });
       var months = [];
@@ -869,14 +876,14 @@ SW.mod('media-fallback', function (SW) {
       cells.forEach(function (c, i) { c.classList.toggle('book', visits.indexOf(i + 1) >= 0); });
       if (!picked.length) { out.textContent = 'Pick the trees over your roof.'; bar.setAttribute('aria-label', 'Your gutter year: nothing picked yet'); return; }
       var names = visits.map(function (m) { return MONTHS[m - 1]; }).join(', ');
-      out.textContent = visits.length + (visits.length === 1 ? ' visit a year: ' : ' visits a year: ') + names + '.';
+      out.textContent = (touched ? '' : 'Example plan, ') + visits.length + (visits.length === 1 ? ' visit a year: ' : ' visits a year: ') + names + '.';
       bar.setAttribute('aria-label', 'Your gutter year. Book in ' + names + '.');
     }
-    boxes.forEach(function (b) { b.addEventListener('change', plan); });
+    boxes.forEach(function (b) { b.addEventListener('change', function () { touched = true; if (example) example.classList.add('is-off'); plan(); }); });
     plan();
     var go = SW.$('[data-cal-go]', cal);
     if (go) go.addEventListener('click', function () {
-      var d = state.trees.length ? 'Trees: ' + state.trees.join(', ') + '. Calendar: ' + out.textContent : '';
+      var d = state.trees.length && touched ? 'Trees: ' + state.trees.join(', ') + '. Calendar: ' + out.textContent : '';
       SW.prefillForm({ service: svc(1), details: d }, { focus: 'service' });
     });
     var pr = SW.$('[data-cal-print]', cal);
