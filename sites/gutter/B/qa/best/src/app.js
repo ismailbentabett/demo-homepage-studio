@@ -31,6 +31,9 @@
       });
     }
 
+    var pr = ro && SW.$('[data-ro-print]', ro);
+    if (pr) pr.addEventListener('click', function () { document.documentElement.classList.add('print-sheet'); window.print(); setTimeout(function () { document.documentElement.classList.remove('print-sheet'); }, 500); });
+
     /* ---- gutter size check: 5-inch or 6-inch (rule of thumb) ---- */
     var sz = SW.$('[data-size]');
     if (sz) {
@@ -66,7 +69,8 @@
       btn.addEventListener('click', function () {
         var paused = strip.classList.toggle('is-paused');
         btn.setAttribute('aria-pressed', String(paused));
-        lbl.textContent = paused ? 'Play the filmstrip' : 'Pause the filmstrip';
+        lbl.textContent = paused ? 'Play' : 'Pause';
+        btn.setAttribute('aria-label', paused ? 'Play the sample strip' : 'Pause the sample strip');
         icon.textContent = paused ? '▶' : 'II';
       });
     }
@@ -77,9 +81,8 @@
     if (ST) gsap.registerPlugin(ST);
 
     // intro: the first cylinder's numeral counts 0 → 623 while its fill rises (CSS)
-    var hc = SW.$('[data-hero-count]');
     var frB = SW.$('.strip__group .fr--first .fr__lg b');
-    [hc, frB].forEach(function (el) {
+    SW.$('[data-hero-count]').concat([frB]).forEach(function (el) {
       if (!el) return;
       var o = { v: 0 }, suffix = el === frB ? ' gal' : '';
       gsap.to(o, { v: 623, duration: 1, delay: .3, ease: 'power2.out', onUpdate: function () { el.textContent = Math.round(o.v) + suffix; } });

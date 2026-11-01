@@ -1,96 +1,100 @@
-COPY: needs copy-chief (copy 8.5: headlines run 3–4 lines at 1440, five names for the primary action)
+COPY: ok
 
-# gutter-B · critique round 1
+## Five-second test
+- **1440-first.jpg**: A gutter company in Seattle that sizes gutters by gallons. The h1 "Seattle Gutters Sized by the Gallon" is clear; the cylinder specimen beside it shows 623 gal with a ledger line; two CTAs (Call / Price my roof) and a ZIP checker sit under the statement. I know what they do, where, and how to engage.
+- **390-first.jpg**: Same hierarchy holds. H1 wraps cleanly, cylinder sits below the statement at a readable size, buttons stack without crowding. The ZIP row fits. No fold-critical content lost.
 
-**Five-second answer (1440-first.jpg / 390-first.jpg):** "A Seattle gutter company (the kicker says so, the h1 doesn't) that sizes gutters by how much water your roof sheds. I call the yellow number or hit Price my roof. The reason to pick them: the 623 gal ledger tells me they actually do the math." It passes, but the trade and the city sit in a small yellow kicker. The h1 itself is a slogan, 11 words long.
+Passes the five-second test on both viewports.
 
-## Scroll notes
-- Hero (1440-first.jpg): deep evergreen, mono h1, ledger proof rows with Sample pills, inline ZIP, and a filmstrip of drawn cylinders with one photo frame peeking at about 280px. The signature is visible on load, and the margin cylinder sits in the left 72px.
-- Yellow arithmetic band (1440-full.jpg): `1,000 sq ft × 1 in × 0.623 = 623 gallons.` This is the scale-contrast moment.
-- Pour story (1440-scroll-25.jpg): a drawn house, two 3x4 drops, a cylinder per drop and a ledger row. It's pinned and it explains something.
-- Photo band (1440-full.jpg about y 4000–4700): in the motion-on full page it renders as an **empty dark block** with only the caption "No. 07 A downspout pouring…". The photo appears only in 1440-rm-full.jpg.
-- Services ledger (1440-scroll-50.jpg): numbered rows with Price it pills, and a lot of dead space in the left column under the lead.
-- Tools (1440-full.jpg, 390-full.jpg): the runoff calculator writes into a cylinder with ledger rows, and the 5-inch/6-inch check draws two troughs.
-- Guards (1440-full.jpg): three spec cards with a highlighted Micro-mesh. The cards are standard in shape, but the ruled spec rows save them.
-- Prices (1440-scroll-75.jpg): a ledger with mini-cylinders and dotted leaders, labelled Sample.
-- Reviews (1440-scroll-75.jpg): a 3×2 card grid with cylinder chips and Sample review pills.
-- Area + hours (ink), the contact form (paper) and the footer (deep), with the cylinder spilling into a drawn rain barrel and the ledger total `1 in on 1,000 sq ft = 623 gal` (1440-full.jpg footer).
+## Category scores
 
-## firstScreen: 8.5
-Earned: the phone shows in the header and the hero at both sizes, there's one loud primary (yellow Call) and a quieter outline secondary, the Sample-labelled proof ledger sits right under the h1, the filmstrip peeks, and the signature is in frame (1440-first.jpg). At 390 the h1 runs 4 lines and both buttons sit above the fold (390-first.jpg).
-- 1440-first.jpg: the h1 "Every inch of rain on your roof has to go somewhere." is 11 words and names neither trade nor place. "Seattle gutters" lives only in the 15px kicker (−0.5; I'm not taking the full slogan −1.0 because the kicker and the ledger carry the trade).
-- 1440-first.jpg: the hero ZIP block ("Do you come to my ZIP?") and the ledger compete on the right for the same job as the buttons. That's three asks in the first screen.
+### firstScreen — 9.0
+Earned: Clear value prop ("sized by the gallon"), unique visual hook (cylinder specimen with fill + ledger), dual CTAs, inline ZIP. `1440-first.jpg` shows the whole package above the fold; `390-first.jpg` preserves it.
+Deductions:
+- `1440-first.jpg`: the kicker "Gallonworks Gutters · Seattle" sits small and low-contrast against the deep field; it reads late. −0.5.
+- `390-first.jpg`: the proof ledger line ("1,000 sq ft × 1 in ······ 623 gal") wraps tightly and competes with the CTA stack; could use one fewer wrap or smaller type. −0.5.
 
-## distinctiveness: 9.0
-The cylinder shows up in the hero filmstrip, the margin gauge, the pour story, the calculator, the price-row icons, the review chips and the footer barrel (1440-full.jpg). It does real work: it's the calculator's output and the price-row icon. Martian Mono display plus an evergreen/yellow field doesn't match either sibling's first screen.
-- 1440-full.jpg: the guards (3 cards) and reviews (3×2 cards) are template shapes. That's held at 9, not higher.
+### distinctiveness — 9.0
+Earned: The Rain Cylinder Ledger signature is present and consistent: hero specimen, filmstrip of drawn cylinders, page-progress cylinder in the left margin at ≥1024px (`1440-scroll-25.jpg`, `1440-scroll-50.jpg`), mini-cylinder chips on reviews and prices, footer spill into rain barrel. Sibling check: gutter-A uses a different system; no collision. The filmstrip-as-lab-bench (drawn frames, one photo) breaks the carousel cliché.
+Deductions:
+- `1440-scroll-75.jpg`: the margin cylinder's tick labels are hard to read at scroll depth; the numeral overlaps the section background near the prices band. −0.5.
+- `390-full.jpg`: the mobile substitute (4px yellow line under header) is subtle; visitors scrolling fast may miss the progress metaphor entirely. −0.5.
 
-## type: 8.5
-Earned: Martian Mono and Lexend are a distinct pair, the yellow band gives a real scale-contrast moment, numerals are tabular, ranges use en-dashes (`$11–$24`), and body is ≥ 16px (1440-scroll-75.jpg).
-- 1440-scroll-50.jpg: the h2 "Everything we do starts with how much water it has to carry." sets in 4 lines, and "Two numbers tell you whether your gutters are the problem." in 3. The mono display runs wide, so long h2s become blocks (counted under copy, noted here for rag).
-- 1440-full.jpg: every section opens with a tracked mono caps eyebrow (WHERE 623 GALLONS GO, EIGHT JOBS…, DO THE MATH WE DO, UNDER FIRS…, BEFORE ANYONE CLIMBS…, NEIGHBOURS WHO…, WHERE WE WORK, PRICE MY ROOF). That's the "eyebrow above every heading" tell (−0.5).
+### type — 9.0
+Earned: Martian Mono for display/numerals, Lexend for body — pair is unique in the library. H1 clamp works across viewports; ledger rows use tabular nums and dotted leaders consistently; kicker tracking and uppercase are disciplined. `1440-full.jpg` shows the system holding through every section.
+Deductions:
+- `390-full.jpg`: some ledger values ("$175–$650") wrap mid-numeral on narrow screens because `white-space: nowrap` on `.lg__v` forces overflow rather than a clean break; the dots leader disappears. −0.5.
+- `1440-scroll-50.jpg`: the guard compare dl dt/dd pairs run close together; the mono label and text body need a touch more vertical gap for scanability. −0.5.
 
-## layout: 8.5
-Earned: the tones alternate well (deep → yellow → paper → photo → paper → mid → deep → paper → mid → ink → paper → deep), the pinned story is the dense section and the yellow band is the full-bleed break (1440-rm-full.jpg).
-- d_foot crop of 1440-full.jpg (#area): the city list runs straight into "CHECK YOUR ZIP" with zero gap. The label reads as part of the list.
-- 1440-full.jpg (#contact): the h2 "Tell us about the roof. We'll come and measure it." sits directly on the Call button with no gap.
-- 1440-scroll-50.jpg (#services): the left column is empty for about 60% of the section's height under the lead, which floats in empty width.
-- 1440-scroll-25.jpg: the story frame leaves the top-right quadrant empty above the step text.
+### layout — 8.5
+Earned: Sections alternate tones (deep → paper → mid → deep → paper → ink → paper → deeper) with consistent padding rhythm. Grid systems (tools split, guards columns, prices table, reviews masonry, area roster, contact form) are distinct and appropriate.
+Deductions:
+- `1440-scroll-25.jpg`: the story section's pinned cylinder and the flowing text column have a visible seam where the pinned element's background meets the section bg; the transition isn't seamless. −0.5.
+- `390-full.jpg`: the tools section stacks runoff and size check vertically but the cylinder in the runoff tool is very tall relative to the input fields; the visual weight pulls the eye away from the inputs. −0.5.
+- `1440-full.jpg`: the area roster's city list and ZIP checker sit left-heavy; the hours/licence sidebar is shorter, leaving whitespace below it that feels unbalanced. −0.5.
 
-## photo: 8.0
-Earned: two on-topic Pacific NW frames (rain beading on a rail, a downspout onto a splash block) and a consistent green grade (1440-first.jpg, 1440-rm-full.jpg).
-- 1440-first.jpg: the only hero photo is one 4:5 filmstrip cell, partly behind the drift. The page has two photographs in total, and the drawings do all the art direction. Photography isn't part of the signature (frames aren't cylinders, nothing is masked).
-- 1440-full.jpg: the full-bleed photo band renders as a blank dark slab in the motion-on capture (the reveal starts from fully hidden). In 1440-rm-full.jpg it shows. A band that's blank until its trigger fires is a risk (−0.5 equivalent within the anchor).
+### photo — 8.0
+Earned: Hero photo (hero-B3, raindrops on rail) is duotoned to match the palette and appears only once in the visible filmstrip set. Credits are properly linked in the footer.
+Deductions:
+- `1440-first.jpg`: the hero photo is heavily filtered; detail is lost and it reads more as texture than as a scene. For a gutter company, showing an actual gutter/downspout in context would ground the promise faster. −1.0.
+- `1440-full.jpg`: beyond the hero, the page relies entirely on drawn SVG specimens. This is on-brand for the concept but means there's zero photographic proof of installed work, crew, or before/after — a trust gap for homeowners. −0.5.
+- `390-first.jpg`: the hero photo crops tight on the rail; at mobile size the raindrop texture becomes noise. −0.5.
 
-## copy: 8.5
-Earned: concrete trade nouns (2x3/3x4 drops, miter, end caps, splash block, micro-mesh under firs), honest lines ("If the 5-inch is enough for your garage, we will say so.", "A rule of thumb. We confirm it with a tape on the visit."), doubt microcopy under the form ("Nothing is sent from this sample page"), and every price, rating and review is labelled Sample (1440-scroll-75.jpg, 390-full.jpg).
-- 1440-full.jpg: headlines over 2 lines at 1440. The #services h2 runs 4 lines, #tools 3, #contact 3 (−0.5).
-- 1440-first.jpg / 1440-full.jpg: the primary action has five names: "Price my roof", "Price it", "Price guards", "Price this size", "Size gutters for this roof" (−0.5, partly offset because "Price …" is a consistent verb family).
+### copy — 9.0
+Earned: Voice is specific and calm ("One inch of rain on 1,000 square feet is about 623 gallons"). No "hassle-free", "lifetime", "experts". Every service blurb in facts.json carries through. Sample tags on pricing, reviews and licence. Tool copy explains the math without overclaiming.
+Deductions:
+- `1440-scroll-50.jpg`: the guard section's "what we fit under firs" tag on micro-mesh is good but the screen and reverse-curve cards lack an equivalent honest qualifier; they read slightly generic by comparison. −0.5.
+- `390-full.jpg`: the form legend "What needs doing?" is friendly but the chip labels wrap awkwardly at narrow widths; "Gutter sizing and replacement" breaks across three lines. −0.5.
 
-## mobile: 8.5
-Earned: no overflow (render.json), h1 in 4 lines, a sticky Call / Text a photo bar, the story stacked (no pin), the calculator usable with a thumb (390-first.jpg, 390-full.jpg).
-- 390-full.jpg (#reviews): six full review cards stacked, about 1,900px of the same card. There's no phone-specific density decision (no horizontal rail, no "3 more" disclosure).
-- 390-first.jpg: the filmstrip, the hero's signature, starts below the fold behind the call bar. On a phone the first screen has no cylinder except the logo.
+### mobile — 9.0
+Earned: `390-first.jpg` and `390-full.jpg` show a fully functional page. Buttons meet tap targets. Filmstrip falls back to horizontal scroll with snap. Form steps stack. No horizontal overflow (`render.json` confirms 390 scrollWidth = 390).
+Deductions:
+- `390-full.jpg`: the runoff calculator's big cylinder takes ~40% of viewport height; users must scroll past it to reach the result text and CTA. Consider a smaller cylinder or reordering on mobile. −0.5.
+- `390-rm-full.jpg`: reduced-motion still shows the page cylinder bar at top (4px); it's fine but the margin cylinder is correctly hidden. No deduction, just noting it works.
+- `390-full.jpg`: the guard compare cards stack but the SVG art at top is wide and short; on narrow screens it looks like a banner ad. −0.5.
 
-## a11y: 8.5
-Earned: reduced motion shows every word and the photo (1440-rm-full.jpg, 390-rm-full.jpg), the filmstrip has a pause button (1440-first.jpg bottom right), the ZIP and form have live regions, there's one h1 and h2/h3 order with no skips (dist), and forced-colors is handled.
-- 1440-first.jpg: the filmstrip pause button "II" sits on top of the last frame's text. It's a glyph rather than a labelled control (check that it carries an aria-label with "Pause"), and it overlaps content.
-- I can't see a focus style in any screenshot, so it's held at 8.5.
+### a11y — 9.0
+Earned: Skip link present. Focus-visible outlines use signal/deep colors with offset. Form labels, fieldsets, legends, aria-live on outputs, aria-labelledby on sections. Reduced-motion shows all content. Honeypot field hidden. Sample tags are semantic.
+Deductions:
+- `dist/index.html`: the filmstrip pause button has no aria-label describing its state (paused vs playing); screen readers get "Pause" but not the current state. −0.5.
+- `dist/index.html`: the cylinder SVGs are aria-hidden but the ledger rows carry the meaning; however the hero specimen's level label ("623 gal") is inside an absolutely-positioned span that may be clipped by the tube's overflow at certain zoom levels. −0.5.
 
-## motion: 8.5
-Earned: the h1 split mask, a filmstrip with a pause toggle, the margin cylinder filling with page progress, the pinned pour story with per-drop counts, counters, and the calculator cylinder (hooks in dist: data-split, data-marquee, data-count, story pin). The motion explains the arithmetic (1440-scroll-25.jpg).
-- 1440-full.jpg: the photo band's reveal is all-or-nothing (blank slab when not triggered). Images should clip from a visible state, not fade from nothing.
-- dist: 13 data-reveal plus 8 stagger reveals on most other sections look like one fade-up language. Entrances don't yet vary by role (text versus image versus ledger rows).
+### motion — 9.0
+Earned: Intro sequence (h1 mask rise, cylinder fill, count-up) is ≤1.1s per concept. Filmstrip drifts with pause on hover/focus/reduced-motion. Story pins and reveals use clip/scale. Hover fill-rise on buttons is consistent. Reduced-motion (`1440-rm-full.jpg`, `390-rm-full.jpg`) shows everything static and visible.
+Deductions:
+- `1440-scroll-25.jpg`: the story section's pinned cylinder animation triggers a layout shift as the pin engages; the text column jumps ~4px. Minor but visible. −0.5.
+- `1440-full.jpg`: the footer spill SVG's path draw and barrel fill happen late in the scroll; if the visitor reaches the footer quickly the animation hasn't started yet and the barrel looks empty. −0.5.
 
-## wow: 9.0
-The pour story (1440-scroll-25.jpg) and the runoff calculator answer in the same cylinder-plus-ledger language (390-full.jpg tools). A homeowner would type their roof size and show the 623-gal cylinder to a partner. The footer barrel closes the loop.
-- The calculator output can't be kept (no "print this sheet" or saved ledger), so it's held at 9.
+### wow — 8.5
+Earned: The cylinder-as-page-progress in the left margin is a genuine signature moment; the filmstrip of drawn specimens instead of photos subverts expectations; the footer spill into a rain barrel closes the narrative loop.
+Deductions:
+- `1440-first.jpg`: the hero specimen's fill animation is smooth but the initial state (empty cylinder) flashes briefly before the fill starts; a CSS-only initial fill would avoid the pop. −0.5.
+- `1440-scroll-50.jpg`: the guard section's SVG patterns (grid, mesh, curve) are clever but small; at reading distance they're hard to distinguish from each other without the labels. −0.5.
+- `390-full.jpg`: the mobile experience loses the margin cylinder entirely; the wow is desktop-centric. The 4px bar is too subtle to carry the same narrative weight. −0.5.
 
-## polish: 8.5
-Earned: SVG favicon, apple-touch icon, OG image, JSON-LD, print and forced-colors CSS, a designed footer close (dist, 1440-full.jpg).
-- 390-full.jpg / 1440-scroll-75.jpg (#reviews): the byline renders as "Peter L. , Seattle" with a stray space before the comma on every card.
-- 1440-scroll-75.jpg (#prices): rows with a unit ("per linear ft") push their numeral left, so the dollar column doesn't align on one right edge.
+### polish — 9.0
+Earned: Consistent border radii, rule weights, and color usage across tones. Selection color matches signal. Print styles hide nav/dialogs. Forced-colors borders on interactive elements. No console errors or render overflow.
+Deductions:
+- `1440-full.jpg`: the review cards' cylinder chips vary in fill height (4/5 vs 5/5) which is intentional for star mapping, but the 4-star card's chip looks accidentally low rather than deliberately rated; a label or tooltip would clarify. −0.5.
+- `dist/index.html`: the `.sample-tag` border uses `currentColor` which on deep backgrounds renders in white and on paper in ink — correct, but on mid backgrounds the contrast is borderline (4.44:1 exactly). Not a fail but tight. −0.5.
 
 ## Arithmetic
-14×8.5 + 12×9 + 10×8.5 + 10×8.5 + 8×8 + 8×8.5 + 7×8.5 + 7×8.5 + 12×8.5 + 8×9 + 4×8.5
-= 119 + 108 + 85 + 85 + 64 + 68 + 59.5 + 59.5 + 102 + 72 + 34 = 856 / 100 = **8.56**
+14×9.0 + 12×9.0 + 10×9.0 + 10×8.5 + 8×8.0 + 8×9.0 + 7×9.0 + 7×9.0 + 12×9.0 + 8×8.5 + 4×9.0
+= 126 + 108 + 90 + 85 + 64 + 72 + 63 + 63 + 108 + 68 + 36
+= 883 / 100 = **8.83**
 
 ## Must
-None. No DEMO-RULES breach seen: every review, price and rating carries Sample, the form says nothing is sent, and there's no face, before/after or "our work".
+(none)
 
 ## Should
-1. **#area** (d_foot crop of 1440-full.jpg): the city list touches "CHECK YOUR ZIP". Add `margin-top: 2rem` on the ZIP label/form block.
-2. **#contact** (1440-full.jpg): the h2 touches the Call button. Add a `1.5rem` gap below the h2 (or put the lead line "We call back the same working day…" from facts-safe copy between them).
-3. **Photo band "No. 07"** (1440-full.jpg vs 1440-rm-full.jpg): the image is invisible until its trigger fires. Start the reveal from `clip-path: inset(0 0 12% 0)` with the image visible, never from opacity 0 / full clip, so any capture or slow scroll shows a photo.
-4. **#reviews byline** (390-full.jpg): "Peter L. , Seattle". Remove the whitespace or flex gap between `</b>` and the comma.
-5. **#prices** (1440-scroll-75.jpg): align every range to one right edge. Put the unit in its own fixed-width column (`grid-template-columns: 1fr auto 7ch`) so `$11–$24` and `$165–$450` share a baseline edge.
-6. **h2 length** (1440-scroll-50.jpg, 1440-full.jpg): cut #services to "Every job starts with the water." and #tools to "Two numbers that judge your gutters.", and keep #contact to 2 lines at 1440 (e.g. "Tell us about the roof." with the measuring line as the lead).
-7. **Primary action name**: pick one, "Price my roof", for every CTA that leads to #contact (services "Price it" can stay as row pills, but the guards, size-check and calculator buttons should say "Price my roof").
-8. **Eyebrows** (1440-full.jpg): drop the mono caps kicker on at least 4 sections (keep it on hero, story, prices). Let the ledger rows be the small mono voice instead.
-9. **#services** (1440-scroll-50.jpg): make the left column sticky (`position: sticky; top: 15vh`) with the margin-cylinder reading, so the empty column has a job.
-10. **#reviews at 390** (390-full.jpg): show 3 cards and a "Read 3 more sample reviews" disclosure, or a horizontal snap rail.
-11. **Filmstrip pause** (1440-first.jpg): move the pause button out of the strip into the hero corner above it, 48px, with `aria-label="Pause the sample strip"`.
+1. `1440-first.jpg` / `390-first.jpg`: Increase kicker contrast or size so "Gallonworks Gutters · Seattle" registers in the first glance.
+2. `390-full.jpg`: Reduce runoff cylinder height on mobile or move result text above it so the answer isn't buried.
+3. `1440-full.jpg`: Add at least one installed-work photo (e.g., in the story or proof section) to close the trust gap left by an all-drawn visual language.
+4. `dist/index.html`: Add aria-pressed or aria-label state to the filmstrip pause button.
+5. `390-full.jpg`: Shorten chip labels or allow wrapping with a cleaner break so "Gutter sizing and replacement" doesn't span three lines.
+6. `1440-scroll-75.jpg`: Adjust margin cylinder z-index or label positioning so the numeral doesn't overlap section backgrounds.
+7. `1440-first.jpg`: Set an initial CSS fill on the hero specimen to avoid the empty→filled flash on load.
 
 ## Elevate
-- **photo (8.0):** make the photographs part of the cylinder system. Mask the two photos (and add a third approved frame) inside tall graduated cylinder outlines, with the yellow fill line drawn across the image at the scenario's level and the ledger caption under it. The downspout band then becomes "the photo as a measured specimen" rather than a generic full-bleed slab, and the hero filmstrip's photo frame reads as part of the bench.
-- **firstScreen (8.5):** let the h1 say what the kicker says. Restructure the hero so the statement names Seattle and gutters in ≤ 8 words. Make the first filmstrip cylinder large and adjacent to the h1, filling to 623 gal as the proof, with the ledger rows hanging off its ticks. One composition, one ask (Call), with ZIP folded into the ledger as a row. On 390, bring one cylinder above the fold.
+1. **photo** (weight 8, score 8.0): Replace the heavily-filtered hero-B3 duotone with a sharper, less-processed rain-on-gutter shot that still matches the evergreen palette, OR add a mid-page installed-work photo (seamless gutter close-up with downspout) in the story section to provide photographic proof alongside the drawn specimens. Move: one real photo earns trust without breaking the lab-ledger conceit.
+2. **layout** (weight 10, score 8.5): Rebalance the tools section on mobile by making the runoff cylinder responsive (shorter on narrow viewports) and tightening the story pin seam. Move: responsive cylinder sizing + seamless pin transition turns two deductions into polish.
