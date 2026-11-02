@@ -1,0 +1,314 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header data-header class="site-header t-light">
+  <div class="header__inner">
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav aria-label="Primary" class="header__nav">
+      <a href="#services">Services</a>
+      <a href="#proof">Reviews</a>
+      <a href="#prices">Pricing</a>
+      <a href="#area">Area</a>
+      <a href="#contact" class="btn btn-primary">Get my number</a>
+    </nav>
+    <button data-menu-btn class="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      [[i menu]]
+    </button>
+  </div>
+  <div data-progress class="header__progress"></div>
+</header>
+
+<nav id="menu" data-menu class="site-menu t-deep" aria-label="Mobile" hidden>
+  <div class="menu__inner">
+    <a href="#services">Services</a>
+    <a href="#proof">Reviews</a>
+    <a href="#prices">Pricing</a>
+    <a href="#area">Area</a>
+    <a href="#contact">Get my number</a>
+    [[tel]]
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section id="hero" class="sec hero t-light worksheet-bg" data-sw-signature="worksheet-grid">
+    <div class="cell-ref" aria-hidden="true">A1</div>
+    <div class="sec__inner hero__grid">
+      <div class="hero__copy" data-reveal>
+        <p class="kicker">{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
+        <h1>See your numbers before you see us</h1>
+        <p class="proof-line"><span data-open-now></span> · {{biz.city}} · {{proof.rating}} ({{proof.reviewCount}} reviews) [[sample rating]]</p>
+        <p class="lead">Run the cash runway check in 30 seconds. Then call to talk through what it means.</p>
+        <div class="hero__cta">
+          [[call btn-primary]]
+          <a href="#contact" class="btn btn-secondary">Book a first meeting</a>
+        </div>
+      </div>
+      <div class="hero__tool tool-panel" data-cash-runway data-reveal>
+        <h2 class="tool-title">Cash runway check</h2>
+        <label class="tool-label" for="cr-cash">Cash on hand</label>
+        <input id="cr-cash" class="tool-input" type="number" inputmode="numeric" min="0" step="1000" placeholder="e.g. 25000">
+        <label class="tool-label" for="cr-fixed">Monthly fixed costs</label>
+        <input id="cr-fixed" class="tool-input" type="number" inputmode="numeric" min="0" step="500" placeholder="e.g. 18000">
+        <label class="tool-label" for="cr-days">Days customers take to pay</label>
+        <input id="cr-days" class="tool-input" type="number" inputmode="numeric" min="0" max="120" step="1" placeholder="e.g. 30">
+        <div class="runway-bar" aria-hidden="true"><div class="runway-fill" id="cr-bar"></div></div>
+        <div class="tool-result" id="cr-result" aria-live="polite">Enter your numbers above to see your runway.</div>
+        <a href="#contact" class="btn btn-primary" data-service="Cash runway review" id="cr-cta" hidden>Walk me through my runway</a>
+        <noscript><p class="tool-note">With JavaScript off, call [[tel]] and we will walk through your runway together.</p></noscript>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="sec t-paper worksheet-bg" data-hook="services">
+    <div class="cell-ref" aria-hidden="true">B2</div>
+    <div class="sec__inner">
+      <h2 data-reveal>What we work on</h2>
+      <p class="sec__lead" data-reveal>Every engagement starts from your real numbers, not a template.</p>
+      <ul class="svc-grid" data-reveal-stagger>
+        <!-- each services -->
+        <li class="svc-card">
+          <h3>{{.name}}</h3>
+          <p>{{.blurb}}</p>
+          [[quote {{.short}} btn-ghost]]
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section id="proof" class="sec t-deep worksheet-bg" data-hook="proof">
+    <div class="cell-ref" aria-hidden="true">C3</div>
+    <div class="sec__inner proof__split">
+      <div class="proof__copy" data-reveal>
+        <h2>Owners who ran the numbers first</h2>
+        <p class="sec__lead">[[sample review]] These are sample reviews based on typical engagements.</p>
+        <blockquote class="review">
+          <p>{{proof.reviews.0.text}}</p>
+          <footer><cite>{{proof.reviews.0.name}}</cite>, {{proof.reviews.0.town}} · {{proof.reviews.0.service}}</footer>
+        </blockquote>
+        <blockquote class="review">
+          <p>{{proof.reviews.1.text}}</p>
+          <footer><cite>{{proof.reviews.1.name}}</cite>, {{proof.reviews.1.town}} · {{proof.reviews.1.service}}</footer>
+        </blockquote>
+        <blockquote class="review">
+          <p>{{proof.reviews.2.text}}</p>
+          <footer><cite>{{proof.reviews.2.name}}</cite>, {{proof.reviews.2.town}} · {{proof.reviews.2.service}}</footer>
+        </blockquote>
+      </div>
+      <div class="proof__media" data-reveal>
+        [[frame proof | proof-frame]]
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICES -->
+  <section id="prices" class="sec t-paper worksheet-bg" data-hook="prices">
+    <div class="cell-ref" aria-hidden="true">D4</div>
+    <div class="sec__inner">
+      <h2 data-reveal>Sample pricing</h2>
+      <p class="sec__lead" data-reveal>[[sample pricing]] Your fee is fixed in writing before we start.</p>
+      <table class="price-table" data-reveal>
+        <thead><tr><th scope="col">Service</th><th scope="col">Range</th></tr></thead>
+        <tbody>
+          <!-- each proof.prices -->
+          <tr>
+            <td>{{.item}}</td>
+            <td class="mono">{{.from}} – {{.to}} [[sample pricing]]</td>
+          </tr>
+          <!-- /each -->
+        </tbody>
+      </table>
+      <p class="price-note" data-reveal>Ranges depend on business size and complexity. Call for a fixed quote.</p>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="tools" class="sec t-light worksheet-bg" data-hook="tools">
+    <div class="cell-ref" aria-hidden="true">E5</div>
+    <div class="sec__inner tools__stack">
+      <div class="tool-block" data-reveal>
+        <h2>Price gap worksheet</h2>
+        <p>See whether your price covers your real hourly cost.</p>
+        <div class="tool-panel" data-price-gap>
+          <label class="tool-label" for="pg-charge">What you charge per job</label>
+          <input id="pg-charge" class="tool-input" type="number" inputmode="numeric" min="0" step="50" placeholder="e.g. 350">
+          <label class="tool-label" for="pg-hours">Hours the job really takes</label>
+          <input id="pg-hours" class="tool-input" type="number" inputmode="decimal" min="0" step="0.5" placeholder="e.g. 3">
+          <label class="tool-label" for="pg-overhead">Monthly overhead</label>
+          <input id="pg-overhead" class="tool-input" type="number" inputmode="numeric" min="0" step="500" placeholder="e.g. 8000">
+          <label class="tool-label" for="pg-billable">Billable hours per month</label>
+          <input id="pg-billable" class="tool-input" type="number" inputmode="numeric" min="0" step="10" placeholder="e.g. 120">
+          <div class="tool-result" id="pg-result" aria-live="polite">Enter your numbers to see the gap.</div>
+          <a href="#contact" class="btn btn-primary" data-service="Pricing review" id="pg-cta" hidden>Check my prices</a>
+        </div>
+      </div>
+      <div class="tool-block" data-reveal>
+        [[frame tools | tools-frame]]
+        <h2>Reporting checklist</h2>
+        <p>Five numbers on one page by the tenth of every month.</p>
+        <div class="tool-panel" data-reporting-checklist>
+          <fieldset class="checklist">
+            <legend>What do you receive today?</legend>
+            <label><input type="checkbox" data-rc-item> Profit & loss statement</label>
+            <label><input type="checkbox" data-rc-item> Balance sheet</label>
+            <label><input type="checkbox" data-rc-item> Cash flow statement</label>
+            <label><input type="checkbox" data-rc-item> Accounts receivable aging</label>
+            <label><input type="checkbox" data-rc-item> Job cost breakdown</label>
+          </fieldset>
+          <div class="tool-result" id="rc-result" aria-live="polite">Tick what you get today to see what is missing.</div>
+          <a href="#contact" class="btn btn-primary" data-service="Monthly numbers review" id="rc-cta" hidden>Set up my monthly numbers</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREA -->
+  <section id="area" class="sec t-accent worksheet-bg" data-hook="area">
+    <div class="cell-ref" aria-hidden="true">F6</div>
+    <div class="sec__inner area__split">
+      <div class="area__copy" data-reveal>
+        <h2>Serving {{biz.city}} and {{biz.areas|list}}</h2>
+        <p class="sec__lead">In person or by video, depending on the work.</p>
+        <div data-zip class="zip-check">
+          <label class="tool-label" for="zip-input">Check your ZIP</label>
+          <div class="zip-row">
+            <input id="zip-input" class="tool-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="Your ZIP" autocomplete="postal-code">
+            <button type="button" class="btn btn-secondary" data-zip-btn>Check</button>
+          </div>
+          <div class="tool-result" id="zip-result" aria-live="polite"></div>
+        </div>
+        <p class="hours-line" data-reveal>{{hours|today}} · Mon–Fri 8:00–5:30 · Sat 9:00–12:00</p>
+      </div>
+      <div class="area__list" data-reveal>
+        <h3>Towns we serve</h3>
+        <ul class="town-list">
+          <!-- each biz.areas -->
+          <li>{{.}}</li>
+          <!-- /each -->
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" class="sec t-paper worksheet-bg break" data-hook="process">
+    <div class="cell-ref" aria-hidden="true">G7</div>
+    <div class="sec__inner process__rail">
+      <div class="process__media" data-reveal>
+        [[frame process | process-frame]]
+      </div>
+      <div class="process__copy" data-reveal>
+        <h2>The first meeting</h2>
+        <p class="sec__lead">You leave with a page you can use the next morning.</p>
+        <dl class="agenda">
+          <dt>You bring</dt>
+          <dd>Your last three months of bank statements and the question keeping you up.</dd>
+          <dt>We bring</dt>
+          <dd>A worksheet built from your numbers, not ours.</dd>
+          <dt>You leave with</dt>
+          <dd>One page: the number, what it means, and the next move.</dd>
+          <dt>Time</dt>
+          <dd>60 minutes, in person or video.</dd>
+        </dl>
+        <a href="#contact" class="btn btn-primary">Book that first meeting</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="sec t-light worksheet-bg">
+    <div class="cell-ref" aria-hidden="true">H8</div>
+    <div class="sec__inner contact__stack">
+      <div class="contact__copy" data-reveal>
+        <h2>Talk through your numbers</h2>
+        <p class="sec__lead">{{proof.guarantee}}</p>
+        <p class="contact__phone">[[tel]] · {{hours|today}}</p>
+      </div>
+      <form data-lead class="lead-form" novalidate>
+        <div class="form-step" data-step="1">
+          <h3 class="step-label">Step 1 of 4 · What do you need?</h3>
+          <label class="form-label" for="lead-service">Service</label>
+          <select id="lead-service" class="form-input" required>
+            <option value="">Choose a service…</option>
+            <!-- each services -->
+            <option value="{{.name}}">{{.name}}</option>
+            <!-- /each -->
+          </select>
+          <button type="button" class="btn btn-primary" data-next>Next</button>
+        </div>
+        <div class="form-step" data-step="2" hidden>
+          <h3 class="step-label">Step 2 of 4 · What is going on?</h3>
+          <label class="form-label" for="lead-details">Tell us in your own words</label>
+          <textarea id="lead-details" class="form-input" rows="4" required placeholder="Payroll was tight, prices feel wrong, hiring…"></textarea>
+          <div class="form-nav">
+            <button type="button" class="btn btn-secondary" data-prev>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="3" hidden>
+          <h3 class="step-label">Step 3 of 4 · When works?</h3>
+          <label class="form-label" for="lead-when">Best time to reach you</label>
+          <select id="lead-when" class="form-input" required>
+            <option value="">Choose…</option>
+            <option value="morning">Morning (8–12)</option>
+            <option value="afternoon">Afternoon (12–5)</option>
+            <option value="evening">Evening (after 5)</option>
+            <option value="anytime">Anytime</option>
+          </select>
+          <div class="form-nav">
+            <button type="button" class="btn btn-secondary" data-prev>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="4" hidden>
+          <h3 class="step-label">Step 4 of 4 · How do we reach you?</h3>
+          <label class="form-label" for="lead-name">Name</label>
+          <input id="lead-name" class="form-input" type="text" required autocomplete="name">
+          <label class="form-label" for="lead-phone">Phone</label>
+          <input id="lead-phone" class="form-input" type="tel" required autocomplete="tel">
+          <label class="form-label" for="lead-email">Email (optional)</label>
+          <input id="lead-email" class="form-input" type="email" autocomplete="email">
+          <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="hidden" name="t" data-time-trap>
+          <div class="form-nav">
+            <button type="button" class="btn btn-secondary" data-prev>Back</button>
+            <button type="submit" class="btn btn-primary">Send request</button>
+          </div>
+          <p class="form-note">We will call you back to set up a visit. Nothing is sent until you say so.</p>
+        </div>
+        <div class="form-thanks" data-thanks hidden>
+          <h3>Request received</h3>
+          <p>We will call you within one business day to set up your first meeting. If it is urgent, call [[tel]].</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer t-deep worksheet-bg">
+  <div class="cell-ref" aria-hidden="true">H9</div>
+  <div class="footer__inner">
+    <p class="footer__biz">{{biz.name}} · {{biz.city}}, {{biz.state}} · [[tel]]</p>
+    <p class="footer__hours">{{hours|today}} · Mon–Fri 8:00–5:30 · Sat 9:00–12:00</p>
+    <p class="footer__disclaimer">{{demo.disclaimer}}</p>
+    [[credits]]
+    <p class="footer__copy">&copy; {{year}} {{biz.name}}</p>
+  </div>
+</footer>
+
+<div data-mobilebar class="mobile-bar t-deep">
+  [[call btn-primary]]
+  <a href="#contact" class="btn btn-secondary">Get my number</a>
+</div>

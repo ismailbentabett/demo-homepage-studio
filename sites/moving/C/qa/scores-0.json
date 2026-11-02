@@ -1,0 +1,67 @@
+{
+  "round": 0,
+  "categories": {
+    "firstScreen": {
+      "score": 9,
+      "notes": "1440-first.jpg: h1 'Boulder movers & haul-away' (5 words), trade+city+outcome clear. Phone visible top-right. Two CTAs with clear hierarchy. Proof line under h1. Next band peeks ~60px. 390-first.jpg: h1 3 lines, both buttons above fold, phone visible."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: route-line signature in hero map, service pins, canyon elevation, reviews pin, footer 'End of route'. Palette and type trio unique vs siblings. -0.5: no visible continuous route line connecting sections below hero. -0.5: service cards standard grid. -0.5: haul sorter is static 3-col grid, not distinctive."
+    },
+    "type": {
+      "score": 9,
+      "notes": "1440-first.jpg: Newsreader display at large scale, Albert Sans body >=16px, DM Mono for distances/prices/ZIPs. Fluid clamp() scale. Tabular numerals on prices. Curly quotes in reviews. En-dash ranges in hours. No orphans. <=5 sizes visible."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: 9 sections, varied tones (paper/mid/deep/light). Asymmetric canyon story. Full-bleed break. -0.5: services and tool sections both grid-card layouts in sequence (1440-scroll-25.jpg, 1440-scroll-50.jpg). -0.5: area section echoes hero text-left composition (1440-scroll-75.jpg)."
+    },
+    "photo": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: all frames on-topic, consistent warm-desaturated grade. Object-position on thirds. -0.5: area photo alt text says 'Route 66 Amboy California' — off-region (dist/index.html line 1108). -0.5: canyon photo mostly obscured by dark overlay panel (1440-scroll-50.jpg)."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "1440-first.jpg: voice matches concept sentences. Specific trade nouns ('gravel driveway', 'stair roller', 'dolly route'). Sample labels on all reviews and prices. Microcopy under form button. No banned phrases. Buttons named for action."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "390-first.jpg: no horizontal scroll at 390. Tap targets >=48px. Hero re-composed. h1 <=3 lines. -0.5: render.json shows 320px overflow (scrollWidth 322) from SVG path/circle elements."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "1440-rm-full.jpg: all content visible in reduced motion. Skip link present. Focus 3px spruce outline. All inputs labeled. Heading order correct. No rotating word aria issues."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "1440-first.jpg: route-line draw <1s, pin drops. Elevation counter animates. Hover underline scaleX. Reduced motion respected. -1.0: same fade-up reveal on every section (1440-scroll-25/50/75.jpg). -0.5: canyon story not pinned despite concept promise."
+    },
+    "wow": {
+      "score": 8,
+      "notes": "1440-first.jpg: route-line map drawing is memorable and tied to thesis. -1.0: haul sorter is static info grid, not interactive tool (1440-scroll-50.jpg). -0.5: truck-fill gauge missing from page. -0.5: lease calendar missing from page."
+    },
+    "polish": {
+      "score": 9,
+      "notes": "dist/index.html: SVG favicon, apple-touch-icon, OG meta, JSON-LD MovingCompany, theme-color, consistent 4px radius, print stylesheet, lazy images with dimensions, forced colors handled. -0.5: og.jpg may not exist. -0.5: photo credits geographically mismatched (NYC stairwell for Boulder mover)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "render.json, 320px overflow",
+      "problem": "Horizontal overflow at 320px: scrollWidth 322. SVG path and circle elements in route map extend beyond viewport.",
+      "fix": "Add overflow:hidden to .route-map container or constrain SVG viewBox to fit within 100vw at 320px."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "motion",
+      "move": "Implement pinned canyon scroll story with elevation counter driven by scroll position, and vary section entrance patterns so each section type has a distinct reveal (clip for photos, stagger for cards, scale for counters, static for text-heavy sections)."
+    },
+    {
+      "category": "wow",
+      "move": "Build the keep/donate/haul sorter as a real tappable tool with drag-or-tap interaction and a printable plan output styled in the route-line signature language."
+    }
+  ],
+  "verdictHint": "ELEVATE"
+}

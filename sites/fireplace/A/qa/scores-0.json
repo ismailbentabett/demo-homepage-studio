@@ -1,0 +1,72 @@
+{
+  "round": 0,
+  "categories": {
+    "firstScreen": {
+      "score": 9,
+      "notes": "1440-first.jpg: h1 'Chimney Sweeps & Stove Service in Missoula' (7 words), trade+city+outcome; two CTAs above fold; phone in header; sample rating line under h1; next band peeks ~60px. 390-first.jpg: h1 3 lines, both buttons above fold, phone in mobile bar."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: flue-rail signature in hero, process, services, proof, prices, contact, footer (≥4 sections). Soot+Ember+Brick palette unique. 1440-scroll-25.jpg: checker cards use generic bordered shape (-0.5). 1440-scroll-50.jpg: services grid is uniform 3-col (-0.5). Flue-rail is decorative margin rather than information organiser (-0.5)."
+    },
+    "type": {
+      "score": 9,
+      "notes": "1440-full.jpg: Young Serif display + Work Sans text; fluid scale; tabular numerals in prices/hours; curly quotes in reviews; measure 45-75ch. 1440-scroll-25.jpg: 3+ tiny tracked-caps labels in checker section (-0.5). 1024-first.jpg: h1 clamp produces awkward mid-range size (-0.5)."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: 11 sections, alternating tones, full-bleed break, asymmetric hero grid. 1440-scroll-50.jpg: proof (t-deep) and prices (t-accent) touch without gap, reads as one dark block (-1.0). 1440-scroll-75.jpg: area/hours split uses symmetric 1fr/1fr grid (-0.5)."
+    },
+    "photo": {
+      "score": 8.5,
+      "notes": "1440-first.jpg, 1440-scroll-25.jpg, 1440-scroll-50.jpg: all frames on-topic (brick fireplace, chimney crown, stove, flue tiles); consistent warm grade via CSS filter; arch mask part of signature; alt text descriptive. 1440-scroll-25.jpg + 1440-scroll-50.jpg: process and break photos share similar masonry aesthetic (-0.5)."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "dist/index.html: voice matches concept sentences; Sample labels on reviews/pricing/rating; microcopy under form button; consistent primary action name; no banned words. 1440-scroll-75.jpg: 'Book a visit' heading is generic (-0.5). ZIP checker result is JS-generated, static fallback empty (-0.5)."
+    },
+    "mobile": {
+      "score": 8,
+      "notes": "390-first.jpg: h1 ≤4 lines, both CTAs above fold. 390-full.jpg: horizontal overflow at 390px (page 415px wide); review cards overflow to 764px. qa/render.json: overflow errors at 390 and 320. mustFix caps at 8.0."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "1440-rm-full.jpg, 390-rm-full.jpg: all content visible under reduced motion. dist/index.html: skip link, focus-visible outline, correct heading order, labelled inputs, aria-live regions. Focus outline uses currentColor, contrast on accent bg unverified (-0.5). Symptom checker lacks group role (-0.5). Rotating word aria handling unconfirmed (-0.5)."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "1440-scroll-25.jpg, 1440-scroll-50.jpg: scroll-triggered brush marker rise and clip-path wipe visible. 1440-rm-full.jpg: reduced motion respected. 1440-scroll-25.jpg + 1440-scroll-50.jpg: reveals are uniform fade-up across sections, not varied by role (-1.0). 1440-scroll-75.jpg: estimator select is native with no micro-interaction (-0.5). Mobile bar hide/show unconfirmed from static shots (-0.5)."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "1440-scroll-25.jpg: flue-level signature tied to thesis; symptom checker outputs urgency guidance and pre-fills form. 1440-scroll-25.jpg: checker output is plain text, not designed in signature language (-0.5). 1440-scroll-50.jpg: creosote tabs lack visual punch of flue-rail story (-0.5)."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "dist/index.html: SVG favicon, apple-touch-icon, OG 1200x630, theme-color, JSON-LD HomeAndConstructionBusiness, print stylesheet, lazy images with dimensions, forced colors handled, consistent 2px radius. 1440-full.jpg: footer Wikimedia credits are dense unstyled boilerplate (-0.5). 390-first.jpg: mobile bar buttons visually identical (-0.5). Menu drawer visibility transition may flash (-0.5)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "390-full.jpg, qa/render.json",
+      "problem": "Horizontal overflow at 390px (page 415px wide) and 320px (page 413px wide). Widest: div.checker__symptom (right 415), div.checker__zip (right 415), article.review-card.card (right 764), span.level-tag (right 582), p inside review cards (right 739).",
+      "fix": "Add overflow-x: hidden to body or .wrap; constrain checker__symptom, checker__zip, review-card.card, level-tag to max-width: 100% and box-sizing: border-box; audit all .wrap children for fixed widths exceeding viewport."
+    },
+    {
+      "where": "390-full.jpg",
+      "problem": "Review cards overflow to 764px on 390px viewport — nearly double-width.",
+      "fix": "Ensure article.review-card.card has width: 100%; max-width: 100%; overflow: hidden and child p wraps rather than forcing width."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "mobile",
+      "move": "Restructure the symptom checker as a vertical stack of full-width tap targets with the flue-rail as a left accent bar, turning the overflow bug into a signature-aligned mobile pattern."
+    },
+    {
+      "category": "layout",
+      "move": "Insert a narrow t-paper flue cross-section divider between proof and prices that echoes the hero arch at miniature scale, transforming the tone collision into a signature beat that reinforces the chimney-as-site metaphor."
+    }
+  ],
+  "verdictHint": "FIX"
+}

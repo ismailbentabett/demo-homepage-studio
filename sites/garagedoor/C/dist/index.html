@@ -381,7 +381,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .run { font: 700 var(--F)/1 "Arvo", Georgia, serif; letter-spacing: -.04em; transform: translate(var(--gx), var(--gy)); }
 .run__minus { baseline-shift: .09em; letter-spacing: -.07em; }
 .run--cut { fill: #000; }
-.run--line { fill: none; stroke: rgba(238,243,247,.62); stroke-width: 1.5px; }
+.run--line { display: none; }
 .win__clear { cx: calc(var(--gx) + .74 * var(--F)); cy: calc(var(--gy) - .4 * var(--F)); r: calc(var(--clear, 1) * 150cqw); }
 .hero__body { position: relative; padding: calc(14px + .87 * var(--F) + 14px) 0 var(--s-6); display: grid; gap: var(--s-4); }
 .hero__kicker { margin: 0; color: #C9D7E5; }
@@ -461,11 +461,11 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .story__stage .stamp { position: absolute; left: var(--s-5); top: var(--s-5); z-index: 2; color: #EEF3F7; border-color: rgba(238,243,247,.7); background: rgba(15,35,64,.3); }
 .stage__win { position: relative; overflow: clip; border-radius: 2px; padding: calc(var(--s-6) + 10.5rem) var(--s-6) var(--s-5); color: #EEF3F7; isolation: isolate; }
 .stage__win::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: #F4F8FB;
-  --d: calc(var(--cold, 0) * 96px);
-  -webkit-mask: var(--rime) 0 0 / 220px 220px, linear-gradient(90deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000), linear-gradient(180deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000);
-  -webkit-mask-composite: source-in, source-over;
-  mask: var(--rime) 0 0 / 220px 220px, linear-gradient(90deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000), linear-gradient(180deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000);
-  mask-composite: intersect, add, add; opacity: calc(var(--cold, 0) * .95); }
+  --d: calc(var(--cold, 0) * 72px);
+  -webkit-mask: var(--rime) 0 0 / 220px 220px, radial-gradient(ellipse 70% 60% at 50% 50%, transparent 40%, #000 85%), linear-gradient(90deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000), linear-gradient(180deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000);
+  -webkit-mask-composite: source-in, source-over, source-over, source-over;
+  mask: var(--rime) 0 0 / 220px 220px, radial-gradient(ellipse 70% 60% at 50% 50%, transparent 40%, #000 85%), linear-gradient(90deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000), linear-gradient(180deg, #000, transparent var(--d), transparent calc(100% - var(--d)), #000);
+  mask-composite: intersect, add, add, add; opacity: calc(var(--cold, 0) * .35); }
 .stage__win .door { position: relative; z-index: 1; }
 .stage__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: filter var(--t-story) var(--ease-out); }
 [data-scene="1"] .stage__photo { filter: sepia(.45) saturate(1.35) brightness(1.08) contrast(.92); }
@@ -565,7 +565,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 .proof__head { margin-bottom: var(--s-7); }
 .proof__rating { margin-top: var(--s-4); color: var(--muted); font-variant-numeric: tabular-nums; }
 .proof__rating strong { font: 700 var(--fs-2)/1 "Arvo", serif; color: var(--ink); }
-.wall { display: grid; gap: var(--s-4); }
+.wall { display: grid; gap: var(--s-4); grid-auto-flow: dense; }
 .rev { margin: 0; padding: var(--s-6) var(--s-5) var(--s-5); border: 1px solid var(--rule); border-radius: 2px; display: grid; gap: var(--s-4); align-content: start; justify-items: start; background: rgba(15,35,64,.28); }
 .rev blockquote { margin: 0; }
 .rev blockquote p { font-size: var(--fs-0); }
@@ -939,7 +939,7 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
     <div class="wrap">
       <div class="svcs__head">
         <h2 id="svc-h" class="h2">Ten jobs, from the first bang to the fall tune-up.</h2>
-        <div class="svcs__first frost" style="--cold:1"><p class="stamp stamp--md"><span>−8</span><sup>°F</sup></p><p>Row 01 is the one that can’t wait: Cold-snap spring repair, the morning the door won’t lift.</p></div>
+        <div class="svcs__first frost" style="--cold:1"><p class="stamp stamp--md"><span>−8</span><sup>°F</sup></p><p>The one that can’t wait: a spring that snaps on the morning the door won’t lift.</p></div>
       </div>
       <ol class="svcs__list" role="list" data-reveal-stagger>
         
@@ -947,70 +947,70 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
           <span class="svc__n">01</span>
           <h3 class="svc__name">Cold-snap spring repair</h3>
           <p class="svc__blurb">Springs that snap on the coldest mornings replaced in pairs and balanced before we leave.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Spring repair">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Spring repair">Price a Spring repair</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">02</span>
           <h3 class="svc__name">Hail-damaged doors</h3>
           <p class="svc__blurb">Dented panels judged honestly: replace one section, or the whole door when the steel is creased.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Hail damage">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Hail damage">Price a Hail damage</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">03</span>
           <h3 class="svc__name">Door frozen to the floor</h3>
           <p class="svc__blurb">Bottom seal frozen to the slab? We free it without tearing the rubber or straining the opener.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Frozen door">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Frozen door">Price a Frozen door</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">04</span>
           <h3 class="svc__name">Opener installation</h3>
           <p class="svc__blurb">Quiet belt or wall-mount openers, with battery backup for spring storm outages.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="New opener">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="New opener">Price a New opener</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">05</span>
           <h3 class="svc__name">Insulated door upgrade</h3>
           <p class="svc__blurb">Insulated steel doors for garages under a bedroom or used as a winter workshop.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Insulated door">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Insulated door">Price a Insulated door</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">06</span>
           <h3 class="svc__name">Cable &amp; track repair</h3>
           <p class="svc__blurb">Snapped cables, bent track and a door hanging crooked fixed, then rebalanced.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Cables &amp; track">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Cables &amp; track">Price a Cables &amp; track</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">07</span>
           <h3 class="svc__name">Weatherstripping</h3>
           <p class="svc__blurb">New perimeter seal and bottom rubber so blowing snow stays on the driveway.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Weatherstrip">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Weatherstrip">Price a Weatherstrip</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">08</span>
           <h3 class="svc__name">Sensors &amp; safety reverse</h3>
           <p class="svc__blurb">Sensors cleaned, aligned and tested so the door stops for kids, pets and snow shovels.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Sensors">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Sensors">Price a Sensors</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">09</span>
           <h3 class="svc__name">Remote &amp; keypad setup</h3>
           <p class="svc__blurb">Remotes, keypads and the button in your car paired; old codes cleared out.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Remotes">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Remotes">Price a Remotes</a>
         </li>
         
         <li class="svc">
           <span class="svc__n">10</span>
           <h3 class="svc__name">Fall tune-up</h3>
           <p class="svc__blurb">A pre-winter visit: springs, cables, rollers, seals and opener force checked and set.</p>
-          <a class="btn btn--text svc__cta" href="#contact" data-service="Fall tune-up">Price my repair</a>
+          <a class="btn btn--text svc__cta" href="#contact" data-service="Fall tune-up">Price a Fall tune-up</a>
         </li>
         
       </ol>

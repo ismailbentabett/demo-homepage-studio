@@ -1,0 +1,311 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-hex" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header data-header>
+  <div class="header__inner">
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">
+      <span class="logo__hex">[[i hex]]</span>
+      <span class="logo__text">{{biz.initials}}</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav__list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#area">Area</a></li>
+        <li><a href="#proof">Reviews</a></li>
+        <li><a href="#contact">Price it</a></li>
+      </ul>
+    </nav>
+    <button data-menu-btn class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
+    <div id="menu" data-menu class="menu" hidden>
+      <nav aria-label="Mobile">
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#area">Area</a></li>
+          <li><a href="#proof">Reviews</a></li>
+          <li><a href="#contact">Price it</a></li>
+          <li>[[tel]]</li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="t-paper sec-hero">
+    <div class="sec-hero__inner">
+      <div class="sec-hero__copy">
+        <p class="kicker">{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
+        <h1 data-split="lines">Vintage tile repair and new mosaic floors for {{biz.city}} bungalows and two-flats</h1>
+        <p class="lead">We keep the old ones going and set the new ones to last as long. Text a photo for a price.</p>
+        <p class="proof-line">{{hours|today}} · {{biz.areas|list}} · {{proof.rating}} [[sample rating]]</p>
+        <div class="cta-row">
+          [[call btn--primary]]
+          [[quote Vintage Tile Repair btn--ghost | Price a repair]]
+        </div>
+      </div>
+      <div class="sec-hero__photo hex-mask">
+        [[img hero | eager]]
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. AREA -->
+  <section id="area" class="t-deep sec-area" data-sw-signature="hex-map">
+    <div class="container">
+      <h2>Do we come to your block?</h2>
+      <p class="lead">We work in {{biz.areas|list}} and the surrounding ZIPs.</p>
+      <div class="zip-row" data-zip>
+        <label for="zip-input">Enter your ZIP</label>
+        <div class="zip-field">
+          <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="e.g. {{biz.zips.0}}">
+          <button type="button" class="btn btn--primary" data-zip-check>Check</button>
+        </div>
+        <div class="zip-result" aria-live="polite" data-zip-result></div>
+      </div>
+      <div class="hex-map" aria-label="Service area map">
+        <!-- each biz.areas -->
+        <span class="hex-map__tile" data-hex="{{.}}">{{.}}</span>
+        <!-- /each -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SERVICES -->
+  <section id="services" class="t-paper sec-services">
+    <div class="container">
+      <h2>What we do</h2>
+      <ul class="svc-rail" data-reveal-stagger>
+        <!-- each services -->
+        <li class="svc-card">
+          <span class="hex-bullet">[[i hex]]</span>
+          <h3>{{.name}}</h3>
+          <p>{{.blurb}}</p>
+          [[quote .short btn--ghost]]
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. PROCESS -->
+  <section id="process" class="t-light sec-process">
+    <div class="container sec-process__inner">
+      <div class="sec-process__copy" data-reveal>
+        <h2>What sits under your tile</h2>
+        <p class="lead">A shower that leaks in two years was built wrong from the stud out. Ours are built in layers you can check.</p>
+        <ul class="layer-list">
+          <li><strong>Backer board</strong> screwed to studs, no flex.</li>
+          <li><strong>Slope to drain</strong> so water never pools behind the tile.</li>
+          <li><strong>Waterproof membrane</strong> rolled on and flood-tested for 24 hours before any tile goes down.</li>
+          <li><strong>Thinset and tile</strong> set with full coverage, edges flush.</li>
+          <li><strong>Grout sealed</strong> so January steam stays on the surface.</li>
+        </ul>
+        <p class="note">Every layer is visible before we close the wall. Ask for photos.</p>
+      </div>
+      <div class="sec-process__photo frame" data-reveal="clip">
+        [[frame process | ]]
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. BREAK -->
+  <section class="break t-accent" aria-hidden="true">
+    [[img break | eager]]
+  </section>
+
+  <!-- 6. TOOLS -->
+  <section id="tools" class="t-paper sec-tools" data-hook="tools">
+    <div class="container">
+      <h2>Price it before you call</h2>
+      <div class="tool-stack">
+
+        <div class="tool-card" data-checklist>
+          <h3>Repair or redo?</h3>
+          <p>Answer four questions and get a plain recommendation with sample ranges.</p>
+          <ul class="checklist" role="list">
+            <li><label><input type="checkbox" name="q1"> Tile is more than 40 years old</label></li>
+            <li><label><input type="checkbox" name="q2"> More than three cracked pieces</label></li>
+            <li><label><input type="checkbox" name="q3"> Leak or stain below</label></li>
+            <li><label><input type="checkbox" name="q4"> You still like the pattern</label></li>
+          </ul>
+          <p class="checklist-result" data-checklist-result></p>
+          <a href="#contact" class="btn btn--ghost" data-service="Vintage Tile Repair">Get a number</a>
+        </div>
+
+        <div class="tool-card" data-estimator>
+          <h3>Heated floor cost</h3>
+          <p>Slide to your bathroom size. Ranges are sample estimates from past jobs.</p>
+          <label for="hf-size">Room size: <span data-est-value>40</span> sq ft</label>
+          <input id="hf-size" type="range" min="20" max="80" step="5" value="40" data-est-input>
+          <p class="est-result">Install range: <span data-est-from>{{proof.prices.3.from}}</span> – <span data-est-to>{{proof.prices.3.to}}</span> [[sample pricing]]</p>
+          <a href="#contact" class="btn btn--ghost" data-service="Heated Floors">Price heated floors</a>
+        </div>
+
+        <div class="tool-card grout-preview">
+          <h3>Grout color preview</h3>
+          <p>Pick a tile and a grout. See how the pair ages in a {{biz.city}} bathroom.</p>
+          <div class="grout-swatches">
+            <div class="swatch-row">
+              <button type="button" class="swatch" data-tile="white" style="--tile:#f4f1ec" aria-label="White subway tile"></button>
+              <button type="button" class="swatch" data-tile="gray" style="--tile:#9a9590" aria-label="Gray hex tile"></button>
+              <button type="button" class="swatch" data-tile="terra" style="--tile:#b5654a" aria-label="Terracotta tile"></button>
+            </div>
+            <div class="swatch-row">
+              <button type="button" class="swatch" data-grout="white" style="--grout:#f8f6f2" aria-label="White grout"></button>
+              <button type="button" class="swatch" data-grout="warm" style="--grout:#c8bfb0" aria-label="Warm gray grout"></button>
+              <button type="button" class="swatch" data-grout="charcoal" style="--grout:#3a3632" aria-label="Charcoal grout"></button>
+            </div>
+          </div>
+          <div class="grout-preview-swatch" aria-live="polite" data-grout-result>
+            <span class="grout-tile"></span>
+            <span class="grout-line"></span>
+          </div>
+          <p class="grout-note" data-grout-note>Pick a tile and a grout to see the pair.</p>
+          <a href="#contact" class="btn btn--ghost">Note my choice</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. PROOF -->
+  <section id="proof" class="t-mid sec-proof">
+    <div class="container">
+      <h2>Sample reviews from neighbors</h2>
+      <p class="proof-meta">{{proof.rating}} [[sample rating]] · {{proof.reviewCount}} reviews [[sample review]]</p>
+      <div class="review-grid" data-reveal>
+        <!-- each proof.reviews 0:3 -->
+        <figure class="review-card">
+          <blockquote>“{{.text}}”</blockquote>
+          <figcaption>
+            <cite>{{.name}}, {{.town}}</cite>
+            <span class="review-svc">{{.service}}</span>
+            <span class="sample-tag">Sample review</span>
+          </figcaption>
+        </figure>
+        <!-- /each -->
+      </div>
+      <p class="guarantee">{{proof.guarantee}} <span class="sample-tag">Sample guarantee</span></p>
+    </div>
+  </section>
+
+  <!-- 8. PRICES -->
+  <section id="prices" class="t-light sec-prices" data-hook="prices">
+    <div class="container">
+      <h2>Sample price ranges</h2>
+      <p class="lead">Every job is different. These are what similar jobs have run in {{biz.city}}. Your number comes after we see the room.</p>
+      <table class="price-table" data-estimator>
+        <thead>
+          <tr><th scope="col">Job</th><th scope="col">Range</th></tr>
+        </thead>
+        <tbody>
+          <!-- each proof.prices -->
+          <tr>
+            <td>{{.item}}<!-- if .note --> <span class="price-note">({{.note}})</span><!-- /if --></td>
+            <td>{{.from}} – {{.to}} <span class="sample-tag">Sample pricing</span></td>
+          </tr>
+          <!-- /each -->
+        </tbody>
+      </table>
+      <a href="#contact" class="btn btn--primary">Get my number</a>
+    </div>
+  </section>
+
+  <!-- 9. CONTACT -->
+  <section id="contact" class="t-paper sec-contact">
+    <div class="container sec-contact__inner">
+      <div class="sec-contact__copy">
+        <h2>Text a photo or price a job</h2>
+        <p class="lead">Tell us what you have. We'll call you back to set up a visit — usually within one business day.</p>
+        <p class="contact-hours">{{hours|today}}</p>
+        <p class="contact-phone">[[tel]]</p>
+        <p class="contact-email"><a href="mailto:{{biz.email}}">{{biz.email}}</a></p>
+      </div>
+      <form data-lead class="lead-form" novalidate>
+        <div class="form-step" data-step="1">
+          <h3>What do you need?</h3>
+          <label for="svc-select">Service</label>
+          <select id="svc-select" name="service" required>
+            <option value="">Pick one…</option>
+            <!-- each services -->
+            <option value="{{.short}}">{{.name}}</option>
+            <!-- /each -->
+          </select>
+          <button type="button" class="btn btn--primary" data-next>Next</button>
+        </div>
+        <div class="form-step" data-step="2" hidden>
+          <h3>Tell us about the room</h3>
+          <label for="details">Details (size, age, what's wrong)</label>
+          <textarea id="details" name="details" rows="3"></textarea>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-back>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="3" hidden>
+          <h3>When works?</h3>
+          <fieldset>
+            <legend>Preferred time</legend>
+            <label><input type="radio" name="when" value="morning"> Morning (7–11)</label>
+            <label><input type="radio" name="when" value="afternoon"> Afternoon (11–4:30)</label>
+            <label><input type="radio" name="when" value="flexible"> Flexible</label>
+          </fieldset>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-back>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="4" hidden>
+          <h3>How do we reach you?</h3>
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" required autocomplete="name">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" required autocomplete="tel">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email">
+          <label class="hp" aria-hidden="true">
+            Website
+            <input type="text" name="website2" tabindex="-1" autocomplete="off">
+          </label>
+          <input type="hidden" name="t" value="">
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-back>Back</button>
+            <button type="submit" class="btn btn--primary">Send it</button>
+          </div>
+        </div>
+        <div class="form-thanks" data-thanks hidden>
+          <h3>Got it, thanks.</h3>
+          <p>In your version this goes straight to your phone and inbox. We'll call you back to set up a visit.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="t-deep site-footer">
+  <div class="container">
+    <p class="disclaimer">{{demo.disclaimer}}</p>
+    <p>Licence # {{proof.license}} <span class="sample-tag">Sample licence</span></p>
+    <p>&copy; {{year}} {{biz.name}} · {{biz.city}}, {{biz.state}}</p>
+    [[credits]]
+    <div class="footer-hex-map" aria-hidden="true">
+      <!-- each biz.areas -->
+      <span class="hex-map__tile hex-map__tile--sm">{{.}}</span>
+      <!-- /each -->
+    </div>
+  </div>
+</footer>
+
+<div data-mobilebar class="mobilebar">
+  [[call btn--primary]]
+  [[quote Vintage Tile Repair btn--ghost | Price it]]
+</div>
