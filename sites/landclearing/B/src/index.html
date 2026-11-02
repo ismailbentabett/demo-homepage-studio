@@ -1,0 +1,282 @@
+<!-- SVG sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <!-- Density legend hatches -->
+  <symbol id="hatch-dots" viewBox="0 0 20 20"><pattern id="p-dots" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="currentColor"/></pattern><rect width="20" height="20" fill="url(#p-dots)"/></symbol>
+  <symbol id="hatch-cross" viewBox="0 0 20 20"><pattern id="p-cross" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width=".8"/></pattern><rect width="20" height="20" fill="url(#p-cross)"/></symbol>
+  <symbol id="hatch-dash" viewBox="0 0 20 20"><pattern id="p-dash" width="12" height="6" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="8" y2="3" stroke="currentColor" stroke-width="1"/></pattern><rect width="20" height="20" fill="url(#p-dash)"/></symbol>
+  <symbol id="hatch-line" viewBox="0 0 20 20"><pattern id="p-line" width="6" height="6" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="6" y2="3" stroke="currentColor" stroke-width=".6"/></pattern><rect width="20" height="20" fill="url(#p-line)"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header data-header class="site-header t-deep" aria-label="Site">
+  <div class="header__inner">
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#prices">Rates</a></li>
+        <li><a href="#area">Area</a></li>
+        <li><a href="#contact">Price it</a></li>
+      </ul>
+    </nav>
+    <div class="header__cta">
+      <span data-open-now class="open-now"></span>
+      [[call btn--sm]]
+    </div>
+    <button data-menu-btn class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+  <div data-progress class="header__progress"></div>
+</header>
+
+<nav id="menu" data-menu class="site-menu" aria-label="Mobile" hidden>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#prices">Rates</a></li>
+    <li><a href="#area">Area</a></li>
+    <li><a href="#contact">Price it</a></li>
+    <li>[[tel]]</li>
+  </ul>
+</nav>
+
+<main id="main">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="sec hero t-light" data-sw-signature>
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <p class="kicker">Land clearing by the acre · {{biz.city}}, {{biz.state}}</p>
+        <h1 data-split="lines">You know the number per acre before anyone drives out</h1>
+        <p class="lead">Send your parcel. Get a ground map and a sample rate per acre for your density class. Mulching, pasture, lots.</p>
+        <p class="proof-line">{{hours|today}} · {{biz.areas.0}}–{{biz.areas.3}} · {{proof.rating}} [[sample rating]]</p>
+        <div class="hero__actions">
+          [[quote Mulching btn--primary | Price my acres]]
+          [[call btn--secondary]]
+        </div>
+        <div class="zip-check" data-zip>
+          <label for="hero-zip">Check your ZIP</label>
+          <div class="zip-row">
+            <input id="hero-zip" type="text" inputmode="numeric" maxlength="5" placeholder="e.g. {{biz.zips.0}}" autocomplete="postal-code">
+            <button type="button" class="btn btn--sm" data-zip-btn>Check</button>
+          </div>
+          <div class="zip-result" aria-live="polite" data-zip-result></div>
+        </div>
+      </div>
+      <div class="hero__mosaic" aria-label="Four Florida ground classes with sample rates">
+        <figure class="mosaic-tile" data-hatch="dots">
+          [[img mosaic-1 | loading="eager"]]
+          <figcaption><span class="tile-label">Palmetto sand</span><span class="tile-rate">{{proof.prices.0.from}}–{{proof.prices.0.to}} / acre [[sample pricing]]</span></figcaption>
+          <svg class="hatch-overlay" aria-hidden="true"><use href="#hatch-dots"/></svg>
+        </figure>
+        <figure class="mosaic-tile" data-hatch="cross">
+          [[img mosaic-2 | loading="eager"]]
+          <figcaption><span class="tile-label">Oak hammock</span><span class="tile-rate">{{proof.prices.1.from}}–{{proof.prices.1.to}} / acre [[sample pricing]]</span></figcaption>
+          <svg class="hatch-overlay" aria-hidden="true"><use href="#hatch-cross"/></svg>
+        </figure>
+        <figure class="mosaic-tile" data-hatch="dash">
+          [[img mosaic-3 | loading="eager"]]
+          <figcaption><span class="tile-label">Pasture</span><span class="tile-rate">{{proof.prices.2.from}}–{{proof.prices.2.to}} / acre [[sample pricing]]</span></figcaption>
+          <svg class="hatch-overlay" aria-hidden="true"><use href="#hatch-dash"/></svg>
+        </figure>
+        <figure class="mosaic-tile" data-hatch="line">
+          [[img mosaic-4 | loading="eager"]]
+          <figcaption><span class="tile-label">Pine plantation</span><span class="tile-rate">[[sample pricing]]</span></figcaption>
+          <svg class="hatch-overlay" aria-hidden="true"><use href="#hatch-line"/></svg>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. ESTIMATOR -->
+  <section id="estimator" class="sec estimator t-paper" data-sw-signature>
+    <div class="estimator__layout">
+      <div class="estimator__intro">
+        <h2>Sample price by ground class</h2>
+        <p>Pick your density and acreage. The range comes from our published sample rates. Send us your parcel to firm it up.</p>
+      </div>
+      <div class="estimator__tool" data-estimator>
+        <fieldset>
+          <legend>Acreage</legend>
+          <label for="est-acres">Acres</label>
+          <input id="est-acres" type="number" min="0.5" step="0.5" value="2" data-est-input="acres">
+        </fieldset>
+        <fieldset>
+          <legend>Density class</legend>
+          <div class="density-picker" role="radiogroup" aria-label="Ground density">
+            <label class="density-opt"><input type="radio" name="density" value="0" checked data-est-input="density"><span class="density-chip" data-hatch="dots">Palmetto &amp; brush</span></label>
+            <label class="density-opt"><input type="radio" name="density" value="1" data-est-input="density"><span class="density-chip" data-hatch="cross">Oak hammock</span></label>
+            <label class="density-opt"><input type="radio" name="density" value="2" data-est-input="density"><span class="density-chip" data-hatch="dash">Pasture</span></label>
+          </div>
+        </fieldset>
+        <div class="est-result" aria-live="polite">
+          <p class="est-range" data-est-range></p>
+          <p class="est-note">[[sample pricing]] · based on {{proof.prices.0.note}}</p>
+          <a href="#contact" class="btn btn--primary" data-service="Forestry mulching by the acre">Send parcel to firm up</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SERVICES -->
+  <section id="services" class="sec services t-mid">
+    <h2>What we clear</h2>
+    <ul class="svc-grid">
+      <!-- each services -->
+      <li class="svc-card" data-reveal>
+        <h3>{{.name}}</h3>
+        <p>{{.blurb}}</p>
+        [[quote {{.short}} btn--ghost | Price it]]
+      </li>
+      <!-- /each -->
+    </ul>
+  </section>
+
+  <!-- 4. BREAK -->
+  <section class="sec break t-deep">
+    [[frame break break__img | | loading="lazy"]]
+    <p class="break__cap">Marked trunks in a Florida oak stand — selective clearing keeps the canopy</p>
+  </section>
+
+  <!-- 5. PRICES -->
+  <section id="prices" class="sec prices t-paper" data-sw-signature>
+    <h2>Sample rates per acre</h2>
+    <p class="prices__lead">Every number below is a sample range from our published sheet. Your ground may move it.</p>
+    <table class="price-table">
+      <caption class="sr-only">Sample pricing — rates vary by ground class</caption>
+      <thead><tr><th scope="col">Item</th><th scope="col">Range [[sample pricing]]</th><th scope="col">Unit</th><th scope="col">Note</th></tr></thead>
+      <tbody>
+        <!-- each proof.prices -->
+        <tr data-reveal>
+          <td>{{.item}}</td>
+          <td>{{.from}}–{{.to}}</td>
+          <td><!-- if .unit -->{{.unit}}<!-- /if --></td>
+          <td>{{.note}}</td>
+        </tr>
+        <!-- /each -->
+      </tbody>
+    </table>
+    <p class="sample-note">All ranges above are [[sample pricing]]. Your ground may move the number.</p>
+  </section>
+
+  <!-- 6. PROCESS -->
+  <section id="process" class="sec process t-light" data-sw-signature>
+    <div class="process__rail">
+      <div class="process__text">
+        <h2>Mulched in place, nothing burned</h2>
+        <p>The brush goes back into the soil as mulch. No haul-off fee, no burn pile, no bare dirt moonscape. The ground stays covered and the roots stay put unless you ask for grading.</p>
+        <p>We walk the lot with you first. Keeper trees get flagged. The machine size matches your gate and your ground.</p>
+      </div>
+      [[frame process process__img | | loading="lazy"]]
+    </div>
+  </section>
+
+  <!-- 7. REVIEWS -->
+  <section id="reviews" class="sec reviews t-mid">
+    <h2>What landowners say</h2>
+    <p class="reviews__meta">{{proof.reviewCount}} reviews · {{proof.rating}} [[sample rating]]</p>
+    <ul class="review-stack">
+      <!-- each proof.reviews 0:4 -->
+      <li class="review-card" data-reveal>
+        <blockquote>{{.text}}</blockquote>
+        <cite>{{.name}} · {{.town}} · {{.service}}</cite>
+        <span class="sample-tag">[[sample review]]</span>
+      </li>
+      <!-- /each -->
+    </ul>
+  </section>
+
+  <!-- 8. AREA -->
+  <section id="area" class="sec area t-light">
+    <div class="area__split">
+      <div class="area__info">
+        <h2>Where we work</h2>
+        <p>{{biz.city}} and {{biz.areas|list}}.</p>
+        <p class="area__zips">ZIPs: {{biz.zips|csv}}</p>
+      </div>
+      <div class="zip-check" data-zip>
+        <label for="area-zip">Check your ZIP</label>
+        <div class="zip-row">
+          <input id="area-zip" type="text" inputmode="numeric" maxlength="5" placeholder="e.g. {{biz.zips.1}}" autocomplete="postal-code">
+          <button type="button" class="btn btn--sm" data-zip-btn>Check</button>
+        </div>
+        <div class="zip-result" aria-live="polite" data-zip-result></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. CONTACT -->
+  <section id="contact" class="sec contact t-accent">
+    <div class="contact__col">
+      <h2>Get your number</h2>
+      <p>Tell us what you're clearing. We'll call you back to set up a visit or send a sample rate.</p>
+      <form data-lead class="lead-form" novalidate>
+        <div class="form-step" data-step="1">
+          <label for="lead-service">Service</label>
+          <select id="lead-service" name="service" required>
+            <option value="">Pick one…</option>
+            <!-- each services -->
+            <option value="{{.name}}">{{.name}}</option>
+            <!-- /each -->
+          </select>
+          <button type="button" class="btn btn--primary" data-next>Next</button>
+        </div>
+        <div class="form-step" data-step="2" hidden>
+          <label for="lead-details">Job details</label>
+          <textarea id="lead-details" name="details" rows="3" placeholder="Acres, town, what's growing there"></textarea>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="3" hidden>
+          <label for="lead-when">When do you want this done?</label>
+          <select id="lead-when" name="when">
+            <option value="soon">As soon as possible</option>
+            <option value="weeks">Within a few weeks</option>
+            <option value="planning">Just planning</option>
+          </select>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="4" hidden>
+          <label for="lead-name">Your name</label>
+          <input id="lead-name" name="name" type="text" required autocomplete="name">
+          <label for="lead-phone">Phone</label>
+          <input id="lead-phone" name="phone" type="tel" required autocomplete="tel">
+          <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="t">
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="submit" class="btn btn--primary">Send it</button>
+          </div>
+        </div>
+        <div class="form-thanks" hidden>
+          <p>Thanks, {name}. In your version this goes straight to your phone and inbox.</p>
+        </div>
+      </form>
+      <div class="contact__aside">
+        <p>Or call now: [[tel]]</p>
+        <p data-open-now class="open-now"></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer t-deep">
+  <p>{{demo.disclaimer}}</p>
+  [[credits]]
+  <p>&copy; {{year}} {{biz.name}}</p>
+</footer>
+
+<div data-mobilebar class="mobile-bar" aria-label="Quick actions">
+  [[call btn--primary]]
+  [[quote Mulching btn--secondary | Price it]]
+</div>
