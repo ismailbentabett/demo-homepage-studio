@@ -570,29 +570,40 @@ button,input,select,textarea{font:inherit;color:inherit}
   .tool-d:last-child{border-right:0}
 }
 
-/* ---------- 4 services (parts tray) ---------- */
-.tray{padding-block:var(--pad)}
-.tray__fig{margin:0;display:grid;gap:var(--s-3)}
-.tray__sheet{padding:10px}
-.tray__photo{margin:0;aspect-ratio:16/9;overflow:hidden;background:#281808}
-.tray__photo img{inline-size:100%;block-size:100%;object-fit:cover;object-position:0% 50%;transform:scale(1.5);transform-origin:12% 46%}
-.step__ev{display:grid;gap:var(--s-2);margin-top:var(--s-2);max-inline-size:360px}
-.step__photo{margin:0;aspect-ratio:3/2;overflow:hidden;border:1.5px solid var(--rule);background:#e8d8d8}
-.step__photo img{inline-size:100%;block-size:100%;object-fit:cover;object-position:50% 50%}
-@media (min-width:900px){
-  .tray__head{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:clamp(40px,6vw,96px);align-items:end}
-  .tray__head h2{align-self:end;padding-bottom:var(--s-6)}
-  .tray__photo{aspect-ratio:16/9}
+/* ---------- 4 services (manual inventory page) ---------- */
+.inv{padding-block:var(--pad)}
+.inv__in{display:grid;gap:var(--s-7)}
+.inv__head{display:grid;gap:var(--s-4);margin-bottom:var(--s-6)}
+.inv__head .kicker{margin-bottom:0}
+.inv__head h2{max-inline-size:18ch}
+.inv__list{display:grid;gap:0;counter-reset:inv;border-top:1.5px solid var(--rule)}
+.inv__row{display:grid;grid-template-columns:48px minmax(0,1fr);gap:var(--s-4);padding-block:var(--s-5);border-bottom:1.5px solid var(--rule);align-items:start}
+.inv__key{font:600 var(--fs-1)/1 var(--font-mono);color:var(--accent);padding-top:var(--s-2)}
+.inv__fig{margin:0;display:grid;gap:var(--s-2);max-inline-size:180px}
+.inv__sheet{position:relative;padding:12px;border:1.5px solid var(--rule);background:
+  linear-gradient(var(--rule) 1px,transparent 1px) 0 0/20px 20px,
+  linear-gradient(90deg,var(--rule) 1px,transparent 1px) 0 0/20px 20px,var(--bg);
+  background-blend-mode:normal}
+.inv__sheet::before{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 82%,transparent);pointer-events:none}
+.inv__sheet .xv{position:relative;inline-size:100%;block-size:auto;max-block-size:140px;margin-inline:auto}
+.inv__body{display:grid;gap:var(--s-3);align-content:start}
+.inv__body h3{font-size:var(--fs-2);line-height:1.1}
+.inv__body p{color:var(--muted);font-size:var(--fs--1);line-height:1.5;max-inline-size:52ch}
+.inv__meta{display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-5);font-size:var(--fs--2);color:var(--muted)}
+.inv__meta div{display:flex;gap:6px;align-items:baseline}
+.inv__meta dt{color:var(--muted)}
+.inv__meta dd{margin:0;color:var(--ink);font-weight:500}
+@media (min-width:640px){
+  .inv__row{grid-template-columns:56px 140px minmax(0,1fr);gap:var(--s-5);align-items:center}
+  .inv__key{padding-top:0}
+  .inv__fig{max-inline-size:none}
 }
-.tray__grid{display:grid;grid-template-columns:minmax(0,1fr);border-top:1.5px solid var(--rule);border-left:1.5px solid var(--rule)}
-.cell{position:relative;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto 1fr auto;gap:var(--s-2) var(--s-4);padding:var(--s-5);border-right:1.5px solid var(--rule);border-bottom:1.5px solid var(--rule);background:var(--bg)}
-.cell__key{grid-column:1;font-size:var(--fs--2);letter-spacing:.06em;color:var(--muted)}
-.cell__g{grid-column:2;grid-row:1/3;inline-size:64px;block-size:64px;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.cell__g use{vector-effect:non-scaling-stroke}
-.cell h3{grid-column:1;grid-row:2;font-size:var(--fs-1);line-height:1.15}
-.cell p{grid-column:1/-1;color:var(--muted);font-size:var(--fs--1);line-height:1.5}
-.cell .btn--text{grid-column:1/-1;justify-self:start}
-.cell::after{content:"";position:absolute;top:-4px;left:-4px;inline-size:7px;block-size:7px;border-radius:50%;background:var(--bg);box-shadow:0 0 0 1.5px var(--rule)}
+@media (min-width:900px){
+  .inv__head{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(40px,6vw,96px);align-items:end}
+  .inv__row{grid-template-columns:64px 180px minmax(0,1fr);padding-block:var(--s-6)}
+  .inv__sheet{padding:16px}
+  .inv__sheet .xv{max-block-size:160px}
+}
 @media (min-width:640px){.tray__grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (min-width:900px){.tray__grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cell{padding:var(--s-6)} }
 /* reveals never hide content: children only settle into place */
@@ -1139,91 +1150,134 @@ textarea{resize:vertical;min-block-size:120px}
   </ul>
 </section>
 
-<!-- 4 SERVICES: parts tray -->
-<section class="tray t-light" id="services" data-layout="tray-grid" aria-labelledby="svc-h">
-  <div class="wrap">
-    <header class="sec-head tray__head">
-      <h2 id="svc-h">Everything that came in a flat box, and the wall it hangs on.</h2>
-      <figure class="tray__fig">
-        <div class="plate__sheet tray__sheet"><span class="plate__crop" aria-hidden="true"></span><figure class="frame tray__photo" data-fallback="Flat TV mounted on a gold papered wall above a console in a sitting room"><img src="media/room-tv-mounted-1170.webp" srcset="media/room-tv-mounted-1170.webp 1170w, media/room-tv-mounted.webp 2340w" width="1170" height="779" loading="lazy" decoding="async" data-photo="room-tv-mounted" data-slot="tv" sizes="(min-width: 900px) 40vw, 92vw" alt="A flat TV mounted level on a papered wall above a low console in a sitting room"></figure></div>
-        <figcaption class="plate__cap"><span class="mono">Fig. 8</span> The wall it hangs on: a flat TV, mounted level above the console.</figcaption>
-      </figure>
+<!-- 4 SERVICES: manual inventory page -->
+<section class="inv t-light" id="services" data-layout="manual-inv" data-sw-signature aria-labelledby="svc-h">
+  <div class="wrap inv__in">
+    <header class="sec-head inv__head">
+      <span class="kicker">Inventory</span>
+      <h2 id="svc-h">What we build, by part number.</h2>
+      <p class="lead">Each line is a bag we open and a drawing we close.</p>
     </header>
-    <ul class="tray__grid" role="list" data-reveal-stagger>
+    <ol class="inv__list" role="list">
       
-      <li class="cell">
-        <span class="cell__key mono">01</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-1"/></svg>
-        <h3>Flat-pack furniture assembly</h3>
-        <p>Dressers, bookcases and nightstands built square, with drawers that close straight.</p>
-        <a class="btn btn--text" href="#contact" data-service="Flat-pack">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">1</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="Flat-pack furniture assembly"><use href="#g-1"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 1</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>Flat-pack furniture assembly</h3>
+          <p>Dressers, bookcases and nightstands built square, with drawers that close straight.</p>
+          <a class="btn btn--text" href="#contact" data-service="Flat-pack">Price this</a>
+        </div>
       </li>
       
-      <li class="cell">
-        <span class="cell__key mono">02</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-2"/></svg>
-        <h3>Beds and cribs</h3>
-        <p>Bed frames, bunk beds and cribs put together and checked for every loose bolt.</p>
-        <a class="btn btn--text" href="#contact" data-service="Beds &amp; cribs">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">2</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="Beds and cribs"><use href="#g-2"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 2</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>Beds and cribs</h3>
+          <p>Bed frames, bunk beds and cribs put together and checked for every loose bolt.</p>
+          <a class="btn btn--text" href="#contact" data-service="Beds &amp; cribs">Price this</a>
+        </div>
       </li>
       
-      <li class="cell">
-        <span class="cell__key mono">03</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-3"/></svg>
-        <h3>Wardrobes and closet systems</h3>
-        <p>Tall wardrobe frames raised safely, doors hung and hinges adjusted until the gaps match.</p>
-        <a class="btn btn--text" href="#contact" data-service="Wardrobes">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">3</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="Wardrobes and closet systems"><use href="#g-3"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 3</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>Wardrobes and closet systems</h3>
+          <p>Tall wardrobe frames raised safely, doors hung and hinges adjusted until the gaps match.</p>
+          <a class="btn btn--text" href="#contact" data-service="Wardrobes">Price this</a>
+        </div>
       </li>
       
-      <li class="cell">
-        <span class="cell__key mono">04</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-4"/></svg>
-        <h3>Desks and office chairs</h3>
-        <p>Desks, chairs and shelving set up for a home office in a single visit.</p>
-        <a class="btn btn--text" href="#contact" data-service="Office setup">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">4</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="Desks and office chairs"><use href="#g-4"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 4</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>Desks and office chairs</h3>
+          <p>Desks, chairs and shelving set up for a home office in a single visit.</p>
+          <a class="btn btn--text" href="#contact" data-service="Office setup">Price this</a>
+        </div>
       </li>
       
-      <li class="cell">
-        <span class="cell__key mono">05</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-5"/></svg>
-        <h3>TV and wall mounting</h3>
-        <p>TVs, shelves and mirrors mounted level into studs, with cords tidied away.</p>
-        <a class="btn btn--text" href="#contact" data-service="TV mounting">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">5</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="TV and wall mounting"><use href="#g-5"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 5</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>TV and wall mounting</h3>
+          <p>TVs, shelves and mirrors mounted level into studs, with cords tidied away.</p>
+          <a class="btn btn--text" href="#contact" data-service="TV mounting">Price this</a>
+        </div>
       </li>
       
-      <li class="cell">
-        <span class="cell__key mono">06</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-6"/></svg>
-        <h3>Anchoring tall furniture</h3>
-        <p>Dressers and bookcases strapped to a stud so they cannot tip onto a child.</p>
-        <a class="btn btn--text" href="#contact" data-service="Anchoring">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">6</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="Anchoring tall furniture"><use href="#g-6"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 6</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>Anchoring tall furniture</h3>
+          <p>Dressers and bookcases strapped to a stud so they cannot tip onto a child.</p>
+          <a class="btn btn--text" href="#contact" data-service="Anchoring">Price this</a>
+        </div>
       </li>
       
-      <li class="cell">
-        <span class="cell__key mono">07</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-7"/></svg>
-        <h3>Patio sets and playsets</h3>
-        <p>Patio tables, grills and backyard swing sets assembled on your lawn or balcony.</p>
-        <a class="btn btn--text" href="#contact" data-service="Outdoor">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">7</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="Patio sets and playsets"><use href="#g-7"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 7</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>Patio sets and playsets</h3>
+          <p>Patio tables, grills and backyard swing sets assembled on your lawn or balcony.</p>
+          <a class="btn btn--text" href="#contact" data-service="Outdoor">Price this</a>
+        </div>
       </li>
       
-      <li class="cell">
-        <span class="cell__key mono">08</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-8"/></svg>
-        <h3>Taking furniture apart for a move</h3>
-        <p>Beds and wardrobes taken down, hardware bagged and labeled for the new place.</p>
-        <a class="btn btn--text" href="#contact" data-service="Take-apart">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">8</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="Taking furniture apart for a move"><use href="#g-8"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 8</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>Taking furniture apart for a move</h3>
+          <p>Beds and wardrobes taken down, hardware bagged and labeled for the new place.</p>
+          <a class="btn btn--text" href="#contact" data-service="Take-apart">Price this</a>
+        </div>
       </li>
       
-      <li class="cell">
-        <span class="cell__key mono">09</span>
-        <svg class="cell__g" aria-hidden="true" focusable="false"><use href="#g-9"/></svg>
-        <h3>Box and packing haul-away</h3>
-        <p>Every box, foam sheet and plastic bag carried out before we leave.</p>
-        <a class="btn btn--text" href="#contact" data-service="Box haul-away">Price my list</a>
+      <li class="inv__row">
+        <span class="inv__key mono" aria-hidden="true">9</span>
+        <figure class="inv__fig">
+          <div class="inv__sheet"><span class="plate__crop" aria-hidden="true"></span><svg class="xv xv--done" viewBox="0 0 48 48" role="img" aria-label="Box and packing haul-away"><use href="#g-9"/></svg></div>
+          <figcaption class="plate__cap"><span class="mono">Fig. 9</span></figcaption>
+        </figure>
+        <div class="inv__body">
+          <h3>Box and packing haul-away</h3>
+          <p>Every box, foam sheet and plastic bag carried out before we leave.</p>
+          <a class="btn btn--text" href="#contact" data-service="Box haul-away">Price this</a>
+        </div>
       </li>
       
-    </ul>
+    </ol>
   </div>
 </section>
 
@@ -1587,7 +1641,7 @@ textarea{resize:vertical;min-block-size:120px}
       <p>Licence # SAMPLE-VA-31877 (sample)</p>
       <p class="disclaimer">Sample website by Site Sledge. Business details are illustrative.</p>
       <p>Drawings stand in for job photos in this sample.</p>
-      <ul class="credits"><li>Photo by KJGarcia on <a href="https://commons.wikimedia.org/wiki/File:M210_demo-wall_center-Green.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Stilfehler on <a href="https://commons.wikimedia.org/wiki/File:Maximera_Slides_1.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by PattayaPatrol on <a href="https://commons.wikimedia.org/wiki/File:DSC_8575_A_cozy_elegantly_furnished_sitting_room_with_two_tufted_armchairs_ornate_gold-accent_tables_patterned_tile_floor_and_rug_warm_lighting_and_decorative_artwork_on_the_walls.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul>
+      <ul class="credits"><li>Photo by KJGarcia on <a href="https://commons.wikimedia.org/wiki/File:M210_demo-wall_center-Green.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li><li>Photo by Stilfehler on <a href="https://commons.wikimedia.org/wiki/File:Maximera_Slides_1.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener license" target="_blank">CC BY-SA 4.0</a></li></ul>
       <p>© 2026 Dowel &amp; Cam Assembly</p>
     </div>
   </div>

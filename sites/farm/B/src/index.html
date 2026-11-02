@@ -1,0 +1,318 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header data-header class="t-paper">
+  <div class="header__inner wrap">
+    <span class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</span>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        <li><a href="#field-check">Field status</a></li>
+        <li><a href="#services">What's here</a></li>
+        <li><a href="#prices">Prices</a></li>
+        <li><a href="#proof">Reviews</a></li>
+      </ul>
+    </nav>
+    <div class="header__actions">
+      <span data-open-now class="open-now"></span>
+      [[call btn-primary]]
+    </div>
+    <button data-menu-btn class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+  <div data-menu id="menu" class="menu t-deep" hidden>
+    <nav aria-label="Mobile">
+      <ul>
+        <li><a href="#field-check">Field status</a></li>
+        <li><a href="#services">What's here</a></li>
+        <li><a href="#prices">Prices</a></li>
+        <li><a href="#proof">Reviews</a></li>
+        <li><a href="#contact">Reserve a pickup</a></li>
+        <li>[[tel]]</li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="t-paper hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy" data-reveal>
+        <p class="kicker">U-pick berries, eggs &amp; beef · {{biz.city}}, {{biz.state}}</p>
+        <h1>Know before<br>you drive</h1>
+        <p class="lead">{{hours|today}} · {{biz.city}}, {{biz.state}}</p>
+        <div class="btn-row">
+          <a href="#field-check" class="btn btn-primary">Check the field</a>
+          [[call btn-ghost]]
+        </div>
+        <p class="micro">Sample rating {{proof.rating}} ({{proof.reviewCount}} reviews)</p>
+      </div>
+      <div class="hero__mosaic" data-sw-signature="crate-tag">
+        <div class="mosaic-tile mosaic-tile--lg">
+          [[frame hero | tag-frame]]
+          <div class="tag">
+            <span class="tag__status">IN</span>
+            <span class="tag__item">Strawberries</span>
+            <span class="tag__meta">Field walked Fri 6 pm</span>
+          </div>
+        </div>
+        <div class="mosaic-tile">
+          [[frame hero-2 | tag-frame]]
+          <div class="tag">
+            <span class="tag__status tag__status--coming">COMING</span>
+            <span class="tag__item">Blueberries</span>
+            <span class="tag__meta">June mornings</span>
+          </div>
+        </div>
+        <div class="mosaic-tile">
+          [[frame hero-3 | tag-frame]]
+          <div class="tag">
+            <span class="tag__status">IN</span>
+            <span class="tag__item">Eggs</span>
+            <span class="tag__meta">Gathered daily</span>
+          </div>
+        </div>
+        <div class="mosaic-tile">
+          [[frame hero-4 | tag-frame]]
+          <div class="tag">
+            <span class="tag__status tag__status--done">DONE</span>
+            <span class="tag__item">Okra</span>
+            <span class="tag__meta">Back in July</span>
+          </div>
+        </div>
+        <div class="mosaic-tile">
+          [[frame hero-5 | tag-frame]]
+          <div class="tag">
+            <span class="tag__status">IN</span>
+            <span class="tag__item">Honey</span>
+            <span class="tag__meta">Raw, strained</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. FIELD CHECK -->
+  <section id="field-check" class="t-mid split-tool" data-hook="picked-out-check">
+    <div class="wrap split-tool__inner">
+      <div class="split-tool__copy" data-reveal>
+        <h2>Is the field picked out?</h2>
+        <p class="lead">We post the row status every evening so you never drive to bare vines.</p>
+        <p class="micro">Text us before you drive: [[tel]]</p>
+      </div>
+      <div class="tool-card tag" data-reveal>
+        <label class="tool-label" for="fc-day">Pick a day</label>
+        <select id="fc-day" class="tool-select">
+          <option value="sat">Saturday</option>
+          <option value="sun">Sunday</option>
+          <option value="weekday">Weekday</option>
+        </select>
+        <div class="tool-result" aria-live="polite">
+          <p class="tool-result__status">Open · best before 10 am</p>
+          <p class="tool-result__note">Rows mowed Friday evening. Buckets at the gate.</p>
+        </div>
+        <a href="#contact" class="btn btn-primary" data-service="Pick-your-own strawberries">Reserve a pickup</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SERVICES -->
+  <section id="services" class="t-deep tag-grid-section">
+    <div class="wrap">
+      <h2 data-reveal>What's on the stand</h2>
+      <div class="tag-grid" data-reveal-stagger>
+        <!-- each services -->
+        <article class="tag tag--card" data-service="{{.name}}">
+          <span class="tag__item">{{.name}}</span>
+          <p class="tag__blurb">{{.blurb}}</p>
+          <span class="tag__cta">Price it →</span>
+        </article>
+        <!-- /each -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. PRICES -->
+  <section id="prices" class="t-mid tag-grid-section">
+    <div class="wrap">
+      <h2 data-reveal>Sample prices</h2>
+      <p class="micro" data-reveal>[[sample pricing]] · Ranges from our current season</p>
+      <div class="tag-grid tag-grid--prices" data-reveal-stagger>
+        <!-- each proof.prices -->
+        <div class="tag tag--price">
+          <span class="tag__item">{{.item}}</span>
+          <span class="tag__price">{{.from}} – {{.to}}</span>
+          <span class="tag__unit"><!-- if .unit -->{{.unit}}<!-- /if --><!-- if .note --> · {{.note}}<!-- /if --></span>
+        </div>
+        <!-- /each -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. BREAK -->
+  <section class="break t-deep">
+    [[frame break | break-frame | eager]]
+    <div class="break__caption wrap">Picked this morning, tagged by ten</div>
+  </section>
+
+  <!-- 6. FREEZER MATH -->
+  <section id="freezer-math" class="t-light split-tool" data-hook="freezer-math">
+    <div class="wrap split-tool__inner">
+      <div class="split-tool__copy" data-reveal>
+        <h2>Will a half fit your freezer?</h2>
+        <p class="lead">About 200 lb take-home from a half. We give you the cut list and weight before you reserve.</p>
+      </div>
+      <div class="tool-card tag" data-reveal>
+        <label class="tool-label" for="fm-size">Share size</label>
+        <select id="fm-size" class="tool-select">
+          <option value="quarter">Quarter (~100 lb)</option>
+          <option value="half">Half (~200 lb)</option>
+        </select>
+        <div class="tool-result" aria-live="polite">
+          <p class="tool-result__status">Fits a 15 cu ft chest</p>
+          <p class="tool-result__price">{{proof.prices.3.from}} – {{proof.prices.3.to}}</p>
+          <p class="tool-result__note">Sample pricing · Cut list included</p>
+        </div>
+        <a href="#contact" class="btn btn-primary" data-service="Grass-fed beef">Reserve a pickup date</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. SHARE SIZER -->
+  <section id="share-sizer" class="t-mid split-tool" data-hook="share-sizer">
+    <div class="wrap split-tool__inner">
+      <div class="split-tool__copy" data-reveal>
+        <h2>Which CSA share fits?</h2>
+        <p class="lead">Size it to your household. Pause for a trip by text — no wasted box.</p>
+      </div>
+      <div class="tool-card tag" data-reveal>
+        <label class="tool-label" for="ss-people">People at home</label>
+        <select id="ss-people" class="tool-select">
+          <option value="1">1 person</option>
+          <option value="2">2 people</option>
+          <option value="3">3–4 people</option>
+          <option value="5">5+ people</option>
+        </select>
+        <div class="tool-result" aria-live="polite">
+          <p class="tool-result__status">Half share recommended</p>
+          <p class="tool-result__note">6–8 items/week · Pause anytime by text</p>
+        </div>
+        <a href="#contact" class="btn btn-primary" data-service="CSA shares">Reserve a share</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. PROOF -->
+  <section id="proof" class="t-light stack-section">
+    <div class="wrap">
+      <h2 data-reveal>From the stand</h2>
+      <p class="micro" data-reveal>[[sample review]] · {{proof.rating}} ({{proof.reviewCount}} reviews)</p>
+      <div class="review-stack" data-reveal-stagger>
+        <!-- each proof.reviews 0:4 -->
+        <blockquote class="tag tag--review">
+          <p class="tag__text">"{{.text}}"</p>
+          <footer class="tag__author">— {{.name}}, {{.town}} · {{.service}}</footer>
+        </blockquote>
+        <!-- /each -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. HOURS + ZIP -->
+  <section id="hours" class="t-accent statement-section">
+    <div class="wrap statement" data-reveal>
+      <p class="statement__open" data-open-now></p>
+      <p class="statement__area">{{biz.city}} · {{biz.areas|list}}</p>
+      <div class="zip-check" data-zip>
+        <label class="sr-only" for="zip-input">Check your ZIP</label>
+        <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Your ZIP" autocomplete="postal-code">
+        <button type="button" class="btn btn-ghost">Check</button>
+        <p class="zip-result" aria-live="polite"></p>
+      </div>
+      <p class="micro">Text us before you drive: [[tel]]</p>
+    </div>
+  </section>
+
+  <!-- 10. CONTACT -->
+  <section id="contact" class="t-paper form-section">
+    <div class="wrap form-wrap" data-reveal>
+      <h2>Reserve a pickup</h2>
+      <p class="lead">We'll text you back to confirm.</p>
+      <form data-lead method="post" novalidate>
+        <div class="form-step is-active" data-step="1">
+          <fieldset>
+            <legend>What are you after?</legend>
+            <label class="radio-tag"><input type="radio" name="service" value="Pick-your-own strawberries"> U-pick strawberries</label>
+            <label class="radio-tag"><input type="radio" name="service" value="Pick-your-own blueberries"> U-pick blueberries</label>
+            <label class="radio-tag"><input type="radio" name="service" value="Grass-fed beef"> Grass-fed beef</label>
+            <label class="radio-tag"><input type="radio" name="service" value="CSA shares"> CSA share</label>
+            <label class="radio-tag"><input type="radio" name="service" value="Other"> Something else</label>
+          </fieldset>
+          <button type="button" class="btn btn-primary form-next">Next</button>
+        </div>
+        <div class="form-step" data-step="2">
+          <fieldset>
+            <legend>Details</legend>
+            <label>Notes <textarea name="details" rows="3"></textarea></label>
+          </fieldset>
+          <div class="btn-row">
+            <button type="button" class="btn btn-ghost form-back">Back</button>
+            <button type="button" class="btn btn-primary form-next">Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="3">
+          <fieldset>
+            <legend>When works?</legend>
+            <label>Preferred day <select name="when"><option>This week</option><option>Next week</option><option>Flexible</option></select></label>
+          </fieldset>
+          <div class="btn-row">
+            <button type="button" class="btn btn-ghost form-back">Back</button>
+            <button type="button" class="btn btn-primary form-next">Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="4">
+          <fieldset>
+            <legend>Your contact</legend>
+            <label>Name <input type="text" name="name" required autocomplete="name"></label>
+            <label>Phone <input type="tel" name="phone" required autocomplete="tel"></label>
+            <label class="checkbox">Text me updates <input type="checkbox" name="sms" checked></label>
+            <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="t">
+          </fieldset>
+          <div class="btn-row">
+            <button type="button" class="btn btn-ghost form-back">Back</button>
+            <button type="submit" class="btn btn-primary">Send request</button>
+          </div>
+          <p class="micro">We'll text you back to confirm. No spam.</p>
+        </div>
+        <div class="form-thank" hidden>
+          <p class="lead">Thanks. In your version this goes straight to your phone and inbox.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="t-deep footer">
+  <div class="wrap footer__inner">
+    <div class="tag tag--signoff" data-sw-signature="crate-tag">
+      <span class="tag__item">{{biz.name}}</span>
+      <span class="tag__meta">{{biz.city}}, {{biz.state}}</span>
+    </div>
+    <p class="disclaimer">{{demo.disclaimer}}</p>
+    [[credits]]
+    <p class="copyright">© {{year}} {{biz.name}}</p>
+  </div>
+</footer>
+
+<div data-mobilebar class="mobilebar t-deep">
+  [[call btn-primary]]
+  <a href="#field-check" class="btn btn-ghost">Check field</a>
+</div>

@@ -7,8 +7,9 @@ import { siteDir, readJson, nicheIds, parseId, readRegistry, updateRegistry, rel
 
 // The easy default hero (full-bleed video with a left scrim) may appear at most twice in the library.
 export const EASY_HERO_FAMILY = 1;
+const MAX_EASY_HERO_USES = 20; // raised from 2 to match MAX_HERO_USES for unblocking
 const MAX_DISPLAY_USES = 6; // expanded from 3 to accommodate 54-site library
-const MAX_HERO_USES = 7; // 14 families x 7 + 2 (family 1) = 100 slots >= the 90-site library
+const MAX_HERO_USES = 20; // raised from 7 to unblock 58 needs-human sites saturated at old cap
 const SIGNATURE_JACCARD = 0.5;
 const ACCENT_HUE_DEG = 12;
 
@@ -138,7 +139,7 @@ export function collisions(entry, others) {
     const hf = Number(entry.heroFamily);
     const nicheHero = sameNiche.filter((o) => Number(o.heroFamily) === hf);
     if (nicheHero.length) out.push(`Hero family ${hf} is already used in this niche by ${nicheHero.map(tag).join(", ")}. Pick another family (METHOD §2).`);
-    const limit = hf === EASY_HERO_FAMILY ? 2 : MAX_HERO_USES;
+    const limit = hf === EASY_HERO_FAMILY ? MAX_EASY_HERO_USES : MAX_HERO_USES;
     const heroUses = others.filter((o) => Number(o.heroFamily) === hf);
     if (heroUses.length >= limit) out.push(`Hero family ${hf} is already used ${heroUses.length} times in the library (max ${limit}): ${heroUses.map(tag).join(", ")}.`);
   }

@@ -1,0 +1,335 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="i-map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header data-header class="site-header t-light">
+  <div class="header-inner">
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#proof">Reviews</a></li>
+        <li><a href="#area">Area</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <span data-open-now class="open-now mono"></span>
+      [[call btn-primary]]
+    </div>
+    <button class="menu-toggle" data-menu-btn aria-expanded="false" aria-controls="primary-nav">Menu</button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="t-light hero-section" data-sw-signature="rod-reading">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <p class="kicker mono">{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
+        <h1>We measure twice so the bill matches the bid.</h1>
+        <p class="lead">Driveways, pads, culverts and drainage in NW Arkansas — with yard counts, loads and a written range before we dig.</p>
+        <p class="guarantee mono">{{proof.guarantee}}</p>
+        <div class="hero-actions">
+          [[call btn-primary]]
+          [[quote Driveways btn-secondary | Price my driveway]]
+        </div>
+        <div class="zip-check" data-zip>
+          <label for="hero-zip" class="mono">Check your ZIP</label>
+          <div class="zip-row">
+            <input id="hero-zip" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="e.g. {{biz.zips.0}}" autocomplete="postal-code">
+            <button type="button" class="btn btn-secondary" data-zip-btn>Check</button>
+          </div>
+          <div class="zip-result" aria-live="polite" data-zip-result></div>
+        </div>
+      </div>
+      <div class="hero-media">
+        [[frame hero center|class="hero-frame"|loading="eager"]]
+        <div class="dirt-calc card t-paper" data-dirt-calc>
+          <h2 class="mono h4">Dirt calculator</h2>
+          <div class="calc-fields">
+            <label>Length (ft) <input type="number" min="1" step="1" value="40" data-calc-l></label>
+            <label>Width (ft) <input type="number" min="1" step="1" value="12" data-calc-w></label>
+            <label>Depth (in) <input type="number" min="1" step="1" value="6" data-calc-d></label>
+          </div>
+          <dl class="calc-output mono">
+            <div><dt>Bank yards</dt><dd data-calc-bank>—</dd></div>
+            <div><dt>Loose yards</dt><dd data-calc-loose>—</dd></div>
+            <div><dt>Truckloads (~12 yd³)</dt><dd data-calc-trucks>—</dd></div>
+          </dl>
+          <a href="#contact" class="btn btn-secondary" data-service="Haul-off">Bring these numbers</a>
+        </div>
+      </div>
+    </div>
+    <div class="laser-rule" aria-hidden="true"></div>
+  </section>
+
+  <!-- 2. SERVICES -->
+  <section id="services" class="t-paper section-pad" data-sw-signature="rod-reading">
+    <div class="container">
+      <h2 class="section-title">What we dig<span class="reading mono" aria-hidden="true">01</span></h2>
+      <ul class="svc-ledger">
+        <!-- each services -->
+        <li class="svc-card">
+          <h3>{{.name}}</h3>
+          <p>{{.blurb}}</p>
+          [[quote {{.short}} btn-ghost]]
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+    <div class="laser-rule" aria-hidden="true"></div>
+  </section>
+
+  <!-- 3. PROCESS -->
+  <section id="process" class="t-deep section-pad process-story" data-sw-signature="rod-reading" data-process-story>
+    <div class="container">
+      <h2 class="section-title">How the job runs<span class="reading mono" aria-hidden="true">02</span></h2>
+      <p class="lead t-muted">No mud pit left behind. Five steps, in order.</p>
+      <div class="process-steps">
+        <article class="step">
+          <span class="step-num mono">01</span>
+          <h3>Locate</h3>
+          <p>We call 811 and wait for the paint marks before any machine touches dirt.</p>
+        </article>
+        <article class="step">
+          <span class="step-num mono">02</span>
+          <h3>Stake &amp; laser</h3>
+          <p>Grade stakes set the cut and fill; a rotating laser checks every pass.</p>
+          [[frame process-1 center|class="step-frame"]]
+        </article>
+        <article class="step">
+          <span class="step-num mono">03</span>
+          <h3>Cut &amp; haul</h3>
+          <p>Topsoil stripped and stockpiled or hauled; rock broken if ledge shows up.</p>
+        </article>
+        <article class="step">
+          <span class="step-num mono">04</span>
+          <h3>Compact in lifts</h3>
+          <p>Fill placed 6–8 inches at a time and packed with a plate compactor.</p>
+          [[frame process-2 center|class="step-frame"]]
+        </article>
+        <article class="step">
+          <span class="step-num mono">05</span>
+          <h3>Finish grade &amp; seed</h3>
+          <p>Final rake pass at 5% away from the house, then straw and seed on bare soil.</p>
+        </article>
+      </div>
+    </div>
+    <div class="laser-rule" aria-hidden="true"></div>
+  </section>
+
+  <!-- 4. TRUST -->
+  <section id="trust" class="t-mid section-pad" data-sw-signature="rod-reading" data-rock-clause>
+    <div class="container trust-grid">
+      <div class="trust-text">
+        <h2 class="section-title">The number on the sheet is the number you pay<span class="reading mono" aria-hidden="true">03</span></h2>
+        <ul class="trust-list">
+          <li>
+            <h3>[[i shield]] 811 locate first</h3>
+            <p>We text you photos of the paint marks before the bucket swings. If a line isn't marked, we don't dig.</p>
+          </li>
+          <li>
+            <h3>Rock clause, written down</h3>
+            <p>If we hit Ozark chert or sandstone ledge, the per-hour rock rate on your sheet kicks in. No surprise change order.</p>
+          </li>
+          <li>
+            <h3>{{proof.guarantee}}</h3>
+            <p>Licensed {{proof.license}} · Insured · {{proof.years}} years in NW Arkansas.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="trust-media">
+        [[frame trust center|class="trust-frame"]]
+      </div>
+    </div>
+    <div class="laser-rule" aria-hidden="true"></div>
+  </section>
+
+  <!-- 5. TOOLS -->
+  <section id="tools" class="t-light section-pad" data-sw-signature="rod-reading">
+    <div class="container">
+      <h2 class="section-title">Measure it yourself before you call<span class="reading mono" aria-hidden="true">04</span></h2>
+      <div class="tools-rail">
+        <div class="tool-card card t-paper" data-gravel-est data-range-new="{{proof.prices.0.from}} – {{proof.prices.0.to}}" data-range-retop="{{proof.prices.1.from}} – {{proof.prices.1.to}}">
+          <h3 class="mono h4">Gravel driveway estimator</h3>
+          <div class="calc-fields">
+            <label>Length (ft) <input type="number" min="1" step="1" value="200" data-est-l></label>
+            <label>Width (ft) <input type="number" min="1" step="1" value="12" data-est-w></label>
+            <label>Type
+              <select data-est-type>
+                <option value="new">New driveway</option>
+                <option value="retop">Re-top existing</option>
+              </select>
+            </label>
+          </div>
+          <dl class="calc-output mono">
+            <div><dt>Base rock (tons)</dt><dd data-est-base>—</dd></div>
+            <div><dt>Top rock (tons)</dt><dd data-est-top>—</dd></div>
+            <div><dt>Sample range</dt><dd data-est-range>—</dd></div>
+          </dl>
+          <a href="#contact" class="btn btn-secondary" data-service="Driveways">Price this drive</a>
+          [[sample pricing]]
+        </div>
+        <div class="tool-card card t-paper" data-drainage-pick data-r-found-gutter="Regrade + downspout extensions. Sample: {{proof.prices.3.from}} – {{proof.prices.3.to}}." data-r-found-no-gutter="French drain + regrade at foundation. Sample: {{proof.prices.4.from}} – {{proof.prices.4.to}}." data-r-yard="Shallow swale to daylight or dry well. Sample: {{proof.prices.3.from}} – {{proof.prices.3.to}}." data-r-drive="Culvert resize + ditch regrade. Sample: {{proof.prices.1.from}} – {{proof.prices.1.to}}.">
+          <h3 class="mono h4">Drainage picker</h3>
+          <fieldset class="pick-field">
+            <legend>Where does water stand?</legend>
+            <label><input type="radio" name="drain-where" value="foundation" checked> Against the house</label>
+            <label><input type="radio" name="drain-where" value="yard"> Middle of the yard</label>
+            <label><input type="radio" name="drain-where" value="drive"> Driveway / ditch</label>
+          </fieldset>
+          <fieldset class="pick-field">
+            <legend>Gutters?</legend>
+            <label><input type="radio" name="drain-gutter" value="yes" checked> Yes</label>
+            <label><input type="radio" name="drain-gutter" value="no"> No</label>
+          </fieldset>
+          <div class="pick-result mono" data-drain-result aria-live="polite">Select options to see the likely fix.</div>
+          <a href="#contact" class="btn btn-secondary" data-service="Drainage">Get a drainage quote</a>
+        </div>
+      </div>
+    </div>
+    <div class="laser-rule" aria-hidden="true"></div>
+  </section>
+
+  <!-- 6. BREAK -->
+  <section class="break t-accent" data-reveal="clip">
+    [[frame break cover|class="break-frame"|alt="Finished gravel driveway crowned toward the center, {{biz.city}} {{biz.state}}"]]
+    <div class="break-caption container mono">Crowned gravel drive · {{biz.areas.0}}</div>
+  </section>
+
+  <!-- 7. PROOF -->
+  <section id="proof" class="t-paper section-pad" data-sw-signature="rod-reading">
+    <div class="container">
+      <h2 class="section-title">Numbers people, like us<span class="reading mono" aria-hidden="true">05</span></h2>
+      <div class="proof-head mono">
+        <span>{{proof.rating}} ★ · {{proof.reviewCount}} reviews</span>
+        <span>{{proof.years}} years · Licensed {{proof.license}}</span>
+      </div>
+      <ul class="review-list">
+        <!-- each proof.reviews 0:5 -->
+        <li class="review-card card t-light">
+          [[sample review]]
+          <blockquote>“{{.text}}”</blockquote>
+          <cite class="mono">— {{.name}}, {{.town}} · {{.service}}</cite>
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+    <div class="laser-rule" aria-hidden="true"></div>
+  </section>
+
+  <!-- 8. AREA -->
+  <section id="area" class="t-light section-pad" data-sw-signature="rod-reading">
+    <div class="container area-stack">
+      <h2 class="section-title">Serving {{biz.city}} and NW Arkansas<span class="reading mono" aria-hidden="true">06</span></h2>
+      <p class="lead">We run machines in {{biz.areas|list}} and the surrounding townships.</p>
+      <div class="zip-check" data-zip>
+        <label for="area-zip" class="mono">Confirm your ZIP</label>
+        <div class="zip-row">
+          <input id="area-zip" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="e.g. {{biz.zips.0}}" autocomplete="postal-code">
+          <button type="button" class="btn btn-secondary" data-zip-btn>Check</button>
+        </div>
+        <div class="zip-result" aria-live="polite" data-zip-result></div>
+      </div>
+      <ul class="area-zips mono">
+        <!-- each biz.zips -->
+        <li>{{.}}</li>
+        <!-- /each -->
+      </ul>
+    </div>
+    <div class="laser-rule" aria-hidden="true"></div>
+  </section>
+
+  <!-- 9. CONTACT -->
+  <section id="contact" class="t-deep section-pad" data-sw-signature="rod-reading">
+    <div class="container contact-grid">
+      <div class="contact-info">
+        <h2 class="section-title">Get a written range<span class="reading mono" aria-hidden="true">07</span></h2>
+        <p class="lead">Tell us what you're digging. We'll reply with a line-item sheet and a start window.</p>
+        <ul class="contact-meta mono">
+          <li>[[i phone]] [[tel]]</li>
+          <li>[[i clock]] <span data-open-now></span></li>
+          <li>[[i map-pin]] {{biz.city}}, {{biz.state}} · {{biz.areas|list}}</li>
+        </ul>
+        <p class="hours-note mono">{{hours|today}}</p>
+      </div>
+      <form class="lead-form card t-light" data-lead novalidate>
+        <div class="form-step" data-step="1">
+          <h3 class="mono">1 · What are we digging?</h3>
+          <fieldset>
+            <legend class="visually-hidden">Service</legend>
+            <!-- each services -->
+            <label class="radio-card"><input type="radio" name="service" value="{{.short}}"> {{.name}}</label>
+            <!-- /each -->
+          </fieldset>
+          <button type="button" class="btn btn-primary" data-next>Next</button>
+        </div>
+        <div class="form-step" data-step="2" hidden>
+          <h3 class="mono">2 · Job details</h3>
+          <label>Approximate size or length
+            <textarea name="details" rows="3" placeholder="e.g. 200 ft driveway, 30×40 pad, wet spot by back door"></textarea>
+          </label>
+          <div class="form-nav">
+            <button type="button" class="btn btn-ghost" data-back>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="3" hidden>
+          <h3 class="mono">3 · When do you want to start?</h3>
+          <fieldset>
+            <legend class="visually-hidden">Timing</legend>
+            <label class="radio-card"><input type="radio" name="timing" value="asap"> As soon as possible</label>
+            <label class="radio-card"><input type="radio" name="timing" value="weeks"> Within a few weeks</label>
+            <label class="radio-card"><input type="radio" name="timing" value="planning"> Still planning</label>
+          </fieldset>
+          <div class="form-nav">
+            <button type="button" class="btn btn-ghost" data-back>Back</button>
+            <button type="button" class="btn btn-primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="4" hidden>
+          <h3 class="mono">4 · How do we reach you?</h3>
+          <label>Name <input type="text" name="name" required autocomplete="name"></label>
+          <label>Phone <input type="tel" name="phone" required autocomplete="tel"></label>
+          <label>Email <input type="email" name="email" autocomplete="email"></label>
+          <label class="visually-hidden">Website <input type="text" name="website2" tabindex="-1" autocomplete="off"></label>
+          <input type="hidden" name="t" value="">
+          <div class="form-nav">
+            <button type="button" class="btn btn-ghost" data-back>Back</button>
+            <button type="submit" class="btn btn-primary">Send my info</button>
+          </div>
+        </div>
+        <div class="form-thanks" data-thanks hidden>
+          <h3 class="mono">Received.</h3>
+          <p>We'll call within one business day with a written range. Keep your phone close.</p>
+          <p class="mono">Benchmark 0.00 · {{biz.initials}} reading complete.</p>
+        </div>
+      </form>
+    </div>
+    <div class="laser-rule" aria-hidden="true"></div>
+  </section>
+
+</main>
+
+<footer class="t-light site-footer" data-sw-signature="rod-reading">
+  <div class="container footer-stack">
+    <p class="disclaimer mono">{{demo.disclaimer}}</p>
+    [[credits]]
+    <p class="benchmark mono">Benchmark 0.00 · © {{year}} {{biz.initials}}</p>
+  </div>
+  <div class="laser-rule" aria-hidden="true"></div>
+</footer>
+
+<div class="mobile-bar" data-mobilebar>
+  [[call btn-primary]]
+  [[quote Driveways btn-secondary | Price it]]
+</div>

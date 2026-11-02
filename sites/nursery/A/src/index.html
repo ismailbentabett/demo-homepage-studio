@@ -1,0 +1,357 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header data-header>
+  <div class="header__inner">
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav aria-label="Primary">
+      <ul class="nav__list">
+        <li><a href="#services">Bench rows</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#calendar">Calendar</a></li>
+        <li><a href="#prices">Prices</a></li>
+        <li><a href="#contact">Start a list</a></li>
+      </ul>
+    </nav>
+    <button class="menu-btn" data-menu-btn aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+  <div class="header__progress" data-progress></div>
+</header>
+
+<div class="menu" data-menu id="menu" aria-hidden="true">
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="#services">Bench rows</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#calendar">Calendar</a></li>
+      <li><a href="#reviews">Grower notes</a></li>
+      <li><a href="#prices">Prices</a></li>
+      <li><a href="#zip">Delivery check</a></li>
+      <li><a href="#contact">Start a list</a></li>
+      <li><a href="tel:{{biz.phoneE164}}">Call [[tel]]</a></li>
+    </ul>
+  </nav>
+</div>
+
+<main id="main">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="t-deep hero">
+    <div class="hero__scrim"></div>
+    <div class="container hero__content">
+      <p class="kicker" data-reveal>{{biz.name}} · {{biz.city}}</p>
+      <h1 data-split="lines">Nothing leaves the bench until it has lived outside here</h1>
+      <p class="lead" data-reveal>Perennials, natives, shrubs and trees grown on open benches in Sonoma County weather for weeks before sale.</p>
+      <p class="proof-line" data-reveal>{{hours|today}} · {{biz.city}}, {{biz.state}} · {{proof.rating}} ([[sample rating]])</p>
+      <div class="hero__cta" data-reveal>[[call btn--primary]]</div>
+    </div>
+    <div class="filmstrip" aria-label="Stages of hardening off">
+      <div class="filmstrip__track">
+        [[frame hero-A filmstrip__item | | loading="eager"]]
+        [[frame hero-A-2 filmstrip__item]]
+        [[frame hero-A-3 filmstrip__item]]
+        <!-- filmstrip uses only unique keys; fourth frame omitted to avoid photo-twice -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. TRUST -->
+  <section id="trust" class="t-paper trust" data-hook="trust-grid">
+    <div class="container trust__grid">
+      <div class="trust__cell" data-reveal>
+        <span class="trust__label">Status</span>
+        <span class="trust__value" data-open-now>{{hours|today}}</span>
+      </div>
+      <div class="trust__cell" data-reveal>
+        <span class="trust__label">Area</span>
+        <span class="trust__value">Serving {{biz.areas|list}}</span>
+      </div>
+      <div class="trust__cell" data-reveal>
+        <span class="trust__label">Rating</span>
+        <span class="trust__value"><span data-count="{{proof.rating}}">{{proof.rating}}</span> stars from {{proof.reviewCount}} reviews [[sample rating]]</span>
+      </div>
+      <div class="trust__cell" data-reveal>
+        <span class="trust__label">Years</span>
+        <span class="trust__value">{{proof.years}} years growing here [[sample years]]</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SERVICES -->
+  <section id="services" class="t-deep services" data-hook="bench-rows">
+    <div class="container">
+      <p class="kicker" data-reveal>BENCH ROWS</p>
+      <h2 data-reveal>What is on the benches now</h2>
+      <p class="section-intro" data-reveal>Every plant below spent weeks outdoors on our benches before it was tagged ready. Bring a photo or a leaf if you are not sure which row fits your yard.</p>
+      <ul class="bench-grid">
+        <!-- each services -->
+        <li class="bench-card" data-reveal-stagger>
+          <div class="bench-card__head">
+            <span class="bench-card__row">Row {{#}}</span>
+            <span class="bench-card__stage">Hardened off</span>
+          </div>
+          <h3>{{.name}}</h3>
+          <p>{{.blurb}}</p>
+          <div class="bench-card__foot">
+            [[quote {{.short}} btn--ghost | Price it]]
+          </div>
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. PROCESS -->
+  <section id="process" class="t-paper process">
+    <div class="container process__split">
+      <div class="process__text">
+        <p class="kicker" data-reveal>THE HARDENING PROCESS</p>
+        <h2 data-reveal>Six weeks from cutting to ready</h2>
+        <ol class="process__steps">
+          <li data-reveal>
+            <span class="step-num">01</span>
+            <h3>Week 0–2: Rooting under mist</h3>
+            <p>Cuttings sit in the propagation house until roots fill the plug. No sun stress yet.</p>
+          </li>
+          <li data-reveal>
+            <span class="step-num">02</span>
+            <h3>Week 3–4: First bench time</h3>
+            <p>Pots move to the open bench. Wind, cool nights and real sun start the hardening.</p>
+          </li>
+          <li data-reveal>
+            <span class="step-num">03</span>
+            <h3>Week 5–6: Ready tag</h3>
+            <p>Roots checked, foliage hardened. Only then does it get a price tag and a bench card.</p>
+          </li>
+        </ol>
+      </div>
+      <div class="process__media" data-reveal>
+        [[frame process-seed-tray process__img | data-fallback="Seed trays in greenhouse"]]
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CALENDAR -->
+  <section id="calendar" class="t-accent calendar">
+    <div class="container">
+      <p class="kicker" data-reveal>PLANTING CALENDAR · {{biz.city}}</p>
+      <h2 data-reveal>When to plant what</h2>
+      <div class="calendar__grid">
+        <article class="cal-card" data-reveal>
+          <h3>Fall (Oct–Nov): Natives and shrubs</h3>
+          <p>Rain returns and soil stays warm. A strong window for manzanita, ceanothus and coffeeberry.</p>
+        </article>
+        <article class="cal-card" data-reveal>
+          <h3>Winter (Jan–Feb): Bare-root fruit trees</h3>
+          <p>Apples, pears and stone fruit arrive bare-root. Soak, prune and plant while dormant.</p>
+        </article>
+        <article class="cal-card" data-reveal>
+          <h3>Spring (Mar–May): Perennials and veg starts</h3>
+          <p>Salvias, yarrow, tomatoes and peppers hardened off outdoors so they do not sulk after planting.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- BREAK -->
+  <div class="break t-deep" aria-hidden="true">
+    <div class="break__rail"></div>
+  </div>
+
+  <!-- 6. REVIEWS -->
+  <section id="reviews" class="t-deep reviews" data-sw-signature>
+    <div class="container">
+      <p class="kicker" data-reveal>GROWER NOTES</p>
+      <h2 data-reveal>What gardeners say after a season</h2>
+      <p class="sample-note" data-reveal>[[sample review]]</p>
+      <ul class="review-grid">
+        <!-- each proof.reviews -->
+        <li class="review-card" data-reveal-stagger>
+          <span class="sample-tag">Sample review</span>
+          <blockquote>
+            <p>{{.text}}</p>
+          </blockquote>
+          <cite>
+            <span class="review-card__name">{{.name}}</span>
+            <span class="review-card__town">{{.town}} · {{.service}}</span>
+          </cite>
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. PRICES -->
+  <section id="prices" class="t-paper prices" data-hook="price-rack">
+    <div class="container">
+      <p class="kicker" data-reveal>SAMPLE PRICE RACK</p>
+      <h2 data-reveal>Sizes and ranges</h2>
+      <p class="section-intro" data-reveal>Prices vary by variety and season. These are sample ranges from recent benches. [[sample pricing]]</p>
+      <div class="price-table-wrap" data-reveal>
+        <table class="price-table">
+          <thead>
+            <tr><th scope="col">Size</th><th scope="col">Sample range</th><th scope="col">Note</th></tr>
+          </thead>
+          <tbody>
+            <!-- each proof.prices -->
+            <tr>
+              <td>{{.item}}</td>
+              <td>{{.from}} – {{.to}}</td>
+              <td><!-- if .note -->{{.note}}<!-- /if --></td>
+            </tr>
+            <!-- /each -->
+          </tbody>
+        </table>
+      </div>
+      <div class="prices__cta" data-reveal>[[call btn--primary | Call to confirm stock]]</div>
+    </div>
+  </section>
+
+  <!-- 8. ZIP -->
+  <section id="zip" class="t-deep zip-section">
+    <div class="container zip-block">
+      <p class="kicker" data-reveal>DELIVERY CHECK</p>
+      <h2 data-reveal>Do we deliver to your ZIP?</h2>
+      <form class="zip-form" data-zip aria-label="Check delivery ZIP">
+        <label class="sr-only" for="zip-input">ZIP code</label>
+        <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter your ZIP code" autocomplete="postal-code" required>
+        <button type="submit" class="btn btn--primary">Check</button>
+      </form>
+      <div class="zip-result" aria-live="polite" data-zip-result></div>
+    </div>
+  </section>
+
+  <!-- 9. CONTACT -->
+  <section id="contact" class="t-paper contact">
+    <div class="container contact__block">
+      <p class="kicker" data-reveal>START A LIST OR ASK A QUESTION</p>
+      <h2 data-reveal>Tell us what you need</h2>
+      <form class="lead-form" data-lead novalidate>
+        <div class="form-step" data-step="1">
+          <fieldset>
+            <legend>What are you looking for?</legend>
+            <label class="form-field">
+              <span class="form-label">Service or plant type</span>
+              <select name="service" required>
+                <option value="">Choose…</option>
+                <!-- each services -->
+                <option value="{{.short}}">{{.name}}</option>
+                <!-- /each -->
+                <option value="other">Something else</option>
+              </select>
+            </label>
+          </fieldset>
+          <button type="button" class="btn btn--primary form-next">Next</button>
+        </div>
+        <div class="form-step" data-step="2" hidden>
+          <fieldset>
+            <legend>Yard details</legend>
+            <label class="form-field">
+              <span class="form-label">Sun hours (approx)</span>
+              <select name="sun">
+                <option value="">Not sure</option>
+                <option value="2">2 hours</option>
+                <option value="4">4 hours</option>
+                <option value="6">6 hours</option>
+                <option value="8">8+ hours</option>
+              </select>
+            </label>
+            <label class="form-field">
+              <span class="form-label">Soil</span>
+              <select name="soil">
+                <option value="">Not sure</option>
+                <option value="clay">Clay</option>
+                <option value="sand">Sand</option>
+                <option value="loam">Loam</option>
+              </select>
+            </label>
+          </fieldset>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost form-prev">Back</button>
+            <button type="button" class="btn btn--primary form-next">Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="3" hidden>
+          <fieldset>
+            <legend>Timing</legend>
+            <label class="form-field">
+              <span class="form-label">When do you want to plant?</span>
+              <select name="timing">
+                <option value="soon">This week</option>
+                <option value="month">This month</option>
+                <option value="season">This season</option>
+                <option value="flexible">Flexible</option>
+              </select>
+            </label>
+          </fieldset>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost form-prev">Back</button>
+            <button type="button" class="btn btn--primary form-next">Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="4" hidden>
+          <fieldset>
+            <legend>Your contact</legend>
+            <label class="form-field">
+              <span class="form-label">Name</span>
+              <input type="text" name="name" required autocomplete="name">
+            </label>
+            <label class="form-field">
+              <span class="form-label">Phone</span>
+              <input type="tel" name="phone" required autocomplete="tel">
+            </label>
+            <label class="form-field">
+              <span class="form-label">Email (optional)</span>
+              <input type="email" name="email" autocomplete="email">
+            </label>
+            <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="t">
+          </fieldset>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost form-prev">Back</button>
+            <button type="submit" class="btn btn--primary">Send my list</button>
+          </div>
+          <p class="form-micro">We will call you back to set up a visit or confirm stock. Beside the phone: {{hours|today}}</p>
+        </div>
+        <div class="form-thankyou" hidden>
+          <p class="thankyou-msg">Thanks, {name}. In your version this goes straight to your phone and inbox.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="t-deep site-footer">
+  <div class="container footer__cols">
+    <div class="footer__brand">
+      <span class="logo">{{biz.initials}}</span>
+      <p>{{biz.name}} · {{biz.city}}, {{biz.state}}</p>
+      <p class="disclaimer">{{demo.disclaimer}}</p>
+    </div>
+    <nav class="footer__nav" aria-label="Footer">
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#calendar">Calendar</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#prices">Prices</a></li>
+        <li><a href="#zip">Delivery check</a></li>
+      </ul>
+    </nav>
+    <div class="footer__credits">
+      [[credits]]
+    </div>
+  </div>
+</footer>
+
+<div class="mobilebar" data-mobilebar>
+  [[call btn--primary mobilebar__call]]
+  <a href="#contact" class="btn btn--ghost mobilebar__quote">Start a list</a>
+</div>

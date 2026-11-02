@@ -1,0 +1,354 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-brush" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M9 5l3-3 3 3"/><rect x="8" y="8" width="8" height="14" rx="1"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="header t-deep" data-header aria-label="Site header">
+  <div class="header__inner wrap">
+    <a class="header__logo" href="#hero" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav class="header__nav" aria-label="Primary">
+      <a href="#process">Process</a>
+      <a href="#services">Services</a>
+      <a href="#proof">Proof</a>
+      <a href="#prices">Prices</a>
+      <a href="#area">Area</a>
+    </nav>
+    <div class="header__actions">
+      [[call btn-primary]]
+      <button class="header__menu-btn" type="button" data-menu-btn aria-expanded="false" aria-controls="menu-drawer">
+        [[i menu]]<span class="sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <div class="header__progress" data-progress></div>
+</header>
+
+<div class="menu-drawer" id="menu-drawer" data-menu aria-hidden="true">
+  <nav class="menu-drawer__nav" aria-label="Mobile primary">
+    <a href="#process">Process</a>
+    <a href="#services">Services</a>
+    <a href="#proof">Proof</a>
+    <a href="#prices">Prices</a>
+    <a href="#area">Area</a>
+    <a href="#contact">Book a visit</a>
+    [[tel]]
+  </nav>
+</div>
+
+<main id="main">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="sec hero t-deep" data-sw-signature="flue-level" data-level="0">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="kicker">Chimney sweeps &amp; stove service · {{biz.city}}</p>
+        <h1 data-split="lines">From the hearth<br>to the cap</h1>
+        <p class="lead">{{hours|today}} · {{biz.city}} · {{proof.rating}} [[sample rating]]</p>
+        <div class="hero__ctas">
+          [[call btn-primary]]
+          [[quote Sweeps btn-ghost]]
+        </div>
+      </div>
+      <div class="hero__frame frame arch-mask">
+        [[img hero | eager]]
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. CHECKER -->
+  <section id="checker" class="sec checker t-paper" data-level="0">
+    <div class="wrap">
+      <div class="checker__layout">
+      <div class="checker__symptom" data-checklist>
+        <h2>Not sure which visit you need?</h2>
+        <p class="lead">Tap what is happening. We will tell you what it usually means and which visit to book.</p>
+        <ul class="symptom-list" role="list">
+          <li><button type="button" data-symptom="smoke">Smoke into the room</button></li>
+          <li><button type="button" data-symptom="smell">Smell in summer</button></li>
+          <li><button type="button" data-symptom="flakes">Flakes on the grate</button></li>
+          <li><button type="button" data-symptom="sounds">Sounds in the flue</button></li>
+          <li><button type="button" data-symptom="water">Water stain by the chimney</button></li>
+          <li><button type="button" data-symptom="stove">Stove won't stay lit</button></li>
+          <li><button type="button" data-symptom="unused">Haven't used it in years</button></li>
+        </ul>
+        <div class="checker__result" aria-live="polite" data-checklist-result></div>
+        <a class="btn btn-primary" href="#contact" data-service="Camera inspection">Book that visit</a>
+      </div>
+      <div class="checker__zip" data-zip>
+        <h3>Do we cover your ZIP?</h3>
+        <form class="zip-form" action="#contact">
+          <label class="sr-only" for="zip-input">ZIP code</label>
+          <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. {{biz.zips.0}}" data-zip-input autocomplete="postal-code">
+          <button class="btn btn-ghost" type="submit" data-zip-btn>Check</button>
+        </form>
+        <div class="zip-result" aria-live="polite" data-zip-result></div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. PROCESS (L1 Firebox) -->
+  <section id="process" class="sec process t-deep" data-sw-signature="flue-level" data-level="1">
+    <div class="wrap">
+      <span class="level-tag">L1 · Firebox</span>
+      <h2>Drop cloths down before the brush goes up</h2>
+      <p class="lead">A sweep removes soot and creosote from the firebox to the cap. The vacuum runs at the opening the whole time.</p>
+      <div class="process__story">
+        <div class="process__media frame">[[img process-1]]</div>
+        <div class="process__creosote" data-tabs>
+          <div class="tabs" role="tablist" aria-label="Creosote stages">
+            <button role="tab" aria-selected="true" data-tab="soot">Dusty soot</button>
+            <button role="tab" aria-selected="false" data-tab="flakes">Crunchy flakes</button>
+            <button role="tab" aria-selected="false" data-tab="glaze">Shiny glaze</button>
+          </div>
+          <div class="tab-panel" role="tabpanel" data-panel="soot">
+            <p>Dusty soot forms from cool, smoky fires. A sweep removes it cleanly.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" data-panel="flakes" hidden>
+            <p>Crunchy flakes mean stage-2 creosote. A sweep removes most of it; some may need a second pass.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" data-panel="glaze" hidden>
+            <p>Shiny glaze is stage-3 creosote. It may need a special treatment or a second visit. We will show you before we quote.</p>
+          </div>
+        </div>
+        <figure class="process__photo frame">[[img process-2]]<figcaption>Brush and rods on the roof</figcaption></figure>
+      </div>
+      <blockquote class="review-card t-mid">
+        <p>&ldquo;{{proof.reviews.1.text}}&rdquo;</p>
+        <cite>{{proof.reviews.1.name}}, {{proof.reviews.1.town}} · {{proof.reviews.1.service}} [[sample review]]</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- 4. SERVICES -->
+  <section id="services" class="sec services t-paper" data-sw-signature="flue-level" data-level="2">
+    <div class="wrap">
+      <h2>What we do, level by level</h2>
+      <ul class="svc-grid">
+        <!-- each services -->
+        <li class="svc-card card">
+          <span class="level-tag">Level</span>
+          <h3>{{.name}}</h3>
+          <p>{{.blurb}}</p>
+          [[quote {{.short}} btn-ghost]]
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. BREAK -->
+  <section id="break" class="sec break t-mid">
+    <figure class="break__frame frame">
+      [[img break | eager]]
+      <figcaption>Masonry fireplace in a {{biz.city}} bungalow</figcaption>
+    </figure>
+  </section>
+
+  <!-- 6. CAMERA (L3 Smoke shelf) -->
+  <section id="camera" class="sec camera t-deep" data-sw-signature="flue-level" data-level="3">
+    <div class="wrap split split--rev">
+      <div class="camera__copy">
+        <span class="level-tag">L3 · Smoke shelf</span>
+        <h2>Photos from inside your flue before we say a word</h2>
+        <p class="lead">A camera on a rod goes up the flue. You get the photos of every cracked tile, marked fine, watch or fix.</p>
+        <p>Smoke rolling into the room? We find out why: a short flue, a cold flue or the house.</p>
+        [[quote Camera look btn-ghost]]
+      </div>
+      <figure class="camera__frame frame">[[img camera]]<figcaption>Inspection camera access</figcaption></figure>
+    </div>
+    <blockquote class="review-card t-mid wrap">
+      <p>&ldquo;{{proof.reviews.0.text}}&rdquo;</p>
+      <cite>{{proof.reviews.0.name}}, {{proof.reviews.0.town}} · {{proof.reviews.0.service}} [[sample review]]</cite>
+    </blockquote>
+  </section>
+
+  <!-- 7. STOVES (L4 Liner) -->
+  <section id="stoves" class="sec stoves t-paper" data-sw-signature="flue-level" data-level="4">
+    <div class="wrap split">
+      <div class="stoves__copy">
+        <span class="level-tag">L4 · Liner</span>
+        <h2>Stoves and inserts fitted with the right clearances</h2>
+        <p class="lead">A new stainless liner runs all the way down an old clay-tile flue. Stoves and inserts are fitted with the clearances to walls and mantels written down.</p>
+        [[quote Stoves and inserts btn-ghost]]
+      </div>
+      <figure class="stoves__frame frame">[[img stoves]]<figcaption>Stove pipe form</figcaption></figure>
+    </div>
+    <blockquote class="review-card t-light wrap">
+      <p>&ldquo;{{proof.reviews.3.text}}&rdquo;</p>
+      <cite>{{proof.reviews.3.name}}, {{proof.reviews.3.town}} · {{proof.reviews.3.service}} [[sample review]]</cite>
+    </blockquote>
+  </section>
+
+  <!-- 8. PROOF -->
+  <section id="proof" class="sec proof t-light" data-sw-signature="flue-level" data-level="4">
+    <div class="wrap">
+      <h2>Notes from past visits</h2>
+      <p class="guarantee">{{proof.guarantee}}</p>
+      <div class="proof__rail" data-carousel>
+        <div class="carousel-clip">
+          <div class="carousel-track">
+            <!-- each proof.reviews -->
+            <article class="review-card card">
+              <span class="level-tag">{{.service}}</span>
+              <p>&ldquo;{{.text}}&rdquo;</p>
+              <cite>{{.name}}, {{.town}} [[sample review]]</cite>
+            </article>
+            <!-- /each -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8.5 FLUE DIVIDER -->
+  <div class="sec flue-divider t-paper" aria-hidden="true">
+    <div class="flue-divider__arch"></div>
+  </div>
+
+  <!-- 9. PRICES -->
+  <section id="prices" class="sec prices t-accent" data-sw-signature="flue-level" data-level="5">
+    <div class="wrap">
+      <h2>Sample ranges for common jobs</h2>
+      <p class="lead">These are sample ranges for {{biz.city}}. Your number comes after we see the chimney.</p>
+      <div class="estimator" data-estimator>
+        <label class="estimator__label" for="est-job">Pick a job to see the range</label>
+        <select id="est-job" data-est-select>
+          <!-- each proof.prices -->
+          <option value="{{#}}">{{.item}}</option>
+          <!-- /each -->
+        </select>
+        <div class="estimator__output" aria-live="polite" data-est-output>
+          <!-- filled by kit estimator from facts.proof.prices -->
+          <p class="est-range"><span data-est-from></span> – <span data-est-to></span></p>
+          <p class="est-note" data-est-note></p>
+          [[sample pricing]]
+        </div>
+        <a class="btn btn-primary" href="#contact" data-service="">Price this job</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. AREA -->
+  <section id="area" class="sec area t-paper" data-level="5">
+    <div class="wrap split">
+      <div class="area__info">
+        <h2>Where we work</h2>
+        <p class="lead">{{biz.areas|list}}</p>
+        <div data-zip>
+          <h3>Check your ZIP</h3>
+          <form class="zip-form" action="#contact">
+            <label class="sr-only" for="zip-area">ZIP code</label>
+            <input id="zip-area" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. {{biz.zips.0}}" data-zip-input autocomplete="postal-code">
+            <button class="btn btn-ghost" type="submit" data-zip-btn>Check</button>
+          </form>
+          <div class="zip-result" aria-live="polite" data-zip-result></div>
+        </div>
+      </div>
+      <div class="area__hours">
+        <h3>Hours</h3>
+        {{hours|table}}
+        <p class="open-now" data-open-now></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. CONTACT -->
+  <section id="contact" class="sec contact t-deep" data-sw-signature="flue-level" data-level="6">
+    <div class="wrap contact__wrap">
+      <h2>Book a visit</h2>
+      <form class="lead-form" data-lead novalidate>
+        <div class="form-step" data-step="1">
+          <fieldset>
+            <legend>What you burn in</legend>
+            <label><input type="radio" name="appliance" value="Open fireplace" required> Open fireplace</label>
+            <label><input type="radio" name="appliance" value="Wood stove"> Wood stove</label>
+            <label><input type="radio" name="appliance" value="Insert"> Insert</label>
+            <label><input type="radio" name="appliance" value="Gas logs"> Gas logs</label>
+            <label><input type="radio" name="appliance" value="Not sure"> Not sure</label>
+          </fieldset>
+          <button class="btn btn-primary" type="button" data-next>Next</button>
+        </div>
+        <div class="form-step" data-step="2" hidden>
+          <fieldset>
+            <legend>What is happening</legend>
+            <label><input type="radio" name="symptom" value="Routine sweep" required> Routine sweep</label>
+            <label><input type="radio" name="symptom" value="Smoke into room"> Smoke into room</label>
+            <label><input type="radio" name="symptom" value="Smell in summer"> Smell in summer</label>
+            <label><input type="radio" name="symptom" value="Buying or selling"> Buying or selling</label>
+            <label><input type="radio" name="symptom" value="New install"> New install</label>
+            <label><input type="radio" name="symptom" value="Other"> Other</label>
+          </fieldset>
+          <div class="form-nav">
+            <button class="btn btn-ghost" type="button" data-prev>Back</button>
+            <button class="btn btn-primary" type="button" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="3" hidden>
+          <fieldset>
+            <legend>Last swept</legend>
+            <label><input type="radio" name="lastSwept" value="Less than a year" required> Less than a year</label>
+            <label><input type="radio" name="lastSwept" value="1–2 years"> 1–2 years</label>
+            <label><input type="radio" name="lastSwept" value="More than 2 years"> More than 2 years</label>
+            <label><input type="radio" name="lastSwept" value="Never / not sure"> Never / not sure</label>
+          </fieldset>
+          <div class="form-nav">
+            <button class="btn btn-ghost" type="button" data-prev>Back</button>
+            <button class="btn btn-primary" type="button" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="4" hidden>
+          <fieldset>
+            <legend>Your area</legend>
+            <label><input type="text" name="area" autocomplete="address-level2" placeholder="Town or ZIP" required></label>
+          </fieldset>
+          <fieldset>
+            <legend>How to reach you</legend>
+            <label>Name <input type="text" name="name" autocomplete="name" required></label>
+            <label>Phone <input type="tel" name="phone" autocomplete="tel" required></label>
+            <label>Email <input type="email" name="email" autocomplete="email"></label>
+            <label class="hp" aria-hidden="true"><input type="text" name="website2" tabindex="-1" autocomplete="off"></label>
+            <input type="hidden" name="t" data-time-trap>
+          </fieldset>
+          <div class="form-nav">
+            <button class="btn btn-ghost" type="button" data-prev>Back</button>
+            <button class="btn btn-primary" type="submit">Send request</button>
+          </div>
+          <p class="form-micro">We will call you back to set up a visit.</p>
+        </div>
+        <div class="form-thanks" data-thanks hidden>
+          <p>Thanks. In your version this goes straight to your phone and inbox.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer t-mid" data-sw-signature="flue-level" data-level="6">
+  <div class="wrap footer__inner">
+    <span class="level-tag">L6 · Cap</span>
+    <nav class="footer__nav" aria-label="Footer">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#proof">Proof</a>
+      <a href="#prices">Prices</a>
+      <a href="#area">Area</a>
+      <a href="#contact">Book a visit</a>
+    </nav>
+    <p class="disclaimer">{{demo.disclaimer}}</p>
+    [[credits]]
+    <p class="copy">&copy; {{year}} {{biz.name}}</p>
+  </div>
+</footer>
+
+<div class="mobilebar" data-mobilebar>
+  [[call btn-ghost]]
+  [[quote Sweep btn-primary]]
+</div>
