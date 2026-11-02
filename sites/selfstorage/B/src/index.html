@@ -1,0 +1,272 @@
+<!-- svg sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header data-header aria-label="Site header">
+  <div class="header__inner">
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        <li><a href="#climate">Climate</a></li>
+        <li><a href="#services">Units</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+    </nav>
+    <div class="header__actions">
+      <span class="reading reading--sm" data-open-now>{{hours|today}}</span>
+      [[call btn-primary]]
+      <button class="menu-btn" data-menu-btn aria-expanded="false" aria-controls="menu" aria-label="Menu">[[i menu]]</button>
+    </div>
+  </div>
+  <div class="progress-bar" data-progress></div>
+</header>
+
+<div id="menu" data-menu class="menu" aria-hidden="true">
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="#climate">Climate</a></li>
+      <li><a href="#services">Units</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Hold a unit</a></li>
+    </ul>
+  </nav>
+  [[tel]]
+</div>
+
+<main id="main">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="t-deep hero hero-bg">
+    <div class="hero__text">
+      <p class="kicker">{{biz.name}} · {{biz.city}}, {{biz.state}}</p>
+      <h1 data-split="lines" data-hook>Your size and your month,<br>measured before you drive over</h1>
+      <p class="reading">SIZE 10×10 · 100 SQ FT · 800 CU FT · [[sample pricing]] {{proof.prices.1.from}}–{{proof.prices.1.to}}/{{proof.prices.1.unit}}</p>
+      <p class="lead">See the square footage, the cubic feet, and the monthly range for a 10×10 climate unit. Then decide.</p>
+      <p class="proof-line">Mon–Sat 8:30–6 · Gate 6–10 · {{biz.city}}, {{biz.state}} · {{proof.rating}} ([[sample rating]])</p>
+      <div class="btn-row">
+        [[quote "Climate units" btn-primary | Price my size]]
+        [[call btn-ghost]]
+      </div>
+    </div>
+    <div class="hero__media">
+      [[frame hero hero__img | | eager]]
+      <svg class="hero__outline" viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="10" width="80" height="80" fill="none" stroke="var(--c-cyan)" stroke-width=".5" stroke-dasharray="320" stroke-dashoffset="320"/></svg>
+    </div>
+  </section>
+
+  <!-- 2. CLIMATE -->
+  <section id="climate" class="t-paper stack-center">
+    <p class="kicker">CLIMATE CONTROL</p>
+    <h2>What the hallway holds</h2>
+    <p class="reading">HALL 68–78°F · RH ≤ 55%</p>
+    <p class="body-text">Indoor hallways are held between 68 and 78 degrees, with humidity kept under 55 percent. Wood, fabric, paper and leather stay where you left them.</p>
+    <p class="guarantee">If a hallway log shows humidity over 55% for a day, we move you to another unit at no cost. [[sample label]]</p>
+    [[frame climate-detail climate__frame | | ]]
+    <p class="caption">Sealed roller-shutter detail evokes a controlled envelope.</p>
+  </section>
+
+  <!-- 3. SERVICES -->
+  <section id="services" class="t-deep grid-section">
+    <p class="kicker">UNITS AND ACCESS</p>
+    <h2>Nine ways to store</h2>
+    <p class="reading">SERVICES 9 · MONTH-TO-MONTH</p>
+    <ul class="svc-grid" data-hook>
+      <!-- each services -->
+      <li class="svc-card" data-reveal>
+        <p class="reading reading--sm">{{.short}}</p>
+        <h3>{{.name}}</h3>
+        <p>{{.blurb}}</p>
+        [[quote {{.short}} btn-ghost]]
+      </li>
+      <!-- /each -->
+    </ul>
+  </section>
+
+  <!-- 4. CHOOSER -->
+  <section id="chooser" class="t-paper side-by-side side-by-side--rev">
+    <div class="side-by-side__text">
+      <p class="kicker">CLIMATE OR DRIVE-UP</p>
+      <h2>Which door fits your stuff</h2>
+      <p class="reading">TYPE climate or drive-up</p>
+      <p class="body-text">Five questions. One answer. No guesswork.</p>
+      <div data-checklist data-checklist-result="#chooser-result">
+        <label><input type="checkbox" name="q1"> Wood furniture?</label>
+        <label><input type="checkbox" name="q2"> Papers or photos?</label>
+        <label><input type="checkbox" name="q3"> Electronics or mattresses?</label>
+        <label><input type="checkbox" name="q4"> Longer than three months?</label>
+        <label><input type="checkbox" name="q5"> Loading by yourself with a truck?</label>
+      </div>
+      <p id="chooser-result" class="chooser-result" aria-live="polite"></p>
+      <a href="#contact" class="btn btn-primary">Hold this size</a>
+    </div>
+    <div class="side-by-side__media">
+      [[frame chooser-detail chooser__frame | | ]]
+    </div>
+  </section>
+
+  <!-- 5. STORY (full-bleed break) -->
+  <section id="story" class="t-deep break story-section">
+    <div class="break__inner">
+      <p class="kicker">TWELVE MONTHS</p>
+      <h2>Outside versus inside</h2>
+      <p class="reading" data-sw-signature>YEAR outside vs inside</p>
+      <div class="story-steps">
+        <article class="story-step" data-reveal>
+          <p class="reading reading--sm">JANUARY</p>
+          <p>Outside: 65% RH. Inside: 48%. The dresser drawer slides smooth.</p>
+        </article>
+        <article class="story-step" data-reveal>
+          <p class="reading reading--sm">APRIL</p>
+          <p>Outside: 72% RH. Inside: 50%. No swelling at the joints.</p>
+        </article>
+        <article class="story-step" data-reveal>
+          <p class="reading reading--sm">JULY</p>
+          <p>Outside: 88% RH. Inside: 52%. The veneer stays flat.</p>
+        </article>
+        <article class="story-step" data-reveal>
+          <p class="reading reading--sm">OCTOBER</p>
+          <p>Outside: 78% RH. Inside: 49%. Same pull, same feel.</p>
+        </article>
+      </div>
+      <p class="note">Readings illustrate a typical year in {{biz.city}}. [[sample label]]</p>
+    </div>
+    [[frame story-bg story__bg | | ]]
+  </section>
+
+  <!-- 6. AREA BAND (color band) -->
+  <section id="area" class="t-cyan band-section">
+    <p class="kicker">SERVICE AREA</p>
+    <h2>{{biz.city}} and {{biz.areas|list}}</h2>
+    <p class="reading">ZIPS {{biz.zips|csv}}</p>
+    <p class="body-text">Drive in from any of these towns. Gate open 6 a.m. to 10 p.m. daily.</p>
+  </section>
+
+  <!-- 7. REVIEWS -->
+  <section id="reviews" class="t-paper reviews-section">
+    <p class="kicker">SAMPLE REVIEWS</p>
+    <h2>What renters say</h2>
+    <p class="reading">RATING {{proof.rating}} · {{proof.reviewCount}} REVIEWS ([[sample rating]])</p>
+    <ul class="review-list">
+      <!-- each proof.reviews -->
+      <li class="review-card" data-reveal>
+        <p class="review-text">“{{.text}}”</p>
+        <p class="review-meta">{{.name}} · {{.town}} · {{.service}}</p>
+        [[sample review]]
+      </li>
+      <!-- /each -->
+    </ul>
+  </section>
+
+  <!-- 7. PRICING + LEASE -->
+  <section id="pricing" class="t-deep two-col" data-hook>
+    <div class="two-col__a">
+      <p class="kicker">PRICING AND TERMS</p>
+      <h2>The number and the lease, plainly</h2>
+      <p class="reading">LEASE month-to-month · NOTICE before next due date</p>
+      <p class="body-text">Sample monthly ranges by size. Your rate is locked at move-in.</p>
+      <ul class="price-list">
+        <!-- each proof.prices -->
+        <li class="price-item">
+          <span class="price-name">{{.item}}</span>
+          <span class="price-range">[[sample pricing]] {{.from}}–{{.to}} {{.unit}}</span>
+          <span class="price-note">{{.note}}</span>
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+    <div class="two-col__b">
+      <h3>Lease in plain words</h3>
+      <p>No yearly contract. Give notice before your next due date and you are done. Rent is due on the first. Late fees and lien process are spelled out in the agreement you sign.</p>
+      [[call btn-ghost | Ask the manager]]
+      [[frame pricing-detail pricing__frame | | ]]
+      <p class="caption">Keypad entry: your personal code, logged at every visit.</p>
+    </div>
+  </section>
+
+  <!-- 8. CONTACT -->
+  <section id="contact" class="t-paper stack-center contact-section">
+    <p class="kicker">HOLD A UNIT</p>
+    <h2>Confirm your size and move-in date</h2>
+    <p class="reading">OFFICE <span data-open-now>{{hours|today}}</span> · GATE 06:00–22:00</p>
+
+    <div class="zip-check" data-zip>
+      <label for="zip-input">Check your drive time</label>
+      <div class="zip-row">
+        <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="Enter a ZIP near {{biz.city}}" autocomplete="postal-code">
+        <button type="button" class="btn btn-ghost" data-zip-btn>Check</button>
+      </div>
+      <p class="zip-result" data-zip-result aria-live="polite"></p>
+    </div>
+
+    <form data-lead class="lead-form" novalidate>
+      <input type="hidden" name="website2">
+      <input type="hidden" name="t">
+      <div class="form-steps">
+        <fieldset class="form-step is-active" data-step="1">
+          <legend>Step 1 of 4: What are you storing?</legend>
+          <label>
+            <span>Service</span>
+            <select name="service" required>
+              <option value="">Select…</option>
+              <!-- each services -->
+              <option value="{{.name}}">{{.name}}</option>
+              <!-- /each -->
+            </select>
+          </label>
+          <button type="button" class="btn btn-primary form-next">Next</button>
+        </fieldset>
+        <fieldset class="form-step" data-step="2">
+          <legend>Step 2 of 4: Tell us more</legend>
+          <label><span>Details</span><textarea name="details" rows="3"></textarea></label>
+          <div class="form-nav">
+            <button type="button" class="btn btn-ghost form-prev">Back</button>
+            <button type="button" class="btn btn-primary form-next">Next</button>
+          </div>
+        </fieldset>
+        <fieldset class="form-step" data-step="3">
+          <legend>Step 3 of 4: When do you need it?</legend>
+          <label><span>Move-in date</span><input type="date" name="date"></label>
+          <div class="form-nav">
+            <button type="button" class="btn btn-ghost form-prev">Back</button>
+            <button type="button" class="btn btn-primary form-next">Next</button>
+          </div>
+        </fieldset>
+        <fieldset class="form-step" data-step="4">
+          <legend>Step 4 of 4: How should we reach you?</legend>
+          <label><span>Name</span><input type="text" name="name" required autocomplete="name"></label>
+          <label><span>Phone</span><input type="tel" name="phone" required autocomplete="tel"></label>
+          <label><span>Email</span><input type="email" name="email" autocomplete="email"></label>
+          <div class="form-nav">
+            <button type="button" class="btn btn-ghost form-prev">Back</button>
+            <button type="submit" class="btn btn-primary">Hold this size</button>
+          </div>
+        </fieldset>
+      </div>
+      <p class="form-microcopy">We will call you back to confirm the unit and the move-in date.</p>
+      <div class="form-thankyou" hidden>
+        <p>Thanks, {name}. In your version this goes straight to your phone and inbox.</p>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<footer class="t-deep footer-band">
+  <p class="reading">OFFICE closed · GATE open until 22:00</p>
+  <p class="disclaimer">{{demo.disclaimer}}</p>
+  [[credits]]
+</footer>
+
+<div data-mobilebar class="mobilebar" aria-hidden="true">
+  [[call btn-primary]]
+  [[quote "Climate units" btn-ghost | Price it]]
+</div>

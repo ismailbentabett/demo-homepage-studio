@@ -1,0 +1,72 @@
+{
+  "round": 1,
+  "categories": {
+    "firstScreen": {
+      "score": 9,
+      "notes": "1440-first.jpg: h1 'Durham movers who tag every piece to its room' states trade+city+outcome; phone visible in header; next band (filmstrip) peeks ~60px; signature tag No. 001 visible. 390-first.jpg: h1 wraps to 3 lines, both CTAs above fold. H1 is 9 words (one over anchor) but semantic content meets 9 criteria."
+    },
+    "distinctiveness": {
+      "score": 9,
+      "notes": "1440-full.jpg, 1440-scroll-25.jpg, 1440-scroll-50.jpg, 1440-scroll-75.jpg: inventory tag signature in hero (No. 001), process steps, service cards, reviews, prices table, footer (No. 112) -- 6 sections. Filmstrip hero unique in niche. Kraft+orange palette and Antonio/Public Sans/DM Mono trio distinct from siblings."
+    },
+    "type": {
+      "score": 9,
+      "notes": "1440-full.jpg, 390-full.jpg: Antonio condensed display for tag numbers/headlines creates scale contrast vs Public Sans body. DM Mono for data. Fluid clamp() scale. Tabular numerals on prices/phone. Body >= 16px at full ink. Lead paragraph set apart."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: clear tone alternation paper/deep/paper/accent/deep/light. Multiple layout families (filmstrip rail, split process, tag grid, ledger table, stacked form). 1440-scroll-25.jpg, 1440-scroll-50.jpg: three consecutive light-tone sections (hero, process, services) flatten density map (-0.5)."
+    },
+    "photo": {
+      "score": 6,
+      "notes": "1440-scroll-75.jpg, dist/index.html:1336: area photo alt text still says 'A snowy residential street in Quebec City. Photographed at Vieux-Limoilou.' and src is season-snow-street-1170.webp. Wrong region for Durham NC site -- round 0 fix did not land. Cool-toned snow breaks warm sepia grade (-0.5). MustFix caps at 8.0 fast mode but off-topic frame drops to 6."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "dist/index.html lines 1282, 1317, 1427-1497, 1713, 1844: all CTAs unified to 'Price my move'. Lines 1583-1633: per-review Sample tags on all six cards. Line 1311: h1 rewritten with city token. Plain voice, no banned words, microcopy under form. Round 0 copy fixes confirmed."
+    },
+    "mobile": {
+      "score": 9,
+      "notes": "390-first.jpg, 390-full.jpg: no horizontal scroll (render.json overflow clean). Tap targets >= 48px. Sticky mobile bar with Call + Price my move. H1 <= 3 lines. Form usable with thumb. Header hides on scroll down."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "1440-rm-full.jpg: all content visible in reduced motion. Skip link present. Focus outline 2px currentColor with 3px offset. Labels on all form inputs. aria-live on ZIP output. qa/render.json: console 404 error may affect asset loading (-0.5)."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "1440-first.jpg, 1440-rm-full.jpg: tag swing-in intro, filmstrip drift, clip reveals, text rise. Reduced motion shows complete static content. qa/render.json: console 404 may indicate missing animation asset (-0.5). 1440-scroll-25.jpg, 1440-scroll-50.jpg: entrance cadence appears uniform across sections (-0.5)."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "1440-scroll-25.jpg: inventory tag system advancing 001 to 112 is the wow, tied to thesis. Move sizer outputs crew/truck/price in tag language. Tool output is text readout rather than designed artifact in signature's visual language (-0.5)."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "dist/index.html head: SVG favicon, apple-touch-icon, OG image, theme-color, JSON-LD MovingCompany, print stylesheet, lazy images with dimensions, forced colors handled. qa/render.json: console 404 error (-0.5). Footer credits collapsed behind disclosure per 390-full.jpg."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "1440-scroll-75.jpg, #area photo (dist/index.html:1336)",
+      "problem": "Photo alt text says 'A snowy residential street in Quebec City. Photographed at Vieux-Limoilou.' and src is season-snow-street-1170.webp. Wrong region for Durham NC site. Round 0 fix claim did not land in the build.",
+      "fix": "Replace with a Durham/NC-appropriate residential street or neighborhood photo from the moving niche media library. Update alt text to describe the actual frame. Verify the new file exists in sites/moving/A/dist/media/ and the src/srcset paths resolve."
+    },
+    {
+      "where": "qa/render.json consoleErrors",
+      "problem": "404 error on an unnamed resource. Missing assets break polish and may affect accessibility.",
+      "fix": "Identify the failing URL via browser Network tab or build logging, restore the missing file or remove the reference. Re-run check-render to confirm zero console errors."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "photo",
+      "move": "Art-direct the entire photo set as a single move-day sequence in consistent warm light -- tag close-up, wrap station, ramp load, hallway carry, placed-in-room -- so crops tell a narrative arc. Replace the Quebec snow frame with a Durham neighborhood shot graded to match."
+    },
+    {
+      "category": "layout",
+      "move": "Break the three-light-tone run by making the process story section t-deep with reversed text, creating a paper/deep/paper/deep rhythm that gives the scroll a visible loud-quiet-loud shape and separates the process narrative from the services grid."
+    }
+  ],
+  "verdictHint": "FIX"
+}

@@ -1,0 +1,67 @@
+{
+  "round": 0,
+  "categories": {
+    "firstScreen": {
+      "score": 9,
+      "notes": "1440-first.jpg: h1 'Fort Collins movers & junk haul-away' (6 words), trade+city+outcome clear; phone in header; two distinct CTAs; next band peeks ~80px. 390-first.jpg: h1 3 lines, both buttons above fold, phone visible."
+    },
+    "distinctiveness": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: load-meter truck SVG in sticky header, ledger-line motif in reviews, prices, footer (≥4 sections). Layout families: sticky-photo hero, tool panel, split-bars story, ledger list, grid cards, asymmetric area. -0.5: signature truck meter hidden below 389px per CSS, weakening mobile distinctiveness."
+    },
+    "type": {
+      "score": 9,
+      "notes": "1440-first.jpg: Space Grotesk display, Outfit body, DM Mono for all figures/ledger lines. Fluid clamp scale, body ≥16px, measure ≤68ch. Tabular numerals on ledger lines. En-dash ranges in prices. Scale contrast between hero h1 and kicker labels."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: tone alternation deep→paper→deep→light→paper→light→paper→deep→deep. ≥3 layout families, no two neighbours alike. -0.5: reviews (t-paper) and prices (t-light) are both light-toned and adjacent, creating tonal flatness mid-page. Services grid at 25% scroll reads template-adjacent."
+    },
+    "photo": {
+      "score": 8.5,
+      "notes": "1440-first.jpg: hero-B1 loaded truck interior, consistent desaturated grade via CSS filter. All frames on-topic, no faces as owner, no logos. Hero poster preloaded. -0.5: area photo alt text says 'Quebec City' (wrong region for Fort Collins CO site), visible in dist/index.html line 1326."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "1440-full.jpg: voice matches concept sentences, plain and numbers-forward. Sample labels on all prices and reviews. Microcopy under phone ('text a photo of your pile'), honest thank-you in form. No banned words. Buttons named for actions. Consistent primary action name 'Hold this date'."
+    },
+    "mobile": {
+      "score": 8.5,
+      "notes": "390-first.jpg, 390-full.jpg: no horizontal scroll at 390px, tap targets ≥48px, h1 ≤3 lines, mobile bar functional. -0.5: render.json reports 320px overflow (scrollWidth 353px). -0.5: load meter hidden below 389px, signature disappears on small phones."
+    },
+    "a11y": {
+      "score": 9,
+      "notes": "1440-rm-full.jpg: all content visible with reduced motion, truck meter static, process bars complete, ledger lines instant. Skip link present, focus 3px accent with 3px offset. ARIA live on ZIP result. Heading order correct. Honeypot properly hidden."
+    },
+    "motion": {
+      "score": 9,
+      "notes": "1440-scroll-25.jpg: pinned horizontal bars story grows/shrinks with input. 1440-rm-full.jpg: reduced motion shows complete static state. Entrance variety: text rises, images clip-reveal, ledger lines stagger. Hover hairline scaleX from left. Lenis initialized. Intro truck draw skippable."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "1440-first.jpg: move sizer as hero produces designed output in ledger language. Junk gauge fills truck bed in eighths. Two connected moments tied to thesis. -0.5: wow is intellectual rather than visceral; no single dramatic animation frame that demands showing someone."
+    },
+    "polish": {
+      "score": 9,
+      "notes": "dist/index.html: SVG favicon + apple-touch-icon, OG 1200x630, theme-color, MovingCompany JSON-LD, print stylesheet, lazy images with dimensions, hero poster preloaded, forced colors handled. Consistent 2px radius, one icon stroke width. Footer designed with ledger-line close."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "qa/render.json, 320px overflow",
+      "problem": "Horizontal scroll at 320px: scrollWidth 353px > viewport 320px. Elements .header__actions (right 478), .btn-call (right 418), .header__menu-btn (right 478) extend past viewport.",
+      "fix": "Add overflow-x: hidden to .header__inner or constrain .header__actions with max-width and flex-wrap: wrap. Ensure all header children respect 320px viewport. The existing @media (max-width: 389px) block hides load meter but doesn't prevent actions container overflow."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "layout",
+      "move": "Thread the ledger-line signature into the services grid cards, replacing the plain card layout with mono-label entries that mirror the price/review ledger format, so every section speaks the same visual language and mid-page tonal flatness is broken by denser texture."
+    },
+    {
+      "category": "distinctiveness",
+      "move": "Scale the load meter for small viewports (80x32px at 320-389px) instead of hiding it, so the signature never disappears and the cover-the-logo test passes at every viewport."
+    }
+  ],
+  "verdictHint": "FIX"
+}
