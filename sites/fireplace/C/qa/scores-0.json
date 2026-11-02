@@ -1,0 +1,67 @@
+{
+  "round": 0,
+  "categories": {
+    "firstScreen": {
+      "score": 8.5,
+      "notes": "1440-first.jpg: h1 'Stack the first cord in September' states trade+city+outcome in ≤6 words; primary CTA 'Price a visit' + quieter 'Call'; phone visible in header; proof line present; season rail peeks ~60px. 390-first.jpg: h1 4 lines, both CTAs above fold, but phone hidden below 640px per dist CSS (-1.0)."
+    },
+    "distinctiveness": {
+      "score": 9,
+      "notes": "Season-rail signature in hero (1440-first.jpg), sticky sub-nav (1440-scroll-25.jpg, 1440-scroll-50.jpg), watermark numerals behind section kickers, and footer signoff — ≥4 sections. Offset-frame hero family unique vs siblings. Maple+birch palette and Sora/DM Sans pair differ from A and B."
+    },
+    "type": {
+      "score": 9,
+      "notes": "Sora display + DM Sans text from catalog; fluid scale; body ≥16px; measure ~68ch; tabular numerals in prices/hours/phone; lead paragraph set apart; ≤5 sizes; no orphans; display tracking -0.02em. Visible across 1440-full.jpg and 390-full.jpg."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: 11 sections each with one job; ≥3 layout families (hero split, split-stack, rail-layout, statement-layout, grid cards); alternating tones. Deduction: two adjacent t-paper bands (#services, #reviews) read as one light block (-0.5); mid-page tonal plateau across five-section run (-0.5)."
+    },
+    "photo": {
+      "score": 8.5,
+      "notes": "1440-full.jpg and scroll frames: all photos on-topic (woodshed, roof rods, stove install, chimney cap, flue brush); consistent warm grade; object-position on thirds; alt text describes frame; video has poster and preload. Stock ceiling applies."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "1440-full.jpg: voice matches concept's three sentences; every section answers one homeowner question; microcopy under form button; Sample labels on every review card, every price row, and price table caption. No banned phrases or tricolons."
+    },
+    "mobile": {
+      "score": 8,
+      "notes": "390-full.jpg: composed phone layout, sticky call bar works, tap targets ≥48px, h1 ≤4 lines. qa/render.json: horizontal overflow at 390px (478px wide) and 320px (476px wide) from header__actions/btn-call/menu-btn — mustFix, caps mobile at 8.0 in fast mode."
+    },
+    "a11y": {
+      "score": 9,
+      "notes": "qa/static.json and qa/render.json: zero blockers/warnings. 1440-rm-full.jpg and 390-rm-full.jpg: all content visible, no hidden text. Skip link present; focus visible (2px outline, 3px offset); all inputs labeled; heading order correct (one h1, h2 per section)."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "1440-first.jpg through 1440-scroll-75.jpg: tidy intro (rail slides, watermark fades, photo unclips); ≥3 hooks (rail slide, frame unclip, staggered cards); reduced motion respected; hover hairline scaleX. Entrance variety closer to 3 than 4 patterns, prevents 9."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "1440-scroll-25.jpg: season-rail-as-navigation tied to thesis; firewood dry-check outputs seasonal answer in signature's ruled-card language. Sweep interval planner output is plain text, not visually integrated into the rail signature (-0.5 from 10 anchor)."
+    },
+    "polish": {
+      "score": 9,
+      "notes": "dist/index.html: SVG favicon + apple-touch-icon; OG 1200x630; theme-color; JSON-LD HomeAndConstructionBusiness; print stylesheet; lazy images with width/height; hero poster preloaded; forced colors handled; consistent 2px radius; designed footer with signoff, biz, disclaimer, credits."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "qa/render.json (overflow errors at 390px and 320px); 390-first.jpg, 390-full.jpg",
+      "problem": "Horizontal overflow: page is 478px wide at 390px viewport. div.header__actions (right 496), a.btn.btn-call (right 436), button.menu-btn (right 496) extend past viewport.",
+      "fix": "Constrain .header__actions with max-width:100% and overflow:hidden; ensure .btn-call and .menu-btn do not exceed container. Verify with check-render after fix."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "mobile",
+      "move": "Fix horizontal overflow, then re-compose header for 320x640: hide open-now text, show only logo + hamburger, phone exclusively in sticky bar, so 320 looks designed not survived."
+    },
+    {
+      "category": "layout",
+      "move": "Change #reviews to t-mid and give it the ruled title-block frame from the signature system, creating a deep/paper/mid/paper/deep rhythm that matches the season-rail cadence."
+    }
+  ],
+  "verdictHint": "FIX"
+}

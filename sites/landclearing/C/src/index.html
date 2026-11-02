@@ -1,0 +1,356 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-rail-post" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header data-header aria-label="Site header">
+  <div class="header__inner">
+    <a href="#hero" class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#area">Area</a></li>
+        <li><a href="#estimator">Pricing</a></li>
+        <li><a href="#proof">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header__actions">
+      <span data-open-now class="open-now"></span>
+      [[call btn--primary]]
+      <button data-menu-btn class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">[[i menu]]<span class="sr-only">Menu</span></button>
+    </div>
+  </div>
+  <div data-progress class="header__progress"></div>
+</header>
+
+<nav id="menu" data-menu aria-label="Mobile menu" hidden>
+  <div class="menu__inner">
+    <button data-menu-btn class="menu-close" type="button" aria-expanded="true">[[i x]]<span class="sr-only">Close menu</span></button>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#area">Area</a></li>
+      <li><a href="#estimator">Pricing</a></li>
+      <li><a href="#proof">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    [[call btn--primary]]
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="t-accent hero diagonal-split" data-sw-signature="split-rail">
+    <div class="hero__photo">
+      [[img hero | eager]]
+    </div>
+    <div class="hero__content">
+      <p class="kicker">Land clearing in {{biz.city}}</p>
+      <h1 data-split="lines">We put old farms back the way they were</h1>
+      <p class="lead">Mulched, not bulldozed, so the red clay stays put and the roots hold the bank.</p>
+      <p class="proof-line">Mon–Fri 7–5 · {{biz.areas|list}} · {{proof.rating}} [[sample rating]]</p>
+      <div class="hero__ctas">
+        [[call btn--primary]]
+        [[quote Mulching btn--ghost | Price it]]
+      </div>
+    </div>
+    <div class="rail-deco" aria-hidden="true">
+      <svg class="rail-svg" viewBox="0 0 48 400" preserveAspectRatio="none">
+        <line class="rail-line" x1="24" y1="0" x2="24" y2="400" stroke="currentColor" stroke-width="2"/>
+        <circle class="rail-dot" cx="24" cy="50" r="4" fill="currentColor"/>
+        <circle class="rail-dot" cx="24" cy="150" r="4" fill="currentColor"/>
+        <circle class="rail-dot" cx="24" cy="250" r="4" fill="currentColor"/>
+        <circle class="rail-dot" cx="24" cy="350" r="4" fill="currentColor"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 2. AREA -->
+  <section id="area" class="t-paper margin-rail" data-reveal>
+    <div class="container">
+      <div class="margin-rail__track" aria-hidden="true">
+        <div class="rail-segment is-active"><span class="rail-post"></span><span class="rail-line"></span><span class="rail-post"></span></div>
+      </div>
+      <div class="margin-rail__content">
+        <h2>Serving the Piedmont from {{biz.areas.0}} to {{biz.areas.6}}</h2>
+        <p>{{biz.areas|list}}</p>
+        <div data-zip class="zip-checker">
+          <label for="zip-input">Check your ZIP</label>
+          <div class="zip-row">
+            <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. {{biz.zips.0}}" autocomplete="postal-code">
+            <button type="button" class="btn btn--primary" data-zip-btn>Check</button>
+          </div>
+          <div data-zip-result class="zip-result" aria-live="polite"></div>
+        </div>
+        <p class="open-now-line">[[i phone]] <span data-open-now></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SEASON STORY (break) -->
+  <section id="season-story" class="t-deep break season-story" data-sw-signature="split-rail">
+    [[frame break | break__photo]]
+    <div class="season-story__overlay">
+      <div class="container">
+        <h2>One hillside through the year</h2>
+        <div class="season-rails">
+          <div class="season-card" data-season="leaf-off">
+            <span class="season-label">Leaf-off (Nov–Mar)</span>
+            <p>Hardwoods visible, ground firm. Prime window for clearing slopes.</p>
+          </div>
+          <div class="season-card" data-season="spring">
+            <span class="season-label">Spring rain (Apr–May)</span>
+            <p>Red clay slick. Mulch over doze so the bank holds.</p>
+          </div>
+          <div class="season-card" data-season="summer">
+            <span class="season-label">Summer resprout (Jun–Aug)</span>
+            <p>Follow-up visit for invasives. Mowing returns.</p>
+          </div>
+          <div class="season-card" data-season="fall">
+            <span class="season-label">Fall grass (Sep–Oct)</span>
+            <p>Field comes back. Broomsedge gold. Fence rows open.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SERVICES -->
+  <section id="services" class="t-paper services-grid" data-reveal>
+    <div class="container">
+      <h2>What we clear and how</h2>
+      <ul class="svc-grid">
+        <!-- each services -->
+        <li class="svc-card" data-reveal>
+          <h3>{{.name}}</h3>
+          <p>{{.blurb}}</p>
+          [[quote {{.short}} btn--ghost]]
+        </li>
+        <!-- /each -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. REGROWTH TOOL -->
+  <section id="regrowth" class="t-accent split-text tool-section" data-reveal>
+    <div class="container split-text__inner">
+      <div class="split-text__copy">
+        <h2>What comes back and when</h2>
+        <p>Pick the plant that's taking over. We'll tell you when resprouts show and when a follow-up visit keeps it from returning.</p>
+        <p class="guarantee">{{proof.guarantee}}</p>
+      </div>
+      <div class="split-text__tool" data-tool="regrowth">
+        <fieldset>
+          <legend>Pick the plant</legend>
+          <label><input type="radio" name="regrowth-plant" value="tree-of-heaven" checked> Tree of heaven</label>
+          <label><input type="radio" name="regrowth-plant" value="autumn-olive"> Autumn olive</label>
+          <label><input type="radio" name="regrowth-plant" value="multiflora-rose"> Multiflora rose</label>
+          <label><input type="radio" name="regrowth-plant" value="cedar"> Cedar</label>
+          <label><input type="radio" name="regrowth-plant" value="briars"> Briars</label>
+        </fieldset>
+        <div class="tool-output" data-regrowth-output aria-live="polite">
+          <p>Resprouts show in late spring. A follow-up visit in July keeps it from returning.</p>
+        </div>
+        <a href="#contact" class="btn btn--primary" data-service="Invasives">Book a follow-up</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. DEBRIS TOOL -->
+  <section id="debris" class="t-paper split-text tool-section" data-reveal>
+    <div class="container split-text__inner">
+      <div class="split-text__copy">
+        <h2>Mulch in place, haul off, or pile</h2>
+        <p>Choose what happens to the brush. Each option changes the timeline, the look of the lot, and the sample cost band.</p>
+      </div>
+      <div class="split-text__tool" data-tool="debris">
+        <fieldset>
+          <legend>Choose what happens to the brush</legend>
+          <label><input type="radio" name="debris-method" value="mulch" checked> Mulch in place</label>
+          <label><input type="radio" name="debris-method" value="haul"> Haul off</label>
+          <label><input type="radio" name="debris-method" value="pile"> Pile on site</label>
+        </fieldset>
+        <div class="tool-output" data-debris-output aria-live="polite">
+          <p>Brush chipped where it falls. No burn piles, no ruts from hauling. Sample: {{proof.prices.1.from}}–{{proof.prices.1.to}} per acre [[sample pricing]].</p>
+        </div>
+        <a href="#contact" class="btn btn--primary" data-service="Mulching">Price it</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. ESTIMATOR -->
+  <section id="estimator" class="t-accent estimator-section" data-reveal>
+    <div class="container">
+      <h2>What will it cost?</h2>
+      <div data-estimator class="estimator">
+        <div class="estimator__inputs">
+          <label>
+            Acres
+            <input type="number" min="0.5" max="100" step="0.5" value="2" data-est-acres>
+          </label>
+          <label>
+            Density
+            <select data-est-density>
+              <option value="light">Light brush</option>
+              <option value="thick" selected>Thick understory</option>
+              <option value="wooded">Wooded</option>
+            </select>
+          </label>
+          <label>
+            Slope
+            <select data-est-slope>
+              <option value="flat">Flat</option>
+              <option value="rolling" selected>Rolling</option>
+              <option value="steep">Steep</option>
+            </select>
+          </label>
+        </div>
+        <div class="estimator__output" data-est-output aria-live="polite">
+          <p class="est-range">Sample range: {{proof.prices.0.from}}–{{proof.prices.0.to}} per acre [[sample pricing]]</p>
+          <p class="est-note">What moves this number: density, slope, rock, gate width.</p>
+        </div>
+        <div class="estimator__sketch" data-est-sketch aria-hidden="true">
+          <svg viewBox="0 0 200 60" class="fence-sketch">
+            <line x1="10" y1="30" x2="190" y2="30" stroke="currentColor" stroke-width="2" class="sketch-rail"/>
+            <circle cx="10" cy="30" r="3" fill="currentColor"/>
+            <circle cx="70" cy="30" r="3" fill="currentColor"/>
+            <circle cx="130" cy="30" r="3" fill="currentColor"/>
+            <circle cx="190" cy="30" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <a href="#contact" class="btn btn--primary" data-service="Old fields">Price it</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. PROOF -->
+  <section id="proof" class="t-deep proof-section margin-rail" data-sw-signature="split-rail" data-reveal>
+    <div class="container">
+      <div class="margin-rail__track" aria-hidden="true">
+        <div class="rail-segment is-active"><span class="rail-post"></span><span class="rail-line"></span><span class="rail-post"></span></div>
+      </div>
+      <div class="margin-rail__content">
+        <h2>People who've walked their land with us</h2>
+        <ul class="review-list">
+          <!-- each proof.reviews 0:3 -->
+          <li class="review-card" data-reveal>
+            <p class="review-text">"{{.text}}"</p>
+            <p class="review-author">— {{.name}}, {{.town}} · {{.service}}</p>
+            [[sample review]]
+          </li>
+          <!-- /each -->
+        </ul>
+        <div class="proof-stats">
+          <p><strong>{{proof.years}}</strong> years in the Piedmont [[sample years]]</p>
+          <p>Licence <strong>{{proof.license}}</strong> [[sample license]]</p>
+          <!-- if biz.familyOwned -->
+          <p>Family-owned since day one</p>
+          <!-- /if -->
+          <p class="guarantee">{{proof.guarantee}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. CONTACT -->
+  <section id="contact" class="t-light contact-section" data-reveal>
+    <div class="container">
+      <h2>Tell us about your land</h2>
+      <form data-lead class="lead-form" novalidate>
+        <div class="form-step" data-step="1">
+          <fieldset>
+            <legend>Service</legend>
+            <label for="lead-service">What do you need?</label>
+            <select id="lead-service" name="service" required>
+              <option value="">Choose a service</option>
+              <!-- each services -->
+              <option value="{{.short}}">{{.name}}</option>
+              <!-- /each -->
+            </select>
+          </fieldset>
+          <button type="button" class="btn btn--primary" data-next>Next</button>
+        </div>
+        <div class="form-step" data-step="2" hidden>
+          <fieldset>
+            <legend>Job details</legend>
+            <label for="lead-acres">Rough acreage</label>
+            <input id="lead-acres" type="number" min="0.5" step="0.5" name="acres">
+            <label for="lead-notes">Anything else?</label>
+            <textarea id="lead-notes" name="notes" rows="3"></textarea>
+          </fieldset>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="3" hidden>
+          <fieldset>
+            <legend>When</legend>
+            <label for="lead-timing">When are you looking to start?</label>
+            <select id="lead-timing" name="timing">
+              <option value="soon">Within a few weeks</option>
+              <option value="season">This season</option>
+              <option value="planning">Just planning</option>
+            </select>
+          </fieldset>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Next</button>
+          </div>
+        </div>
+        <div class="form-step" data-step="4" hidden>
+          <fieldset>
+            <legend>Contact</legend>
+            <label for="lead-name">Name</label>
+            <input id="lead-name" type="text" name="name" required autocomplete="name">
+            <label for="lead-phone">Phone</label>
+            <input id="lead-phone" type="tel" name="phone" required autocomplete="tel">
+            <label for="lead-email">Email (optional)</label>
+            <input id="lead-email" type="email" name="email" autocomplete="email">
+            <input type="text" name="website2" class="hp" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="t" data-time-trap>
+          </fieldset>
+          <div class="form-nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="submit" class="btn btn--primary">Send</button>
+          </div>
+          <p class="form-micro">We'll call you back to set up a visit. <span data-open-now></span></p>
+        </div>
+        <div class="form-thanks" data-thanks hidden>
+          <p>Thanks. In your version this goes straight to your phone and inbox.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="t-deep site-footer">
+  <div class="container footer__inner">
+    <p class="disclaimer">{{demo.disclaimer}}</p>
+    [[credits]]
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#area">Area</a></li>
+        <li><a href="#estimator">Pricing</a></li>
+        <li><a href="#proof">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <p class="footer-contact">[[tel]] · {{biz.email}}</p>
+    <p class="copyright">© {{year}} {{biz.name}}</p>
+  </div>
+</footer>
+
+<div data-mobilebar class="mobile-bar" aria-label="Quick actions">
+  [[call btn--primary]]
+  [[quote Mulching btn--ghost | Price it]]
+</div>

@@ -1,0 +1,274 @@
+<!-- SVG Sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+ <symbol id="i-sun-dial" viewBox="0 0 120 60">
+ <path d="M10 55 Q60 -10 110 55" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="60" cy="28" r="4" fill="currentColor" class="dial-marker"/>
+ <line x1="60" y1="55" x2="60" y2="50" stroke="currentColor" stroke-width="1"/>
+ <line x1="10" y1="55" x2="15" y2="52" stroke="currentColor" stroke-width="1"/>
+ <line x1="110" y1="55" x2="105" y2="52" stroke="currentColor" stroke-width="1"/>
+ </symbol>
+ <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="i-sms" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor" stroke="none"/></symbol>
+</svg>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header data-header class="t-light">
+ <div class="header-inner container">
+ <a href="#hero" class="logo" aria-label="{{biz.name}} home">{{biz.initials}}</a>
+ <nav aria-label="Primary">
+ <ul>
+ <li><a href="#services">Plants</a></li>
+ <li><a href="#prices">Prices</a></li>
+ <li><a href="#area">Delivery</a></li>
+ <li><a href="#contact">Get a list</a></li>
+ </ul>
+ </nav>
+ <div class="header-status">
+ <span data-open-now class="open-pill"></span>
+ [[call btn--sm]]
+ </div>
+ </div>
+</header>
+
+<main id="main">
+ <!-- 1. HERO -->
+ <section id="hero" class="t-light sec-hero" data-hook="yard-check" data-sw-signature="sun-dial">
+ <div class="container hero-grid">
+ <div class="hero-content">
+ <p class="kicker">{{biz.tradeLabel}} · {{biz.city}}, {{biz.state}}</p>
+ <h1>Know before you drive</h1>
+ <p class="lead">Your yard has a light count. We match plants to it, so what you buy lives through July.</p>
+ <form class="yard-check sw-motion" data-module="yard-check" action="#contact" method="get">
+ <fieldset>
+ <legend>Light this spot gets</legend>
+ <label><input type="radio" name="sun" value="2"> 2 hrs</label>
+ <label><input type="radio" name="sun" value="4"> 4 hrs</label>
+ <label><input type="radio" name="sun" value="6" checked> 6 hrs</label>
+ <label><input type="radio" name="sun" value="8"> 8+ hrs</label>
+ </fieldset>
+ <fieldset>
+ <legend>Soil</legend>
+ <label><input type="radio" name="soil" value="sand" checked> Sand</label>
+ <label><input type="radio" name="soil" value="loam"> Loam</label>
+ <label><input type="radio" name="soil" value="clay"> Clay</label>
+ </fieldset>
+ <button type="submit" class="btn btn--primary">See what fits</button>
+ <noscript><p class="note">[[tel]] for a plant list matched to your spot.</p></noscript>
+ </form>
+ <p class="guarantee">{{proof.guarantee}}</p>
+ </div>
+ <div class="hero-media frame">
+ [[img hero|eager alt="Rows of potted shrubs on outdoor nursery benches in bright Florida light"]]
+ <svg class="sun-dial-overlay" aria-hidden="true"><use href="#i-sun-dial"/></svg>
+ </div>
+ </div>
+ </section>
+
+ <!-- 2. SERVICES -->
+ <section id="services" class="t-paper sec-services" data-hook="service-grid">
+ <div class="container">
+ <h2>What grows here</h2>
+ <p class="sec-lead">Every plant on our benches has been outside in Polk County weather. Tags show the light each one needs.</p>
+ <div class="service-grid">
+ <!-- each services -->
+ <article class="card service-card">
+ <svg class="mini-dial" aria-hidden="true"><use href="#i-sun-dial"/></svg>
+ <h3>{{.name}}</h3>
+ <p>{{.blurb}}</p>
+ [[quote {{.short}} btn--ghost]]
+ </article>
+ <!-- /each -->
+ </div>
+ </div>
+ </section>
+
+ <!-- 3. PROOF -->
+ <section id="proof" class="t-deep sec-proof break">
+ <div class="container proof-split">
+ <div class="proof-media frame">
+ [[img proof-break alt="Sandy ground with dappled light under nursery benches"]]
+ </div>
+ <div class="proof-content">
+ <h2>From yards like yours</h2>
+ <p class="sec-lead">{{proof.rating}} stars across {{proof.reviewCount}} sample reviews.</p>
+ <div class="reviews" data-hook="reviews">
+ <!-- each proof.reviews 0:3 -->
+ <blockquote class="review">
+ [[sample review]]
+ <div class="stars" aria-label="{{.stars}} out of 5 stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
+ <p>"{{.text}}"</p>
+ <footer>— {{.name}}, {{.town}} · {{.service}}</footer>
+ </blockquote>
+ <!-- /each -->
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- 4. PRICES -->
+ <section id="prices" class="t-accent sec-prices" data-hook="price-rings">
+ <div class="container">
+ <h2>Sample pricing by pot size</h2>
+ <p class="sec-lead">Ranges from our current bench. Your total depends on count and delivery distance.</p>
+ <table class="price-table">
+ <thead><tr><th>Item</th><th>Sample range</th></tr></thead>
+ <tbody>
+ <!-- each proof.prices -->
+ <tr>
+ <td>{{.item}}</td>
+ <td>[[sample pricing]] {{.from}} – {{.to}}</td>
+ </tr>
+ <!-- /each -->
+ </tbody>
+ </table>
+ <a href="#contact" class="btn btn--secondary">Price a delivery</a>
+ </div>
+ </section>
+
+ <!-- 5. AREA -->
+ <section id="area" class="t-light sec-area" data-hook="zip-check">
+ <div class="container area-stack">
+ <h2>We deliver across Polk County</h2>
+ <p class="sec-lead">{{biz.city}}, {{biz.areas|list}}</p>
+ <form class="zip-check" data-zip action="#contact" method="get">
+ <label for="zip">Check your ZIP</label>
+ <div class="zip-row">
+ <input id="zip" name="zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. {{biz.zips.0}}" required>
+ <button type="submit" class="btn btn--primary">Check</button>
+ </div>
+ <p class="zip-result" data-zip-result aria-live="polite"></p>
+ </form>
+ </div>
+ </section>
+
+ <!-- 6. PHOTO CHECK -->
+ <section id="photo-check" class="t-paper sec-photo-check" data-hook="photo-check">
+ <div class="container photo-split">
+ <div class="photo-content">
+ <h2>Sick plant? Text us a photo</h2>
+ <p>Text us a photo of the spot and its light, and get a short plant list back.</p>
+ <ul class="check-list">
+ <li>We look at leaf, roots and soil</li>
+ <li>Answer the same afternoon</li>
+ <li>No visit needed for most problems</li>
+ </ul>
+ <a href="sms:{{biz.phoneE164}}" class="btn btn--primary">[[i sms]] Text a photo</a>
+ </div>
+ <div class="photo-media frame">
+ [[img photo-check alt="Close-up of water drops on a green leaf in bright light"]]
+ </div>
+ </div>
+ </section>
+
+ <!-- 7. NATIVES -->
+ <section id="natives" class="t-mid sec-natives">
+ <div class="container statement">
+ <h2>Built for sand</h2>
+ <p class="big-statement">Coontie, muhly grass and beautyberry live on rain alone once their roots are down.</p>
+ <blockquote class="pull-quote">
+ [[sample review]]
+ <p>"{{proof.reviews.4.text}}"</p>
+ <footer>— {{proof.reviews.4.name}}, {{proof.reviews.4.town}}</footer>
+ </blockquote>
+ </div>
+ </section>
+
+ <!-- 8. DELIVERY -->
+ <section id="delivery" class="t-light sec-delivery">
+ <div class="container delivery-rail">
+ <div class="delivery-media frame">
+ [[img delivery alt="Potted plants secured in a truck bed ready for delivery"]]
+ </div>
+ <div class="delivery-content">
+ <h2>Delivered, set in, watered</h2>
+ <p>Plants delivered and set in, watered in, with a printed watering plan for the first month.</p>
+ <p class="guarantee">{{proof.guarantee}}</p>
+ <a href="#contact" class="btn btn--primary">Schedule delivery</a>
+ </div>
+ </div>
+ </section>
+
+ <!-- 9. HOURS -->
+ <section id="hours" class="t-paper sec-hours" data-hook="open-now">
+ <div class="container hours-layout">
+ <svg class="hours-dial" aria-hidden="true"><use href="#i-sun-dial"/></svg>
+ <div class="hours-content">
+ <h2>Today's hours</h2>
+ {{hours|today}}
+ [[call btn--primary]]
+ </div>
+ </div>
+ </section>
+
+ <!-- 10. CONTACT -->
+ <section id="contact" class="t-deep sec-contact" data-hook="quote-form">
+ <div class="container">
+ <h2>Get a plant list or price</h2>
+ <form class="quote-form sw-motion" data-lead data-form-steps="4">
+ <div class="form-step" data-step="1">
+ <h3>What do you need?</h3>
+ <label for="need">I'm looking for</label>
+ <select id="need" name="service" required>
+ <option value="">Choose…</option>
+ <!-- each services -->
+ <option value="{{.short}}">{{.name}}</option>
+ <!-- /each -->
+ <option value="soil">Soil, mulch or pots</option>
+ <option value="other">Something else</option>
+ </select>
+ <button type="button" class="btn btn--primary" data-next>Next</button>
+ </div>
+ <div class="form-step" data-step="2" hidden>
+ <h3>Tell us about the spot</h3>
+ <label for="details">Details</label>
+ <textarea id="details" name="details" rows="3" placeholder="Light level, soil type, size of area…"></textarea>
+ <button type="button" class="btn btn--secondary" data-prev>Back</button>
+ <button type="button" class="btn btn--primary" data-next>Next</button>
+ </div>
+ <div class="form-step" data-step="3" hidden>
+ <h3>When do you want it?</h3>
+ <label for="when">Timing</label>
+ <select id="when" name="when">
+ <option value="asap">As soon as possible</option>
+ <option value="weekend">This weekend</option>
+ <option value="flexible">Flexible</option>
+ </select>
+ <button type="button" class="btn btn--secondary" data-prev>Back</button>
+ <button type="button" class="btn btn--primary" data-next>Next</button>
+ </div>
+ <div class="form-step" data-step="4" hidden>
+ <h3>Your contact</h3>
+ <label for="name">Your name</label>
+ <input id="name" name="name" type="text" required>
+ <label for="phone">Phone</label>
+ <input id="phone" name="phone" type="tel" required>
+ <label for="email">Email</label>
+ <input id="email" name="email" type="email">
+ <input type="text" name="website2" style="display:none" tabindex="-1" autocomplete="off">
+ <input type="hidden" name="t" value="">
+ <button type="button" class="btn btn--secondary" data-prev>Back</button>
+ <button type="submit" class="btn btn--primary">Send request</button>
+ </div>
+ <div class="form-thankyou" data-thankyou hidden>
+ <h3>Request sent</h3>
+ <p>We'll text or call back within two hours during open hours with a plant list and sample price.</p>
+ </div>
+ </form>
+ </div>
+ </section>
+</main>
+
+<footer class="t-light site-footer">
+ <div class="container footer-stack">
+ <svg class="footer-dial" aria-hidden="true"><use href="#i-sun-dial"/></svg>
+ <p class="disclaimer">{{demo.disclaimer}}</p>
+ <p class="credits">[[credits]]</p>
+ </div>
+</footer>
+
+<div class="mobile-bar" data-mobilebar>
+ [[call bar-btn]]
+ <a href="sms:{{biz.phoneE164}}" class="btn btn--secondary bar-btn">[[i sms]] Text</a>
+</div>

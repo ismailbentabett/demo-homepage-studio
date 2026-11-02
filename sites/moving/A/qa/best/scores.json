@@ -1,0 +1,72 @@
+{
+  "round": 2,
+  "categories": {
+    "firstScreen": {
+      "score": 9,
+      "notes": "1440-first.jpg: h1 'Durham movers who tag every piece to its room' states trade+city+outcome; phone visible in header; next band (filmstrip) peeks ~60px; signature tag No. 001 visible. 390-first.jpg: h1 wraps to 3 lines, both CTAs above fold."
+    },
+    "distinctiveness": {
+      "score": 9,
+      "notes": "1440-full.jpg, 1440-scroll-25.jpg, 1440-scroll-50.jpg, 1440-scroll-75.jpg: inventory tag signature in hero (No. 001), process steps, service cards, reviews, prices table, footer (No. 112) -- 6 sections. Filmstrip hero unique in niche. Kraft+orange palette and Antonio/Public Sans/DM Mono trio distinct from siblings."
+    },
+    "type": {
+      "score": 9,
+      "notes": "1440-full.jpg, 390-full.jpg: Antonio condensed display for tag numbers/headlines creates scale contrast vs Public Sans body. DM Mono for data. Fluid clamp() scale. Tabular numerals on prices/phone. Body >= 16px at full ink. Lead paragraph set apart."
+    },
+    "layout": {
+      "score": 8.5,
+      "notes": "1440-full.jpg: clear tone alternation paper/deep/paper/accent/deep/light. Multiple layout families (filmstrip rail, split process, tag grid, ledger table, stacked form). 1440-scroll-25.jpg, 1440-scroll-50.jpg: three consecutive light-tone sections (hero, process, services) flatten density map (-0.5)."
+    },
+    "photo": {
+      "score": 8,
+      "notes": "1440-scroll-75.jpg: Quebec snow photo replaced with hero-B1, warm grade now consistent. dist/index.html:1332-1336: filmstrip alt text still contains Wikimedia metadata unrelated to actual frames (HTSSystems truck, nude man, Route 66, NASA spacecraft). MustFix caps at 8.0 in fast mode."
+    },
+    "copy": {
+      "score": 9,
+      "notes": "dist/index.html lines 1282, 1317, 1427-1497, 1713, 1844: all CTAs unified to 'Price my move'. Lines 1583-1633: per-review Sample tags on all six cards. Plain voice, no banned words, microcopy under form."
+    },
+    "mobile": {
+      "score": 9,
+      "notes": "390-first.jpg, 390-full.jpg: no horizontal scroll (render.json overflow clean). Tap targets >= 48px. Sticky mobile bar with Call + Price my move. H1 <= 3 lines. Form usable with thumb."
+    },
+    "a11y": {
+      "score": 8.5,
+      "notes": "1440-rm-full.jpg, 390-rm-full.jpg: all content visible in reduced motion. Skip link present. Focus outline 3px accent with 3px offset. Labels on all form inputs. aria-live on ZIP output. qa/render.json: console 404 error (-0.5)."
+    },
+    "motion": {
+      "score": 8.5,
+      "notes": "1440-first.jpg, 1440-rm-full.jpg: tag swing-in intro, filmstrip drift, clip reveals, text rise. Reduced motion shows complete static content. qa/render.json: console 404 may indicate missing animation asset (-0.5)."
+    },
+    "wow": {
+      "score": 8.5,
+      "notes": "1440-scroll-25.jpg: inventory tag system advancing 001 to 112 is the wow, tied to thesis. Move sizer outputs crew/truck/price in tag language. Tool output is text readout rather than designed artifact in signature's visual language (-0.5)."
+    },
+    "polish": {
+      "score": 8.5,
+      "notes": "dist/index.html head: SVG favicon, apple-touch-icon, OG image, theme-color, JSON-LD MovingCompany, print stylesheet, lazy images with dimensions, forced colors handled. qa/render.json: console 404 error (-0.5)."
+    }
+  },
+  "mustFix": [
+    {
+      "where": "dist/index.html:1332-1336, filmstrip frame alt text",
+      "problem": "Alt text contains Wikimedia metadata unrelated to actual image content. Line 1332 says 'HTSSystems HTS-30DTF-2 Ultra-Rack units' for a dolly/ramp scene. Line 1333 says 'Nude man walking and carrying a 75 lb. stone' for hands-carrying-box. Line 1335 references 'Historic Route 66 near Amboy, California' for a hand-truck photo. Line 1336 references 'LINK spacecraft at NASA Wallops' for hero-B1. Screen reader users receive misleading information.",
+      "fix": "Rewrite each alt attribute to describe the actual visual content of the frame. For line 1332: 'Moving dolly loaded with boxed items being pushed up a metal ramp into a truck'. For line 1333: 'Two hands gripping a cardboard moving box from below, carrying it at waist height'. For line 1335: 'Metal hand truck with strapped boxes standing upright on a concrete surface'. For line 1336: describe what hero-B1 actually shows. Update data-fallback attributes to match."
+    },
+    {
+      "where": "qa/render.json consoleErrors",
+      "problem": "404 error on an unnamed resource. Missing assets break polish and may affect accessibility.",
+      "fix": "Identify the failing URL via browser Network tab or build logging, restore the missing file or remove the reference. Re-run check-render to confirm zero console errors."
+    }
+  ],
+  "elevate": [
+    {
+      "category": "photo",
+      "move": "Commission or art-direct a single move-day photo sequence shot in consistent warm light -- tag close-up, wrap station, ramp load, hallway carry, placed-in-room -- so crops tell a narrative arc and every frame reads as one shoot, eliminating the metadata-alt-text problem at its root."
+    },
+    {
+      "category": "layout",
+      "move": "Break the three-light-tone run by making the process story section t-deep with reversed text, creating a paper/deep/paper/deep rhythm that gives the scroll a visible loud-quiet-loud shape and separates the process narrative from the services grid."
+    }
+  ],
+  "verdictHint": "NEEDS_HUMAN"
+}
